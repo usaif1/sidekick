@@ -5,7 +5,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView>
       <View>
-        <Text>SideKick</Text>
+        <Text>SideKick V1</Text>
       </View>
     </SafeAreaView>
   );
