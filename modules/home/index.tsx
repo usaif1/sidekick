@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { HomeLandingPage } from './screens';
+import HomeLandingPage from './screens/HomeLandingPage';
 
 const HomeStack = createStackNavigator();
 

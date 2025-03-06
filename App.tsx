@@ -1,7 +1,8 @@
 import React from 'react';
+import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
+import { PaperProvider } from 'react-native-paper';
 import AppNavigator from './navigator';
 
 function App(): React.JSX.Element {
