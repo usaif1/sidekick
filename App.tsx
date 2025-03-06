@@ -1,13 +1,17 @@
 import React from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PaperProvider } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
+import AppNavigator from './navigator';
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView>
-      <View>
-        <Text>SideKick V1</Text>
-      </View>
-    </SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'white' }}>
+      <PaperProvider>
+        <AppNavigator />
+        <Toast />
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
 
