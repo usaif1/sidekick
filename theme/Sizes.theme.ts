@@ -1,5 +1,5 @@
 import { moderateScale, moderateVerticalScale } from 'react-native-size-matters';
-import { horizontalScale } from '~/constants/metrics';
+import { horizontalScale } from '../utils/metrics';
 
 const THEME = {
     fonts: {

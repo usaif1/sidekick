@@ -3,7 +3,7 @@ import {TextStyle, ViewStyle} from 'react-native';
 import {StackNavigationOptions} from '@react-navigation/stack';
 
 // types
-import {FBBackground, FBBorders, FBColors} from '@/theme/Theme.type';
+import {SKBackground, SKBorders, SKColors} from '../theme/Theme.type';
 
 export const commonInputStyles: ViewStyle & TextStyle = {
   borderWidth: 1,
@@ -11,9 +11,9 @@ export const commonInputStyles: ViewStyle & TextStyle = {
   fontWeight: '500',
   paddingLeft: 10,
   borderRadius: 8,
-  borderColor: FBBorders.input,
-  backgroundColor: FBBackground.input,
-  color: FBColors.neutral,
+  borderColor: SKBorders.input,
+  backgroundColor: SKBackground.input,
+  color: SKColors.neutral,
 };
 
 /**
@@ -42,7 +42,7 @@ export const commonHeaderStyles: StackNavigationOptions = {
     backgroundColor: 'transparent',
   },
   headerBackTitleVisible: false,
-  headerTintColor: FBColors.neutral,
+  headerTintColor: SKColors.neutral,
 };
 
 /**
