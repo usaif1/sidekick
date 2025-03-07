@@ -24,12 +24,23 @@ const HomeLandingPage = () => {
     };
 
     const getCurrentLocation = () => {
+      Geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLocation(lat, lng);
+        },
+        error => console.log('Error getting current location:', error),
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+
       Geolocation.watchPosition(
         position => {
-          const { latitude, longitude } = position.coords;
-          setLocation(latitude, longitude);
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLocation(lat, lng);
         },
-        error => console.log(error),
+        error => console.log('Error watching location:', error),
         { enableHighAccuracy: true, distanceFilter: 1, interval: 1000 }
       );
     };
@@ -45,17 +56,15 @@ const HomeLandingPage = () => {
         showsUserLocation={false}
         followsUserLocation={true}
         region={{
-          latitude: latitude ?? 12.9716, 
-          longitude: longitude ?? 77.5946, 
+          latitude,
+          longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
       >
-        {latitude !== null && longitude !== null && (
-          <Marker coordinate={{ latitude, longitude }}>
-            <UserPointerIcon width={32} height={32} />
-          </Marker>
-        )}
+        <Marker coordinate={{ latitude, longitude }}>
+          <UserPointerIcon width={32} height={32} />
+        </Marker>
       </MapView>
     </View>
   );
