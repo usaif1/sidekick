@@ -1,14 +1,19 @@
 import React from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import AppNavigator from './navigator/AppNavigator';
 
-function App(): React.JSX.Element {
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <SafeAreaView>
-      <View>
-        <Text>SideKick V1</Text>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="appnav" component={AppNavigator} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
 export default App;
