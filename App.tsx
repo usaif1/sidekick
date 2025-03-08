@@ -1,13 +1,18 @@
+// dependencies
 import React from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+
+// navigation
+import ProtectedNavigation from './navigation/ProtectedNavigation';
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView>
-      <View>
-        <Text>SideKick V1</Text>
-      </View>
-    </SafeAreaView>
+    <>
+      <GestureHandlerRootView style={{flex: 1}}>
+        {/* <AuthNavigation /> */}
+        <ProtectedNavigation />
+      </GestureHandlerRootView>
+    </>
   );
 }
 
