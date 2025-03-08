@@ -5,6 +5,9 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
 
+// misc
+import './ReactotronConfig';
+
 function App(): React.JSX.Element {
   return (
     <>
