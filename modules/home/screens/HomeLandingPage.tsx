@@ -5,6 +5,8 @@ import Geolocation from 'react-native-geolocation-service';
 import useLocationStore from '../store/locationStore';
 
 import UserPointerIcon from '../assets/userPointer.svg';
+import UnlockButton from '../components/UnlockButton';
+import NearestHubButton from '../components/NearestHubButton';
 
 const HomeLandingPage = () => {
   const { latitude, longitude, setLocation } = useLocationStore();
@@ -28,6 +30,7 @@ const HomeLandingPage = () => {
         position => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
+          console.log('Current location:', { latitude: lat, longitude: lng });
           setLocation(lat, lng);
         },
         error => console.log('Error getting current location:', error),
@@ -38,6 +41,7 @@ const HomeLandingPage = () => {
         position => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
+          console.log('Updated location:', { latitude: lat, longitude: lng });
           setLocation(lat, lng);
         },
         error => console.log('Error watching location:', error),
@@ -66,6 +70,13 @@ const HomeLandingPage = () => {
           <UserPointerIcon width={32} height={32} />
         </Marker>
       </MapView>
+
+      <View style={styles.bottomContainer}>
+        <View style={styles.nearestHubContainer}>
+          <NearestHubButton />
+        </View>
+        <UnlockButton />
+      </View>
     </View>
   );
 };
@@ -76,6 +87,16 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  bottomContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  nearestHubContainer: {
+    marginBottom: 10, 
   },
 });
 
