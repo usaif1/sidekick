@@ -1,6 +1,5 @@
 import ButtonText from '@/components/ButtonText';
 import {useGlobalStore, useThemeStore} from '@/globalStore';
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -16,8 +15,6 @@ const {width, height} = Dimensions.get('window'); // Get screen dimensions
 const Login = () => {
   const {theme} = useThemeStore();
 
-  const navigation = useNavigation();
-
   return (
     <ImageBackground
       source={require('../assets/Map.png')} // Path to your background image
@@ -32,7 +29,7 @@ const Login = () => {
               borderWidth: 2,
               width: '100%',
               height: 60,
-              borderColor: theme.colors.neutral[200],
+              borderColor: theme.colors.lightGray,
               borderRadius: 20,
               marginTop: 12,
               paddingLeft: 20,
@@ -49,7 +46,7 @@ const Login = () => {
           }}>
           <Text
             style={{
-              color: theme.colors.primary[300],
+              color: theme.colors.highlight,
               fontSize: 10,
               fontWeight: '600',
               textDecorationLine: 'underline',

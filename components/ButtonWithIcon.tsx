@@ -30,13 +30,13 @@ const ButtonWithIcon: React.FC<Props> = ({
 
   const containerStyles: ContainerStyles = {
     primary: {
-      backgroundColor: colors.primary[500],
+      backgroundColor: colors.primary,
       borderRadius: 30,
       width: 220,
       height: 60,
     },
     secondary: {
-      backgroundColor: colors.neutral[0],
+      backgroundColor: colors.white,
       borderRadius: 30,
       width: 220,
       height: 60,
@@ -45,12 +45,12 @@ const ButtonWithIcon: React.FC<Props> = ({
 
   const textStyles: TextStyles = {
     primary: {
-      color: colors.neutral[900],
+      color: colors.textPrimary,
       fontWeight: '600',
       fontSize: 16,
     },
     secondary: {
-      color: colors.neutral[900],
+      color: colors.textPrimary,
       fontWeight: '600',
       fontSize: 16,
     },

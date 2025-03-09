@@ -24,12 +24,12 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
 
   const containerStyles: ContainerStyles = {
     primary: {
-      backgroundColor: colors.primary[500],
+      backgroundColor: colors.primary,
       padding: spacing.md,
       borderRadius: 30,
     },
     secondary: {
-      backgroundColor: colors.neutral[100],
+      backgroundColor: colors.white,
       padding: spacing.md,
       borderRadius: 30,
     },
@@ -37,12 +37,12 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
 
   const textStyles: TextStyles = {
     primary: {
-      color: colors.neutral[900],
+      color: colors.textPrimary,
       fontWeight: '600',
       fontSize: 16,
     },
     secondary: {
-      color: colors.neutral[900],
+      color: colors.textPrimary,
       fontWeight: '600',
       fontSize: 16,
     },

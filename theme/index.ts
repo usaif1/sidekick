@@ -114,16 +114,16 @@ export const lightTheme: Theme = {
     heading: {
       fontSize: 24,
       fontWeight: '700',
-      color: lightColors.neutral[900],
+      color: lightColors.textPrimary,
     },
     subheading: {
       fontSize: 18,
       fontWeight: '500',
-      color: lightColors.neutral[200],
+      color: lightColors.textSecondary,
     },
     body: {
       fontSize: 16,
-      color: lightColors.neutral[200],
+      color: lightColors.textPrimary,
     },
   },
   spacing: {
@@ -135,14 +135,14 @@ export const lightTheme: Theme = {
   },
   shadows: {
     sm: {
-      shadowColor: lightColors.neutral[900],
+      shadowColor: lightColors.textPrimary,
       shadowOffset: {width: 0, height: 1},
       shadowOpacity: 0.1,
       shadowRadius: 2,
       elevation: 1,
     },
     md: {
-      shadowColor: lightColors.neutral[900],
+      shadowColor: lightColors.textPrimary,
       shadowOffset: {width: 0, height: 4},
       shadowOpacity: 0.2,
       shadowRadius: 6,
@@ -157,7 +157,7 @@ export const darkTheme: Theme = {
   colors: darkColors,
   typography: {
     ...lightTheme.typography,
-    heading: {...lightTheme.typography.heading, color: darkColors.neutral[900]},
-    body: {...lightTheme.typography.body, color: darkColors.neutral[100]},
+    heading: {...lightTheme.typography.heading, color: darkColors.textPrimary},
+    body: {...lightTheme.typography.body, color: darkColors.textSecondary},
   },
 };
