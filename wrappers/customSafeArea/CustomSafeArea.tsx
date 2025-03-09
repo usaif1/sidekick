@@ -3,7 +3,7 @@ import React from 'react';
 import { ICustomSafeAreaProps } from './CustomSafeArea.types';
 import { useScreenInsets } from '@/hooks/useScreenInsets';
 
-import THEME from '~/theme/Sizes.theme';
+import THEME from '@/theme/Sizes.theme';
 
 const CustomSafeArea: React.FC<ICustomSafeAreaProps> = ({
     children,

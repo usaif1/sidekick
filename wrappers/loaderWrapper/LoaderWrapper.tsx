@@ -10,6 +10,28 @@ const LoaderWrapper: React.FC<ILoaderWrapperProps> = ({ children }) => {
     const isLoading = useSelector(loadingStateFromSlice);
     const { theme } = useTheme();
 
+     const styles = StyleSheet.create({
+        childrenContainer: {
+            flex: 1
+        },
+        loaderBlackOverlay: {
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: theme.color.backGround,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+    
+        loaderWhiteContainerView: {
+            height: 130,
+            width: 150,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(255,255,255,1)'
+        }
+    });
+    
+
     return (
         <View style={styles.childrenContainer}>
             <View style={styles.childrenContainer}>{children}</View>
@@ -25,24 +47,3 @@ const LoaderWrapper: React.FC<ILoaderWrapperProps> = ({ children }) => {
 };
 
 export default LoaderWrapper;
-
-export const styles = StyleSheet.create({
-    childrenContainer: {
-        flex: 1
-    },
-    loaderBlackOverlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-
-    loaderWhiteContainerView: {
-        height: 130,
-        width: 150,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,1)'
-    }
-});

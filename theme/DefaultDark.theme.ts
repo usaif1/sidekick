@@ -26,6 +26,7 @@ const DEFAULT_DARK_COLOR_THEME: ColorTheme = {
     blue: '#296AEB',            // Added blue
     lightBlue: '#C3DBFF00',     // Added lightBlue
     ratingYellow: '#FFBF1A',    // Keeping original rating yellow
+    white: '#FFFFFF'
 };
 
 export const DEFAULT_DARK_THEME_ID = 'default-dark';

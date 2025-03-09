@@ -21,6 +21,7 @@ export interface ColorTheme {
   black: string;
   blue: string;
   lightBlue: string;
+  white: string;
 }
 
 export interface SpacingTheme {
