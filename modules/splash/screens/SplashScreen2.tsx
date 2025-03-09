@@ -54,10 +54,10 @@ const SplashScreenCarousel: React.FC = () => {
     return (
       <View style={styles.slide}>
         {item.image}
-        <Text style={[styles.title, {color: theme.colors.neutral[900]}]}>
+        <Text style={[styles.title, {color: theme.colors.textPrimary}]}>
           {item.heading}
         </Text>
-        <Text style={[{color: theme.colors.neutral[900]}]}>
+        <Text style={[{color: theme.colors.textPrimary}]}>
           {item.subHeading}
         </Text>
       </View>
@@ -70,8 +70,7 @@ const SplashScreenCarousel: React.FC = () => {
   };
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: theme.colors.primary[500]}]}>
+    <View style={[styles.container, {backgroundColor: theme.colors.primary}]}>
       <Carousel
         ref={carouselRef}
         data={data}
@@ -91,8 +90,8 @@ const SplashScreenCarousel: React.FC = () => {
               {
                 backgroundColor:
                   index === activeIndex
-                    ? theme.colors.primary[300]
-                    : theme.colors.secondary[200],
+                    ? theme.colors.highlight
+                    : theme.colors.secondary,
               },
             ]}
           />

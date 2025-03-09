@@ -32,7 +32,7 @@ const Login = () => {
               borderWidth: 2,
               width: '100%',
               height: 60,
-              borderColor: theme.colors.neutral[200],
+              borderColor: theme.colors.lightGray,
               borderRadius: 20,
               marginTop: 12,
               paddingLeft: 20,
@@ -46,7 +46,7 @@ const Login = () => {
             Enter Email ID
             <Text
               style={{
-                color: theme.colors.neutral[200],
+                color: theme.colors.lightGray,
                 fontWeight: '600',
                 fontStyle: 'italic',
               }}>
@@ -60,7 +60,7 @@ const Login = () => {
               borderWidth: 2,
               width: '100%',
               height: 60,
-              borderColor: theme.colors.neutral[200],
+              borderColor: theme.colors.lightGray,
               borderRadius: 20,
               marginTop: 12,
               paddingLeft: 20,
@@ -80,7 +80,7 @@ const Login = () => {
               borderWidth: 2,
               width: '100%',
               height: 60,
-              borderColor: theme.colors.neutral[200],
+              borderColor: theme.colors.lightGray,
               borderRadius: 20,
               marginTop: 12,
               paddingLeft: 20,
@@ -89,7 +89,7 @@ const Login = () => {
             <View style={{flexDirection: 'row', columnGap: 10}}>
               <Text
                 style={{
-                  color: theme.colors.primary[300],
+                  color: theme.colors.highlight,
                   fontWeight: '600',
                   fontSize: 16,
                 }}>

@@ -24,7 +24,7 @@ const TabBarLabel = ({focused, title}: {focused: boolean; title: string}) => {
   return (
     <Text
       style={{
-        color: focused ? theme.colors.primary[300] : theme.colors.neutral[200],
+        color: focused ? theme.colors.highlight : theme.colors.textSecondary,
         fontWeight: 600,
         fontSize: 10,
         lineHeight: 10,
