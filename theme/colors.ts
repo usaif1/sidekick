@@ -10,6 +10,10 @@ export const lightColors: ColorPalette = {
     200: '#98FB98', // Pale Green
     400: '#FFB6C1', // Pale Red
   },
+  tertiary: {
+    200: '#C3DBFF00', // Pale Blue
+    400: '#296AEB', // Cerulean
+  },
   neutral: {
     0: '#FFFFFF', // White
     100: '#F5F9FF', // Light Gray

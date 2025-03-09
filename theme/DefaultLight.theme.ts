@@ -46,7 +46,6 @@ export const DEFAULT_LIGHT_THEME: Theme = {
         md: 16,
         lg: 24,
         xl: 32,
-        xxl: 48
     },
     // Border Radius scale
     borderRadius: {
@@ -54,7 +53,7 @@ export const DEFAULT_LIGHT_THEME: Theme = {
         md: 8,
         lg: 12,
         xl: 16,
-        full: 9999,,
+        full: 9999,
     },
     // Font Sizes scale
     fontSize: {

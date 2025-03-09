@@ -125,6 +125,15 @@ export const lightTheme: Theme = {
       fontSize: 16,
       color: lightColors.neutral[200],
     },
+    fontSize: {
+      xs: 10,
+      sm: 12,
+      base: 14,
+      md: 16,
+      lg: 18,
+      xl: 24,
+      xxl: 32,
+    },
   },
   spacing: {
     xs: 4,
@@ -132,6 +141,9 @@ export const lightTheme: Theme = {
     md: 16,
     lg: 24,
     xl: 32,
+    xxl: 40,
+    xxxl: 48,
+    xxxxl: 56,
   },
   shadows: {
     sm: {

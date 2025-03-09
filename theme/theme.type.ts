@@ -139,17 +139,17 @@
 //   | 'blue'
 //   | 'lightBlue';
 
-// export enum FontSizeEnum {
-//   'xxs' = '8@s',
-//   'xs' = '10@s',
-//   'sm' = '12@s',
-//   'base' = '14@s',
-//   'lg' = '18@s',
-//   'xl' = '22@s',
-//   '2xl' = '26@s',
-//   '3xl' = '30@s',
-//   '4xl' = '34@s',
-// }
+export enum FontSizeEnum {
+  'xxs' = '8@s',
+  'xs' = '10@s',
+  'sm' = '12@s',
+  'base' = '14@s',
+  'lg' = '18@s',
+  'xl' = '22@s',
+  '2xl' = '26@s',
+  '3xl' = '30@s',
+  '4xl' = '34@s',
+}
 
 // export type FontSize =
 //   | 'xxs'
@@ -235,6 +235,10 @@ export type ColorPalette = {
     200: string; // Pale Green
     400: string; // Pale Red
   };
+  tertiary: {
+    200: string; // Pale Green
+    400: string; // Pale Red
+  };
   neutral: {
     0: string; // White
     100: string; // Light Gray
@@ -258,6 +262,7 @@ export type Theme = {
     heading: TextStyle;
     subheading: TextStyle;
     body: TextStyle;
+    fontSize: FontSizeEnum;
   };
   spacing: {
     xs: number;
@@ -265,6 +270,9 @@ export type Theme = {
     md: number;
     lg: number;
     xl: number;
+    xxl: number;
+    xxxl: number;
+    xxxxl: number;
   };
   shadows: {
     sm: ViewStyle;
