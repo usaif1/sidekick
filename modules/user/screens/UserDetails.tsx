@@ -1,8 +1,8 @@
 import {View, Text, Button, StyleSheet} from 'react-native';
 import React, { useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
-import ProfileCard from '@/components/ProfileCard';
-import Menu from '@/components/Menu';
+import ProfileCard from '@/modules/user/components/ProfileCard';
+import Menu from '@/modules/user/components/Menu';
 
 type Props = {};
 

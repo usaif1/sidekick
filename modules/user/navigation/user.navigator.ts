@@ -1,11 +1,12 @@
-// /dependencies
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Stack} from 
+// Corrected imports
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// screens
-import UserDetails from '../screens/UserDetails';
-import EditProfile from '../screens/EditProfile';
+// Screens
+import UserDetails from '../screens/UserDetails'; // Ensure this path is correct
+import EditProfile from '../screens/EditProfile'; // Ensure this path is correct
 
+// Create the stack navigator
 const Stack = createNativeStackNavigator();
 
 const UserNavigator = () => {
@@ -20,9 +21,9 @@ const UserNavigator = () => {
       }}
     >
       <Stack.Screen name="UserDeets" component={UserDetails} />
-      <Stack.Screen 
-        name="EditProfile" 
-        component={EditProfile} 
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
         options={{ headerShown: false }} // We're handling the header in the component
       />
     </Stack.Navigator>
