@@ -1,6 +1,6 @@
 // src/components/PrimaryButton.tsx
 import React, {ReactNode} from 'react';
-import {TouchableOpacity, Text, ViewStyle, TextStyle} from 'react-native';
+import {Text, ViewStyle, TextStyle, Pressable} from 'react-native';
 import {useThemeStore} from '@/globalStore';
 
 type Props = {
@@ -49,17 +49,18 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
   };
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       style={[
         {
           justifyContent: 'center',
           alignItems: 'center',
+          width: '100%',
         },
         containerStyles[variant],
       ]}>
       <Text style={textStyles[variant]}>{children}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

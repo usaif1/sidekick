@@ -71,7 +71,7 @@ const HomeNavigator = createBottomTabNavigator({
           return <>{focused ? <ProfileIconFilled /> : <ProfileIcon />}</>;
         },
         tabBarLabel: ({focused}) => {
-          return <TabBarLabel focused={focused} title="Rent" />;
+          return <TabBarLabel focused={focused} title="Profile" />;
         },
       },
     },
