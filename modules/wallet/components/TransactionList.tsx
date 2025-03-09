@@ -41,7 +41,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
       <Text 
         style={[
           styles.emptyText,
-          { color: colors.neutral[600] }
+          { color: colors.neutral[900] }
         ]}
       >
         No transactions yet
@@ -61,7 +61,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
         style={[
           styles.headerText,
           { 
-            color: colors.neutral[700],
+            color: colors.neutral[900],
             fontSize: typography.fontSize.sm,
           }
         ]}

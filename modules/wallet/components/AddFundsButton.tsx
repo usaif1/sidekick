@@ -20,15 +20,17 @@ const AddFundsButton: React.FC<AddFundsButtonProps> = ({
   onPress,
   testID = 'add-funds-button',
 }) => {
-  const { colors, spacing, borderRadius, typography } = useThemeStore(state => state.theme);
+  const { colors, spacing, 
+    // borderRadius,
+     typography } = useThemeStore(state => state.theme);
 
   return (
     <TouchableOpacity
       style={[
         styles.button,
         {
-          backgroundColor: colors.success[500],
-          borderRadius: borderRadius.full,
+          backgroundColor: colors.semantic.success,
+          // borderRadius: borderRadius.full,
         }
       ]}
       onPress={onPress}

@@ -20,7 +20,9 @@ const WalletCard: React.FC<WalletCardProps> = ({
   balance,
   testID = 'wallet-card',
 }) => {
-  const { colors, spacing, borderRadius, typography, shadows } = useThemeStore(state => state.theme);
+  const { colors, spacing, 
+    // borderRadius,
+     typography, shadows } = useThemeStore(state => state.theme);
 
   return (
     <View 
@@ -28,8 +30,8 @@ const WalletCard: React.FC<WalletCardProps> = ({
         styles.container,
         {
           backgroundColor: colors.neutral[0],
-          borderRadius: borderRadius.lg,
-          ...shadows.medium,
+          // borderRadius: borderRadius.lg,
+          ...shadows.md,
         }
       ]}
       testID={testID}
@@ -38,7 +40,7 @@ const WalletCard: React.FC<WalletCardProps> = ({
         style={[
           styles.label,
           {
-            color: colors.neutral[600],
+            color: colors.neutral[900],
             fontSize: typography.fontSize.sm,
           }
         ]}
@@ -65,7 +67,7 @@ const WalletCard: React.FC<WalletCardProps> = ({
             style={[
               styles.diagonalLine,
               {
-                backgroundColor: colors.primary[100],
+                backgroundColor: colors.primary[300],
                 top: index * 15,
               }
             ]} 
