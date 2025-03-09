@@ -10,13 +10,20 @@ const UserDetails = (props: Props) => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   
+  // User data that would be passed to the EditProfile screen
+  const userData = {
+    name: "Christian Miller",
+    email: "christian.miller@infosys.com",
+    phone: "9876543210"
+  };
+  
   // Menu items with the notifications item using a switch
   const menuItems = [
     {
       icon: 'edit',
       label: 'Edit Profile',
       controlType: 'none' as const,
-      onPress: () => console.log('Edit Profile pressed'),
+      onPress: () => navigation.navigate('EditProfile'),
       testID: 'edit-profile-button'
     },
     {
@@ -51,7 +58,7 @@ const UserDetails = (props: Props) => {
       />
       
       <ProfileCard
-        fullName="Christian Miller"
+        fullName={userData.name}
         company="Infosys"
         totalMinutes={48}
         totalKilometers={2.9}
