@@ -1,14 +1,12 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text} from 'react-native';
+import React from 'react';
 
-type Props = {}
-
-const ProfileScreen = (props: Props) => {
+const ProfileScreen: React.FC = () => {
   return (
     <View>
       <Text>ProfileScreen</Text>
     </View>
-  )
-}
+  );
+};
 
-export default ProfileScreen
+export default ProfileScreen;

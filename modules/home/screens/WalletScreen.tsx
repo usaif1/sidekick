@@ -5,7 +5,7 @@ import React from 'react';
 import Button from '@/components/ButtonText';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const WalletScreen = () => {
+const WalletScreen: React.FC = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View>

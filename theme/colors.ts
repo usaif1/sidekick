@@ -3,8 +3,8 @@ import {ColorPalette} from './theme.type';
 
 export const lightColors: ColorPalette = {
   primary: {
-    300: '#2A9D8F', // Cerulean
-    500: '#00FF7F', // Spring Green
+    300: '#296AEB', // Cerulean
+    500: '#18F27A', // Spring Green
   },
   secondary: {
     200: '#98FB98', // Pale Green
@@ -12,14 +12,14 @@ export const lightColors: ColorPalette = {
   },
   neutral: {
     0: '#FFFFFF', // White
-    100: '#D3D3D3', // Light Gray
-    200: '#A9A9A9', // Dark Gray
-    900: '#000000', // Black
+    100: '#F5F9FF', // Light Gray
+    200: '#86A0CA', // Dark Gray
+    900: '#2C2E49', // Black
   },
   semantic: {
-    error: '#FF0000', // Red
-    success: '#00FF7F', // Spring Green
-    warning: '#FFB6C1', // Pale Red
+    error: '#F84848', // Red
+    success: '#18F27A', // Spring Green
+    warning: '#FCF0F0', // Pale Red
   },
   gradients: {
     redFade: ['#FF0000', '#FFB6C1'], // Red-Fade
