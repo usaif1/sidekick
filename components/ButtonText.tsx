@@ -29,7 +29,7 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
       borderRadius: 30,
     },
     secondary: {
-      backgroundColor: colors.neutral[0],
+      backgroundColor: colors.neutral[100],
       padding: spacing.md,
       borderRadius: 30,
     },
@@ -56,6 +56,7 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
+          height: 60,
         },
         containerStyles[variant],
       ]}>

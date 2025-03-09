@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 100,
+    bottom: 120,
     width: '100%',
   },
   dot: {

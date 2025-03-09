@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { ViewStyle, TextStyle } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useThemeStore } from '@/globalStore';
+import React, {ReactNode} from 'react';
+import {ViewStyle, TextStyle} from 'react-native';
+import {Button} from 'react-native-paper';
+import {useThemeStore} from '@/globalStore';
 
 type Props = {
   children: ReactNode;
@@ -20,8 +20,13 @@ type TextStyles = {
   secondary: TextStyle;
 };
 
-const ButtonWithIcon: React.FC<Props> = ({ children, onPress, variant, IconComponent }) => {
-  const { colors, spacing } = useThemeStore(state => state.theme);
+const ButtonWithIcon: React.FC<Props> = ({
+  children,
+  onPress,
+  variant,
+  IconComponent,
+}) => {
+  const {colors} = useThemeStore(state => state.theme);
 
   const containerStyles: ContainerStyles = {
     primary: {
@@ -55,11 +60,15 @@ const ButtonWithIcon: React.FC<Props> = ({ children, onPress, variant, IconCompo
     <Button
       mode="contained"
       onPress={onPress}
-      contentStyle={{ flexDirection: 'row', alignItems: 'center', height: 60, gap: 5 }}
+      contentStyle={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 60,
+        gap: 5,
+      }}
       style={containerStyles[variant]}
       labelStyle={textStyles[variant]}
-      icon={IconComponent ? () => <IconComponent /> : undefined}
-    >
+      icon={IconComponent ? () => <IconComponent /> : undefined}>
       {children}
     </Button>
   );
