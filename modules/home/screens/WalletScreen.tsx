@@ -1,13 +1,20 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 
-type Props = {};
+// imports
+import Button from '@/components/ButtonText';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const WalletScreen = (props: Props) => {
+const WalletScreen = () => {
   return (
-    <View>
-      <Text>WalletScreen</Text>
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <View>
+        <Text>WalletScreen</Text>
+        <Button onPress={() => {}} variant="secondary">
+          Click Me
+        </Button>
+      </View>
+    </SafeAreaView>
   );
 };
 

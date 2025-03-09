@@ -5,7 +5,7 @@ import Reactotron from 'reactotron-react-native';
 import mmkvPlugin from 'reactotron-react-native-mmkv';
 
 // 2) Import your MMKV instance (make sure it's exported from '@/localStorage')
-import {storage} from '@/localStorage';
+import {storage} from '@/storage';
 
 // 3) Configure Reactotron
 Reactotron.configure({
