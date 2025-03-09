@@ -42,7 +42,7 @@ const AddFundsButton: React.FC<AddFundsButtonProps> = ({
         style={[
           styles.buttonText,
           {
-            color: colors.neutral[0],
+            color: colors.neutral[200],
             fontSize: typography.fontSize.base,
           }
         ]}

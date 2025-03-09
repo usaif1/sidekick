@@ -18,13 +18,13 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaProvider>
-      <ModalProvider>
         <NavigationContainer>
+      <ModalProvider>
           <GestureHandlerRootView style={{flex: 1}}>
             {firsTime ? <SplashNavigation /> : <ProtectedNavigation />}
           </GestureHandlerRootView>
-        </NavigationContainer>
       </ModalProvider>
+        </NavigationContainer>
     </SafeAreaProvider>
   );
 }
