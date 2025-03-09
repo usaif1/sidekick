@@ -7,8 +7,8 @@ export const lightColors: ColorPalette = {
     500: '#18F27A', // Spring Green
   },
   secondary: {
-    200: '#98FB98', // Pale Green
-    400: '#FFB6C1', // Pale Red
+    200: '#72FFB1', // Pale Green
+    400: '#FCF0F0', // Pale Red
   },
   neutral: {
     0: '#FFFFFF', // White

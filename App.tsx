@@ -1,20 +1,23 @@
 import React from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { PaperProvider } from 'react-native-paper';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
+import SplashNavigation from '@/modules/splash/navigation/splash.navigation';
 
 // misc
 import './ReactotronConfig';
+import {useGlobalStore} from './globalStore';
 
 function App(): React.JSX.Element {
+  const {firsTime} = useGlobalStore();
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <PaperProvider>
-        <ProtectedNavigation />
-      </PaperProvider>
-    </GestureHandlerRootView>
+    <>
+      <GestureHandlerRootView style={{flex: 1}}>
+        {firsTime ? <SplashNavigation /> : <ProtectedNavigation />}
+      </GestureHandlerRootView>
+    </>
   );
 }
 
