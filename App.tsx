@@ -1,6 +1,6 @@
-// dependencies
 import React from 'react';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PaperProvider } from 'react-native-paper';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -10,12 +10,11 @@ import './ReactotronConfig';
 
 function App(): React.JSX.Element {
   return (
-    <>
-      <GestureHandlerRootView style={{flex: 1}}>
-        {/* <AuthNavigation /> */}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaperProvider>
         <ProtectedNavigation />
-      </GestureHandlerRootView>
-    </>
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
 
