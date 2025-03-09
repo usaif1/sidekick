@@ -2,11 +2,17 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // screens
-import {Login} from '../screens';
+import {Login, OTP, Signup} from '../screens';
 
 const AuthStack = createNativeStackNavigator({
+  initialRouteName: 'login',
+  screenOptions: {
+    headerShown: false,
+  },
   screens: {
-    Login: Login,
+    login: Login,
+    signup: Signup,
+    otp: OTP,
   },
 });
 

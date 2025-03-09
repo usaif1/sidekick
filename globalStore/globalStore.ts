@@ -6,6 +6,7 @@ import createSelectors from '@/utils/selectors';
 
 type GlobalStore = {
   firsTime: boolean;
+  loggedIn: boolean;
 
   // modal
   isModalOpen: boolean;
@@ -22,6 +23,7 @@ type GlobalActions = {
 
 const globalInitialState: GlobalStore = {
   firsTime: true,
+  loggedIn: false,
   // modal
 
   isModalOpen: false,
