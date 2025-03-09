@@ -58,7 +58,9 @@ const Menu: React.FC<MenuProps> = ({
   style,
   testID = 'menu',
 }) => {
-  const { colors, spacing, borderRadius } = useThemeStore(state => state.theme);
+  const { colors, spacing, 
+    // borderRadius,
+   } = useThemeStore(state => state.theme);
 
   return (
     <View 
@@ -66,7 +68,7 @@ const Menu: React.FC<MenuProps> = ({
         styles.container, 
         { 
           backgroundColor: colors.neutral[0],
-          borderRadius: borderRadius.md,
+          // borderRadius: borderRadius.md,
         },
         style
       ]}
@@ -91,10 +93,10 @@ const Menu: React.FC<MenuProps> = ({
             <Icon 
               name={item.icon} 
               size={20} 
-              color={colors.neutral[700]} 
+              color={colors.neutral[900]} 
               style={styles.icon} 
             />
-            <Text style={[styles.label, { color: colors.neutral[800] }]}>
+            <Text style={[styles.label, { color: colors.neutral[900] }]}>
               {item.label}
             </Text>
           </View>

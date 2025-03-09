@@ -56,7 +56,7 @@ export const Subtitle: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.subtitle, { color: colors.neutral[600], fontSize: typography.fontSize.sm }, style]}
+      style={[styles.subtitle, { color: colors.neutral[900], fontSize: typography.fontSize.sm }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >
@@ -100,7 +100,7 @@ export const StatValue: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.statValue, { color: colors.neutral[600], fontSize: typography.fontSize.xs }, style]}
+      style={[styles.statValue, { color: colors.neutral[900], fontSize: typography.fontSize.xs }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >

@@ -139,28 +139,30 @@
 //   | 'blue'
 //   | 'lightBlue';
 
-export enum FontSizeEnum {
-  'xxs' = '8@s',
-  'xs' = '10@s',
-  'sm' = '12@s',
-  'base' = '14@s',
-  'lg' = '18@s',
-  'xl' = '22@s',
-  '2xl' = '26@s',
-  '3xl' = '30@s',
-  '4xl' = '34@s',
-}
+// export enum FontSizeEnum {
+//   'xxs' = '8@s',
+//   'xs' = '10@s',
+//   'sm' = '12@s',
+//   'base' = '14@s',
+//   'lg' = '18@s',
+//   'xl' = '22@s',
+//   '2xl' = '26@s',
+//   '3xl' = '30@s',
+//   '4xl' = '34@s',
+// }
 
-// export type FontSize =
-//   | 'xxs'
-//   | 'xs'
-//   | 'sm'
-//   | 'base'
-//   | 'lg'
-//   | 'xl'
-//   | '2xl'
-//   | '3xl'
-//   | '4xl';
+export type FontSize =
+  {
+    xxs: string;
+    xs: string;
+    sm: string;
+    base: string;
+    lg: string;
+    xl: string;
+    '2xl': string;
+    '3xl': string;
+    '4xl': string;
+  }
 
 // export enum SKColors {
 //   primary = SKColorPalette.primary,
