@@ -23,8 +23,7 @@ const WalletScreen = () => {
   
   // Handle add funds button press
   const handleAddFunds = () => {
-    console.log('Add funds pressed');
-    // Implement add funds logic or navigation
+    navigation.navigate('AddFundsScreen');
   };
 
   return (
