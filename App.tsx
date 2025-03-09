@@ -1,5 +1,9 @@
 import React from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { ModalProvider } from '@/components/Modal/ModalProvider';
+import AppNavigator from '@/navigation';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -13,11 +17,15 @@ function App(): React.JSX.Element {
   const {firsTime} = useGlobalStore();
 
   return (
-    <>
-      <GestureHandlerRootView style={{flex: 1}}>
-        {firsTime ? <SplashNavigation /> : <ProtectedNavigation />}
-      </GestureHandlerRootView>
-    </>
+    <SafeAreaProvider>
+      <ModalProvider>
+        <NavigationContainer>
+          <GestureHandlerRootView style={{flex: 1}}>
+            {firsTime ? <SplashNavigation /> : <ProtectedNavigation />}
+          </GestureHandlerRootView>
+        </NavigationContainer>
+      </ModalProvider>
+    </SafeAreaProvider>
   );
 }
 

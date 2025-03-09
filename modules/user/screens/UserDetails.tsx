@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
 import ProfileCard from '@/modules/user/components/ProfileCard';
 import Menu from '@/modules/user/components/Menu';
+import SupportModal from '@/modules/user/components/SupportModal';
+import { useModal } from '@/components/Modal/ModalProvider';
 
 type Props = {};
 
 const UserDetails = (props: Props) => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const { showModal, hideModal } = useModal();
   
   // User data that would be passed to the EditProfile screen
   const userData = {
@@ -42,7 +45,14 @@ const UserDetails = (props: Props) => {
       icon: 'help-circle',
       label: 'Need Help?',
       controlType: 'none' as const,
-      onPress: () => console.log('Need Help pressed'),
+      onPress: () => showModal(
+        <SupportModal
+          visible={true}
+          onClose={hideModal}
+          supportEmail="help@sidekick.com"
+          emailSubject="Support Request from Sidekick App"
+        />
+      ),
       testID: 'help-button'
     }
   ];

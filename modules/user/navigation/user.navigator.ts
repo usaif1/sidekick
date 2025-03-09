@@ -1,33 +1,35 @@
-// Corrected imports
+// dependencies
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Text } from 'react-native';
 
-// Screens
+// screens
 import UserDetails from '../screens/UserDetails'; // Ensure this path is correct
 import EditProfile from '../screens/EditProfile'; // Ensure this path is correct
 
-// Create the stack navigator
-const Stack = createNativeStackNavigator();
+// store
+import { useThemeStore } from '@/globalStore';
 
-const UserNavigator = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: 'transparent',
-        },
-        headerShadowVisible: false,
-        title: '',
-      }}
-    >
-      <Stack.Screen name="UserDeets" component={UserDetails} />
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfile}
-        options={{ headerShown: false }} // We're handling the header in the component
-      />
-    </Stack.Navigator>
-  );
-};
+const UserNavigator = createNativeStackNavigator({
+  initialRouteName: 'UserDeets',
+  screenOptions: {
+    headerStyle: {
+      backgroundColor: 'transparent',
+    },
+    headerShadowVisible: false,
+    title: '',
+  },
+  screens: {
+    UserDeets: {
+      screen: UserDetails,
+    },
+    EditProfile: {
+      screen: EditProfile,
+      options: { 
+        headerShown: false // We're handling the header in the component
+      },
+    },
+  },
+});
 
 export default UserNavigator;
