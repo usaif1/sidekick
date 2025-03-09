@@ -57,7 +57,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   style,
   testID = 'profile-card',
 }) => {
-  const { colors, spacing, borderRadius, shadows } = useThemeStore(state => state.theme);
+  const { colors, spacing, 
+    // borderRadius,
+     shadows } = useThemeStore(state => state.theme);
 
   const cardContent = (
     <View style={styles.container}>
@@ -105,8 +107,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     styles.card,
     { 
       backgroundColor: colors.neutral[0],
-      borderRadius: borderRadius.lg,
-      ...shadows.medium,
+      // borderRadius: borderRadius.lg,
+      ...shadows.md,
     },
     style,
   ];

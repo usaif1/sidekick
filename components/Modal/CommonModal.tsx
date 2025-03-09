@@ -52,7 +52,9 @@ const CommonModal: React.FC<CommonModalProps> = ({
   closeOnBackdropPress = true,
   testID = 'common-modal',
 }) => {
-  const { colors, borderRadius, shadows } = useThemeStore(state => state.theme);
+  const { colors, 
+    // borderRadius,
+     shadows } = useThemeStore(state => state.theme);
 
   const handleBackdropPress = () => {
     if (closeOnBackdropPress) {
@@ -76,8 +78,8 @@ const CommonModal: React.FC<CommonModalProps> = ({
                 styles.modalContainer,
                 { 
                   backgroundColor: colors.neutral[0],
-                  borderRadius: borderRadius.lg,
-                  ...shadows.medium
+                  // borderRadius: borderRadius.lg,
+                  ...shadows.md
                 }
               ]}
             >
@@ -89,7 +91,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
                 accessibilityRole="button"
                 testID={`${testID}-close-button`}
               >
-                <Icon name="x" size={20} color={colors.neutral[600]} />
+                <Icon name="x" size={20} color={colors.neutral[900]} />
               </TouchableOpacity>
               
               <View style={styles.content}>

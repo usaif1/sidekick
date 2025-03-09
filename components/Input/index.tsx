@@ -166,7 +166,7 @@ const Input: React.FC<InputProps> = ({
           accessibilityLabel="Toggle dropdown"
           accessibilityRole="button"
         >
-          <Icon name="chevron-down" size={16} color={colors.neutral[600]} />
+          <Icon name="chevron-down" size={16} color={colors.neutral[900]} />
         </TouchableOpacity>
       );
     }
@@ -178,11 +178,11 @@ const Input: React.FC<InputProps> = ({
     if (variant === 'phone') {
       return (
         <View style={styles.phonePrefixContainer}>
-          <Text style={[styles.prefixText, { color: colors.neutral[700] }]}>
+          <Text style={[styles.prefixText, { color: colors.neutral[900] }]}>
             {countryCode}
           </Text>
           <View
-            style={[styles.divider, { backgroundColor: colors.neutral[300] }]}
+            style={[styles.divider, { backgroundColor: colors.neutral[200] }]}
           />
         </View>
       );
@@ -213,7 +213,7 @@ const Input: React.FC<InputProps> = ({
                 top: 200, // This should be calculated based on input position
                 backgroundColor: colors.neutral[0],
                 borderRadius: borderRadius.md,
-                borderColor: colors.neutral[300],
+                borderColor: colors.neutral[200],
               },
             ]}
           >
@@ -246,7 +246,7 @@ const Input: React.FC<InputProps> = ({
           style={[
             styles.title,
             {
-              color: colors.neutral[800],
+              color: colors.neutral[900],
               fontSize: typography.fontSize.sm,
               fontWeight: '500',
             },
@@ -254,7 +254,7 @@ const Input: React.FC<InputProps> = ({
           ]}
         >
           {title}
-          {required && <Text style={{ color: colors.error[500] }}> *</Text>}
+          {required && <Text style={{ color: colors.semantic.error }}> *</Text>}
         </Text>
       )}
       
@@ -263,7 +263,7 @@ const Input: React.FC<InputProps> = ({
         style={[
           styles.inputContainer,
           {
-            borderColor: error ? colors.error[500] : colors.neutral[300],
+            borderColor: error ? colors.semantic.error : colors.neutral[900],
             borderRadius: borderRadius.md,
             backgroundColor: colors.neutral[0],
           },
@@ -279,13 +279,13 @@ const Input: React.FC<InputProps> = ({
             styles.input,
             {
               color: colors.neutral[900],
-              fontSize: typography.fontSize.base,
+              fontSize: typography.fontSize.md, 
               paddingLeft: variant === 'phone' ? spacing.xs : spacing.md,
             },
             inputStyle,
           ]}
           placeholder={placeholder}
-          placeholderTextColor={colors.neutral[500]}
+          placeholderTextColor={colors.semantic.error}
           value={value}
           onChangeText={onChangeText}
           keyboardType={getKeyboardType()}
@@ -304,7 +304,7 @@ const Input: React.FC<InputProps> = ({
           style={[
             styles.errorText,
             {
-              color: colors.error[500],
+              color: colors.semantic.error,
               fontSize: typography.fontSize.xs,
             },
           ]}
