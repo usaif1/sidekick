@@ -1,10 +1,12 @@
 // src/store/themeStore/index.ts
 import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
-import createSelectors from '@/utils/selectors';
-import {lightTheme, darkTheme} from './index';
-import {zustandMmkvStorage} from '@/storage/mmkv';
 import {Appearance} from 'react-native';
+
+// selectoes
+import createSelectors from '@/utils/selectors';
+import {lightTheme, darkTheme} from './themes';
+import {zustandMmkvStorage} from '@/storage/mmkv';
 import {Theme} from './theme.type';
 
 type ThemeState = {
