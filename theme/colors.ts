@@ -15,6 +15,22 @@ export const lightColors: ColorPalette = {
   white: '#FFFFFF',
 };
 
+export enum ColorSelectorEnum {
+  primary= '#18F27A', // Spring Green
+  secondary= '#72FFB1', // Pale Green
+  highlight= '#296AEB', // Cerulean
+  error= '#F84848', // Red
+  alert= '#FCF0F0', // Pale Red
+  lightGray= '#F5F9FF', //light gray
+  textPrimary= '#2C2E49', //black
+  textSecondary= '#86A0CA', //dark gray
+  blueFade= '#FFFFFF',
+  redFade= '#FFFFFF',
+  white= '#FFFFFF',
+}
+
+export type ColorSelector = keyof typeof ColorSelectorEnum
+
 export const darkColors: ColorPalette = {
   ...lightColors,
   // neutral: {

@@ -7,7 +7,7 @@ import SplashNavigation from '@/modules/splash/navigation/splash.navigation';
 import AuthNavigation from '@/modules/authentication/navigation/auth.navigation';
 
 // misc
-// import './ReactotronConfig';
+import './ReactotronConfig';
 import {useGlobalStore} from './globalStore';
 
 function App(): React.JSX.Element {

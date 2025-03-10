@@ -1,13 +1,11 @@
-import ButtonText from '@/components/ButtonText';
+// dependencies
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  Dimensions,
-} from 'react-native';
+import {View, ImageBackground, Dimensions} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
+
+// components
+import {H1, P1, ButtonText, Divider} from '@/components';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
@@ -20,12 +18,14 @@ const Login = () => {
       style={[styles.background, {width, height}]} // Set width and height dynamically
     >
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Welcome!</Text>
-        <Text style={styles.subtitle}>Please Sign In to Continue</Text>
+        <H1>Welcome!</H1>
+        <Divider height={10} />
+        <P1>Please Sign In to Continue</P1>
         <View style={{height: 32}} />
         <View style={{width: '100%', rowGap: 12}}>
           <ButtonText
             onPress={() => {
+              // @ts-ignore
               navigation.navigate('signup');
             }}
             variant="primary">
@@ -43,7 +43,7 @@ const Login = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   background: {
     flex: 1,
   },
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white', // Optional: Adds a dark overlay for text readability
     borderRadius: 20,
     alignItems: 'center',
-    paddingTop: 32,
+    paddingTop: '30@ms',
     paddingHorizontal: 24,
     height: Dimensions.get('window').height * 0.5,
   },

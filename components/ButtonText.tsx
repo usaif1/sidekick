@@ -1,6 +1,6 @@
 // src/components/PrimaryButton.tsx
 import React, {ReactNode} from 'react';
-import {Text, ViewStyle, TextStyle, Pressable} from 'react-native';
+import {Text, ViewStyle, Pressable} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
@@ -17,14 +17,9 @@ type ContainerStyles = {
   secondary: ViewStyle;
 };
 
-type TextStyles = {
-  primary: TextStyle;
-  secondary: TextStyle;
-};
+const {typography, colors, spacing} = useThemeStore.getState().theme;
 
 const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
-  const {colors, spacing} = useThemeStore(state => state.theme);
-
   const containerStyles: ContainerStyles = {
     primary: {
       backgroundColor: colors.primary,
@@ -38,31 +33,23 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
     },
   };
 
-  const textStyles: TextStyles = {
-    primary: {
-      color: colors.textPrimary,
-      fontSize: 16,
-    },
-    secondary: {
-      color: colors.textPrimary,
-      fontSize: 16,
-    },
-  };
-
   return (
     <Pressable
       onPress={onPress}
       style={[styles.pressableContainer, containerStyles[variant]]}>
-      <Text
-        style={[
-          textStyles[variant],
-          {
-            fontFamily: 'PlusJakartaSans-Bold',
-          },
-        ]}>
-        {children}
-      </Text>
+      <ChildText variant={variant}>{children}</ChildText>
     </Pressable>
+  );
+};
+
+type ChildTextProps = {
+  children: ReactNode;
+  variant: 'primary' | 'secondary';
+};
+
+const ChildText: React.FC<ChildTextProps> = ({children, variant}) => {
+  return (
+    <Text style={[styles.commonTextStyle, styles[variant]]}>{children}</Text>
   );
 };
 
@@ -74,5 +61,14 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '48@vs',
+  },
+  commonTextStyle: {
+    ...typography.skButtonMedium,
+  },
+  primary: {
+    color: colors.textPrimary,
+  },
+  secondary: {
+    color: colors.textPrimary,
   },
 });

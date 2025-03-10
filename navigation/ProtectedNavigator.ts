@@ -5,11 +5,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeNavigator from '@/modules/home/navigation/home.navigator';
 import UserNavigator from '@/modules/user/navigation/user.navigator';
 
+
 const ProtectedNavigator = createNativeStackNavigator({
-  initialRouteName: 'HomeScreen',
+  initialRouteName: 'home',
   screens: {
-    HomeScreen: HomeNavigator,
-    User: UserNavigator,
+    home: HomeNavigator,
+    user: UserNavigator,
   },
   screenOptions: {
     headerShown: false,
