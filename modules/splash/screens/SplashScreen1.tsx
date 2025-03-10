@@ -20,7 +20,7 @@ const SplashScreen1: React.FC = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: theme.colors.primary[500],
+        backgroundColor: theme.colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
       }}>

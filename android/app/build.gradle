@@ -108,6 +108,14 @@ android {
 }
 
 dependencies {
+
+// Core Google Services (remove duplicates)
+    implementation 'com.google.android.gms:play-services-base:18.2.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'  // Only one instance
+
+    // If using maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     
