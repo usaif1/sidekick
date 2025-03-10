@@ -1,6 +1,9 @@
 // src/components/PrimaryButton.tsx
 import React, {ReactNode} from 'react';
 import {Text, ViewStyle, TextStyle, Pressable} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
+
+// store
 import {useThemeStore} from '@/globalStore';
 
 type Props = {
@@ -29,7 +32,7 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
       borderRadius: 30,
     },
     secondary: {
-      backgroundColor: colors.white,
+      backgroundColor: colors.lightGray,
       padding: spacing.md,
       borderRadius: 30,
     },
@@ -38,12 +41,10 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
   const textStyles: TextStyles = {
     primary: {
       color: colors.textPrimary,
-      fontWeight: '600',
       fontSize: 16,
     },
     secondary: {
       color: colors.textPrimary,
-      fontWeight: '600',
       fontSize: 16,
     },
   };
@@ -51,18 +52,27 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[
-        {
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: 60,
-        },
-        containerStyles[variant],
-      ]}>
-      <Text style={textStyles[variant]}>{children}</Text>
+      style={[styles.pressableContainer, containerStyles[variant]]}>
+      <Text
+        style={[
+          textStyles[variant],
+          {
+            fontFamily: 'PlusJakartaSans-Bold',
+          },
+        ]}>
+        {children}
+      </Text>
     </Pressable>
   );
 };
 
 export default ButtonText;
+
+const styles = ScaledSheet.create({
+  pressableContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '48@vs',
+  },
+});

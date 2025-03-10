@@ -9,7 +9,7 @@ export const lightColors: ColorPalette = {
   alert: '#FCF0F0', // Pale Red
   lightGray: '#F5F9FF', //light gray
   textPrimary: '#2C2E49', //black
-  textSecondary: '##86A0CA', //dark gray
+  textSecondary: '#86A0CA', //dark gray
   blueFade: '#FFFFFF',
   redFade: '#FFFFFF',
   white: '#FFFFFF',

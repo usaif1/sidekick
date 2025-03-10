@@ -76,7 +76,6 @@ const Login = () => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-
               borderWidth: 2,
               width: '100%',
               height: 60,
@@ -86,12 +85,17 @@ const Login = () => {
               paddingLeft: 20,
               columnGap: 10,
             }}>
-            <View style={{flexDirection: 'row', columnGap: 10}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                columnGap: 10,
+                alignItems: 'center',
+              }}>
               <Text
                 style={{
                   color: theme.colors.highlight,
-                  fontWeight: '600',
                   fontSize: 16,
+                  fontFamily: 'PlusJakartaSans-Bold',
                 }}>
                 +91{' '}
               </Text>
@@ -99,8 +103,10 @@ const Login = () => {
             </View>
             <TextInput
               placeholder="XXXXXXXXXX"
+              placeholderTextColor={theme.colors.textSecondary}
               style={{
                 fontWeight: '600',
+                paddingVertical: 0,
               }}
             />
           </View>
