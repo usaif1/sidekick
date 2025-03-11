@@ -45,8 +45,10 @@ const AddFundsScreen = () => {
     // Show payment success modal
     showModal(
       <PaymentSuccessModal
+        visible={true}
+        onClose={hideModal}
         amount={parseFloat(amount)}
-        // testID="payment-success-modal"
+        testID="payment-success-modal"
       />
     );
   };
