@@ -8,33 +8,87 @@ import {
   ScaledSheet,
   verticalScale,
 } from 'react-native-size-matters';
+import {useForm, Controller} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
 
 // store
 import {useThemeStore} from '@/globalStore';
+import {ButtonText, CommonTextInput, Divider, LabelPrimary} from '@/components';
+import {sendOTP} from '../services/auth.service';
 
-// components
-import {Divider, LabelPrimary, ButtonText, CommonTextInput} from '@/components';
+// ... other imports remain the same
 
+const {theme} = useThemeStore.getState();
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
-const Signup: React.FC = () => {
-  const {theme} = useThemeStore();
+// Validation Schema
+const signupSchema = z.object({
+  fullName: z.string().min(1, 'Full name is required'),
+  email: z.string().email('Invalid email format').optional().or(z.literal('')),
+  phoneNumber: z
+    .string()
+    .min(10, 'Phone number must be 10 digits')
+    .max(10, 'Phone number must be 10 digits')
+    .regex(/^\d+$/, 'Must contain only numbers'),
+});
 
+type SignupFormData = z.infer<typeof signupSchema>;
+
+const Signup: React.FC = () => {
   const navigation = useNavigation();
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      phoneNumber: '',
+    },
+  });
+
+  const continueHandler = async (data: SignupFormData) => {
+    try {
+      await sendOTP(`+91${data.phoneNumber}`, false);
+      navigation.navigate('otp');
+    } catch (err) {
+      console.error('Error sending OTP:', err);
+    }
+  };
 
   return (
     <ImageBackground
-      source={require('../assets/Map.png')} // Path to your background image
-      style={[styles.background, {width, height}]} // Set width and height dynamically
-    >
+      source={require('../assets/Map.png')}
+      style={[styles.background, {width, height}]}>
       <View style={styles.contentContainer}>
+        {/* Full Name Input */}
         <View style={{width: '100%'}}>
           <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
             Enter your Full Name
           </LabelPrimary>
           <Divider height={10} />
-          <CommonTextInput placeholder="XXXXXXXXXX" />
+          <Controller
+            control={control}
+            name="fullName"
+            render={({field: {onChange, onBlur, value}}) => (
+              <CommonTextInput
+                placeholder="XXXXXXXXXX"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {errors.fullName && (
+            <Text style={styles.errorText}>{errors.fullName.message}</Text>
+          )}
         </View>
+
+        {/* Email Input */}
         <View style={{width: '100%'}}>
           <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
             Enter Email ID
@@ -46,65 +100,59 @@ const Signup: React.FC = () => {
             </LabelPrimary>
           </LabelPrimary>
           <Divider height={10} />
-          <CommonTextInput placeholder="XXXXXXXXXX" />
+          <Controller
+            control={control}
+            name="email"
+            render={({field: {onChange, onBlur, value}}) => (
+              <CommonTextInput
+                placeholder="XXXXXXXXXX"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                keyboardType="email-address"
+              />
+            )}
+          />
+          {errors.email && (
+            <Text style={styles.errorText}>{errors.email.message}</Text>
+          )}
         </View>
 
+        {/* Phone Number Input */}
         <View style={{width: '100%'}}>
           <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
             Enter Your Phone Number
           </LabelPrimary>
           <Divider height={10} />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderWidth: 2,
-              width: '100%',
-              height: verticalScale(48),
-              borderColor: theme.colors.textSecondary,
-              borderRadius: 20,
-              paddingLeft: scale(18),
-              columnGap: 10,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                columnGap: 10,
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: theme.colors.highlight,
-                  fontSize: 16,
-                  fontFamily: 'PlusJakartaSans-Bold',
-                }}>
-                +91{' '}
-              </Text>
-              <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
-            </View>
-            <TextInput
-              placeholder="XXXXXXXXXX"
-              placeholderTextColor={theme.colors.textSecondary}
-              style={{
-                fontWeight: '600',
-                paddingVertical: 0,
-                fontSize: moderateScale(15.2),
-              }}
-            />
-          </View>
+          <Controller
+            control={control}
+            name="phoneNumber"
+            render={({field: {onChange, onBlur, value}}) => (
+              <View style={styles.phoneInputContainer}>
+                <View style={styles.countryCodeContainer}>
+                  <Text style={styles.countryCode}>+91</Text>
+                  <View style={styles.separator} />
+                </View>
+                <TextInput
+                  placeholder="XXXXXXXXXX"
+                  placeholderTextColor={theme.colors.textSecondary}
+                  style={styles.phoneInput}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  keyboardType="phone-pad"
+                  maxLength={10}
+                />
+              </View>
+            )}
+          />
+          {errors.phoneNumber && (
+            <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>
+          )}
         </View>
-        <View
-          style={{
-            marginTop: 20,
-            width: 220,
-            alignSelf: 'center',
-          }}>
-          <ButtonText
-            variant="primary"
-            onPress={() => {
-              //@ts-ignore
-              navigation.navigate('otp');
-            }}>
+
+        <View style={styles.buttonContainer}>
+          <ButtonText variant="primary" onPress={handleSubmit(continueHandler)}>
             Continue
           </ButtonText>
         </View>
@@ -128,6 +176,50 @@ const styles = ScaledSheet.create({
     paddingTop: 32,
     paddingHorizontal: 24,
     height: '375@vs',
+  },
+
+  phoneInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 2,
+    width: '100%',
+    height: verticalScale(48),
+    borderColor: theme.colors.textSecondary,
+    borderRadius: 20,
+    paddingLeft: scale(18),
+  },
+  countryCodeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 10,
+  },
+  countryCode: {
+    color: theme.colors.highlight,
+    fontSize: 16,
+    fontFamily: 'PlusJakartaSans-Bold',
+  },
+  separator: {
+    width: 1,
+    height: 20,
+    backgroundColor: 'black',
+  },
+  phoneInput: {
+    flex: 1,
+    fontWeight: '600',
+    paddingVertical: 0,
+    fontSize: moderateScale(15.2),
+    marginLeft: 10,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginLeft: scale(18),
+    marginTop: 4,
+  },
+  buttonContainer: {
+    marginTop: 20,
+    width: 220,
+    alignSelf: 'center',
   },
 });
 

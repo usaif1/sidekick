@@ -13,6 +13,7 @@ class AppDelegate: RCTAppDelegate {
     GMSServices.provideAPIKey("AIzaSyCfIkG3UgZi8Yqs6bJX1inU7YX40ugzNQg")
     FirebaseApp.configure()
     
+    
     // You can add your custom initial props in the dictionary below.
     // They will be passed down to the ViewController used by React Native.
     self.initialProps = [:]
@@ -31,4 +32,9 @@ class AppDelegate: RCTAppDelegate {
     Bundle.main.url(forResource: "main", withExtension: "jsbundle")
 #endif
   }
+  
+  // add the following:
+    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        return true
+    }
 }
