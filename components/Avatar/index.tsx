@@ -90,18 +90,18 @@ const Avatar: React.FC<AvatarProps> = ({
   const variantStyles: Record<string, ViewStyle> = {
     rounded: {
       borderRadius: 999, // Fully rounded
-      backgroundColor: colors.primary[500],
+      backgroundColor: colors.highlight || '#007AFF', // Fallback color
       borderWidth: 0,
     },
     outlined: {
       borderRadius: 999,
       backgroundColor: 'transparent',
       borderWidth: 2,
-      borderColor: colors.primary[500],
+      borderColor: colors.highlight,
     },
     squared: {
       borderRadius: 8, // Using a fixed value since borderRadius.md is commented out
-      backgroundColor: colors.primary[500],
+      backgroundColor: colors.highlight,
       borderWidth: 0,
     }
   };
@@ -134,7 +134,7 @@ const Avatar: React.FC<AvatarProps> = ({
       color: colors.white
     },
     outlined: {
-      color: colors.primary[500], // Matching the border color
+      color: colors.highlight,
     },
     squared: {
       color: colors.white
@@ -162,7 +162,7 @@ const Avatar: React.FC<AvatarProps> = ({
         <Icon 
           name="user" 
           size={sizeStyles[size].iconSize} 
-          color={variant === 'outlined' ? colors.primary[500] : colors.white} 
+          color={variant === 'outlined' ? colors.highlight : colors.white} 
         />
       );
     }

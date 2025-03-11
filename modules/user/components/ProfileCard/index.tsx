@@ -84,6 +84,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             variant="rounded" 
             onPress={onAvatarPress}
             style={styles.avatar}
+            testID="profile-avatar"
           />
         )}
         
@@ -138,6 +139,8 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginBottom: 12,
+    width: 80,
+    height: 80,
   },
   avatarContainer: {
     width: 80,
@@ -145,6 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     overflow: 'hidden',
     marginBottom: 12,
+    backgroundColor: '#f0f0f0',
   },
   avatarImage: {
     width: '100%',
