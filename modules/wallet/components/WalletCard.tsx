@@ -29,8 +29,9 @@ const WalletCard: React.FC<WalletCardProps> = ({
       style={[
         styles.container,
         {
-          // borderRadius: borderRadius.lg,
-          ...shadows.md,
+          borderRadius: 20,
+          borderColor: colors.highlight,
+          backgroundColor: colors.lightGray,
         }
       ]}
       testID={testID}
@@ -39,8 +40,8 @@ const WalletCard: React.FC<WalletCardProps> = ({
         style={[
           styles.label,
           {
-            color: colors.textPrimary,
-            fontSize: typography.skP1.fontSize,
+            color: colors.textSecondary,
+            fontSize: typography.skP2.fontSize,
           }
         ]}
       >
@@ -51,7 +52,7 @@ const WalletCard: React.FC<WalletCardProps> = ({
           styles.balance,
           {
             color: colors.textPrimary,
-            fontSize: typography.skP2.fontSize,
+            fontSize: typography.skH1.fontSize,
           }
         ]}
       >
@@ -83,13 +84,17 @@ const styles = StyleSheet.create({
     width: '100%',
     overflow: 'hidden',
     position: 'relative',
+    borderWidth: 1,
+    height: '30%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   label: {
-    marginBottom: 8,
     fontWeight: '500',
   },
   balance: {
-    fontWeight: '700',
+    fontWeight: '900',
   },
   patternContainer: {
     position: 'absolute',

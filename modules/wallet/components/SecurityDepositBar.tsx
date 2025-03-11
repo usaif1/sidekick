@@ -65,10 +65,7 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
       <TouchableOpacity
         style={[
           styles.withdrawButton,
-          {
-            backgroundColor: colors.primary[500],
-            // borderRadius: borderRadius.full,
-          }
+          
         ]}
         onPress={onWithdraw}
         accessibilityLabel="Withdraw security deposit"
@@ -80,6 +77,7 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
             styles.buttonText,
             {
               color: colors.white,
+              backgroundColor:colors.highlight,
               fontSize: typography.skP1.fontSize,
             }
           ]}

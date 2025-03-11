@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { View, StyleSheet, SafeAreaView,TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import WalletCard from '../components/WalletCard';
 import SecurityDepositBar from '../components/SecurityDepositBar';
@@ -7,7 +7,8 @@ import TransactionList from '../components/TransactionList';
 import AddFundsButton from '../components/AddFundsButton';
 import { mockWalletData } from '../constants/mockData';
 import { useThemeStore } from '@/globalStore';
-
+import Icon from "react-native-vector-icons/Feather";
+import { Heading } from '@/components/Typography';
 const WalletScreen = () => {
   const navigation = useNavigation();
   const { colors } = useThemeStore(state => state.theme);
@@ -30,9 +31,22 @@ const WalletScreen = () => {
     <SafeAreaView 
       style={[
         styles.container,
-        { backgroundColor: colors.lightGray }
+        { backgroundColor: colors.white }
       ]}
     >
+      {/* Header with back button */}
+      <View style={styles.header}>
+        <TouchableOpacity 
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+          accessibilityLabel="Go back"
+          accessibilityRole="button"
+        >
+          <Icon name="chevron-left" size={24} color={colors.primary} />
+        </TouchableOpacity>
+        <Heading style={styles.headerTitle}>Wallet</Heading>
+      </View>
+
       <View style={styles.content}>
         {/* Wallet balance card */}
         <WalletCard 
@@ -68,12 +82,26 @@ const WalletScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 24,
   },
   content: {
     flex: 1,
+    paddingTop: 16,
   },
   transactionsContainer: {
     flex: 1,
+  },header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerTitle: {
+    flex: 1,
+    textAlign: 'left',
+    marginLeft: 16,
   },
 });
 
