@@ -99,6 +99,7 @@ const AddFundsScreen = () => {
             value={amount}
             onChangeText={setAmount}
             inputType="numeric"
+            variant="currency"
             testID="amount-input"
             containerStyle={styles.amountInput}
           />

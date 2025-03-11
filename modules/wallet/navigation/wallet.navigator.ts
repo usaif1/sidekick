@@ -6,9 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WalletScreen from '../screens/WalletScreen';
 import AddFundsScreen from '../screens/AddFundsScreen';
 
-// components
-// import PaymentSuccessModal from '../components/PaymentSuccessModal';
-
 const WalletNavigator = createNativeStackNavigator({
   initialRouteName: 'WalletScreen',
   screenOptions: {
@@ -30,14 +27,7 @@ const WalletNavigator = createNativeStackNavigator({
         headerShown: false,
       },
     },
-    // PaymentSuccessModal: {
-    //   screen: PaymentSuccessModal,
-    //   options: {
-    //     presentation: 'transparentModal',
-    //     headerShown: false,
-    //   },
-    // },
-  },
+    },
 });
 
 export default WalletNavigator;

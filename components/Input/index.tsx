@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useThemeStore } from '@/globalStore';
 
 // Define the variant types our input supports
-type InputVariant = 'default' | 'dropdown' | 'phone';
+type InputVariant = 'default' | 'dropdown' | 'phone' | 'currency';
 
 // Define dropdown option interface for dropdown variant
 interface DropdownOption {
@@ -94,7 +94,7 @@ interface InputProps extends Omit<TextInputProps, 'style'> {
 }
 
 /**
- * Custom Input component with multiple variants: default, dropdown, and phone
+ * Custom Input component with multiple variants: default, dropdown, phone, and currency
  */
 const Input: React.FC<InputProps> = ({
   title,
@@ -173,12 +173,29 @@ const Input: React.FC<InputProps> = ({
     return null;
   };
   
-  // Render country code prefix for phone variant
+  // Render currency prefix for currency variant
+  const renderCurrencyPrefix = () => {
+    if (variant === 'currency') {
+      return (
+        <View style={styles.phonePrefixContainer}>
+          <Text style={[styles.prefixText, { color: colors.highlight, fontSize: typography.skP2.fontSize }]}>
+            ₹
+          </Text>
+          <View
+            style={[styles.divider, { backgroundColor: colors.textSecondary }]}
+          />
+        </View>
+      );
+    }
+    return null;
+  };
+  
+  // Render phone prefix for phone variant
   const renderPhonePrefix = () => {
     if (variant === 'phone') {
       return (
         <View style={styles.phonePrefixContainer}>
-          <Text style={[styles.prefixText, { color: colors.highlight,fontSize: typography.skP2.fontSize }]}>
+          <Text style={[styles.prefixText, { color: colors.highlight, fontSize: typography.skP2.fontSize }]}>
             {countryCode}
           </Text>
           <View
@@ -246,7 +263,7 @@ const Input: React.FC<InputProps> = ({
           style={[
             styles.title,
             {
-              color: colors.textPrimary,
+              color: variant === 'currency' ? colors.highlight : colors.textPrimary,
               fontSize: typography.skP2.fontSize,
               fontWeight: '500',
             },
@@ -272,6 +289,9 @@ const Input: React.FC<InputProps> = ({
         {/* Phone Prefix */}
         {renderPhonePrefix()}
         
+        {/* Currency Prefix */}
+        {renderCurrencyPrefix()}
+        
         {/* Text Input */}
         <TextInput
           ref={inputRef}
@@ -280,7 +300,9 @@ const Input: React.FC<InputProps> = ({
             {
               color: colors.textPrimary,
               fontSize: typography.skP2.fontSize, 
-              paddingLeft: variant === 'phone' ? spacing.xs : spacing.md,
+              paddingLeft: (variant === 'phone' || variant === 'currency') ? spacing.xs : spacing.md,
+              textAlign: variant === 'currency' ? 'right' : 'left',
+              flex: 1,
             },
             inputStyle,
           ]}
