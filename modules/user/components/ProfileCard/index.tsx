@@ -68,7 +68,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       ]}
       testID={testID}
     >
-      {/* Centered avatar and user info */}\
+      {/* Centered avatar and user info */}
       <View style={styles.centeredHeader}>
         {profileImage ? (
           <View style={styles.avatarContainer}>
