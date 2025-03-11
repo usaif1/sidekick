@@ -29,7 +29,6 @@ const WalletCard: React.FC<WalletCardProps> = ({
       style={[
         styles.container,
         {
-          backgroundColor: colors.neutral[0],
           // borderRadius: borderRadius.lg,
           ...shadows.md,
         }
@@ -40,8 +39,8 @@ const WalletCard: React.FC<WalletCardProps> = ({
         style={[
           styles.label,
           {
-            color: colors.neutral[900],
-            fontSize: typography.fontSize.sm,
+            color: colors.textPrimary,
+            fontSize: typography.skP1.fontSize,
           }
         ]}
       >
@@ -51,8 +50,8 @@ const WalletCard: React.FC<WalletCardProps> = ({
         style={[
           styles.balance,
           {
-            color: colors.neutral[900],
-            fontSize: typography.fontSize.xxl,
+            color: colors.textPrimary,
+            fontSize: typography.skP2.fontSize,
           }
         ]}
       >

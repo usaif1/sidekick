@@ -34,7 +34,7 @@ export const Heading: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.heading, { color: colors.neutral[900], fontSize: typography.fontSize.xl }, style]}
+      style={[styles.heading, { color: colors.textPrimary, fontSize: typography.skH1.fontSize }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >
@@ -56,7 +56,7 @@ export const Subtitle: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.subtitle, { color: colors.neutral[900], fontSize: typography.fontSize.sm }, style]}
+      style={[styles.subtitle, { color: colors.textPrimary, fontSize: typography.skP1.fontSize }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >
@@ -78,7 +78,7 @@ export const StatLabel: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.statLabel, { color: colors.neutral[900], fontSize: typography.fontSize.lg }, style]}
+      style={[styles.statLabel, { color: colors.textPrimary, fontSize: typography.skP2.fontSize }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >
@@ -100,7 +100,7 @@ export const StatValue: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.statValue, { color: colors.neutral[900], fontSize: typography.fontSize.xs }, style]}
+      style={[styles.statValue, { color: colors.textPrimary, fontSize: typography.skP1.fontSize }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >

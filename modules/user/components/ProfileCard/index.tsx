@@ -106,7 +106,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const cardStyles = [
     styles.card,
     { 
-      backgroundColor: colors.neutral[0],
+      backgroundColor: colors.white,
       // borderRadius: borderRadius.lg,
       ...shadows.md,
     },

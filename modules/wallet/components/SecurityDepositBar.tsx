@@ -32,7 +32,7 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
       style={[
         styles.container,
         {
-          borderBottomColor: colors.neutral[200],
+          borderBottomColor: colors.lightGray,
         }
       ]}
       testID={testID}
@@ -42,8 +42,8 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
           style={[
             styles.label,
             {
-              color: colors.neutral[700],
-              fontSize: typography.fontSize.sm,
+              color: colors.textPrimary,
+              fontSize: typography.skP1.fontSize,
             }
           ]}
         >
@@ -53,8 +53,8 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
           style={[
             styles.amount,
             {
-              color: colors.neutral[900],
-              fontSize: typography.fontSize.base,
+              color: colors.textPrimary,
+              fontSize: typography.skP1.fontSize,
             }
           ]}
         >
@@ -67,7 +67,7 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
           styles.withdrawButton,
           {
             backgroundColor: colors.primary[500],
-            borderRadius: borderRadius.full,
+            // borderRadius: borderRadius.full,
           }
         ]}
         onPress={onWithdraw}
@@ -79,8 +79,8 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
           style={[
             styles.buttonText,
             {
-              color: colors.neutral[0],
-              fontSize: typography.fontSize.sm,
+              color: colors.white,
+              fontSize: typography.skP1.fontSize,
             }
           ]}
         >

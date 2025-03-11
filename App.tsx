@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,9 +13,28 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 // misc
 import './ReactotronConfig';
 import {useGlobalStore} from './globalStore';
+import requestLocationPermission from './components/LocationPermission';
+import Geolocation from '@react-native-community/geolocation';
 
 function App(): React.JSX.Element {
   const {firsTime, loggedIn} = useGlobalStore();
+
+  useEffect(() => {
+    requestLocationPermission();
+    Geolocation.getCurrentPosition(
+      (position) => {
+        if (position.mocked) {
+          console.log('Location is mocked');
+        } else {
+          console.log('Location is genuine');
+        }
+      },
+      (error) => {
+        console.log('Error getting location:', error);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }, []);
 
   return (
     <>
@@ -23,7 +42,8 @@ function App(): React.JSX.Element {
         {firsTime ? (
           <SplashNavigation />
         ) : loggedIn ? (
-          <ProtectedNavigation />
+          <ModalProvider>
+          <ProtectedNavigation /></ModalProvider>
         ) : (
           <AuthNavigation />
         )}

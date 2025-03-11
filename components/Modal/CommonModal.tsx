@@ -77,7 +77,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
               style={[
                 styles.modalContainer,
                 { 
-                  backgroundColor: colors.neutral[0],
+                  backgroundColor: colors.white,
                   // borderRadius: borderRadius.lg,
                   ...shadows.md
                 }
@@ -91,7 +91,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
                 accessibilityRole="button"
                 testID={`${testID}-close-button`}
               >
-                <Icon name="x" size={20} color={colors.neutral[900]} />
+                <Icon name="x" size={20} color={colors.textPrimary} />
               </TouchableOpacity>
               
               <View style={styles.content}>

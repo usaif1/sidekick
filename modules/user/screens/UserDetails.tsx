@@ -60,20 +60,14 @@ const UserDetails = (props: Props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>UserDetails</Text>
-      <Button
-        title="Go back"
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
       
       <ProfileCard
         fullName={userData.name}
         company="Infosys"
         totalMinutes={48}
         totalKilometers={2.9}
-        onPress={() => console.log('Card pressed')}
-        onAvatarPress={() => console.log('Avatar pressed')}
+        // onPress={() => console.log('Card pressed')}
+        // onAvatarPress={() => console.log('Avatar pressed')}
         style={styles.profileCard}
       />
       

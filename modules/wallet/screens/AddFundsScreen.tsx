@@ -60,8 +60,8 @@ const AddFundsScreen = () => {
           style={[
             styles.headerTitle,
             { 
-              color: colors.neutral[900],
-              fontSize: typography.fontSize.lg,
+              color: colors.textPrimary,
+              fontSize: typography.skP2.fontSize,
             }
           ]}
         >
@@ -76,8 +76,8 @@ const AddFundsScreen = () => {
             style={[
               styles.sectionTitle,
               { 
-                color: colors.neutral[700],
-                fontSize: typography.fontSize.base,
+                color: colors.textPrimary,
+                fontSize: typography.skP1.fontSize,
               }
             ]}
           >
@@ -102,8 +102,8 @@ const AddFundsScreen = () => {
                 style={[
                   styles.quickAmountButton,
                   {
-                    backgroundColor: amount === value.toString() ? colors.primary[100] : colors.neutral[100],
-                    borderColor: amount === value.toString() ? colors.primary[500] : colors.neutral[300],
+                    backgroundColor: amount === value.toString() ? colors.primary[100] : colors.lightGray,
+                    borderColor: amount === value.toString() ? colors.primary[500] : colors.lightGray,
                     borderRadius: borderRadius.md,
                   }
                 ]}
@@ -113,7 +113,7 @@ const AddFundsScreen = () => {
                   style={[
                     styles.quickAmountText,
                     { 
-                      color: amount === value.toString() ? colors.primary[700] : colors.neutral[700],
+                      color: amount === value.toString() ? colors.primary[500] : colors.textPrimary,
                     }
                   ]}
                 >
@@ -130,8 +130,8 @@ const AddFundsScreen = () => {
             style={[
               styles.sectionTitle,
               { 
-                color: colors.neutral[700],
-                fontSize: typography.fontSize.base,
+                color: colors.textPrimary,
+                fontSize: typography.skP1.fontSize,
               }
             ]}
           >
@@ -143,8 +143,8 @@ const AddFundsScreen = () => {
             style={[
               styles.paymentOption,
               {
-                backgroundColor: selectedMethod === 'upi' ? colors.primary[100] : colors.neutral[0],
-                borderColor: selectedMethod === 'upi' ? colors.primary[500] : colors.neutral[300],
+                backgroundColor: selectedMethod === 'upi' ? colors.primary[100] : colors.white,
+                borderColor: selectedMethod === 'upi' ? colors.primary[500] : colors.lightGray,
                 borderRadius: borderRadius.md,
               }
             ]}
@@ -156,7 +156,7 @@ const AddFundsScreen = () => {
                 style={[
                   styles.paymentOptionText,
                   { 
-                    color: colors.neutral[900],
+                    color: colors.textPrimary,
                     marginLeft: spacing.sm,
                   }
                 ]}
@@ -174,8 +174,8 @@ const AddFundsScreen = () => {
             style={[
               styles.paymentOption,
               {
-                backgroundColor: selectedMethod === 'card' ? colors.primary[100] : colors.neutral[0],
-                borderColor: selectedMethod === 'card' ? colors.primary[500] : colors.neutral[300],
+                backgroundColor: selectedMethod === 'card' ? colors.primary[100] : colors.white,
+                borderColor: selectedMethod === 'card' ? colors.primary[500] : colors.lightGray,
                 borderRadius: borderRadius.md,
               }
             ]}
@@ -187,7 +187,7 @@ const AddFundsScreen = () => {
                 style={[
                   styles.paymentOptionText,
                   { 
-                    color: colors.neutral[900],
+                    color: colors.textPrimary,
                     marginLeft: spacing.sm,
                   }
                 ]}
@@ -205,8 +205,8 @@ const AddFundsScreen = () => {
             style={[
               styles.paymentOption,
               {
-                backgroundColor: selectedMethod === 'netbanking' ? colors.primary[100] : colors.neutral[0],
-                borderColor: selectedMethod === 'netbanking' ? colors.primary[500] : colors.neutral[300],
+                backgroundColor: selectedMethod === 'netbanking' ? colors.primary[100] : colors.white,
+                borderColor: selectedMethod === 'netbanking' ? colors.primary[500] : colors.lightGray,
                 borderRadius: borderRadius.md,
               }
             ]}
@@ -218,7 +218,7 @@ const AddFundsScreen = () => {
                 style={[
                   styles.paymentOptionText,
                   { 
-                    color: colors.neutral[900],
+                    color: colors.textPrimary,
                     marginLeft: spacing.sm,
                   }
                 ]}
@@ -237,33 +237,33 @@ const AddFundsScreen = () => {
           style={[
             styles.summarySection,
             {
-              backgroundColor: colors.neutral[50],
+              backgroundColor: colors.lightGray,
               borderRadius: borderRadius.md,
             }
           ]}
         >
           <View style={styles.summaryRow}>
-            <Text style={{ color: colors.neutral[700] }}>Amount</Text>
-            <Text style={{ color: colors.neutral[900], fontWeight: '600' }}>
+            <Text style={{ color: colors.textPrimary }}>Amount</Text>
+            <Text style={{ color: colors.textPrimary, fontWeight: '600' }}>
               ₹{amount || '0'}
             </Text>
           </View>
           
           <View style={styles.summaryRow}>
-            <Text style={{ color: colors.neutral[700] }}>Security Deposit</Text>
-            <Text style={{ color: colors.neutral[900], fontWeight: '600' }}>₹200</Text>
+            <Text style={{ color: colors.textPrimary }}>Security Deposit</Text>
+            <Text style={{ color: colors.textPrimary, fontWeight: '600' }}>₹200</Text>
           </View>
           
           <View 
             style={[
               styles.summaryDivider,
-              { backgroundColor: colors.neutral[300] }
+              { backgroundColor: colors.lightGray }
             ]} 
           />
           
           <View style={styles.summaryRow}>
-            <Text style={{ color: colors.neutral[900], fontWeight: '600' }}>Total</Text>
-            <Text style={{ color: colors.neutral[900], fontWeight: '700' }}>
+            <Text style={{ color: colors.textPrimary, fontWeight: '600' }}>Total</Text>
+            <Text style={{ color: colors.textPrimary, fontWeight: '700' }}>
               ₹{(parseFloat(amount || '0') + 200).toFixed(1)}
             </Text>
           </View>

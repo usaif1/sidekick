@@ -30,7 +30,7 @@ const WalletScreen = () => {
     <SafeAreaView 
       style={[
         styles.container,
-        { backgroundColor: colors.neutral[50] }
+        { backgroundColor: colors.lightGray }
       ]}
     >
       <View style={styles.content}>

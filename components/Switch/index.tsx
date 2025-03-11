@@ -73,7 +73,7 @@ const Switch: React.FC<SwitchProps> = ({
         width: spacing.xl * 1.5,
         height: spacing.lg,
         borderRadius: spacing.lg / 2,
-        padding: spacing.xxs,
+        padding: spacing.xs,
       },
       toggle: {
         width: spacing.md,
@@ -141,7 +141,7 @@ const Switch: React.FC<SwitchProps> = ({
 
   const backgroundColorInterpolation = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [colors.neutral[100], colors.tertiary[400]], // Off color to On color
+    outputRange: [colors.lightGray, colors.primary], // Off color to On color
   });
 
   // Set accessibility props

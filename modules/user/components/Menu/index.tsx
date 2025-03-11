@@ -67,7 +67,7 @@ const Menu: React.FC<MenuProps> = ({
       style={[
         styles.container, 
         { 
-          backgroundColor: colors.neutral[0],
+          backgroundColor: colors.white,
           // borderRadius: borderRadius.md,
         },
         style
@@ -81,7 +81,7 @@ const Menu: React.FC<MenuProps> = ({
             styles.menuItem,
             { paddingVertical: spacing.md, paddingHorizontal: spacing.md },
             index < items.length - 1 && styles.borderBottom,
-            index < items.length - 1 && { borderBottomColor: colors.neutral[200] }
+            index < items.length - 1 && { borderBottomColor: colors.lightGray }
           ]}
           onPress={item.onPress}
           testID={item.testID || `menu-item-${index}`}
@@ -93,10 +93,10 @@ const Menu: React.FC<MenuProps> = ({
             <Icon 
               name={item.icon} 
               size={20} 
-              color={colors.neutral[900]} 
+              color={colors.textPrimary} 
               style={styles.icon} 
             />
-            <Text style={[styles.label, { color: colors.neutral[900] }]}>
+            <Text style={[styles.label, { color: colors.textPrimary }]}>
               {item.label}
             </Text>
           </View>

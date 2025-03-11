@@ -166,7 +166,7 @@ const Input: React.FC<InputProps> = ({
           accessibilityLabel="Toggle dropdown"
           accessibilityRole="button"
         >
-          <Icon name="chevron-down" size={16} color={colors.neutral[900]} />
+          <Icon name="chevron-down" size={16} color={colors.textPrimary} />
         </TouchableOpacity>
       );
     }
@@ -178,11 +178,11 @@ const Input: React.FC<InputProps> = ({
     if (variant === 'phone') {
       return (
         <View style={styles.phonePrefixContainer}>
-          <Text style={[styles.prefixText, { color: colors.neutral[900] }]}>
+          <Text style={[styles.prefixText, { color: colors.textPrimary }]}>
             {countryCode}
           </Text>
           <View
-            style={[styles.divider, { backgroundColor: colors.neutral[200] }]}
+            style={[styles.divider, { backgroundColor: colors.lightGray }]}
           />
         </View>
       );
@@ -211,9 +211,9 @@ const Input: React.FC<InputProps> = ({
               styles.dropdownContainer,
               {
                 top: 200, // This should be calculated based on input position
-                backgroundColor: colors.neutral[0],
+                backgroundColor: colors.white,
                 borderRadius: borderRadius.md,
-                borderColor: colors.neutral[200],
+                borderColor: colors.lightGray,
               },
             ]}
           >
@@ -224,11 +224,11 @@ const Input: React.FC<InputProps> = ({
                 <TouchableOpacity
                   style={[
                     styles.dropdownItem,
-                    { borderBottomColor: colors.neutral[200] },
+                    { borderBottomColor: colors.lightGray },
                   ]}
                   onPress={() => handleSelectOption(item)}
                 >
-                  <Text style={{ color: colors.neutral[900] }}>{item.label}</Text>
+                  <Text style={{ color: colors.textPrimary }}>{item.label}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -246,15 +246,15 @@ const Input: React.FC<InputProps> = ({
           style={[
             styles.title,
             {
-              color: colors.neutral[900],
-              fontSize: typography.fontSize.sm,
+              color: colors.textPrimary,
+              fontSize: typography.skP1.fontSize,
               fontWeight: '500',
             },
             titleStyle,
           ]}
         >
           {title}
-          {required && <Text style={{ color: colors.semantic.error }}> *</Text>}
+          {required && <Text style={{ color: colors.error }}> *</Text>}
         </Text>
       )}
       
@@ -263,9 +263,9 @@ const Input: React.FC<InputProps> = ({
         style={[
           styles.inputContainer,
           {
-            borderColor: error ? colors.semantic.error : colors.neutral[900],
+            borderColor: error ? colors.error : colors.lightGray,
             borderRadius: borderRadius.md,
-            backgroundColor: colors.neutral[0],
+            backgroundColor: colors.white,
           },
         ]}
       >
@@ -278,14 +278,14 @@ const Input: React.FC<InputProps> = ({
           style={[
             styles.input,
             {
-              color: colors.neutral[900],
-              fontSize: typography.fontSize.md, 
+              color: colors.textPrimary,
+              fontSize: typography.skP2.fontSize, 
               paddingLeft: variant === 'phone' ? spacing.xs : spacing.md,
             },
             inputStyle,
           ]}
           placeholder={placeholder}
-          placeholderTextColor={colors.semantic.error}
+          placeholderTextColor={colors.error}
           value={value}
           onChangeText={onChangeText}
           keyboardType={getKeyboardType()}
@@ -304,8 +304,8 @@ const Input: React.FC<InputProps> = ({
           style={[
             styles.errorText,
             {
-              color: colors.semantic.error,
-              fontSize: typography.fontSize.xs,
+              color: colors.error,
+              fontSize: typography.skP1.fontSize,
             },
           ]}
         >

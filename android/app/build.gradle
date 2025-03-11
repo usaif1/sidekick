@@ -122,8 +122,6 @@ dependencies {
     // Use the same version as defined in the root build.gradle
     implementation("com.google.android.gms:play-services-location:${rootProject.ext.googlePlayServicesVersion}")
     
-    implementation(project(':react-native-geolocation-service'))
-    
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

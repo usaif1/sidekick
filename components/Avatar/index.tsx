@@ -89,7 +89,7 @@ const Avatar: React.FC<AvatarProps> = ({
       borderColor: colors.primary[500],
     },
     squared: {
-      borderRadius: borderRadius.md,
+      // borderRadius: borderRadius.md,
       backgroundColor: colors.primary[500],
       borderWidth: 0,
     }
@@ -100,30 +100,30 @@ const Avatar: React.FC<AvatarProps> = ({
     small: {
       width: spacing.xl,
       height: spacing.xl,
-      fontSize: typography.fontSize.sm,
+      fontSize: typography.skP1.fontSize,
     },
     medium: {
       width: spacing.xxl,
       height: spacing.xxl,
-      fontSize: typography.fontSize.base,
+      fontSize: typography.skP2.fontSize,
     },
     large: {
       width: spacing.xxxl,
       height: spacing.xxxl,
-      fontSize: typography.fontSize.xl,
+      fontSize: typography.skP3.fontSize,
     },
   };
 
   // Define text variant styles
   const textVariantStyles: Record<string, TextStyle> = {
     rounded: {
-      color: colors.neutral[0], // Light text on dark background
+      color: colors.white
     },
     outlined: {
       color: colors.primary[500], // Matching the border color
     },
     squared: {
-      color: colors.neutral[0],
+      color: colors.white
     },
   };
 

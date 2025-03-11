@@ -41,35 +41,35 @@ const TransactionList: React.FC<TransactionListProps> = ({
       <Text 
         style={[
           styles.emptyText,
-          { color: colors.neutral[900] }
+          { color: colors.textPrimary }
         ]}
       >
         No transactions yet
       </Text>
     </View>
-  ), [colors.neutral]);
+  ), [colors.textPrimary]);
 
   // List header component
   const ListHeaderComponent = useCallback(() => (
     <View 
       style={[
         styles.headerContainer,
-        { borderBottomColor: colors.neutral[200] }
+        { borderBottomColor: colors.lightGray }
       ]}
     >
       <Text 
         style={[
           styles.headerText,
           { 
-            color: colors.neutral[900],
-            fontSize: typography.fontSize.sm,
+            color: colors.textPrimary,
+            fontSize: typography.skP1.fontSize,
           }
         ]}
       >
         Recent Rides
       </Text>
     </View>
-  ), [colors.neutral, typography.fontSize]);
+  ), [colors.textPrimary, typography.skP1.fontSize]);
 
   return (
     <FlatList

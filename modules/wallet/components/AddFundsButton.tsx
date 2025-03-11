@@ -29,7 +29,7 @@ const AddFundsButton: React.FC<AddFundsButtonProps> = ({
       style={[
         styles.button,
         {
-          backgroundColor: colors.semantic.success,
+          backgroundColor: colors.primary,
           // borderRadius: borderRadius.full,
         }
       ]}
@@ -42,8 +42,8 @@ const AddFundsButton: React.FC<AddFundsButtonProps> = ({
         style={[
           styles.buttonText,
           {
-            color: colors.neutral[200],
-            fontSize: typography.fontSize.base,
+            color: colors.textPrimary,
+            fontSize: typography.skP1.fontSize,
           }
         ]}
       >

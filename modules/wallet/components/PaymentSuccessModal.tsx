@@ -39,7 +39,6 @@ const PaymentSuccessModal = () => {
         style={[
           styles.modal,
           {
-            backgroundColor: colors.neutral[0],
             borderRadius: borderRadius.lg,
           }
         ]}
@@ -49,7 +48,7 @@ const PaymentSuccessModal = () => {
           style={styles.closeButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="x" size={24} color={colors.neutral[600]} />
+          <Icon name="x" size={24} color={colors.textPrimary} />
         </TouchableOpacity>
         
         {/* Success icon */}
@@ -59,7 +58,7 @@ const PaymentSuccessModal = () => {
             { backgroundColor: colors.primary[500] }
           ]}
         >
-          <Icon name="check" size={32} color={colors.neutral[0]} />
+          <Icon name="check" size={32} color={colors.white} />
         </View>
         
         {/* Success message */}
@@ -67,8 +66,8 @@ const PaymentSuccessModal = () => {
           style={[
             styles.amountText,
             {
-              color: colors.neutral[900],
-              fontSize: typography.fontSize.lg,
+              color: colors.textPrimary,
+              fontSize: typography.skP2.fontSize,
             }
           ]}
         >
@@ -79,8 +78,8 @@ const PaymentSuccessModal = () => {
           style={[
             styles.messageText,
             {
-              color: colors.neutral[600],
-              fontSize: typography.fontSize.sm,
+              color: colors.textSecondary,
+              fontSize: typography.skP1.fontSize,
             }
           ]}
         >
@@ -92,7 +91,7 @@ const PaymentSuccessModal = () => {
           style={[
             styles.continueButton,
             {
-              backgroundColor: colors.success[500],
+              backgroundColor: colors.primary,
               borderRadius: borderRadius.full,
             }
           ]}
@@ -102,8 +101,8 @@ const PaymentSuccessModal = () => {
             style={[
               styles.continueButtonText,
               {
-                color: colors.neutral[0],
-                fontSize: typography.fontSize.base,
+                color: colors.white,
+                fontSize: typography.skP2.fontSize,
               }
             ]}
           >
@@ -115,7 +114,7 @@ const PaymentSuccessModal = () => {
           style={[
             styles.checkWalletButton,
             {
-              backgroundColor: colors.neutral[100],
+              backgroundColor: colors.lightGray,
               borderRadius: borderRadius.full,
             }
           ]}
@@ -125,8 +124,8 @@ const PaymentSuccessModal = () => {
             style={[
               styles.checkWalletButtonText,
               {
-                color: colors.neutral[900],
-                fontSize: typography.fontSize.base,
+                color: colors.textPrimary,
+                fontSize: typography.skP2.fontSize,
               }
             ]}
           >

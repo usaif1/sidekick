@@ -30,7 +30,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
       style={[
         styles.container,
         {
-          borderBottomColor: colors.neutral[200],
+          borderBottomColor: colors.lightGray,
         }
       ]}
       testID={testID}
@@ -40,8 +40,8 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
           style={[
             styles.name,
             {
-              color: colors.neutral[900],
-              fontSize: typography.fontSize.base,
+              color: colors.textPrimary,
+              fontSize: typography.skP1.fontSize,
             }
           ]}
           numberOfLines={1}
@@ -52,8 +52,8 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
           style={[
             styles.dateTime,
             {
-              color: colors.neutral[600],
-              fontSize: typography.fontSize.xs,
+              color: colors.textPrimary,
+              fontSize: typography.skP2.fontSize,
             }
           ]}
         >
@@ -65,12 +65,12 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
         style={[
           styles.amount,
           {
-            color: isCredit ? colors.success[500] : colors.neutral[900],
-            fontSize: typography.fontSize.base,
+            color: isCredit ? colors.primary : colors.error,
+            fontSize: typography.skP1.fontSize,
           }
         ]}
       >
-        {isCredit ? '+' : ''}₹{transaction.amount.toFixed(1)}
+        {isCredit ? '+ ' : '- '}₹{transaction.amount.toFixed(1)}
       </Text>
     </View>
   );
