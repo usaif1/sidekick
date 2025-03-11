@@ -55,13 +55,13 @@ const SupportModal: React.FC<SupportModalProps> = ({
     }
   };
 
-  return 
+  return (
   <CommonModal visible={visible} onClose={onClose} testID={testID}>
   <View style={styles.container}>
     {/* Icon */}
-    <View style={[styles.iconContainer, { backgroundColor: colors.primary[300] }]}>
+    {/* <View style={[styles.iconContainer, { backgroundColor: colors.primary[300] }]}>
       <Icon name="mail" size={32} color={colors.primary[500]} />
-    </View>
+    </View> */}
     
     {/* Title */}
     <Text 
@@ -69,11 +69,11 @@ const SupportModal: React.FC<SupportModalProps> = ({
         styles.title, 
         { 
           color: colors.textPrimary,
-          fontSize: typography.skH1.fontSize,
+          fontSize: typography.skH2.fontSize,
         }
       ]}
     >
-      Sorry for the inconvenience
+      Sorry for the inconvenience !
     </Text>
     
     {/* Message */}
@@ -81,8 +81,8 @@ const SupportModal: React.FC<SupportModalProps> = ({
       style={[
         styles.message, 
         { 
-          color: colors.textPrimary,
-          fontSize: typography.skP1.fontSize,
+          color: colors.textSecondary,
+          fontSize: typography.skP3.fontSize,
         }
       ]}
     >
@@ -91,16 +91,17 @@ const SupportModal: React.FC<SupportModalProps> = ({
     
     {/* Button */}
     <ButtonText variant="primary" onPress={handleContactSupport}>
-      Contact Support
+      Drop an Email
     </ButtonText>
   </View>
-</CommonModal>;
+</CommonModal>
+);
 };
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingTop: 24,
   },
   iconContainer: {
     width: 64,
