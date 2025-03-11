@@ -1,19 +1,24 @@
-import {View, Text, Button, StyleSheet} from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import React, { useState } from 'react';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import ProfileCard from '@/modules/user/components/ProfileCard';
 import Menu from '@/modules/user/components/Menu';
 import SupportModal from '@/modules/user/components/SupportModal';
 import { useModal } from '@/components/Modal/ModalProvider';
+import { useThemeStore } from '@/globalStore';
+import CustomSafeArea from '@/wrappers/customSafeArea/CustomSafeArea';
+import Divider from '@/components/Divider';
 
-type Props = {};
+// You can import a profile image or use a require statement
+// const profileImage = require('../assets/profile-image.jpg');
 
-const UserDetails = (props: Props) => {
+const UserDetails = () => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const { showModal, hideModal } = useModal();
+  const { colors } = useThemeStore(state => state.theme);
   
-  // User data that would be passed to the EditProfile screen
+  // User data
   const userData = {
     name: "Christian Miller",
     email: "christian.miller@infosys.com",
@@ -23,10 +28,10 @@ const UserDetails = (props: Props) => {
   // Menu items with the notifications item using a switch
   const menuItems = [
     {
-      icon: 'edit',
+      icon: 'edit-2',
       label: 'Edit Profile',
       controlType: 'none' as const,
-      onPress: () => navigation.navigate('EditProfile'),
+      onPress: () => navigation.navigate('Profile', { screen: 'EditProfile' }),
       testID: 'edit-profile-button'
     },
     {
@@ -58,43 +63,42 @@ const UserDetails = (props: Props) => {
   ];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>UserDetails</Text>
-      
-      <ProfileCard
-        fullName={userData.name}
-        company="Infosys"
-        totalMinutes={48}
-        totalKilometers={2.9}
-        // onPress={() => console.log('Card pressed')}
-        // onAvatarPress={() => console.log('Avatar pressed')}
-        style={styles.profileCard}
-      />
-      
-      {/* Menu component with switch for notifications */}
-      <Menu 
-        items={menuItems}
-        style={styles.menu}
-        testID="user-menu"
-      />
-    </View>
+    <CustomSafeArea>
+      <View style={styles.container}>
+        <ProfileCard
+          fullName={userData.name}
+          company="Infosys"
+          totalMinutes={48}
+          totalKilometers={2.9}
+          // profileImage={profileImage} // Uncomment if you have a profile image
+          style={styles.profileCard}
+        />
+
+        <Divider height={16} />
+        
+        <Menu 
+          items={menuItems}
+          style={styles.menu}
+          testID="user-menu"
+        />
+      </View>
+    </CustomSafeArea>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
+  safeArea: {
+    flex: 1,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
   },
   profileCard: {
-    marginVertical: 16,
+    marginBottom: 16,
   },
   menu: {
-    marginTop: 16,
+    marginHorizontal: 16,
   }
 });
 

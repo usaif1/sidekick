@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { useThemeStore } from '@/globalStore';
-import Icon from 'react-native-vector-icons/Feather'; // Assuming you're using Feather icons
+import Icon from 'react-native-vector-icons/Feather';
 import Switch from '@/components/Switch';
 
 interface MenuItem {
@@ -58,9 +58,7 @@ const Menu: React.FC<MenuProps> = ({
   style,
   testID = 'menu',
 }) => {
-  const { colors, spacing, 
-    // borderRadius,
-   } = useThemeStore(state => state.theme);
+  const { colors, spacing } = useThemeStore(state => state.theme);
 
   return (
     <View 
@@ -68,7 +66,6 @@ const Menu: React.FC<MenuProps> = ({
         styles.container, 
         { 
           backgroundColor: colors.white,
-          // borderRadius: borderRadius.md,
         },
         style
       ]}
@@ -119,11 +116,6 @@ const Menu: React.FC<MenuProps> = ({
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   menuItem: {
     flexDirection: 'row',

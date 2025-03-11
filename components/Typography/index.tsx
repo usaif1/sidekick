@@ -78,7 +78,7 @@ export const StatLabel: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.statLabel, { color: colors.textPrimary, fontSize: typography.skP2.fontSize }, style]}
+      style={[styles.statLabel, { color: colors.textSecondary, fontSize: typography.skP2.fontSize }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >
@@ -100,7 +100,7 @@ export const StatValue: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.statValue, { color: colors.textPrimary, fontSize: typography.skP1.fontSize }, style]}
+      style={[styles.statValue, { color: colors.textPrimary, fontSize: typography.skH1.fontSize }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >
@@ -119,11 +119,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.15,
   },
   statLabel: {
-    fontWeight: '600',
+    fontWeight: '500',
     letterSpacing: 0.1,
   },
   statValue: {
-    fontWeight: '400',
+    fontWeight: '900',
     letterSpacing: 0.1,
   }
 }); 

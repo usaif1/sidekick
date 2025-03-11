@@ -1,7 +1,8 @@
 // src/components/Avatar/Avatar.tsx
 import React from 'react';
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, Image, ImageSourcePropType } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather'; // Assuming you're using Feather icons
 import { useThemeStore } from '@/globalStore';
 
 // Define strong TypeScript interfaces
@@ -14,6 +15,14 @@ interface AvatarProps {
    * Optional children to render instead of initials
    */
   children?: React.ReactNode;
+  /**
+   * Optional image source for avatar
+   */
+  imageSource?: ImageSourcePropType;
+  /**
+   * Whether to show a profile icon instead of initials
+   */
+  showProfileIcon?: boolean;
   /**
    * Visual variant of the avatar
    */
@@ -45,11 +54,13 @@ interface AvatarProps {
 }
 
 /**
- * Avatar component displays user initials or custom content in a styled container
+ * Avatar component displays user initials, image, profile icon or custom content in a styled container
  */
 const Avatar: React.FC<AvatarProps> = ({
   fullName = '',
   children,
+  imageSource,
+  showProfileIcon = false,
   variant = 'rounded',
   size = 'medium',
   onPress,
@@ -59,7 +70,7 @@ const Avatar: React.FC<AvatarProps> = ({
   accessibilityLabel,
 }) => {
   // Access theme values from the store
-  const { colors, spacing, borderRadius, typography } = useThemeStore(state => state.theme);
+  const { colors, spacing, typography } = useThemeStore(state => state.theme);
   
   // Calculate initials from fullName
   const getInitials = (name: string): string => {
@@ -89,28 +100,31 @@ const Avatar: React.FC<AvatarProps> = ({
       borderColor: colors.primary[500],
     },
     squared: {
-      // borderRadius: borderRadius.md,
+      borderRadius: 8, // Using a fixed value since borderRadius.md is commented out
       backgroundColor: colors.primary[500],
       borderWidth: 0,
     }
   };
 
   // Define size styles as a mapping
-  const sizeStyles: Record<string, ViewStyle & { fontSize: number }> = {
+  const sizeStyles: Record<string, ViewStyle & { fontSize: number, iconSize: number }> = {
     small: {
       width: spacing.xl,
       height: spacing.xl,
       fontSize: typography.skP1.fontSize,
+      iconSize: 16,
     },
     medium: {
       width: spacing.xxl,
       height: spacing.xxl,
       fontSize: typography.skP2.fontSize,
+      iconSize: 24,
     },
     large: {
       width: spacing.xxxl,
       height: spacing.xxxl,
       fontSize: typography.skP3.fontSize,
+      iconSize: 32,
     },
   };
 
@@ -127,8 +141,44 @@ const Avatar: React.FC<AvatarProps> = ({
     },
   };
 
-  // Compute the content to display
-  const content = children || getInitials(fullName);
+  // Determine what content to render
+  const renderContent = () => {
+    if (children) {
+      return children;
+    }
+    
+    if (imageSource) {
+      return (
+        <Image 
+          source={imageSource} 
+          style={styles.image} 
+          resizeMode="cover"
+        />
+      );
+    }
+    
+    if (showProfileIcon) {
+      return (
+        <Icon 
+          name="user" 
+          size={sizeStyles[size].iconSize} 
+          color={variant === 'outlined' ? colors.primary[500] : colors.white} 
+        />
+      );
+    }
+    
+    // Default to initials
+    return (
+      <Text style={[
+        styles.text,
+        textVariantStyles[variant],
+        { fontSize: sizeStyles[size].fontSize },
+        textStyle, // Allow custom overrides
+      ]}>
+        {getInitials(fullName)}
+      </Text>
+    );
+  };
   
   // Build the accessibility label if not provided
   const computedAccessibilityLabel = accessibilityLabel || 
@@ -145,14 +195,6 @@ const Avatar: React.FC<AvatarProps> = ({
     style, // Allow custom overrides
   ];
 
-  // Text styles combination
-  const combinedTextStyle = [
-    styles.text,
-    textVariantStyles[variant],
-    { fontSize: sizeStyles[size].fontSize },
-    textStyle, // Allow custom overrides
-  ];
-
   // Render as touchable if onPress is provided, otherwise as a View
   return onPress ? (
     <TouchableOpacity
@@ -163,7 +205,7 @@ const Avatar: React.FC<AvatarProps> = ({
       accessible={true}
       accessibilityRole="button"
     >
-      <Text style={combinedTextStyle}>{content}</Text>
+      {renderContent()}
     </TouchableOpacity>
   ) : (
     <TouchableOpacity
@@ -173,7 +215,7 @@ const Avatar: React.FC<AvatarProps> = ({
       accessible={true}
       accessibilityRole="image"
     >
-      <Text style={combinedTextStyle}>{content}</Text>
+      {renderContent()}
     </TouchableOpacity>
   );
 };
@@ -189,6 +231,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     textTransform: 'uppercase',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });
 

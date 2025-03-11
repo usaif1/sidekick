@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ViewStyle, Text, Image } from 'react-native';
 import Avatar from '@/components/Avatar';
-import { Heading, Subtitle, StatLabel, StatValue } from '@/components/Typography';
+import { StatLabel, StatValue } from '@/components/Typography';
 import { useThemeStore } from '@/globalStore';
 
 interface ProfileCardProps {
@@ -13,10 +13,6 @@ interface ProfileCardProps {
    * User's company or organization
    */
   company?: string;
-  /**
-   * Time spent (formatted string)
-   */
-  time?: string;
   /**
    * Total minutes
    */
@@ -41,108 +37,100 @@ interface ProfileCardProps {
    * Optional test ID for testing
    */
   testID?: string;
+  /**
+   * Optional profile image
+   */
+  profileImage?: any;
 }
 
 /**
- * ProfileCard displays user information and statistics in a card format
+ * ProfileCard displays user information and statistics
  */
 const ProfileCard: React.FC<ProfileCardProps> = ({
   fullName,
   company,
-  time,
   totalMinutes,
   totalKilometers,
   onPress,
   onAvatarPress,
   style,
   testID = 'profile-card',
+  profileImage,
 }) => {
-  const { colors, spacing, 
-    // borderRadius,
-     shadows } = useThemeStore(state => state.theme);
+  const { colors, typography } = useThemeStore(state => state.theme);
 
-  const cardContent = (
-    <View style={styles.container}>
-      {/* Centered avatar and user info */}
+  return (
+    <View 
+      style={[
+        styles.container,
+        { backgroundColor: colors.lightGray },
+        style,
+      ]}
+      testID={testID}
+    >
+      {/* Centered avatar and user info */}\
       <View style={styles.centeredHeader}>
-        <Avatar 
-          fullName={fullName} 
-          size="large" 
-          variant="rounded" 
-          onPress={onAvatarPress}
-          style={styles.avatar}
-        />
+        {profileImage ? (
+          <View style={styles.avatarContainer}>
+            <Image 
+              source={profileImage} 
+              style={styles.avatarImage} 
+            />
+          </View>
+        ) : (
+          <Avatar 
+            fullName={fullName} 
+            size="large" 
+            variant="rounded" 
+            onPress={onAvatarPress}
+            style={styles.avatar}
+          />
+        )}
+        
         <View style={styles.centeredUserInfo}>
-          <Heading style={styles.name} numberOfLines={1}>{fullName}</Heading>
-          {company && <Subtitle style={styles.company} numberOfLines={1}>{company}</Subtitle>}
+          <Text style={[styles.name, { fontSize: typography.skH2.fontSize, color: colors.textPrimary }]}>
+            {fullName}
+          </Text>
+          {company && 
+            <Text style={[styles.company, { fontSize: typography.skH3.fontSize, color: colors.textSecondary }]}>
+              {company}
+            </Text>
+          }
         </View>
       </View>
 
-      {/* Stats in a row with dotted border */}
+      {/* Stats in a row */}
       {(totalMinutes !== undefined || totalKilometers !== undefined) && (
         <View style={styles.statsRow}>
           {totalMinutes !== undefined && (
             <View style={styles.statBox}>
-              <StatLabel style={styles.statValue}>{totalMinutes}</StatLabel>
-              <StatValue style={styles.statLabel}>Total Minutes</StatValue>
+                <StatValue>{totalMinutes}</StatValue>
+                <StatLabel>
+                  Total Minutes
+                </StatLabel>
             </View>
-          )}
-          
-          {totalMinutes !== undefined && totalKilometers !== undefined && (
-            <View style={styles.statDivider} />
           )}
           
           {totalKilometers !== undefined && (
             <View style={styles.statBox}>
-              <StatLabel style={styles.statValue}>{totalKilometers}</StatLabel>
-              <StatValue style={styles.statLabel}>Total Kilometers</StatValue>
+              <StatValue>{totalKilometers}</StatValue>
+              <StatLabel>
+                Total Kilometers
+              </StatLabel>
             </View>
           )}
         </View>
       )}
     </View>
   );
-
-  const cardStyles = [
-    styles.card,
-    { 
-      backgroundColor: colors.white,
-      // borderRadius: borderRadius.lg,
-      ...shadows.md,
-    },
-    style,
-  ];
-
-  return onPress ? (
-    <TouchableOpacity 
-      style={cardStyles} 
-      onPress={onPress}
-      testID={testID}
-      accessibilityRole="button"
-      accessibilityLabel={`Profile card for ${fullName}`}
-    >
-      {cardContent}
-    </TouchableOpacity>
-  ) : (
-    <View 
-      style={cardStyles}
-      testID={testID}
-      accessibilityLabel={`Profile card for ${fullName}`}
-    >
-      {cardContent}
-    </View>
-  );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    overflow: 'hidden',
-    width: '100%',
-  },
   container: {
+    width: '100%',
     padding: 16,
+    paddingBottom: 24,
   },
-  // New centered layout styles
   centeredHeader: {
     alignItems: 'center',
     marginBottom: 24,
@@ -150,8 +138,17 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginBottom: 12,
-    borderWidth: 2,
-    borderColor: '#e0e0ff', // Light purple border to match the image
+  },
+  avatarContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    overflow: 'hidden',
+    marginBottom: 12,
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
   },
   centeredUserInfo: {
     alignItems: 'center',
@@ -159,56 +156,18 @@ const styles = StyleSheet.create({
   name: {
     textAlign: 'center',
     marginBottom: 4,
+    fontWeight: '600',
   },
   company: {
     textAlign: 'center',
+    fontWeight: '400',
   },
-  // Stats row with dotted border
   statsRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderWidth: 1,
-    borderColor: '#e0e0ff', // Light purple border
-    borderStyle: 'dashed',
-    borderRadius: 8,
-    padding: 16,
-    marginTop: 8,
+    justifyContent: 'center',
+    paddingTop: 16,
   },
   statBox: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  statDivider: {
-    width: 1,
-    backgroundColor: '#e0e0ff', // Light purple divider
-    marginHorizontal: 8,
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#6b7280',
-  },
-  // Keep original styles for backward compatibility
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  userInfo: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 8,
-  },
-  statItem: {
     alignItems: 'center',
     flex: 1,
   },
