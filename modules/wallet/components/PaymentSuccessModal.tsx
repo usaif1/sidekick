@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useThemeStore } from '@/globalStore';
 import ButtonText from '@/components/ButtonText';
@@ -23,6 +22,14 @@ interface PaymentSuccessModalProps {
    * Test ID for testing
    */
   testID?: string;
+  /**
+   * Optional callback for "Continue to Ride" action
+   */
+  onContinueToRide?: () => void;
+  /**
+   * Optional callback for "Check Wallet" action
+   */
+  onCheckWallet?: () => void;
 }
 
 /**
@@ -33,20 +40,29 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
   onClose,
   amount,
   testID = 'payment-success-modal',
+  onContinueToRide,
+  onCheckWallet,
 }) => {
-  const navigation = useNavigation();
   const { colors, typography } = useThemeStore(state => state.theme);
   
   // Handle continue to ride
   const handleContinueToRide = () => {
-    // Navigate to home screen and close modal
+    // Close modal first
     onClose();
+    // Call the callback if provided
+    if (onContinueToRide) {
+      onContinueToRide();
+    }
   };
   
   // Handle check wallet
   const handleCheckWallet = () => {
-    // Close modal (already in wallet)
+    // Close modal
     onClose();
+    // Call the callback if provided
+    if (onCheckWallet) {
+      onCheckWallet();
+    }
   };
 
   return (

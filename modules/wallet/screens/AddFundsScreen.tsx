@@ -42,13 +42,18 @@ const AddFundsScreen = () => {
       return;
     }
     
-    // Show payment success modal
+    // Show payment success modal with navigation callbacks
     showModal(
       <PaymentSuccessModal
         visible={true}
         onClose={hideModal}
         amount={parseFloat(amount)}
         testID="payment-success-modal"
+        onContinueToRide={() => navigation.navigate('home')}
+        onCheckWallet={() => {
+          // Already in wallet, so no navigation needed
+          // Or you could navigate to a specific wallet tab if needed
+        }}
       />
     );
   };
