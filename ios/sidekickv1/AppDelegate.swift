@@ -3,6 +3,7 @@ import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import GoogleMaps
+import Firebase
 
 @main
 class AppDelegate: RCTAppDelegate {
@@ -10,6 +11,7 @@ class AppDelegate: RCTAppDelegate {
     self.moduleName = "sidekick"
     self.dependencyProvider = RCTAppDependencyProvider()
     GMSServices.provideAPIKey("AIzaSyCfIkG3UgZi8Yqs6bJX1inU7YX40ugzNQg")
+    FirebaseApp.configure()
     
     // You can add your custom initial props in the dictionary below.
     // They will be passed down to the ViewController used by React Native.
