@@ -53,4 +53,11 @@ export type Theme = {
     sm: ViewStyle;
     md: ViewStyle;
   };
+  borderRadius: {
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+    xxl: number;
+  };
 };

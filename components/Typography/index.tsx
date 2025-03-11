@@ -34,7 +34,7 @@ export const Heading: React.FC<TypographyProps> = ({
   
   return (
     <Text
-      style={[styles.heading, { color: colors.textPrimary, fontSize: typography.skH1.fontSize }, style]}
+      style={[styles.heading, { color: colors.textPrimary, fontSize: typography.skH2.fontSize }, style]}
       numberOfLines={numberOfLines}
       testID={testID}
     >

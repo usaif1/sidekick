@@ -82,13 +82,13 @@ const EditProfile: React.FC<EditProfileProps> = ({ route }) => {
           accessibilityLabel="Go back"
           accessibilityRole="button"
         >
-          <Icon name="chevron-left" size={24} color={colors.primary[500]} />
+          <Icon name="chevron-left" size={24} color={colors.primary} />
         </TouchableOpacity>
         <Heading style={styles.headerTitle}>Edit Profile</Heading>
       </View>
       
       {/* Form container with blue border */}
-      <View style={[styles.formContainer, { borderColor: colors.primary[300] }]}>
+      <View style={[styles.formContainer]}>
         {/* Name input */}
         <Input
           title="Name"
@@ -154,31 +154,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
   },
   backButton: {
     padding: 8,
   },
   headerTitle: {
     flex: 1,
-    textAlign: 'center',
-    marginRight: 40, // To offset the back button and center the title
+    textAlign: 'left',
+    marginLeft: 16,
   },
   formContainer: {
     margin: 16,
     padding: 16,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderStyle: 'dashed',
+    flexDirection: 'column',
+    gap: 8,
   },
   inputContainer: {
     marginBottom: 16,
   },
   buttonContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 96,
     marginTop: 'auto', // Push to bottom
-    marginBottom: 24,
+    marginBottom: 20,
   },
 });
 

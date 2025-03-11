@@ -31,7 +31,7 @@ const UserDetails = () => {
       icon: 'edit-2',
       label: 'Edit Profile',
       controlType: 'none' as const,
-      onPress: () => navigation.navigate('Profile', { screen: 'EditProfile' }),
+      onPress: () => navigation.navigate('user', { screen: 'EditProfile' }),
       testID: 'edit-profile-button'
     },
     {

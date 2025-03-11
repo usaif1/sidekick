@@ -115,7 +115,7 @@ const Input: React.FC<InputProps> = ({
   ...restProps
 }) => {
   // Access theme values
-  const { colors, spacing, borderRadius, typography } = useThemeStore(state => state.theme);
+  const { colors, spacing, typography } = useThemeStore(state => state.theme);
   
   // State for dropdown modal
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -178,11 +178,11 @@ const Input: React.FC<InputProps> = ({
     if (variant === 'phone') {
       return (
         <View style={styles.phonePrefixContainer}>
-          <Text style={[styles.prefixText, { color: colors.textPrimary }]}>
+          <Text style={[styles.prefixText, { color: colors.highlight,fontSize: typography.skP2.fontSize }]}>
             {countryCode}
           </Text>
           <View
-            style={[styles.divider, { backgroundColor: colors.lightGray }]}
+            style={[styles.divider, { backgroundColor: colors.textSecondary }]}
           />
         </View>
       );
@@ -212,8 +212,8 @@ const Input: React.FC<InputProps> = ({
               {
                 top: 200, // This should be calculated based on input position
                 backgroundColor: colors.white,
-                borderRadius: borderRadius.md,
-                borderColor: colors.lightGray,
+                borderRadius: 20,
+                borderColor: colors.textSecondary,
               },
             ]}
           >
@@ -247,7 +247,7 @@ const Input: React.FC<InputProps> = ({
             styles.title,
             {
               color: colors.textPrimary,
-              fontSize: typography.skP1.fontSize,
+              fontSize: typography.skP2.fontSize,
               fontWeight: '500',
             },
             titleStyle,
@@ -263,8 +263,8 @@ const Input: React.FC<InputProps> = ({
         style={[
           styles.inputContainer,
           {
-            borderColor: error ? colors.error : colors.lightGray,
-            borderRadius: borderRadius.md,
+            borderColor: error ? colors.error : colors.textSecondary,
+            borderRadius: 20,
             backgroundColor: colors.white,
           },
         ]}
@@ -305,7 +305,7 @@ const Input: React.FC<InputProps> = ({
             styles.errorText,
             {
               color: colors.error,
-              fontSize: typography.skP1.fontSize,
+              fontSize: typography.skP3.fontSize,
             },
           ]}
         >
@@ -324,18 +324,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    marginBottom: 4,
+    marginBottom: 10,
+    marginLeft: 14,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    height: 48,
+    borderWidth: 2,
+    height: 64,
     overflow: 'hidden',
   },
   input: {
-    flex: 1,
-    height: '100%',
     paddingRight: 16,
   },
   dropdownIconContainer: {
@@ -353,12 +352,13 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   divider: {
-    width: 1,
-    height: 24,
-    marginRight: 8,
+    width: 2,
+    height: 20,
+    marginRight: 6,
   },
   errorText: {
     marginTop: 4,
+    marginLeft: 14,
   },
   modalOverlay: {
     flex: 1,
