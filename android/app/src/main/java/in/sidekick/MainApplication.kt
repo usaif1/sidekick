@@ -1,4 +1,4 @@
-package com.sidekickv1
+package `in`.sidekick
 
 import android.app.Application
 import com.facebook.react.PackageList

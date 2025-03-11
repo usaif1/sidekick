@@ -36,7 +36,6 @@ const LabelsPrimary: React.FC<Props> = ({
 const styles = ScaledSheet.create({
   label: {
     ...theme.typography.skLabel,
-    paddingLeft: '20@s',
   },
 });
 

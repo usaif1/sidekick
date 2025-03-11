@@ -1,21 +1,19 @@
 // dependencies
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {View, Text, ImageBackground, Dimensions, TextInput} from 'react-native';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  Dimensions,
-  TextInput,
-} from 'react-native';
+  moderateScale,
+  scale,
+  ScaledSheet,
+  verticalScale,
+} from 'react-native-size-matters';
 
 // store
 import {useThemeStore} from '@/globalStore';
 
 // components
-import {LabelPrimary} from '@/components';
-import ButtonText from '@/components/ButtonText';
+import {Divider, LabelPrimary, ButtonText, CommonTextInput} from '@/components';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
@@ -31,24 +29,14 @@ const Signup: React.FC = () => {
     >
       <View style={styles.contentContainer}>
         <View style={{width: '100%'}}>
-          <LabelPrimary>Enter your Full Name</LabelPrimary>
-          <TextInput
-            placeholder="XXXXXXXXXX"
-            style={{
-              borderWidth: 2,
-              width: '100%',
-              height: 60,
-              borderColor: theme.colors.lightGray,
-              borderRadius: 20,
-              marginTop: 12,
-              paddingLeft: 20,
-              fontWeight: '600',
-              fontSize: 16,
-            }}
-          />
+          <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
+            Enter your Full Name
+          </LabelPrimary>
+          <Divider height={10} />
+          <CommonTextInput placeholder="XXXXXXXXXX" />
         </View>
         <View style={{width: '100%'}}>
-          <LabelPrimary>
+          <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
             Enter Email ID
             <LabelPrimary
               labelColor="textSecondary"
@@ -57,35 +45,25 @@ const Signup: React.FC = () => {
               (optional)
             </LabelPrimary>
           </LabelPrimary>
-          <TextInput
-            placeholder="XXXXXXXXXX"
-            style={{
-              borderWidth: 2,
-              width: '100%',
-              height: 60,
-              borderColor: theme.colors.lightGray,
-              borderRadius: 20,
-              marginTop: 12,
-              paddingLeft: 20,
-              fontWeight: '600',
-              fontSize: 16,
-            }}
-          />
+          <Divider height={10} />
+          <CommonTextInput placeholder="XXXXXXXXXX" />
         </View>
 
         <View style={{width: '100%'}}>
-          <LabelPrimary>Enter Your Phone Number</LabelPrimary>
+          <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
+            Enter Your Phone Number
+          </LabelPrimary>
+          <Divider height={10} />
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
               borderWidth: 2,
               width: '100%',
-              height: 60,
-              borderColor: theme.colors.lightGray,
+              height: verticalScale(48),
+              borderColor: theme.colors.textSecondary,
               borderRadius: 20,
-              marginTop: 12,
-              paddingLeft: 20,
+              paddingLeft: scale(18),
               columnGap: 10,
             }}>
             <View
@@ -110,6 +88,7 @@ const Signup: React.FC = () => {
               style={{
                 fontWeight: '600',
                 paddingVertical: 0,
+                fontSize: moderateScale(15.2),
               }}
             />
           </View>
@@ -134,12 +113,12 @@ const Signup: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   background: {
     flex: 1,
   },
   contentContainer: {
-    rowGap: 16,
+    rowGap: '13@vs',
     position: 'absolute',
     bottom: 0,
     width: '100%',
@@ -148,19 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingTop: 32,
     paddingHorizontal: 24,
-    height: Dimensions.get('window').height * 0.58,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    marginTop: 12,
-    fontSize: 18,
-  },
-  label: {
-    fontSize: 18,
-    paddingLeft: 20,
+    height: '375@vs',
   },
 });
 
