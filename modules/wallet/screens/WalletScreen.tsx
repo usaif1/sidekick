@@ -24,7 +24,7 @@ const WalletScreen = () => {
   
   // Handle add funds button press
   const handleAddFunds = () => {
-    navigation.navigate('AddFundsScreen');
+    navigation.navigate('wallet', { screen: 'AddFundsScreen' });
   };
 
   // List header component

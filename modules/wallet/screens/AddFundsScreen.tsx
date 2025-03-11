@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
 import { useThemeStore } from '@/globalStore';
+import { Heading } from '@/components/Typography';
 
 // Payment method type
 type PaymentMethod = 'upi' | 'card' | 'netbanking';
@@ -54,25 +55,15 @@ const AddFundsScreen = () => {
           accessibilityLabel="Go back"
           accessibilityRole="button"
         >
-          <Icon name="chevron-left" size={24} color={colors.primary[500]} />
+          <Icon name="chevron-left" size={24} color={colors.primary} />
         </TouchableOpacity>
-        <Text 
-          style={[
-            styles.headerTitle,
-            { 
-              color: colors.textPrimary,
-              fontSize: typography.skP2.fontSize,
-            }
-          ]}
-        >
-          Add Funds
-        </Text>
+        <Heading style={styles.headerTitle}>Add Funds</Heading>
       </View>
       
       <ScrollView style={styles.content}>
         {/* Amount input section */}
         <View style={styles.section}>
-          <Text 
+          {/* <Text 
             style={[
               styles.sectionTitle,
               { 
@@ -82,10 +73,10 @@ const AddFundsScreen = () => {
             ]}
           >
             Enter Amount
-          </Text>
+          </Text> */}
           
           <Input
-            title="Amount (₹)"
+            title="Available Balance ₹56.0"
             placeholder="Enter amount"
             value={amount}
             onChangeText={setAmount}
@@ -102,9 +93,8 @@ const AddFundsScreen = () => {
                 style={[
                   styles.quickAmountButton,
                   {
-                    backgroundColor: amount === value.toString() ? colors.primary[100] : colors.lightGray,
-                    borderColor: amount === value.toString() ? colors.primary[500] : colors.lightGray,
-                    borderRadius: borderRadius.md,
+                    backgroundColor: amount === value.toString() ? colors.secondary : colors.lightGray,
+                    borderColor: amount === value.toString() ? colors.primary : colors.textSecondary,
                   }
                 ]}
                 onPress={() => handleQuickAmountSelect(value)}
@@ -117,7 +107,7 @@ const AddFundsScreen = () => {
                     }
                   ]}
                 >
-                  ₹{value}
+                 + {value}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -145,7 +135,6 @@ const AddFundsScreen = () => {
               {
                 backgroundColor: selectedMethod === 'upi' ? colors.primary[100] : colors.white,
                 borderColor: selectedMethod === 'upi' ? colors.primary[500] : colors.lightGray,
-                borderRadius: borderRadius.md,
               }
             ]}
             onPress={() => handleMethodSelect('upi')}
@@ -176,7 +165,6 @@ const AddFundsScreen = () => {
               {
                 backgroundColor: selectedMethod === 'card' ? colors.primary[100] : colors.white,
                 borderColor: selectedMethod === 'card' ? colors.primary[500] : colors.lightGray,
-                borderRadius: borderRadius.md,
               }
             ]}
             onPress={() => handleMethodSelect('card')}
@@ -207,7 +195,6 @@ const AddFundsScreen = () => {
               {
                 backgroundColor: selectedMethod === 'netbanking' ? colors.primary[100] : colors.white,
                 borderColor: selectedMethod === 'netbanking' ? colors.primary[500] : colors.lightGray,
-                borderRadius: borderRadius.md,
               }
             ]}
             onPress={() => handleMethodSelect('netbanking')}
@@ -238,7 +225,7 @@ const AddFundsScreen = () => {
             styles.summarySection,
             {
               backgroundColor: colors.lightGray,
-              borderRadius: borderRadius.md,
+              borderRadius:16
             }
           ]}
         >
@@ -276,7 +263,7 @@ const AddFundsScreen = () => {
           variant="primary" 
           onPress={handlePay}
         >
-          Pay Now
+          Pay ₹{(parseFloat(amount || '0') + 200).toFixed(2)}
         </ButtonText>
       </View>
     </SafeAreaView>
@@ -293,17 +280,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
   },
   backButton: {
     padding: 8,
-  },
-  headerTitle: {
+  },headerTitle: {
     flex: 1,
-    textAlign: 'center',
-    fontWeight: '600',
-    marginRight: 40, // To offset the back button and center the title
+    textAlign: 'left',
+    marginLeft: 16,
   },
   content: {
     flex: 1,
@@ -329,9 +312,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     margin: 4,
     borderWidth: 1,
+    borderRadius:16,
+    width:'22%'
   },
   quickAmountText: {
     fontWeight: '500',
+    textAlign:'center'
   },
   paymentOption: {
     flexDirection: 'row',
@@ -363,8 +349,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#F0F0F0',
+    paddingHorizontal:96
   },
 });
 

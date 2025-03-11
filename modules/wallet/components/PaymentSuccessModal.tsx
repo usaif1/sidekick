@@ -20,13 +20,13 @@ const PaymentSuccessModal = () => {
   // Handle continue to ride
   const handleContinueToRide = () => {
     // Navigate to home screen
-    navigation.navigate('Home');
+    navigation.navigate('home', { screen: 'HomeScreen' });
   };
   
   // Handle check wallet
   const handleCheckWallet = () => {
     // Navigate back to wallet screen
-    navigation.navigate('WalletScreen');
+    navigation.navigate('wallet', { screen: 'WalletScreen' });
   };
 
   return (
