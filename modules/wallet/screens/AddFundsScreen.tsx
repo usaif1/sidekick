@@ -127,7 +127,7 @@ const AddFundsScreen = () => {
                   style={[
                     styles.quickAmountText,
                     { 
-                      color: amount === value.toString() ? colors.primary[500] : colors.textPrimary,
+                      color: amount === value.toString() ? colors.highlight : colors.textPrimary,
                     }
                   ]}
                 >
@@ -157,14 +157,13 @@ const AddFundsScreen = () => {
             style={[
               styles.paymentOption,
               {
-                backgroundColor: selectedMethod === 'upi' ? colors.primary[100] : colors.white,
-                borderColor: selectedMethod === 'upi' ? colors.primary[500] : colors.lightGray,
+                borderColor: selectedMethod === 'upi' ? colors.primary : colors.lightGray,
               }
             ]}
             onPress={() => handleMethodSelect('upi')}
           >
             <View style={styles.paymentOptionContent}>
-              <Icon name="smartphone" size={20} color={colors.primary[500]} />
+              <Icon name="smartphone" size={20} color={colors.highlight} />
               <Text 
                 style={[
                   styles.paymentOptionText,
@@ -178,7 +177,7 @@ const AddFundsScreen = () => {
               </Text>
             </View>
             {selectedMethod === 'upi' && (
-              <Icon name="check-circle" size={20} color={colors.primary[500]} />
+              <Icon name="check-circle" size={20} color={colors.primary} />
             )}
           </TouchableOpacity>
           
@@ -187,14 +186,13 @@ const AddFundsScreen = () => {
             style={[
               styles.paymentOption,
               {
-                backgroundColor: selectedMethod === 'card' ? colors.primary[100] : colors.white,
-                borderColor: selectedMethod === 'card' ? colors.primary[500] : colors.lightGray,
+                borderColor: selectedMethod === 'card' ? colors.primary : colors.lightGray,
               }
             ]}
             onPress={() => handleMethodSelect('card')}
           >
             <View style={styles.paymentOptionContent}>
-              <Icon name="credit-card" size={20} color={colors.primary[500]} />
+              <Icon name="credit-card" size={20} color={colors.highlight} />
               <Text 
                 style={[
                   styles.paymentOptionText,
@@ -208,7 +206,7 @@ const AddFundsScreen = () => {
               </Text>
             </View>
             {selectedMethod === 'card' && (
-              <Icon name="check-circle" size={20} color={colors.primary[500]} />
+              <Icon name="check-circle" size={20} color={colors.primary} />
             )}
           </TouchableOpacity>
           
@@ -217,14 +215,13 @@ const AddFundsScreen = () => {
             style={[
               styles.paymentOption,
               {
-                backgroundColor: selectedMethod === 'netbanking' ? colors.primary[100] : colors.white,
-                borderColor: selectedMethod === 'netbanking' ? colors.primary[500] : colors.lightGray,
+                borderColor: selectedMethod === 'netbanking' ? colors.primary : colors.lightGray,
               }
             ]}
             onPress={() => handleMethodSelect('netbanking')}
           >
             <View style={styles.paymentOptionContent}>
-              <Icon name="globe" size={20} color={colors.primary[500]} />
+              <Icon name="globe" size={20} color={colors.highlight} />
               <Text 
                 style={[
                   styles.paymentOptionText,
@@ -238,7 +235,7 @@ const AddFundsScreen = () => {
               </Text>
             </View>
             {selectedMethod === 'netbanking' && (
-              <Icon name="check-circle" size={20} color={colors.primary[500]} />
+              <Icon name="check-circle" size={20} color={colors.primary} />
             )}
           </TouchableOpacity>
         </View>
