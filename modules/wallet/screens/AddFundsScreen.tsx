@@ -6,6 +6,8 @@ import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
 import { useThemeStore } from '@/globalStore';
 import { Heading } from '@/components/Typography';
+import { useModal } from '@/components/Modal/ModalProvider';
+import PaymentSuccessModal from '../components/PaymentSuccessModal';
 
 // Payment method type
 type PaymentMethod = 'upi' | 'card' | 'netbanking';
@@ -16,6 +18,7 @@ const QUICK_AMOUNTS = [100, 200, 500, 1000];
 const AddFundsScreen = () => {
   const navigation = useNavigation();
   const { colors, spacing, borderRadius, typography, shadows } = useThemeStore(state => state.theme);
+  const { showModal, hideModal } = useModal();
   
   // State for amount and payment method
   const [amount, setAmount] = useState('');
@@ -39,10 +42,13 @@ const AddFundsScreen = () => {
       return;
     }
     
-    // Navigate to payment success modal
-    navigation.navigate('PaymentSuccessModal', {
-      amount: parseFloat(amount)
-    });
+    // Show payment success modal
+    showModal(
+      <PaymentSuccessModal
+        amount={parseFloat(amount)}
+        // testID="payment-success-modal"
+      />
+    );
   };
 
   return (
@@ -55,9 +61,19 @@ const AddFundsScreen = () => {
           accessibilityLabel="Go back"
           accessibilityRole="button"
         >
-          <Icon name="chevron-left" size={24} color={colors.primary} />
+          <Icon name="chevron-left" size={24} color={colors.primary[500]} />
         </TouchableOpacity>
-        <Heading style={styles.headerTitle}>Add Funds</Heading>
+        <Text 
+          style={[
+            styles.headerTitle,
+            { 
+              color: colors.textPrimary,
+              fontSize: typography.skH2.fontSize,
+            }
+          ]}
+        >
+          Add Funds
+        </Text>
       </View>
       
       <ScrollView style={styles.content}>
@@ -258,14 +274,14 @@ const AddFundsScreen = () => {
       </ScrollView>
       
       {/* Pay button */}
-      <View style={styles.buttonContainer}>
+      {amount && <View style={styles.buttonContainer}>
         <ButtonText 
           variant="primary" 
           onPress={handlePay}
         >
           Pay ₹{(parseFloat(amount || '0') + 200).toFixed(2)}
         </ButtonText>
-      </View>
+      </View>}
     </SafeAreaView>
   );
 };
@@ -283,7 +299,8 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
-  },headerTitle: {
+  },
+  headerTitle: {
     flex: 1,
     textAlign: 'left',
     marginLeft: 16,

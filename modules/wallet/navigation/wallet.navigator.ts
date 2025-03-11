@@ -7,7 +7,7 @@ import WalletScreen from '../screens/WalletScreen';
 import AddFundsScreen from '../screens/AddFundsScreen';
 
 // components
-import PaymentSuccessModal from '../components/PaymentSuccessModal';
+// import PaymentSuccessModal from '../components/PaymentSuccessModal';
 
 const WalletNavigator = createNativeStackNavigator({
   initialRouteName: 'WalletScreen',
@@ -30,13 +30,13 @@ const WalletNavigator = createNativeStackNavigator({
         headerShown: false,
       },
     },
-    PaymentSuccessModal: {
-      screen: PaymentSuccessModal,
-      options: {
-        presentation: 'transparentModal',
-        headerShown: false,
-      },
-    },
+    // PaymentSuccessModal: {
+    //   screen: PaymentSuccessModal,
+    //   options: {
+    //     presentation: 'transparentModal',
+    //     headerShown: false,
+    //   },
+    // },
   },
 });
 

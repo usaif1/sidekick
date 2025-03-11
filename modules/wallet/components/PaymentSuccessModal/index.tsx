@@ -1,49 +1,58 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useThemeStore } from '@/globalStore';
 import ButtonText from '@/components/ButtonText';
+import CommonModal from '@/components/Modal/CommonModal';
 
-const PaymentSuccessModal = ({amount}:{amount:number}) => {
+interface PaymentSuccessModalProps {
+  /**
+   * Whether the modal is visible
+   */
+  visible: boolean;
+  /**
+   * Function to call when the modal is closed
+   */
+  onClose: () => void;
+  /**
+   * Amount added to wallet
+   */
+  amount: number;
+  /**
+   * Test ID for testing
+   */
+  testID?: string;
+}
+
+/**
+ * Modal displayed after successful payment
+ */
+const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
+  visible,
+  onClose,
+  amount,
+  testID = 'payment-success-modal',
+}) => {
   const navigation = useNavigation();
-  const { colors, spacing, borderRadius, typography } = useThemeStore(state => state.theme);
+  const { colors, typography } = useThemeStore(state => state.theme);
   
   // Handle continue to ride
   const handleContinueToRide = () => {
-    // Navigate to home screen
-    navigation.navigate('home', { screen: 'HomeScreen' });
+    // Navigate to home screen and close modal
+    onClose();
+    // navigation.navigate('rent', { screen: 'RentScreen' });
   };
   
   // Handle check wallet
   const handleCheckWallet = () => {
-    // Navigate back to wallet screen
-    navigation.navigate('wallet', { screen: 'WalletScreen' });
+    // Close modal (already in wallet)
+    onClose();
   };
 
   return (
-    <View 
-      style={[
-        styles.container,
-        { backgroundColor: 'rgba(0, 0, 0, 0.5)' }
-      ]}
-    >
-      <View 
-        style={[
-          styles.modal,
-          {
-            borderRadius: borderRadius.lg,
-          }
-        ]}
-      >
-        {/* Close button */}
-        <TouchableOpacity 
-          style={styles.closeButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Icon name="x" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-        
+    <CommonModal visible={visible} onClose={onClose} testID={testID}>
+      <View style={styles.container}>
         {/* Success icon */}
         <View 
           style={[
@@ -98,27 +107,15 @@ const PaymentSuccessModal = ({amount}:{amount:number}) => {
           </ButtonText>
         </View>
       </View>
-    </View>
+    </CommonModal>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  modal: {
-    width: '85%',
-    padding: 24,
-    alignItems: 'center',
-    position: 'relative',
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    zIndex: 1,
+    paddingTop: 16,
+    paddingBottom: 8,
   },
   iconContainer: {
     width: 64,
