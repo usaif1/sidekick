@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useThemeStore } from '@/globalStore';
+import ButtonText from '@/components/ButtonText';
 
 interface RouteParams {
   amount: number;
@@ -87,51 +88,23 @@ const PaymentSuccessModal = () => {
         </Text>
         
         {/* Action buttons */}
-        <TouchableOpacity
-          style={[
-            styles.continueButton,
-            {
-              backgroundColor: colors.primary,
-              borderRadius: borderRadius.full,
-            }
-          ]}
-          onPress={handleContinueToRide}
-        >
-          <Text 
-            style={[
-              styles.continueButtonText,
-              {
-                color: colors.white,
-                fontSize: typography.skP2.fontSize,
-              }
-            ]}
+        <View style={styles.buttonContainer}>
+          <ButtonText
+            variant="primary"
+            onPress={handleContinueToRide}
           >
             Continue to Ride
-          </Text>
-        </TouchableOpacity>
+          </ButtonText>
+        </View>
         
-        <TouchableOpacity
-          style={[
-            styles.checkWalletButton,
-            {
-              backgroundColor: colors.lightGray,
-              borderRadius: borderRadius.full,
-            }
-          ]}
-          onPress={handleCheckWallet}
-        >
-          <Text 
-            style={[
-              styles.checkWalletButtonText,
-              {
-                color: colors.textPrimary,
-                fontSize: typography.skP2.fontSize,
-              }
-            ]}
+        <View style={[styles.buttonContainer, styles.secondaryButtonContainer]}>
+          <ButtonText
+            variant="secondary"
+            onPress={handleCheckWallet}
           >
             Check Wallet
-          </Text>
-        </TouchableOpacity>
+          </ButtonText>
+        </View>
       </View>
     </View>
   );
@@ -172,22 +145,12 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     textAlign: 'center',
   },
-  continueButton: {
+  buttonContainer: {
     width: '100%',
-    paddingVertical: 12,
-    alignItems: 'center',
     marginBottom: 12,
   },
-  continueButtonText: {
-    fontWeight: '600',
-  },
-  checkWalletButton: {
-    width: '100%',
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  checkWalletButtonText: {
-    fontWeight: '600',
+  secondaryButtonContainer: {
+    marginBottom: 0,
   },
 });
 

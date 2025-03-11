@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useThemeStore } from '@/globalStore';
+import ButtonText from '@/components/ButtonText';
 
 interface SecurityDepositBarProps {
   /**
@@ -25,7 +26,7 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
   onWithdraw,
   testID = 'security-deposit-bar',
 }) => {
-  const { colors, spacing, borderRadius, typography } = useThemeStore(state => state.theme);
+  const { colors, typography } = useThemeStore(state => state.theme);
 
   return (
     <View 
@@ -37,13 +38,13 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
       ]}
       testID={testID}
     >
-      <View style={styles.depositContainer}>
+      <View style={[styles.depositContainer, {backgroundColor: colors.lightGray}]}>
         <Text 
           style={[
             styles.label,
             {
               color: colors.textPrimary,
-              fontSize: typography.skP1.fontSize,
+              fontSize: typography.skP2.fontSize,
             }
           ]}
         >
@@ -54,7 +55,7 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
             styles.amount,
             {
               color: colors.textPrimary,
-              fontSize: typography.skP1.fontSize,
+              fontSize: typography.skP2.fontSize,
             }
           ]}
         >
@@ -62,29 +63,14 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
         </Text>
       </View>
       
-      <TouchableOpacity
-        style={[
-          styles.withdrawButton,
-          
-        ]}
-        onPress={onWithdraw}
-        accessibilityLabel="Withdraw security deposit"
-        accessibilityRole="button"
-        testID={`${testID}-withdraw-button`}
-      >
-        <Text 
-          style={[
-            styles.buttonText,
-            {
-              color: colors.white,
-              backgroundColor:colors.highlight,
-              fontSize: typography.skP1.fontSize,
-            }
-          ]}
+      <View style={styles.buttonWrapper}>
+        <ButtonText
+          variant="highlight"
+          onPress={onWithdraw}
         >
           Withdraw
-        </Text>
-      </TouchableOpacity>
+        </ButtonText>
+      </View>
     </View>
   );
 };
@@ -101,6 +87,10 @@ const styles = StyleSheet.create({
   depositContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent:'space-between',
+    width:'65%',
+    padding:10,
+    borderRadius:16
   },
   label: {
     marginRight: 8,
@@ -108,13 +98,9 @@ const styles = StyleSheet.create({
   amount: {
     fontWeight: '600',
   },
-  withdrawButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  buttonText: {
-    fontWeight: '600',
-  },
+  buttonWrapper: {
+    width: 120, // Adjust width as needed
+  }
 });
 
 export default SecurityDepositBar; 

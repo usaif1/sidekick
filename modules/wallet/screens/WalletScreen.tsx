@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView,TouchableOpacity } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, StyleSheet, SafeAreaView,TouchableOpacity,Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import WalletCard from '../components/WalletCard';
 import SecurityDepositBar from '../components/SecurityDepositBar';
@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/Feather";
 import { Heading } from '@/components/Typography';
 const WalletScreen = () => {
   const navigation = useNavigation();
-  const { colors } = useThemeStore(state => state.theme);
+  const { colors,typography } = useThemeStore(state => state.theme);
   
   // Use mock data
   const [walletData, setWalletData] = useState(mockWalletData);
@@ -27,11 +27,33 @@ const WalletScreen = () => {
     navigation.navigate('AddFundsScreen');
   };
 
+  // List header component
+  const ListHeaderComponent = useCallback(() => (
+    <View 
+      style={[
+        styles.headerContainer,
+        { borderBottomColor: colors.textSecondary }
+      ]}
+    >
+      <Text 
+        style={[
+          styles.headerText,
+          { 
+            color: colors.textSecondary,
+            fontSize: typography.skP2.fontSize,
+          }
+        ]}
+      >
+        Recent Rides
+      </Text>
+    </View>
+  ), [colors.textPrimary, typography.skP1.fontSize]);
+
   return (
     <SafeAreaView 
       style={[
         styles.container,
-        { backgroundColor: colors.white }
+        { backgroundColor: colors.lightGray }
       ]}
     >
       {/* Header with back button */}
@@ -63,6 +85,7 @@ const WalletScreen = () => {
         
         {/* Transaction list */}
         <View style={styles.transactionsContainer}>
+          <ListHeaderComponent />
           <TransactionList 
             transactions={walletData.transactions}
             testID="transactions-list"
@@ -102,6 +125,17 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     marginLeft: 16,
+  },
+  headerContainer: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderStyle:'dashed',
+    marginBottom:20
+  },
+  headerText: {
+    fontWeight: '600',
+    textAlign:'center'
   },
 });
 

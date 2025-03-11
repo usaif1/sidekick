@@ -49,34 +49,11 @@ const TransactionList: React.FC<TransactionListProps> = ({
     </View>
   ), [colors.textPrimary]);
 
-  // List header component
-  const ListHeaderComponent = useCallback(() => (
-    <View 
-      style={[
-        styles.headerContainer,
-        { borderBottomColor: colors.lightGray }
-      ]}
-    >
-      <Text 
-        style={[
-          styles.headerText,
-          { 
-            color: colors.textPrimary,
-            fontSize: typography.skP1.fontSize,
-          }
-        ]}
-      >
-        Recent Rides
-      </Text>
-    </View>
-  ), [colors.textPrimary, typography.skP1.fontSize]);
-
   return (
     <FlatList
       data={transactions}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
-      ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={ListEmptyComponent}
       initialNumToRender={8}
       maxToRenderPerBatch={5}

@@ -41,7 +41,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
             styles.name,
             {
               color: colors.textPrimary,
-              fontSize: typography.skP1.fontSize,
+              fontSize: typography.skP2.fontSize,
             }
           ]}
           numberOfLines={1}
@@ -52,8 +52,8 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
           style={[
             styles.dateTime,
             {
-              color: colors.textPrimary,
-              fontSize: typography.skP2.fontSize,
+              color: colors.textSecondary,
+              fontSize: typography.skP3.fontSize,
             }
           ]}
         >

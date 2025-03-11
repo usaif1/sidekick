@@ -1,6 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useThemeStore } from '@/globalStore';
+import { View, StyleSheet } from 'react-native';
+import ButtonText from '@/components/ButtonText';
 
 interface AddFundsButtonProps {
   /**
@@ -20,57 +20,32 @@ const AddFundsButton: React.FC<AddFundsButtonProps> = ({
   onPress,
   testID = 'add-funds-button',
 }) => {
-  const { colors, spacing, 
-    // borderRadius,
-     typography } = useThemeStore(state => state.theme);
-
   return (
-    <TouchableOpacity
-      style={[
-        styles.button,
-        {
-          backgroundColor: colors.primary,
-          // borderRadius: borderRadius.full,
-        }
-      ]}
-      onPress={onPress}
-      accessibilityLabel="Add funds to wallet"
-      accessibilityRole="button"
-      testID={testID}
-    >
-      <Text 
-        style={[
-          styles.buttonText,
-          {
-            color: colors.textPrimary,
-            fontSize: typography.skP1.fontSize,
-          }
-        ]}
-      >
-        Add Funds
-      </Text>
-    </TouchableOpacity>
+    <View style={styles.container} testID={testID}>
+      <View style={styles.buttonWrapper}>
+        <ButtonText
+          variant="primary"
+          onPress={onPress}
+        >
+          Add Funds
+        </ButtonText>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
+  container: {
     position: 'absolute',
     bottom: 24,
-    alignSelf: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
   },
-  buttonText: {
-    fontWeight: '600',
-  },
+  buttonWrapper: {
+    width: '60%', // Adjust width as needed
+    maxWidth: 300,
+  }
 });
 
 export default AddFundsButton; 
