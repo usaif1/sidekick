@@ -64,7 +64,7 @@ const WalletScreen = () => {
           accessibilityLabel="Go back"
           accessibilityRole="button"
         >
-          <Icon name="chevron-left" size={24} color={colors.primary} />
+          <Icon name="chevron-left" size={24} color={colors.highlight} />
         </TouchableOpacity>
         <Heading style={styles.headerTitle}>Wallet</Heading>
       </View>

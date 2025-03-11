@@ -68,7 +68,7 @@ const AddFundsScreen = () => {
           accessibilityLabel="Go back"
           accessibilityRole="button"
         >
-          <Icon name="chevron-left" size={24} color={colors.primary[500]} />
+          <Icon name="chevron-left" size={24} color={colors.highlight} />
         </TouchableOpacity>
         <Text 
           style={[

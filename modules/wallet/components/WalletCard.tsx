@@ -60,20 +60,32 @@ const WalletCard: React.FC<WalletCardProps> = ({
       </Text>
       
       {/* Diagonal pattern background */}
-      <View style={styles.patternContainer}>
+      {/* <View style={styles.patternContainer}>
         {Array.from({ length: 10 }).map((_, index) => (
           <View 
             key={index} 
             style={[
               styles.diagonalLine,
               {
-                backgroundColor: colors.primary[300],
-                top: index * 15,
+                backgroundColor: colors.highlight,
+                top: index * 10,
               }
             ]} 
           />
         ))}
-      </View>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <View 
+            key={index} 
+            style={[
+              styles.diagonalLineReverse,
+              {
+                backgroundColor: colors.highlight,
+                top: index * 10,
+              }
+            ]} 
+          />
+        ))}
+      </View> */}
     </View>
   );
 };
@@ -109,8 +121,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 1,
     width: '200%',
-    left: -50,
+    top:50,
+    left: 50,
     transform: [{ rotate: '-10deg' }],
+    opacity: 0.5,
+  },
+  diagonalLineReverse: {
+    position: 'absolute',
+    height: 1,
+    top:50,
+    width: '200%',
+    right: 50,
+    transform: [{ rotate: '10deg' }],
     opacity: 0.5,
   },
 });

@@ -72,7 +72,7 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
         <View 
           style={[
             styles.iconContainer,
-            { backgroundColor: colors.primary[500] }
+            { backgroundColor: colors.highlight }
           ]}
         >
           <Icon name="check" size={32} color={colors.white} />
