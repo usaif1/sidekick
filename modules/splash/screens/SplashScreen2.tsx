@@ -66,6 +66,7 @@ const SplashScreenCarousel: React.FC = () => {
 
   const handleCompleteOnboarding = () => {
     onboardingStorage.set('onboarding_complete', 'true');
+    // @ts-ignore
     navigation.navigate('screen3'); // Replace with your main screen name
   };
 

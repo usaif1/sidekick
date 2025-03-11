@@ -1,35 +1,24 @@
 // dependencies
 import React from 'react';
 import {View} from 'react-native';
+import {scale} from 'react-native-size-matters';
 
 // components
 import ButtonText from '@/components/ButtonText';
+import SideKickLogo from '../assets/splash_finish.svg';
 
 // assets
-import SideKickLogo from '../assets/splash_finish.svg';
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useGlobalStore} from '@/globalStore';
 
-const SplashScreen1: React.FC = () => {
-  const {theme} = useThemeStore();
+// styles
+import {splashStyles} from '../splashStyles';
 
+const SplashScreen3: React.FC = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.colors.primary,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={splashStyles.layoutBackground}>
       <SideKickLogo />
-      <View
-        style={{
-          width: '100%',
-          position: 'absolute',
-          bottom: 40,
-          left: 0,
-          alignItems: 'center',
-        }}>
-        <View style={{width: 220}}>
+      <View style={splashStyles.bottomButtonContainer}>
+        <View style={{width: scale(179)}}>
           <ButtonText
             onPress={() => {
               useGlobalStore.setState(prevState => ({
@@ -46,4 +35,4 @@ const SplashScreen1: React.FC = () => {
   );
 };
 
-export default SplashScreen1;
+export default SplashScreen3;

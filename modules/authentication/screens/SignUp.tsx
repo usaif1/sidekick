@@ -1,5 +1,4 @@
-import ButtonText from '@/components/ButtonText';
-import {useThemeStore} from '@/globalStore';
+// dependencies
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
@@ -8,12 +7,19 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  TextInput,
 } from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
+
+// store
+import {useThemeStore} from '@/globalStore';
+
+// components
+import {LabelPrimary} from '@/components';
+import ButtonText from '@/components/ButtonText';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
-const Login = () => {
+const Signup: React.FC = () => {
   const {theme} = useThemeStore();
 
   const navigation = useNavigation();
@@ -25,7 +31,7 @@ const Login = () => {
     >
       <View style={styles.contentContainer}>
         <View style={{width: '100%'}}>
-          <Text style={styles.label}>Enter your full name</Text>
+          <LabelPrimary>Enter your Full Name</LabelPrimary>
           <TextInput
             placeholder="XXXXXXXXXX"
             style={{
@@ -42,18 +48,15 @@ const Login = () => {
           />
         </View>
         <View style={{width: '100%'}}>
-          <Text style={styles.label}>
+          <LabelPrimary>
             Enter Email ID
-            <Text
-              style={{
-                color: theme.colors.lightGray,
-                fontWeight: '600',
-                fontStyle: 'italic',
-              }}>
+            <LabelPrimary
+              labelColor="textSecondary"
+              customStyles={{fontStyle: 'italic'}}>
               {' '}
               (optional)
-            </Text>
-          </Text>
+            </LabelPrimary>
+          </LabelPrimary>
           <TextInput
             placeholder="XXXXXXXXXX"
             style={{
@@ -71,12 +74,11 @@ const Login = () => {
         </View>
 
         <View style={{width: '100%'}}>
-          <Text style={styles.label}>Enter Your Phone Number</Text>
+          <LabelPrimary>Enter Your Phone Number</LabelPrimary>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-
               borderWidth: 2,
               width: '100%',
               height: 60,
@@ -86,12 +88,17 @@ const Login = () => {
               paddingLeft: 20,
               columnGap: 10,
             }}>
-            <View style={{flexDirection: 'row', columnGap: 10}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                columnGap: 10,
+                alignItems: 'center',
+              }}>
               <Text
                 style={{
                   color: theme.colors.highlight,
-                  fontWeight: '600',
                   fontSize: 16,
+                  fontFamily: 'PlusJakartaSans-Bold',
                 }}>
                 +91{' '}
               </Text>
@@ -99,8 +106,10 @@ const Login = () => {
             </View>
             <TextInput
               placeholder="XXXXXXXXXX"
+              placeholderTextColor={theme.colors.textSecondary}
               style={{
                 fontWeight: '600',
+                paddingVertical: 0,
               }}
             />
           </View>
@@ -114,6 +123,7 @@ const Login = () => {
           <ButtonText
             variant="primary"
             onPress={() => {
+              //@ts-ignore
               navigation.navigate('otp');
             }}>
             Continue
@@ -154,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Signup;

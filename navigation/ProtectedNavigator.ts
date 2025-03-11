@@ -6,11 +6,12 @@ import HomeNavigator from '@/modules/home/navigation/home.navigator';
 import UserNavigator from '@/modules/user/navigation/user.navigator';
 import WalletNavigator from '@/modules/wallet/navigation/wallet.navigator';
 
+
 const ProtectedNavigator = createNativeStackNavigator({
-  initialRouteName: 'HomeScreen',
+  initialRouteName: 'home',
   screens: {
-    HomeScreen: HomeNavigator,
-    User: UserNavigator,
+    home: HomeNavigator,
+    user: UserNavigator,
     Wallet: WalletNavigator,
   },
   screenOptions: {

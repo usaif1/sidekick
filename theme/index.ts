@@ -173,3 +173,4 @@ export const darkTheme: Theme = {
     body: {...lightTheme.typography.body, color: darkColors.textSecondary},
   },
 };
+

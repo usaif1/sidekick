@@ -1,41 +1,28 @@
 // dependencies
-
 import React from 'react';
 import {View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 // components
 import ButtonText from '@/components/ButtonText';
 
 // assets
 import SideKickLogo from '../assets/sidekick_logo.svg';
-import {useThemeStore} from '@/globalStore';
-import {useNavigation} from '@react-navigation/native';
+
+// styles
+import {splashStyles} from '../splashStyles';
 
 const SplashScreen1: React.FC = () => {
-  const {theme} = useThemeStore();
-
   const navigation = useNavigation();
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.colors.primary,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View style={splashStyles.layoutBackground}>
       <SideKickLogo />
-      <View
-        style={{
-          width: '100%',
-          position: 'absolute',
-          bottom: 40,
-          left: 0,
-          alignItems: 'center',
-        }}>
+      <View style={splashStyles.bottomButtonContainer}>
         <View style={{width: 220}}>
           <ButtonText
             onPress={() => {
+              // @ts-ignore
               navigation.navigate('screen2');
             }}
             variant="secondary">

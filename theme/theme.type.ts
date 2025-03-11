@@ -1,5 +1,5 @@
 // dependencies
-import {TextStyle, ViewStyle} from 'react-native';
+import {ViewStyle, TextStyle} from 'react-native';
 
 export type ColorPalette = {
   primary: string; // Spring Green
@@ -15,13 +15,29 @@ export type ColorPalette = {
   white: string;
 };
 
+type CustomTextStyle = {
+  fontSize: number | undefined;
+  lineHeight: number | undefined;
+  fontFamily: string;
+  fontWeight: TextStyle['fontWeight'];
+};
+
 export type Theme = {
   colors: ColorPalette;
   typography: {
-    heading: TextStyle;
-    subheading: TextStyle;
-    body: TextStyle;
-    fontSize: FontSizeEnum;
+    skH1: CustomTextStyle;
+    skH2: CustomTextStyle;
+    skH3: CustomTextStyle;
+    skP1: CustomTextStyle;
+    skP2: CustomTextStyle;
+    skP3: CustomTextStyle;
+    skButtonLarge: CustomTextStyle;
+    skButtonMedium: CustomTextStyle;
+    skButtonSmall: CustomTextStyle;
+    skButtonTiny: CustomTextStyle;
+    skB1: CustomTextStyle;
+    skB2: CustomTextStyle;
+    skLabel: CustomTextStyle;
   };
   spacing: {
     xs: number;
