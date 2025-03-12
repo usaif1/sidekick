@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
-import { ModalProvider } from '@/components/Modal/ModalProvider';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {NavigationContainer} from '@react-navigation/native';
+import {ModalProvider} from '@/components/Modal/ModalProvider';
 import AppNavigator from '@/navigation';
 
 // navigation
@@ -22,17 +22,17 @@ function App(): React.JSX.Element {
   useEffect(() => {
     requestLocationPermission();
     Geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         if (position.mocked) {
           console.log('Location is mocked');
         } else {
           console.log('Location is genuine');
         }
       },
-      (error) => {
+      error => {
         console.log('Error getting location:', error);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   }, []);
 
@@ -43,7 +43,8 @@ function App(): React.JSX.Element {
           <SplashNavigation />
         ) : loggedIn ? (
           <ModalProvider>
-          <ProtectedNavigation /></ModalProvider>
+            <ProtectedNavigation />
+          </ModalProvider>
         ) : (
           <AuthNavigation />
         )}
