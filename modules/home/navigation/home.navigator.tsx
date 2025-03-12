@@ -2,10 +2,14 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Text} from 'react-native';
 
+// navigators
+// import UserNavigator from '@/modules/user/navigation/user.navigator';
+// import WalletNavigator from '@/modules/wallet/navigation/wallet.navigator';
+
 // screens
 import RentScreen from '../screens/RentScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import WalletScreen from '../screens/WalletScreen';
+import WalletScreen from '@/modules/wallet/screens/WalletScreen';
+import UserScreen from '@/modules/user/screens/UserDetails';
 
 // assets
 import RentScooterIcon from '../assets/rentScooterIcon.svg';
@@ -18,14 +22,16 @@ import ProfileIconFilled from '../assets/profileIconFilled.svg';
 // store
 import {useThemeStore} from '@/globalStore';
 
-const theme = useThemeStore.getState().theme;
+const Tab = createBottomTabNavigator();
 
 const TabBarLabel = ({focused, title}: {focused: boolean; title: string}) => {
+  const {colors} = useThemeStore(state => state.theme);
+
   return (
     <Text
       style={{
-        color: focused ? theme.colors.highlight : theme.colors.textSecondary,
-        fontWeight: 600,
+        color: focused ? colors.highlight : colors.textSecondary,
+        fontWeight: '600',
         fontSize: 10,
         lineHeight: 10,
         letterSpacing: 0,
@@ -37,52 +43,59 @@ const TabBarLabel = ({focused, title}: {focused: boolean; title: string}) => {
   );
 };
 
-const HomeNavigator = createBottomTabNavigator({
-  initialRouteName: 'Rent',
-  screens: {
-    Wallet: {
-      screen: WalletScreen,
-      options: {
-        tabBarIcon: ({focused}) => {
-          return <>{focused ? <WalletIconFilled /> : <WalletIcon />}</>;
+const HomeNavigator = () => {
+  const {colors} = useThemeStore(state => state.theme);
+
+  return (
+    <Tab.Navigator
+      initialRouteName="Rent"
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          height: 90,
+          paddingTop: 10,
+          backgroundColor: colors.white,
         },
-        tabBarLabel: ({focused}) => {
-          return <TabBarLabel focused={focused} title="Wallet" />;
-        },
-      },
-    },
-    Rent: {
-      screen: RentScreen,
-      options: {
-        tabBarIcon: ({focused}) => {
-          return (
-            <>{focused ? <RentScooterIconFilled /> : <RentScooterIcon />}</>
-          );
-        },
-        tabBarLabel: ({focused}) => {
-          return <TabBarLabel focused={focused} title="Rent" />;
-        },
-      },
-    },
-    Profile: {
-      screen: ProfileScreen,
-      options: {
-        tabBarIcon: ({focused}) => {
-          return <>{focused ? <ProfileIconFilled /> : <ProfileIcon />}</>;
-        },
-        tabBarLabel: ({focused}) => {
-          return <TabBarLabel focused={focused} title="Profile" />;
-        },
-      },
-    },
-  },
-  screenOptions: {
-    headerShown: false,
-    tabBarStyle: {
-      height: 90,
-      paddingTop: 10,
-    },
-  },
-});
+      }}
+    >
+      <Tab.Screen
+        name="Wallet"
+        component={WalletScreen}
+        options={{
+          tabBarIcon: ({focused}) => {
+            return <>{focused ? <WalletIconFilled /> : <WalletIcon />}</>;
+          },
+          tabBarLabel: ({focused}) => {
+            return <TabBarLabel focused={focused} title="Wallet" />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Rent"
+        component={RentScreen}
+        options={{
+          tabBarIcon: ({focused}) => {
+            return <>{focused ? <RentScooterIconFilled /> : <RentScooterIcon />}</>;
+          },
+          tabBarLabel: ({focused}) => {
+            return <TabBarLabel focused={focused} title="Rent" />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={UserScreen}
+        options={{
+          tabBarIcon: ({focused}) => {
+            return <>{focused ? <ProfileIconFilled /> : <ProfileIcon />}</>;
+          },
+          tabBarLabel: ({focused}) => {
+            return <TabBarLabel focused={focused} title="Profile" />;
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 export default HomeNavigator;

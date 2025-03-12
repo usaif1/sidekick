@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import useLocationStore from '../store/locationStore';
 
 // Assets

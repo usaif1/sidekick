@@ -45,9 +45,19 @@ export type Theme = {
     md: number;
     lg: number;
     xl: number;
+    xxl: number;
+    xxxl: number;
+    xxxxl: number;
   };
   shadows: {
     sm: ViewStyle;
     md: ViewStyle;
+  };
+  borderRadius: {
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+    xxl: number;
   };
 };
