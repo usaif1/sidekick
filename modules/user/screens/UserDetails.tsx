@@ -1,21 +1,24 @@
 import {View, StyleSheet, SafeAreaView} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+
+// components
 import ProfileCard from '@/modules/user/components/ProfileCard';
 import Menu from '@/modules/user/components/Menu';
 import SupportModal from '@/modules/user/components/SupportModal';
 import {useModal} from '@/components/Modal/ModalProvider';
-import {useThemeStore} from '@/globalStore';
 import Divider from '@/components/Divider';
+import Profile from '../assets/profile.svg';
+import Notification from '../assets/notification.svg';
+import Help from '../assets/help.svg';
+import {useThemeStore} from '@/globalStore';
 
-// You can import a profile image or use a require statement
-// const profileImage = require('../assets/profile-image.jpg');
+const {colors} = useThemeStore.getState().theme;
 
-const UserDetails = () => {
+const UserDetails: React.FC = () => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const {showModal, hideModal} = useModal();
-  const {colors} = useThemeStore(state => state.theme);
 
   // User data
   const userData = {
@@ -27,17 +30,19 @@ const UserDetails = () => {
   // Menu items with the notifications item using a switch
   const menuItems = [
     {
-      icon: 'edit-2',
+      icon: Profile,
       label: 'Edit Profile',
       controlType: 'none' as const,
+      // @ts-ignore
       onPress: () => navigation.navigate('user', {screen: 'EditProfile'}),
       testID: 'edit-profile-button',
     },
     {
-      icon: 'bell',
+      icon: Notification,
       label: 'Show Notifications',
       controlType: 'switch' as const,
       isToggled: notificationsEnabled,
+      // @ts-ignore
       onToggle: value => {
         setNotificationsEnabled(value);
         console.log('Notifications toggled:', value);
@@ -46,7 +51,7 @@ const UserDetails = () => {
       testID: 'notifications-button',
     },
     {
-      icon: 'help-circle',
+      icon: Help,
       label: 'Need Help?',
       controlType: 'none' as const,
       onPress: () =>
@@ -85,11 +90,11 @@ const UserDetails = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.appBaseBg,
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
   profileCard: {
     marginBottom: 16,

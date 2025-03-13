@@ -27,7 +27,7 @@ const RentScreen: React.FC = () => {
           return;
         }
       }
-      getCurrentLocation();
+      // getCurrentLocation();
     };
 
     const getCurrentLocation = () => {
@@ -55,6 +55,8 @@ const RentScreen: React.FC = () => {
     };
 
     requestLocationPermission();
+
+    getCurrentLocation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

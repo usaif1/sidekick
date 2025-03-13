@@ -13,6 +13,7 @@ export type ColorPalette = {
   redFade: string; // Red Gradient or Accent color
   blueFade: string; // Blue Gradient or Accent color
   white: string;
+  appBaseBg: string;
 };
 
 type CustomTextStyle = {

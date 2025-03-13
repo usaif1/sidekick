@@ -1,8 +1,16 @@
 export {default as ButtonText} from './ButtonText';
 export {default as ButtonWithIcon} from './ButtonWithIcon';
 export {default as LabelPrimary} from './LabelPrimary';
-export {default as H1} from './Typography/H1';
-export {default as P1} from './Typography/P1';
 export {default as Divider} from './Divider';
 export {default as CommonTextInput} from './CommonTextInput';
+export {default as Switch} from './Switch';
+export {default as BackArrowButton} from './BackArrowButton';
+
+// Typography
+export {default as H1} from './Typography/H1';
+export {default as H2} from './Typography/H2';
 export {default as H3} from './Typography/H3';
+export {default as P1} from './Typography/P1';
+export {default as P2} from './Typography/P2';
+export {default as P3} from './Typography/P3';
+export {default as B2} from './Typography/B2';

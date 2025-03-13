@@ -1,12 +1,6 @@
-// dependencies
 import {Text, TextStyle} from 'react-native';
 import React, {ReactNode} from 'react';
-import {ScaledSheet} from 'react-native-size-matters';
-
-// store
 import {useThemeStore} from '@/globalStore';
-
-// types
 import {ColorSelector} from '@/theme/colors';
 
 type Props = {
@@ -15,29 +9,24 @@ type Props = {
   customStyles?: TextStyle;
 };
 
-const {theme} = useThemeStore.getState();
-
-const H1: React.FC<Props> = ({
+const B2: React.FC<Props> = ({
   children,
   textColor = 'textPrimary',
   customStyles,
 }) => {
+  // Get fresh theme data inside component
+  const {theme} = useThemeStore();
+
   return (
     <Text
       style={[
-        styles.textStyle,
+        theme.typography.skB2, // Dynamic typography from theme
         {color: theme.colors[textColor]},
-        customStyles,
+        customStyles, // Custom styles come last for proper override
       ]}>
       {children}
     </Text>
   );
 };
 
-export default H1;
-
-const styles = ScaledSheet.create({
-  textStyle: {
-    ...theme.typography.skH1,
-  },
-});
+export default B2;

@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Feather';
 import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
 import {useThemeStore} from '@/globalStore';
-import {Heading} from '@/components/Typography';
 
 interface EditProfileProps {
   route?: {
@@ -19,7 +17,7 @@ interface EditProfileProps {
 
 const EditProfile: React.FC<EditProfileProps> = ({route}) => {
   const navigation = useNavigation();
-  const {colors, spacing} = useThemeStore(state => state.theme);
+  const {colors} = useThemeStore(state => state.theme);
 
   // Initialize form state with route params or defaults
   const [name, setName] = useState(route?.params?.initialName || '');
@@ -74,24 +72,13 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header with back button */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-          accessibilityLabel="Go back"
-          accessibilityRole="button">
-          <Icon name="chevron-left" size={24} color={colors.highlight} />
-        </TouchableOpacity>
-        <Heading style={styles.headerTitle}>Edit Profile</Heading>
-      </View>
-
       {/* Form container with blue border */}
       <View style={[styles.formContainer]}>
         {/* Name input */}
         <Input
           title="Name"
-          placeholder="Enter your name"
+          placeholder="XXXXXXXXXX"
+          placeholderTextColor={colors.textSecondary}
           value={name}
           onChangeText={setName}
           error={errors.name}
@@ -104,7 +91,8 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
         {/* Email input */}
         <Input
           title="Email Address"
-          placeholder="Enter your email"
+          placeholder="XXXXXXXXXX"
+          placeholderTextColor={colors.textSecondary}
           value={email}
           onChangeText={setEmail}
           error={errors.email}
@@ -117,7 +105,8 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
         {/* Phone input */}
         <Input
           title="Phone"
-          placeholder="Enter your phone number"
+          placeholder="XXXXXXXXXX"
+          placeholderTextColor={colors.textSecondary}
           value={phone}
           onChangeText={setPhone}
           error={errors.phone}
@@ -144,20 +133,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'left',
-    marginLeft: 16,
   },
   formContainer: {
     margin: 16,

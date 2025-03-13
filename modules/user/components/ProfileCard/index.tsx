@@ -1,16 +1,13 @@
+// dependencies
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ViewStyle,
-  Text,
-  Image,
-} from 'react-native';
-import Avatar from '@/components/Avatar';
-import {StatLabel, StatValue} from '@/components/Typography';
+import {View, StyleSheet, ViewStyle, Image} from 'react-native';
+
+// store
 import {useThemeStore} from '@/globalStore';
-import {H3} from '@/components';
+
+// components
+import {B2, H1, H3, P3} from '@/components';
+import Avatar from '@/components/Avatar';
 
 interface ProfileCardProps {
   /**
@@ -59,13 +56,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   company,
   totalMinutes,
   totalKilometers,
-  onPress,
+
   onAvatarPress,
   style,
   testID = 'profile-card',
   profileImage,
 }) => {
-  const {colors, typography} = useThemeStore(state => state.theme);
+  const {colors} = useThemeStore(state => state.theme);
 
   return (
     <View
@@ -90,18 +87,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
         <View style={styles.centeredUserInfo}>
           <H3>{fullName}</H3>
-          {company && (
-            <Text
-              style={[
-                styles.company,
-                {
-                  fontSize: typography.skH3.fontSize,
-                  color: colors.textSecondary,
-                },
-              ]}>
-              {company}
-            </Text>
-          )}
+          {company && <P3>{company}</P3>}
         </View>
       </View>
 
@@ -110,15 +96,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <View style={styles.statsRow}>
           {totalMinutes !== undefined && (
             <View style={styles.statBox}>
-              <StatValue>{totalMinutes}</StatValue>
-              <StatLabel>Total Minutes</StatLabel>
+              <H1>{totalMinutes}</H1>
+              <B2 textColor="textSecondary">Total Minutes</B2>
             </View>
           )}
 
           {totalKilometers !== undefined && (
             <View style={styles.statBox}>
-              <StatValue>{totalKilometers}</StatValue>
-              <StatLabel>Total Kilometers</StatLabel>
+              <H1>{totalKilometers}</H1>
+              <B2 textColor="textSecondary">Total Kilometers</B2>
             </View>
           )}
         </View>

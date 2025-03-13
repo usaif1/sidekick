@@ -17,7 +17,7 @@ type Props = {
 
 const {theme} = useThemeStore.getState();
 
-const H1: React.FC<Props> = ({
+const H2: React.FC<Props> = ({
   children,
   textColor = 'textPrimary',
   customStyles,
@@ -34,10 +34,10 @@ const H1: React.FC<Props> = ({
   );
 };
 
-export default H1;
+export default H2;
 
 const styles = ScaledSheet.create({
   textStyle: {
-    ...theme.typography.skH1,
+    ...theme.typography.skH2,
   },
 });

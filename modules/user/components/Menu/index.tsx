@@ -1,21 +1,21 @@
+// dependencies
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import {View, TouchableOpacity, StyleProp, ViewStyle} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
+import {SvgProps} from 'react-native-svg';
+
+// store
 import {useThemeStore} from '@/globalStore';
-import Icon from 'react-native-vector-icons/Feather';
+
+//components
 import Switch from '@/components/Switch';
+import {H3} from '@/components';
 
 interface MenuItem {
   /**
    * Icon name from the icon library
    */
-  icon: string;
+  icon: React.FC<SvgProps>;
   /**
    * Label text for the menu item
    */
@@ -89,15 +89,8 @@ const Menu: React.FC<MenuProps> = ({items, style, testID = 'menu'}) => {
           disabled={item.controlType === 'switch'} // Disable press on the entire row for switch items
         >
           <View style={styles.leftContent}>
-            <Icon
-              name={item.icon}
-              size={20}
-              color={colors.textPrimary}
-              style={styles.icon}
-            />
-            <Text style={[styles.label, {color: colors.textPrimary}]}>
-              {item.label}
-            </Text>
+            <item.icon style={styles.icon} />
+            <H3>{item.label}</H3>
           </View>
 
           {item.controlType === 'switch' && (
@@ -115,7 +108,7 @@ const Menu: React.FC<MenuProps> = ({items, style, testID = 'menu'}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     overflow: 'hidden',
   },

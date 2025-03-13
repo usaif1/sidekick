@@ -12,21 +12,26 @@ import {ColorSelector} from '@/theme/colors';
 type Props = {
   children: ReactNode;
   textColor?: ColorSelector;
+  weight?: TextStyle['fontWeight'];
   customStyles?: TextStyle;
 };
 
 const {theme} = useThemeStore.getState();
 
-const H1: React.FC<Props> = ({
+const P2: React.FC<Props> = ({
   children,
   textColor = 'textPrimary',
   customStyles,
+  weight = '500',
 }) => {
   return (
     <Text
       style={[
-        styles.textStyle,
-        {color: theme.colors[textColor]},
+        styles.textBase,
+        {
+          color: theme.colors[textColor],
+          fontWeight: weight,
+        },
         customStyles,
       ]}>
       {children}
@@ -34,10 +39,10 @@ const H1: React.FC<Props> = ({
   );
 };
 
-export default H1;
-
 const styles = ScaledSheet.create({
-  textStyle: {
-    ...theme.typography.skH1,
+  textBase: {
+    ...theme.typography.skP2,
   },
 });
+
+export default P2;

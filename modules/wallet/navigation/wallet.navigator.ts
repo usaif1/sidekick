@@ -1,6 +1,5 @@
 // dependencies
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // screens
 import WalletScreen from '../screens/WalletScreen';
@@ -19,15 +18,16 @@ const WalletNavigator = createNativeStackNavigator({
       screen: WalletScreen,
       options: {
         title: 'Wallet',
+        headerShown: true,
       },
     },
     AddFundsScreen: {
       screen: AddFundsScreen,
       options: {
-        headerShown: false,
+        headerShown: true,
       },
     },
-    },
+  },
 });
 
 export default WalletNavigator;
