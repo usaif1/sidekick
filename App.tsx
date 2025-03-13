@@ -9,6 +9,7 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 // misc
 import './ReactotronConfig';
 import {useGlobalStore} from './globalStore';
+import GlobalModal from './components/GlobalModal';
 
 function App(): React.JSX.Element {
   const {firsTime, loggedIn} = useGlobalStore();
@@ -23,6 +24,7 @@ function App(): React.JSX.Element {
         ) : (
           <AuthNavigation />
         )}
+        <GlobalModal />
       </GestureHandlerRootView>
     </>
   );
