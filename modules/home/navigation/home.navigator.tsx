@@ -27,6 +27,7 @@ const RentTabBar = ({focused}: {focused: boolean}) => {
 };
 
 const HomeNavigator = createBottomTabNavigator({
+  initialRouteName: 'rent',
   screenOptions: {
     headerShown: false,
   },
