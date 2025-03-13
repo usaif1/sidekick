@@ -2288,15 +2288,9 @@ SPEC CHECKSUMS:
   React-jsinspectortracing: c4c1cceb9a9c266ce849c82332e35cc57ee9dae9
   React-jsitracing: 267618eec9c362658a4587c5ddcfb41b2e00c403
   React-logger: 795cd5055782db394f187f9db0477d4b25b44291
-<<<<<<< HEAD
   React-Mapbuffer: 0df2a235bd0182f5cbed6c5f095e66deca12e335
   React-microtasksnativemodule: b31e56a980634f383221bfefd5111d04c14c110b
-  react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
-=======
-  React-Mapbuffer: 0502faf46cab8fb89cfc7bf3e6c6109b6ef9b5de
-  React-microtasksnativemodule: 663bc64e3a96c5fc91081923ae7481adc1359a78
-  react-native-geolocation: 70b8819c3a45a4613e58c2b13ba694ec1f7de3d2
->>>>>>> origin/master
+  react-native-geolocation: 457c6cc4462cffdfc4e63a2b52ec95497eab79cc
   react-native-google-maps: 7cc1184afe41fbd15a3dffd53c924819f6587b69
   react-native-maps: ee1e65647460c3d41e778071be5eda10e3da6225
   react-native-mmkv: bca4733c90d21ce8b1629860213504cf40ff1dbf
@@ -2331,29 +2325,17 @@ SPEC CHECKSUMS:
   ReactCommon: c8fdbc582b98a07daf201cd95c1da75dd029f3ee
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNDeviceInfo: feea80a690d2bde1fe51461cf548039258bd03f2
-<<<<<<< HEAD
   RNFBApp: 526e8bbb0d358b95c3068bc4c26ceb43a34f467d
   RNFBAuth: 6a452581dfe300754011203b4a10cb1d2d177b60
   RNGestureHandler: 0a16f3f13829c01268ae55610a40b57b713c8161
+  RNPermissions: e91d57da816c0eeaa1d561ee063ae73458a84247
   RNReanimated: c9f295fb1679867288d238bfaf3ea39225c95e1b
   RNScreens: 77f93ec55b749c49549b447527ebf78e990125f3
   RNSVG: 05776cf3f0d52d3f8e7ebee34b2189da7b8638ff
   RNVectorIcons: f3e9354fca73876447d183d4b18955e52cd3695c
-=======
-  RNGestureHandler: 9b05fab9a0b48fe48c968de7dbb9ca38a2b4f7ab
-  RNPermissions: 06cd923d756b0deebeae07bf3650cc6c597dd547
-  RNReanimated: ff71ce0443c71c8a77501ace7b9738ede83cfa55
-  RNScreens: 991214b4e69016c1ae32830d9cea31c9c9422367
-  RNSVG: 8588ee1ca9b2e6fd2c99466e35b3db0e9f81bb40
-  RNVectorIcons: 14a0c42f16a26bcc3e79a19bc1c5718284b1d469
->>>>>>> origin/master
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: d89d04d86b5af18317f481166dccc48213d26927
 
-<<<<<<< HEAD
-PODFILE CHECKSUM: 9a99dfd90875d573d40e981d7ae43a20780157ee
-=======
-PODFILE CHECKSUM: ab07dac28e1d215a2ed75766b3bed03d3a4781e3
->>>>>>> origin/master
+PODFILE CHECKSUM: b74cd4b23ffc752677536f8d3da93eea2b79aa23
 
 COCOAPODS: 1.15.2
