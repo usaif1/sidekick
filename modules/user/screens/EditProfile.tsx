@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState} from 'react';
+import {View, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
-import { useThemeStore } from '@/globalStore';
-import { Heading } from '@/components/Typography';
+import {useThemeStore} from '@/globalStore';
+import {Heading} from '@/components/Typography';
 
 interface EditProfileProps {
   route?: {
@@ -17,22 +17,22 @@ interface EditProfileProps {
   };
 }
 
-const EditProfile: React.FC<EditProfileProps> = ({ route }) => {
+const EditProfile: React.FC<EditProfileProps> = ({route}) => {
   const navigation = useNavigation();
-  const { colors, spacing } = useThemeStore(state => state.theme);
-  
+  const {colors, spacing} = useThemeStore(state => state.theme);
+
   // Initialize form state with route params or defaults
   const [name, setName] = useState(route?.params?.initialName || '');
   const [email, setEmail] = useState(route?.params?.initialEmail || '');
   const [phone, setPhone] = useState(route?.params?.initialPhone || '');
-  
+
   // Form validation state
   const [errors, setErrors] = useState({
     name: '',
     email: '',
     phone: '',
   });
-  
+
   // Handle save changes
   const handleSaveChanges = () => {
     // Reset errors
@@ -41,15 +41,15 @@ const EditProfile: React.FC<EditProfileProps> = ({ route }) => {
       email: '',
       phone: '',
     };
-    
+
     // Validate form
     let isValid = true;
-    
+
     if (!name.trim()) {
       newErrors.name = 'Name is required';
       isValid = false;
     }
-    
+
     if (!email.trim()) {
       newErrors.email = 'Email is required';
       isValid = false;
@@ -57,36 +57,35 @@ const EditProfile: React.FC<EditProfileProps> = ({ route }) => {
       newErrors.email = 'Email is invalid';
       isValid = false;
     }
-    
+
     if (!phone.trim()) {
       newErrors.phone = 'Phone number is required';
       isValid = false;
     }
-    
+
     setErrors(newErrors);
-    
+
     if (isValid) {
       // Save changes and navigate back
-      console.log('Saving profile changes:', { name, email, phone });
+      console.log('Saving profile changes:', {name, email, phone});
       navigation.goBack();
     }
   };
-  
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header with back button */}
       <View style={styles.header}>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}
           accessibilityLabel="Go back"
-          accessibilityRole="button"
-        >
+          accessibilityRole="button">
           <Icon name="chevron-left" size={24} color={colors.highlight} />
         </TouchableOpacity>
         <Heading style={styles.headerTitle}>Edit Profile</Heading>
       </View>
-      
+
       {/* Form container with blue border */}
       <View style={[styles.formContainer]}>
         {/* Name input */}
@@ -101,7 +100,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ route }) => {
           testID="name-input"
           containerStyle={styles.inputContainer}
         />
-        
+
         {/* Email input */}
         <Input
           title="Email Address"
@@ -114,7 +113,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ route }) => {
           testID="email-input"
           containerStyle={styles.inputContainer}
         />
-        
+
         {/* Phone input */}
         <Input
           title="Phone"
@@ -130,13 +129,10 @@ const EditProfile: React.FC<EditProfileProps> = ({ route }) => {
           containerStyle={styles.inputContainer}
         />
       </View>
-      
+
       {/* Save Changes button */}
       <View style={styles.buttonContainer}>
-        <ButtonText 
-          variant="primary" 
-          onPress={handleSaveChanges}
-        >
+        <ButtonText variant="primary" onPress={handleSaveChanges}>
           Save Changes
         </ButtonText>
       </View>

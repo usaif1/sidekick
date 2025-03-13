@@ -1,8 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, ViewStyle, Text, Image } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+  Text,
+  Image,
+} from 'react-native';
 import Avatar from '@/components/Avatar';
-import { StatLabel, StatValue } from '@/components/Typography';
-import { useThemeStore } from '@/globalStore';
+import {StatLabel, StatValue} from '@/components/Typography';
+import {useThemeStore} from '@/globalStore';
+import {H3} from '@/components';
 
 interface ProfileCardProps {
   /**
@@ -57,46 +65,43 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   testID = 'profile-card',
   profileImage,
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
+  const {colors, typography} = useThemeStore(state => state.theme);
 
   return (
-    <View 
-      style={[
-        styles.container,
-        { backgroundColor: colors.lightGray },
-        style,
-      ]}
-      testID={testID}
-    >
+    <View
+      style={[styles.container, {backgroundColor: colors.lightGray}, style]}
+      testID={testID}>
       {/* Centered avatar and user info */}
       <View style={styles.centeredHeader}>
         {profileImage ? (
           <View style={styles.avatarContainer}>
-            <Image 
-              source={profileImage} 
-              style={styles.avatarImage} 
-            />
+            <Image source={profileImage} style={styles.avatarImage} />
           </View>
         ) : (
-          <Avatar 
-            fullName={fullName} 
-            size="large" 
-            variant="rounded" 
+          <Avatar
+            fullName={fullName}
+            size="large"
+            variant="rounded"
             onPress={onAvatarPress}
             style={styles.avatar}
             testID="profile-avatar"
           />
         )}
-        
+
         <View style={styles.centeredUserInfo}>
-          <Text style={[styles.name, { fontSize: typography.skH2.fontSize, color: colors.textPrimary }]}>
-            {fullName}
-          </Text>
-          {company && 
-            <Text style={[styles.company, { fontSize: typography.skH3.fontSize, color: colors.textSecondary }]}>
+          <H3>{fullName}</H3>
+          {company && (
+            <Text
+              style={[
+                styles.company,
+                {
+                  fontSize: typography.skH3.fontSize,
+                  color: colors.textSecondary,
+                },
+              ]}>
               {company}
             </Text>
-          }
+          )}
         </View>
       </View>
 
@@ -105,19 +110,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <View style={styles.statsRow}>
           {totalMinutes !== undefined && (
             <View style={styles.statBox}>
-                <StatValue>{totalMinutes}</StatValue>
-                <StatLabel>
-                  Total Minutes
-                </StatLabel>
+              <StatValue>{totalMinutes}</StatValue>
+              <StatLabel>Total Minutes</StatLabel>
             </View>
           )}
-          
+
           {totalKilometers !== undefined && (
             <View style={styles.statBox}>
               <StatValue>{totalKilometers}</StatValue>
-              <StatLabel>
-                Total Kilometers
-              </StatLabel>
+              <StatLabel>Total Kilometers</StatLabel>
             </View>
           )}
         </View>
@@ -177,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileCard; 
+export default ProfileCard;

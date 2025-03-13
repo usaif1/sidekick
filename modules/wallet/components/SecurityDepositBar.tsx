@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useThemeStore } from '@/globalStore';
+import {View, Text, StyleSheet} from 'react-native';
+import {useThemeStore} from '@/globalStore';
 import ButtonText from '@/components/ButtonText';
 
 interface SecurityDepositBarProps {
@@ -26,48 +26,43 @@ const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
   onWithdraw,
   testID = 'security-deposit-bar',
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
+  const {colors, typography} = useThemeStore(state => state.theme);
 
   return (
-    <View 
+    <View
       style={[
         styles.container,
         {
           borderBottomColor: colors.lightGray,
-        }
+        },
       ]}
-      testID={testID}
-    >
-      <View style={[styles.depositContainer, {backgroundColor: colors.lightGray}]}>
-        <Text 
+      testID={testID}>
+      <View
+        style={[styles.depositContainer, {backgroundColor: colors.lightGray}]}>
+        <Text
           style={[
             styles.label,
             {
               color: colors.textPrimary,
               fontSize: typography.skP2.fontSize,
-            }
-          ]}
-        >
+            },
+          ]}>
           Security Deposit
         </Text>
-        <Text 
+        <Text
           style={[
             styles.amount,
             {
               color: colors.textPrimary,
               fontSize: typography.skP2.fontSize,
-            }
-          ]}
-        >
+            },
+          ]}>
           ₹{depositAmount}
         </Text>
       </View>
-      
+
       <View style={styles.buttonWrapper}>
-        <ButtonText
-          variant="highlight"
-          onPress={onWithdraw}
-        >
+        <ButtonText variant="highlight" onPress={onWithdraw}>
           Withdraw
         </ButtonText>
       </View>
@@ -87,10 +82,10 @@ const styles = StyleSheet.create({
   depositContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between',
-    width:'65%',
-    padding:10,
-    borderRadius:16
+    justifyContent: 'space-between',
+    width: '65%',
+    padding: 10,
+    borderRadius: 16,
   },
   label: {
     marginRight: 8,
@@ -100,7 +95,7 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     width: 120, // Adjust width as needed
-  }
+  },
 });
 
-export default SecurityDepositBar; 
+export default SecurityDepositBar;

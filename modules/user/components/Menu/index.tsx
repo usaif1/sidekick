@@ -1,6 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import { useThemeStore } from '@/globalStore';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
+import {useThemeStore} from '@/globalStore';
 import Icon from 'react-native-vector-icons/Feather';
 import Switch from '@/components/Switch';
 
@@ -53,32 +60,27 @@ interface MenuProps {
 /**
  * Menu component displays a list of actionable items with icons and optional controls
  */
-const Menu: React.FC<MenuProps> = ({
-  items,
-  style,
-  testID = 'menu',
-}) => {
-  const { colors, spacing } = useThemeStore(state => state.theme);
+const Menu: React.FC<MenuProps> = ({items, style, testID = 'menu'}) => {
+  const {colors, spacing} = useThemeStore(state => state.theme);
 
   return (
-    <View 
+    <View
       style={[
-        styles.container, 
-        { 
+        styles.container,
+        {
           backgroundColor: colors.white,
         },
-        style
+        style,
       ]}
-      testID={testID}
-    >
+      testID={testID}>
       {items.map((item, index) => (
         <TouchableOpacity
           key={index}
           style={[
             styles.menuItem,
-            { paddingVertical: spacing.md, paddingHorizontal: spacing.md },
+            {paddingVertical: spacing.md, paddingHorizontal: spacing.md},
             index < items.length - 1 && styles.borderBottom,
-            index < items.length - 1 && { borderBottomColor: colors.lightGray }
+            index < items.length - 1 && {borderBottomColor: colors.lightGray},
           ]}
           onPress={item.onPress}
           testID={item.testID || `menu-item-${index}`}
@@ -87,19 +89,19 @@ const Menu: React.FC<MenuProps> = ({
           disabled={item.controlType === 'switch'} // Disable press on the entire row for switch items
         >
           <View style={styles.leftContent}>
-            <Icon 
-              name={item.icon} 
-              size={20} 
-              color={colors.textPrimary} 
-              style={styles.icon} 
+            <Icon
+              name={item.icon}
+              size={20}
+              color={colors.textPrimary}
+              style={styles.icon}
             />
-            <Text style={[styles.label, { color: colors.textPrimary }]}>
+            <Text style={[styles.label, {color: colors.textPrimary}]}>
               {item.label}
             </Text>
           </View>
-          
+
           {item.controlType === 'switch' && (
-            <Switch 
+            <Switch
               isOn={item.isToggled}
               onToggle={item.onToggle}
               size="small"
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   },
   borderBottom: {
     borderBottomWidth: 1,
-  }
+  },
 });
 
-export default Menu; 
+export default Menu;

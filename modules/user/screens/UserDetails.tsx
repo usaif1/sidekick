@@ -6,7 +6,6 @@ import Menu from '@/modules/user/components/Menu';
 import SupportModal from '@/modules/user/components/SupportModal';
 import {useModal} from '@/components/Modal/ModalProvider';
 import {useThemeStore} from '@/globalStore';
-import CustomSafeArea from '@/wrappers/customSafeArea/CustomSafeArea';
 import Divider from '@/components/Divider';
 
 // You can import a profile image or use a require statement
@@ -64,7 +63,7 @@ const UserDetails = () => {
   ];
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <ProfileCard
           fullName={userData.name}
@@ -86,6 +85,7 @@ const UserDetails = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: 'white',
   },
   container: {
     flex: 1,
