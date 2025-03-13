@@ -1,5 +1,5 @@
 // imports
-import {ColorPalette} from './theme.type';
+import {ColorPalette} from './themes.type';
 
 export const lightColors: ColorPalette = {
   primary: '#18F27A', // Spring Green

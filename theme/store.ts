@@ -7,7 +7,7 @@ import {Appearance} from 'react-native';
 import createSelectors from '@/utils/selectors';
 import {lightTheme, darkTheme} from './themes';
 import {zustandMmkvStorage} from '@/storage/mmkv';
-import {Theme} from './theme.type';
+import {Theme} from './themes.type';
 
 type ThemeState = {
   theme: Theme;
