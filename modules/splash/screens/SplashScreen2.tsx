@@ -62,7 +62,7 @@ const SplashScreenCarousel: React.FC = () => {
         </Text>
       </View>
     );
-  };
+  }; 
 
   const handleCompleteOnboarding = () => {
     onboardingStorage.set('onboarding_complete', 'true');

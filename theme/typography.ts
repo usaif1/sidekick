@@ -10,7 +10,7 @@ export const TYPOGRAPHY: Theme['typography'] = {
     fontSize: moderateScale(34),
     lineHeight: moderateScale(34),
     fontFamily: 'PlusJakartaSans-ExtraBold',
-    fontWeight: '800',
+    fontWeight: '900',
   },
   skH2: {
     fontSize: moderateScale(20),
@@ -27,14 +27,14 @@ export const TYPOGRAPHY: Theme['typography'] = {
 
   // Paragraphs
   skP1: {
-    fontSize: moderateScale(15),
-    lineHeight: moderateScale(23),
+    fontSize: moderateScale(20),
+    lineHeight: moderateScale(27),
     fontFamily: 'PlusJakartaSans-SemiBold',
     fontWeight: '600',
   },
   skP2: {
-    fontSize: moderateScale(12),
-    lineHeight: moderateScale(18),
+    fontSize: moderateScale(15),
+    lineHeight: moderateScale(22),
     fontFamily: 'PlusJakartaSans-Medium',
     fontWeight: '500',
   },

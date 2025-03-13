@@ -8,3 +8,10 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+-keep class com.google.android.gms.location.** { *; }
+-keep class com.agontuk.RNFusedLocation.** { *; }
+
+# Add these if not already present
+-keep class com.google.android.gms.** { *; }
+-keep class com.agontuk.RNFusedLocation.** { *; }
+-dontwarn com.google.android.gms.**

@@ -9,12 +9,13 @@ import {useThemeStore} from '@/globalStore';
 type Props = {
   children: ReactNode;
   onPress: () => void;
-  variant: 'primary' | 'secondary';
+  variant: 'primary' | 'secondary' | 'highlight';
 };
 
 type ContainerStyles = {
   primary: ViewStyle;
   secondary: ViewStyle;
+  highlight: ViewStyle;
 };
 
 const {typography, colors, spacing} = useThemeStore.getState().theme;
@@ -31,6 +32,12 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
       padding: spacing.md,
       borderRadius: 30,
     },
+    highlight: {
+      backgroundColor: colors.highlight,
+      padding: spacing.sm,
+      borderRadius: 14,
+      height: '16@vs',
+    },
   };
 
   return (
@@ -44,7 +51,7 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
 
 type ChildTextProps = {
   children: ReactNode;
-  variant: 'primary' | 'secondary';
+  variant: 'primary' | 'secondary' | 'highlight';
 };
 
 const ChildText: React.FC<ChildTextProps> = ({children, variant}) => {
@@ -70,5 +77,8 @@ const styles = ScaledSheet.create({
   },
   secondary: {
     color: colors.textPrimary,
+  },
+  highlight: {
+    color: colors.white,
   },
 });

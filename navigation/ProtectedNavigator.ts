@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // navigators
 import HomeNavigator from '@/modules/home/navigation/home.navigator';
 import UserNavigator from '@/modules/user/navigation/user.navigator';
+import WalletNavigator from '@/modules/wallet/navigation/wallet.navigator';
 
 
 const ProtectedNavigator = createNativeStackNavigator({
@@ -11,6 +12,7 @@ const ProtectedNavigator = createNativeStackNavigator({
   screens: {
     home: HomeNavigator,
     user: UserNavigator,
+    wallet: WalletNavigator,
   },
   screenOptions: {
     headerShown: false,
