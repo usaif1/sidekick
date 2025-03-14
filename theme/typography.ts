@@ -72,10 +72,9 @@ export const TYPOGRAPHY: Theme['typography'] = {
 
   // Body Text
   skB1: {
-    fontSize: moderateScale(15),
-    lineHeight: moderateScale(24),
-    fontFamily: 'PlusJakartaSans-Medium',
-    fontWeight: '500',
+    fontSize: moderateScale(23),
+    fontFamily: 'PlusJakartaSans-SemiBold',
+    fontWeight: '600',
   },
   skB2: {
     fontSize: moderateScale(13.5),

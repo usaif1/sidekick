@@ -6,6 +6,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WalletScreen from '../screens/WalletScreen';
 import AddFundsScreen from '../screens/AddFundsScreen';
 
+// components
+import {BackArrowButton} from '@/components';
+
 const WalletNavigator = createNativeStackNavigator({
   initialRouteName: 'WalletScreen',
   screenOptions: {
@@ -26,7 +29,12 @@ const WalletNavigator = createNativeStackNavigator({
     AddFundsScreen: {
       screen: AddFundsScreen,
       options: {
-        headerShown: true,
+        title: '',
+        headerLeft: () => <BackArrowButton title="Add Funds" />,
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: '#FFFFFF',
+        },
       },
     },
   },

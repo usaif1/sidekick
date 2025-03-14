@@ -10,6 +10,7 @@ export {default as H3} from './Typography/H3';
 export {default as P1} from './Typography/P1';
 export {default as P2} from './Typography/P2';
 export {default as P3} from './Typography/P3';
+export {default as B1} from './Typography/B1';
 export {default as B2} from './Typography/B2';
 
 // Buttons

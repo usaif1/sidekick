@@ -1,13 +1,21 @@
 // dependencies
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {View, Text, ImageBackground, Dimensions, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  ImageBackground,
+  Dimensions,
+  TextInput,
+  LayoutAnimation,
+} from 'react-native';
 import {
   moderateScale,
   scale,
   ScaledSheet,
   verticalScale,
 } from 'react-native-size-matters';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 // store
 import {useThemeStore} from '@/globalStore';
@@ -19,21 +27,48 @@ const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const Signup: React.FC = () => {
   const {theme} = useThemeStore();
-
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const navigation = useNavigation();
+
+  // Add animation for smooth transition
+  const handleFocus = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsInputFocused(true);
+  };
+
+  const handleBlur = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsInputFocused(false);
+  };
 
   return (
     <ImageBackground
       source={require('../assets/Map.png')} // Path to your background image
       style={[styles.background, {width, height}]} // Set width and height dynamically
     >
-      <View style={styles.contentContainer}>
+      <KeyboardAwareScrollView
+        style={[
+          styles.contentContainer,
+          {
+            height: isInputFocused
+              ? verticalScale(480) // Expanded height
+              : verticalScale(375), // Default height
+          },
+        ]}
+        contentContainerStyle={{
+          alignItems: 'flex-start',
+          rowGap: moderateScale(13),
+        }}>
         <View style={{width: '100%'}}>
           <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
             Enter your Full Name
           </LabelPrimary>
           <Divider height={10} />
-          <CommonTextInput placeholder="XXXXXXXXXX" />
+          <CommonTextInput
+            placeholder="XXXXXXXXXX"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
         </View>
         <View style={{width: '100%'}}>
           <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
@@ -46,7 +81,11 @@ const Signup: React.FC = () => {
             </LabelPrimary>
           </LabelPrimary>
           <Divider height={10} />
-          <CommonTextInput placeholder="XXXXXXXXXX" />
+          <CommonTextInput
+            placeholder="XXXXXXXXXX"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
         </View>
 
         <View style={{width: '100%'}}>
@@ -84,6 +123,8 @@ const Signup: React.FC = () => {
             </View>
             <TextInput
               placeholder="XXXXXXXXXX"
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               placeholderTextColor={theme.colors.textSecondary}
               style={{
                 fontWeight: '600',
@@ -108,7 +149,7 @@ const Signup: React.FC = () => {
             Continue
           </ButtonText>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </ImageBackground>
   );
 };
@@ -118,13 +159,12 @@ const styles = ScaledSheet.create({
     flex: 1,
   },
   contentContainer: {
-    rowGap: '13@vs',
     position: 'absolute',
     bottom: 0,
     width: '100%',
     backgroundColor: 'white', // Optional: Adds a dark overlay for text readability
     borderRadius: 20,
-    alignItems: 'flex-start',
+
     paddingTop: 32,
     paddingHorizontal: 24,
     height: '375@vs',

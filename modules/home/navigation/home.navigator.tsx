@@ -40,6 +40,7 @@ const styles = ScaledSheet.create({
 });
 
 const HomeNavigator = createBottomTabNavigator({
+  initialRouteName: 'rent',
   screenOptions: {
     headerShown: false,
     tabBarStyle: styles.tabBar,
