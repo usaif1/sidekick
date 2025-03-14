@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import createSelectors from '@/utils/selectors';
+// Import mock data when available
+// import { mockUserData } from '../constants/mockData';
 
 // Types
 type ProfileData = {
@@ -32,22 +34,22 @@ type UserActions = {
   resetUserStore: () => void;
 };
 
-// Initial state
+// Initial state - would use mock data when available
 const initialState: UserState = {
   profile: {
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
+    name: '',  // mockUserData?.profile?.name || '',
+    email: '', // mockUserData?.profile?.email || '',
+    phone: '', // mockUserData?.profile?.phone || '',
+    company: '', // mockUserData?.profile?.company || '',
   },
   usageStats: {
-    totalMinutes: 0,
-    totalKilometers: 0,
+    totalMinutes: 0, // mockUserData?.usageStats?.totalMinutes || 0,
+    totalKilometers: 0, // mockUserData?.usageStats?.totalKilometers || 0,
   },
   settings: {
-    notificationsEnabled: true,
+    notificationsEnabled: true, // mockUserData?.settings?.notificationsEnabled ?? true,
   },
-  isProfileComplete: false,
+  isProfileComplete: false, // would calculate based on mock data
 };
 
 // Create store

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import createSelectors from '@/utils/selectors';
+import { mockWalletData, Transaction as MockTransaction } from '../constants/mockData';
 
 // Types
 type Transaction = {
@@ -8,6 +9,8 @@ type Transaction = {
   type: 'credit' | 'debit';
   description: string;
   date: string;
+  name?: string;
+  time?: string;
 };
 
 type WalletState = {
@@ -24,11 +27,24 @@ type WalletActions = {
   resetWallet: () => void;
 };
 
-// Initial state
+// Map mock data to our store format
+const mapMockTransactions = (mockTransactions: MockTransaction[]): Transaction[] => {
+  return mockTransactions.map(t => ({
+    id: t.id,
+    amount: t.amount,
+    type: t.type,
+    description: t.description || '',
+    date: `${t.date} ${t.time}`,
+    name: t.name,
+    time: t.time
+  }));
+};
+
+// Initial state from mock data
 const initialState: WalletState = {
-  balance: 0,
-  securityDeposit: 0,
-  transactions: [],
+  balance: mockWalletData.currentBalance,
+  securityDeposit: mockWalletData.securityDeposit,
+  transactions: mapMockTransactions(mockWalletData.transactions),
 };
 
 // Create store
