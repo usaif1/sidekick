@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -10,22 +10,24 @@ import TransactionList from '../components/TransactionList';
 import AddFundsButton from '../components/AddFundsButton';
 import {P2} from '@/components/Typography';
 
-// data
-import {mockWalletData} from '../constants/mockData';
-
 // store
 import {useThemeStore} from '@/globalStore';
+import walletStore from '../store';
 
 const WalletScreen: React.FC = () => {
   const navigation = useNavigation();
   const {theme} = useThemeStore();
   
-  // Use mock data
-  const [walletData, setWalletData] = useState(mockWalletData);
+  // Use wallet store instead of mock data
+  const balance = walletStore.use.balance();
+  const securityDeposit = walletStore.use.securityDeposit();
+  const transactions = walletStore.use.transactions();
+  const withdrawSecurityDeposit = walletStore.use.withdrawSecurityDeposit();
 
   // Handle withdraw button press
   const handleWithdraw = () => {
-    // Implement withdraw logic or navigation
+    // Implement withdraw logic using store
+    withdrawSecurityDeposit(securityDeposit);
   };
 
   // Handle add funds button press
@@ -60,13 +62,13 @@ const WalletScreen: React.FC = () => {
       <View style={styles.content(theme)}>
         {/* Wallet balance card */}
         <WalletCard
-          balance={walletData.currentBalance}
+          balance={balance}
           testID="wallet-balance-card"
         />
 
         {/* Security deposit bar */}
         <SecurityDepositBar
-          depositAmount={walletData.securityDeposit}
+          depositAmount={securityDeposit}
           onWithdraw={handleWithdraw}
           testID="security-deposit-bar"
         />
@@ -75,7 +77,7 @@ const WalletScreen: React.FC = () => {
         <View style={styles.transactionsContainer}>
           <ListHeaderComponent />
           <TransactionList
-            transactions={walletData.transactions}
+            transactions={transactions}
             testID="transactions-list"
           />
         </View>

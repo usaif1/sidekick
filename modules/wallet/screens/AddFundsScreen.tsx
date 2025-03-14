@@ -13,6 +13,7 @@ import {useModal} from '@/components/Modal/ModalProvider';
 import PaymentSuccessModal from '../components/PaymentSuccessModal';
 import {P1, P2} from '@/components/Typography';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import walletStore from '../store';
 
 // Payment method type
 type PaymentMethod = 'upi' | 'card' | 'netbanking';
@@ -24,6 +25,10 @@ const AddFundsScreen = () => {
   const navigation = useNavigation();
   const {theme} = useThemeStore();
   const {showModal, hideModal} = useModal();
+  
+  // Get wallet data and actions from store
+  const balance = walletStore.use.balance();
+  const addFunds = walletStore.use.addFunds();
 
   // State for amount and payment method
   const [amount, setAmount] = useState('');
@@ -47,17 +52,21 @@ const AddFundsScreen = () => {
       return;
     }
 
+    // Add funds to wallet using store
+    const amountValue = parseFloat(amount);
+    addFunds(amountValue, selectedMethod);
+
     // Show payment success modal with navigation callbacks
     showModal(
       <PaymentSuccessModal
         visible={true}
         onClose={hideModal}
-        amount={parseFloat(amount)}
+        amount={amountValue}
         testID="payment-success-modal"
         onContinueToRide={() => navigation.navigate('home')}
         onCheckWallet={() => {
           // Already in wallet, so no navigation needed
-          // Or you could navigate to a specific wallet tab if needed
+          hideModal();
         }}
       />,
     );
@@ -71,7 +80,7 @@ const AddFundsScreen = () => {
         {/* Amount input section */}
         <View style={styles.section(theme)}>
           <Input
-            title="Available Balance ₹56.0"
+            title={`Available Balance ₹${balance.toFixed(1)}`}
             placeholder="Enter amount"
             value={amount}
             onChangeText={setAmount}

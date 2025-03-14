@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
 import {useThemeStore} from '@/globalStore';
+import userStore from '../store';
 
 // components
 import Input from '@/components/Input';
@@ -23,11 +24,15 @@ interface EditProfileProps {
 const EditProfile: React.FC<EditProfileProps> = ({route}) => {
   const navigation = useNavigation();
   const {colors} = useThemeStore(state => state.theme);
+  
+  // Get user profile and update function from store
+  const profile = userStore.use.profile();
+  const updateProfile = userStore.use.updateProfile();
 
-  // Initialize form state with route params or defaults
-  const [name, setName] = useState(route?.params?.initialName || '');
-  const [email, setEmail] = useState(route?.params?.initialEmail || '');
-  const [phone, setPhone] = useState(route?.params?.initialPhone || '');
+  // Initialize form state with route params or store data
+  const [name, setName] = useState(route?.params?.initialName || profile.name);
+  const [email, setEmail] = useState(route?.params?.initialEmail || profile.email);
+  const [phone, setPhone] = useState(route?.params?.initialPhone || profile.phone);
 
   // Form validation state
   const [errors, setErrors] = useState({
@@ -69,8 +74,12 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
     setErrors(newErrors);
 
     if (isValid) {
-      // Save changes and navigate back
-      console.log('Saving profile changes:', {name, email, phone});
+      // Save changes to store and navigate back
+      updateProfile({
+        name,
+        email,
+        phone,
+      });
       navigation.goBack();
     }
   };

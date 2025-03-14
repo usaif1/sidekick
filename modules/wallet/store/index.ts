@@ -9,8 +9,8 @@ type Transaction = {
   type: 'credit' | 'debit';
   description: string;
   date: string;
-  name?: string;
-  time?: string;
+  name: string;
+  time: string;
 };
 
 type WalletState = {
@@ -24,17 +24,18 @@ type WalletActions = {
   updateSecurityDeposit: (amount: number) => void;
   addTransaction: (transaction: Omit<Transaction, 'id'>) => void;
   withdrawSecurityDeposit: (amount: number) => void;
+  addFunds: (amount: number, paymentMethod: string) => void;
   resetWallet: () => void;
 };
 
-// Map mock data to our store format
+// Map mock transactions to our store format
 const mapMockTransactions = (mockTransactions: MockTransaction[]): Transaction[] => {
   return mockTransactions.map(t => ({
     id: t.id,
     amount: t.amount,
     type: t.type,
     description: t.description || '',
-    date: `${t.date} ${t.time}`,
+    date: t.date,
     name: t.name,
     time: t.time
   }));
@@ -89,7 +90,9 @@ const walletStore = create<WalletState & WalletActions>((set) => ({
               amount: amount,
               type: 'credit',
               description: 'Security deposit withdrawal',
-              date: new Date().toISOString(),
+              date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+              name: 'Security Deposit Withdrawal',
+              time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
             },
             ...state.transactions,
           ],
@@ -97,6 +100,24 @@ const walletStore = create<WalletState & WalletActions>((set) => ({
       }
       return state;
     }),
+
+  // Add funds to wallet
+  addFunds: (amount, paymentMethod) =>
+    set((state) => ({
+      balance: state.balance + amount,
+      transactions: [
+        {
+          id: Date.now().toString(),
+          amount: amount,
+          type: 'credit',
+          description: 'Wallet recharge',
+          date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+          name: `Added via ${paymentMethod}`,
+          time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+        },
+        ...state.transactions,
+      ],
+    })),
 
   // Reset wallet to initial state
   resetWallet: () => set(initialState),
