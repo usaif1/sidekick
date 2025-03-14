@@ -47,6 +47,53 @@ export type Theme = {
     lg: number;
     xl: number;
   };
+  padding: {
+    horizontal: {
+      xs_4: number;
+      sm_8: number;
+      sm_12: number;
+      md_16: number;
+      md_20: number;
+      lg_24: number;
+      xl_32: number;
+    };
+    vertical: {
+      xs_4: number;
+      sm_8: number;
+      md_16: number;
+      lg_24: number;
+      lg_30: number;
+      xl_32: number;
+    };
+  };
+  margin: {
+    horizontal: {
+      xs_4: number;
+      sm_8: number;
+      sm_12: number;
+      md_16: number;
+      md_20: number;
+      lg_24: number;
+      xl_32: number;
+      xxl_44: number;
+    };
+    vertical: {
+      xs_4: number;
+      sm_8: number;
+      sm_12: number;
+      md_16: number;
+      lg_24: number;
+      xl_32: number;
+    };
+  };
+  borderRadius: {
+    xs: number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+    round: number;
+  };
   shadows: {
     sm: ViewStyle;
     md: ViewStyle;

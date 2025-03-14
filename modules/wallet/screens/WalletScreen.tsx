@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -8,6 +8,7 @@ import WalletCard from '../components/WalletCard';
 import SecurityDepositBar from '../components/SecurityDepositBar';
 import TransactionList from '../components/TransactionList';
 import AddFundsButton from '../components/AddFundsButton';
+import {P2} from '@/components/Typography';
 
 // data
 import {mockWalletData} from '../constants/mockData';
@@ -17,8 +18,8 @@ import {useThemeStore} from '@/globalStore';
 
 const WalletScreen: React.FC = () => {
   const navigation = useNavigation();
-  const {colors, typography} = useThemeStore(state => state.theme);
-
+  const {theme} = useThemeStore();
+  
   // Use mock data
   const [walletData, setWalletData] = useState(mockWalletData);
 
@@ -38,28 +39,25 @@ const WalletScreen: React.FC = () => {
     () => (
       <View
         style={[
-          styles.headerContainer,
-          {borderBottomColor: colors.textSecondary},
+          styles.headerContainer(theme),
+          {borderBottomColor: theme.colors.textSecondary},
         ]}>
-        <Text
-          style={[
-            styles.headerText,
-            {
-              color: colors.textSecondary,
-              fontSize: typography.skP2.fontSize,
-            },
-          ]}>
+        <P2 
+          textColor="textSecondary"
+          weight="600"
+          customStyles={styles.headerText}
+        >
           Recent Rides
-        </Text>
+        </P2>
       </View>
     ),
-    [colors.textPrimary, typography.skP1.fontSize],
+    [theme],
   );
 
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: colors.lightGray}]}>
-      <View style={styles.content}>
+      style={[styles.container(theme), {backgroundColor: theme.colors.lightGray}]}>
+      <View style={styles.content(theme)}>
         {/* Wallet balance card */}
         <WalletCard
           balance={walletData.currentBalance}
@@ -89,42 +87,42 @@ const WalletScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+// Using a function approach for styles that need theme values
+const styles = {
+  container: (theme: any) => ({
     flex: 1,
-    paddingHorizontal: 24,
-  },
-  content: {
+    paddingHorizontal: theme.padding.horizontal.lg_24,
+  }),
+  content: (theme: any) => ({
     flex: 1,
-    paddingTop: 16,
-  },
+    paddingTop: theme.padding.vertical.md_16,
+  }),
   transactionsContainer: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
+  header: (theme: any) => ({
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    paddingVertical: theme.padding.vertical.sm_8,
+  }),
+  backButton: (theme: any) => ({
+    padding: theme.padding.horizontal.sm_8,
+  }),
+  headerTitle: (theme: any) => ({
     flex: 1,
-    textAlign: 'left',
-    marginLeft: 16,
-  },
-  headerContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    textAlign: 'left' as const,
+    marginLeft: theme.margin.horizontal.md_16,
+  }),
+  headerContainer: (theme: any) => ({
+    paddingVertical: theme.padding.vertical.sm_8,
+    paddingHorizontal: theme.padding.horizontal.md_16,
     borderBottomWidth: 1,
-    borderStyle: 'dashed',
-    marginBottom: 20,
-  },
+    borderStyle: 'dashed' as const,
+    marginBottom: theme.margin.vertical.lg_24,
+  }),
   headerText: {
-    fontWeight: '600',
     textAlign: 'center',
   },
-});
+};
 
 export default WalletScreen;

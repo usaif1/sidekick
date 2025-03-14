@@ -16,7 +16,7 @@ type Props = {
 };
 
 const {theme} = useThemeStore.getState();
-
+ 
 const H1: React.FC<Props> = ({
   children,
   textColor = 'textPrimary',
