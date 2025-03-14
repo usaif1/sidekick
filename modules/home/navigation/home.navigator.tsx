@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // screens
 import RentScreen from '../screens/RentScreen';
-import WalletScreen from '@/modules/wallet/screens/WalletScreen';
+import WalletScreen from '../screens/WalletScreen';
 import UserScreen from '@/modules/user/screens/UserDetails';
 
 // assets
@@ -40,7 +40,6 @@ const styles = ScaledSheet.create({
 });
 
 const HomeNavigator = createBottomTabNavigator({
-  initialRouteName: 'rent',
   screenOptions: {
     headerShown: false,
     tabBarStyle: styles.tabBar,
@@ -50,6 +49,7 @@ const HomeNavigator = createBottomTabNavigator({
       screen: WalletScreen,
       options: {
         tabBarIcon: ({focused}) => <WalletTabBar focused={focused} />,
+        tabBarLabel: 'Wallet',
         tabBarButton: props => (
           <Pressable {...props} android_ripple={{color: 'transparent'}} />
         ),
@@ -59,6 +59,7 @@ const HomeNavigator = createBottomTabNavigator({
       screen: RentScreen,
       options: {
         tabBarIcon: ({focused}) => <RentTabBar focused={focused} />,
+        tabBarLabel: 'Rent',
         tabBarButton: props => (
           <Pressable {...props} android_ripple={{color: 'transparent'}} />
         ),
@@ -68,6 +69,7 @@ const HomeNavigator = createBottomTabNavigator({
       screen: UserScreen,
       options: {
         tabBarIcon: ({focused}) => <ProfileTabBar focused={focused} />,
+        tabBarLabel: 'Profile',
         tabBarButton: props => (
           <Pressable {...props} android_ripple={{color: 'transparent'}} />
         ),

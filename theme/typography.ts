@@ -59,10 +59,9 @@ export const TYPOGRAPHY: Theme['typography'] = {
     fontWeight: '600',
   },
   skButtonSmall: {
-    fontSize: moderateScale(12),
-    lineHeight: moderateScale(18),
-    fontFamily: 'PlusJakartaSans-Medium',
-    fontWeight: '500',
+    fontSize: moderateScale(11.5),
+    fontFamily: 'PlusJakartaSans-SemiBold',
+    fontWeight: '600',
   },
   skButtonTiny: {
     fontSize: moderateScale(10),
@@ -79,7 +78,7 @@ export const TYPOGRAPHY: Theme['typography'] = {
     fontWeight: '500',
   },
   skB2: {
-    fontSize: moderateScale(14),
+    fontSize: moderateScale(13.5),
     lineHeight: moderateScale(17),
     fontFamily: 'PlusJakartaSans-Medium',
     fontWeight: '600',

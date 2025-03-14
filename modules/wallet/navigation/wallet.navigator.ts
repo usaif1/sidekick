@@ -21,7 +21,6 @@ const WalletNavigator = createNativeStackNavigator({
       screen: WalletScreen,
       options: {
         title: 'Wallet',
-        headerShown: true,
       },
     },
     AddFundsScreen: {

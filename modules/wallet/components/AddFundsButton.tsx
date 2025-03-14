@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import ButtonText from '@/components/ButtonText';
 
 interface AddFundsButtonProps {
@@ -23,10 +23,7 @@ const AddFundsButton: React.FC<AddFundsButtonProps> = ({
   return (
     <View style={styles.container} testID={testID}>
       <View style={styles.buttonWrapper}>
-        <ButtonText
-          variant="primary"
-          onPress={onPress}
-        >
+        <ButtonText variant="primary" onPress={onPress}>
           Add Funds
         </ButtonText>
       </View>
@@ -45,7 +42,7 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     width: '60%', // Adjust width as needed
     maxWidth: 300,
-  }
+  },
 });
 
-export default AddFundsButton; 
+export default AddFundsButton;

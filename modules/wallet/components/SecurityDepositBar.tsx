@@ -1,8 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {useThemeStore} from '@/globalStore';
-import ButtonText from '@/components/ButtonText';
+import {View} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 
+// store
+import {useThemeStore} from '@/globalStore';
+
+// components
+import {ButtonTextSm, B2} from '@/components';
 interface SecurityDepositBarProps {
   /**
    * Security deposit amount
@@ -21,71 +25,53 @@ interface SecurityDepositBarProps {
 /**
  * Bar displaying security deposit and withdraw button
  */
+const {colors} = useThemeStore.getState().theme;
+
 const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
   depositAmount,
   onWithdraw,
   testID = 'security-deposit-bar',
 }) => {
-  const {colors, typography} = useThemeStore(state => state.theme);
-
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          borderBottomColor: colors.lightGray,
-        },
-      ]}
-      testID={testID}>
-      <View
-        style={[styles.depositContainer, {backgroundColor: colors.lightGray}]}>
-        <Text
-          style={[
-            styles.label,
-            {
-              color: colors.textPrimary,
-              fontSize: typography.skP2.fontSize,
-            },
-          ]}>
-          Security Deposit
-        </Text>
-        <Text
-          style={[
-            styles.amount,
-            {
-              color: colors.textPrimary,
-              fontSize: typography.skP2.fontSize,
-            },
-          ]}>
-          ₹{depositAmount}
-        </Text>
+    <View style={styles.wrapper}>
+      <View style={[styles.container]} testID={testID}>
+        <View style={styles.depositContainer}>
+          <B2>Security Deposit</B2>
+          <B2>₹{depositAmount}</B2>
+        </View>
       </View>
-
-      <View style={styles.buttonWrapper}>
-        <ButtonText variant="highlight" onPress={onWithdraw}>
+      <View style={{width: '27%'}}>
+        <ButtonTextSm onPress={onWithdraw} variant="highlight">
           Withdraw
-        </ButtonText>
+        </ButtonTextSm>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
+  wrapper: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    columnGap: 8,
+  },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
+    width: '70%',
   },
   depositContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '65%',
-    padding: 10,
-    borderRadius: 16,
+    width: '100%',
+    paddingVertical: '6.7@ms',
+    paddingHorizontal: '15@ms',
+    borderRadius: 12,
+    backgroundColor: colors.lightGray,
   },
   label: {
     marginRight: 8,

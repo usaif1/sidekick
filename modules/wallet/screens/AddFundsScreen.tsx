@@ -23,9 +23,7 @@ const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
 const AddFundsScreen = () => {
   const navigation = useNavigation();
-  const {colors, spacing, borderRadius, typography, shadows} = useThemeStore(
-    state => state.theme,
-  );
+  const {colors, spacing, typography} = useThemeStore(state => state.theme);
   const {showModal, hideModal} = useModal();
 
   // State for amount and payment method
