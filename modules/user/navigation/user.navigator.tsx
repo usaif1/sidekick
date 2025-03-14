@@ -1,4 +1,5 @@
 // dependencies
+import {Platform} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // screens
@@ -9,6 +10,9 @@ import {BackArrowButton} from '@/components';
 
 const UserNavigator = createNativeStackNavigator({
   initialRouteName: 'UserDetails',
+  screenOptions: {
+    presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
+  },
   screens: {
     UserDetails: {
       screen: UserDetails,

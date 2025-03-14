@@ -1,12 +1,14 @@
 // dependencies
-import {useThemeStore} from '@/globalStore';
+import {TextInput, TextInputProps, TextStyle} from 'react-native';
 import React from 'react';
-import {TextInput, TextInputProps} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
+
+// store
+import {useThemeStore} from '@/globalStore';
 
 interface CommonTextInputProps extends TextInputProps {
   placeholder: string; // Customizable placeholder
-  customStyle?: object; // Custom input field style
+  customStyle?: TextStyle;
   secureTextEntry?: boolean; // Option to toggle password input
 }
 

@@ -1,11 +1,18 @@
 import React, {useState, useCallback} from 'react';
-import {View, StyleSheet, SafeAreaView, Text} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+
+// components
 import WalletCard from '../components/WalletCard';
 import SecurityDepositBar from '../components/SecurityDepositBar';
 import TransactionList from '../components/TransactionList';
 import AddFundsButton from '../components/AddFundsButton';
+
+// data
 import {mockWalletData} from '../constants/mockData';
+
+// store
 import {useThemeStore} from '@/globalStore';
 
 const WalletScreen: React.FC = () => {
@@ -52,18 +59,6 @@ const WalletScreen: React.FC = () => {
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: colors.lightGray}]}>
-      {/* Header with back button */}
-      {/* <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-          accessibilityLabel="Go back"
-          accessibilityRole="button">
-          <Icon name="chevron-left" size={24} color={colors.highlight} />
-        </TouchableOpacity>
-        <Heading style={styles.headerTitle}>Wallet</Heading>
-      </View> */}
-
       <View style={styles.content}>
         {/* Wallet balance card */}
         <WalletCard

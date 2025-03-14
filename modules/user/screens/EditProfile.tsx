@@ -1,9 +1,14 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {View, SafeAreaView, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {ScaledSheet} from 'react-native-size-matters';
+
+// store
+import {useThemeStore} from '@/globalStore';
+
+// components
 import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
-import {useThemeStore} from '@/globalStore';
 
 interface EditProfileProps {
   route?: {
@@ -129,10 +134,11 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    paddingTop: Platform.OS === 'android' ? '25@vs' : 0,
   },
   formContainer: {
     margin: 16,
