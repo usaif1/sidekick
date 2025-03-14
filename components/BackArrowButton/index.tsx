@@ -5,8 +5,8 @@ import {ScaledSheet} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
 
 // components
-import ChevronLeft from './assets/chevron-left.svg';
-import H2 from './Typography/H2';
+import ChevronLeft from '../assets/chevron-left.svg';
+import H2 from '../Typography/H2';
 
 type Props = {
   title: string;
