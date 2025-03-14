@@ -1,5 +1,5 @@
 export const mapStyle = [
-  { featureType: 'all', elementType: 'labels', stylers: [{ visibility: 'off' }] }, 
+  { featureType: 'all', elementType: 'labels', stylers: [{ visibility: 'on' }] }, 
   { featureType: 'road', elementType: 'geometry', stylers: [{ visibility: 'on' }] },
   { featureType: 'transit', stylers: [{ visibility: 'off' }] },
   { featureType: 'landscape', stylers: [{ visibility: 'simplified' }, { lightness: 50 }] },

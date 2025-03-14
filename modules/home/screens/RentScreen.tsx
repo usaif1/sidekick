@@ -1,37 +1,23 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
-import MapView, {Polyline, PROVIDER_GOOGLE, Region} from 'react-native-maps';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { View, StyleSheet, PermissionsAndroid, Platform } from 'react-native';
+import MapView, { Polyline, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import useLocationStore from '../store/locationStore';
-
-// Assets
-
-// import ButtonWithIcon from '@/components/ButtonWithIcon';
-// import ScanIcon from '../assets/scanIcon.svg';
-
-import {scooterHubs} from '../data/scooterHubs';
+import { scooterHubs } from '../data/scooterHubs';
 import UserLocationMarker from '../components/UserLocationMarker';
 import NearestHubMarker from '../components/NearestHubMarker';
-// import ScanQrCodeComponent from "../components/ScanQrCodeComponent"; 
 import { mapStyle } from '../utilis/mapStyle';
-// import { calculateHeading } from '../utilis/calculateHeading';
-// import globalStore from '@/globalStore/globalStore';
 
 const RentScreen: React.FC = () => {
-  const {latitude, longitude, setLocation} = useLocationStore();
-  // const openModal = globalStore.use.openModal();
-  const [selectedHub, setSelectedHub] = useState<{ id: string | undefined; latitude: number; longitude: number } | null>(null);
-  const mapRef = useRef<MapView>(null); 
+  const { latitude, longitude, setLocation } = useLocationStore();
+  const [selectedHub, setSelectedHub] = useState<{ id: string; latitude: number; longitude: number } | null>(null);
   const [mapCenter, setMapCenter] = useState<{ latitude: number; longitude: number }>({
     latitude: latitude || 28.7041,
     longitude: longitude || 77.1025,
   });
-  const onRegionChangeComplete = (region: Region) => {
-    setMapCenter({
-      latitude: region.latitude,
-      longitude: region.longitude,
-    });
-  };
+  const mapRef = useRef<MapView>(null);
+
+  const memoizedHubs = useMemo(() => scooterHubs, []);
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -44,7 +30,7 @@ const RentScreen: React.FC = () => {
           return;
         }
       }
-      // getCurrentLocation();
+      getCurrentLocation();
     };
 
     const getCurrentLocation = () => {
@@ -52,13 +38,8 @@ const RentScreen: React.FC = () => {
         (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          console.log('Updated location:', { latitude: lat, longitude: lng });
-
           setLocation(lat, lng);
-          setMapCenter({
-            latitude: lat,
-            longitude: lng,
-          });
+          setMapCenter({ latitude: lat, longitude: lng });
 
           mapRef.current?.animateToRegion({
             latitude: lat,
@@ -73,14 +54,14 @@ const RentScreen: React.FC = () => {
     };
 
     requestLocationPermission();
+  }, [setLocation]);
 
-    getCurrentLocation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  // const UnlockModalContent: React.FC = () => {
-  //   return <View><Text style={{ fontSize: 20 }}>Hello</Text></View>;
-  // };
-  
+  const onRegionChangeComplete = (region: Region) => {
+    setMapCenter({
+      latitude: region.latitude,
+      longitude: region.longitude,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -91,36 +72,39 @@ const RentScreen: React.FC = () => {
         provider={PROVIDER_GOOGLE}
         followsUserLocation={true}
         customMapStyle={mapStyle}
-        key={'AIzaSyA4_-URnAPZCngJLIbQ9mhMuy-Lq1-iz-Y'}
         initialRegion={{
           latitude: latitude || 28.7041,
           longitude: longitude || 77.1025,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
-        onRegionChangeComplete={onRegionChangeComplete}
+        onRegionChangeComplete={onRegionChangeComplete} 
         onPress={(e) => e.stopPropagation()}
-        >
+      >
         <UserLocationMarker />
-        {scooterHubs.map((hub) => (
+        {memoizedHubs.map((hub) => (
           <NearestHubMarker
-          key={hub.id}
-          latitude={hub.latitude}
-          longitude={hub.longitude}
-          name={hub.name}
-          isSelected={Number(selectedHub?.id) === hub.id}
-          onPress={(e) => {
-            e.stopPropagation(); 
-            setSelectedHub((prevHub) =>
-              prevHub?.id === hub.id.toString() ? null : { id: hub.id.toString(), latitude: hub.latitude, longitude: hub.longitude });}}
-            />
-          ))}
+            key={hub.id}
+            latitude={hub.latitude}
+            longitude={hub.longitude}
+            name={hub.name}
+            isSelected={selectedHub?.id === hub.id.toString()}
+            onPress={(e) => {
+              e.stopPropagation();
+              setSelectedHub((prevHub) =>
+                prevHub?.id === hub.id.toString()
+                  ? null
+                  : { id: hub.id.toString(), latitude: hub.latitude, longitude: hub.longitude }
+              );
+            }}
+          />
+        ))}
 
         {selectedHub && (
           <Polyline
             coordinates={[
               { latitude: mapCenter.latitude, longitude: mapCenter.longitude }, 
-              { latitude: selectedHub.latitude, longitude: selectedHub.longitude }, 
+              { latitude: selectedHub.latitude, longitude: selectedHub.longitude },
             ]}
             strokeColor="#296AEB"
             strokeWidth={4}
@@ -128,15 +112,6 @@ const RentScreen: React.FC = () => {
           />
         )}
       </MapView>
-
-      {/* <View style={styles.bottomContainer}>
-        <ButtonWithIcon
-          variant="primary"
-          onPress={() => openModal(ScanQrCodeComponent)}
-          IconComponent={ScanIcon}>
-          Unlock
-        </ButtonWithIcon>
-      </View> */}
     </View>
   );
 };
@@ -147,13 +122,6 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
-  bottomContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
   },
 });
 
