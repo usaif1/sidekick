@@ -1,9 +1,12 @@
-import React, {useEffect} from 'react';
+// dependencies
+import React, { useEffect } from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {NavigationContainer} from '@react-navigation/native';
+// import {SafeAreaProvider} from 'react-native-safe-area-context';
+// import {NavigationContainer} from '@react-navigation/native';
+import {StatusBar} from 'react-native';
+
+// components
 import {ModalProvider} from '@/components/Modal/ModalProvider';
-import AppNavigator from '@/navigation';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -13,6 +16,7 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 // misc
 import './ReactotronConfig';
 import {useGlobalStore} from './globalStore';
+import GlobalModal from './components/GlobalModal';
 import requestLocationPermission from './components/LocationPermission';
 import Geolocation from '@react-native-community/geolocation';
 
@@ -23,11 +27,7 @@ function App(): React.JSX.Element {
     requestLocationPermission();
     Geolocation.getCurrentPosition(
       position => {
-        if (position.mocked) {
-          console.log('Location is mocked');
-        } else {
-          console.log('Location is genuine');
-        }
+        console.log('Location:', position);
       },
       error => {
         console.log('Error getting location:', error);
@@ -39,6 +39,7 @@ function App(): React.JSX.Element {
   return (
     <>
       <GestureHandlerRootView style={{flex: 1}}>
+        <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
         {firsTime ? (
           <SplashNavigation />
         ) : loggedIn ? (
@@ -48,17 +49,9 @@ function App(): React.JSX.Element {
         ) : (
           <AuthNavigation />
         )}
+        <GlobalModal />
       </GestureHandlerRootView>
     </>
-    // <SafeAreaProvider>
-    //     <NavigationContainer>
-    //   <ModalProvider>
-    //       <GestureHandlerRootView style={{flex: 1}}>
-    //         {firsTime ? <SplashNavigation /> : <ProtectedNavigation />}
-    //       </GestureHandlerRootView>
-    //   </ModalProvider>
-    //     </NavigationContainer>
-    // </SafeAreaProvider>
   );
 }
 

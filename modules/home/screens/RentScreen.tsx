@@ -1,20 +1,23 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
-import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { View, StyleSheet, PermissionsAndroid, Platform } from 'react-native';
+import MapView, { Polyline, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import useLocationStore from '../store/locationStore';
-
-// Assets
-import UserPointerIcon from '../assets/userPointer.svg';
-import ButtonWithIcon from '@/components/ButtonWithIcon';
-import ScanIcon from '../assets/scanIcon.svg';
-
-import {scooterHubs} from '../data/scooterHubs';
+import { scooterHubs } from '../data/scooterHubs';
 import UserLocationMarker from '../components/UserLocationMarker';
 import NearestHubMarker from '../components/NearestHubMarker';
+import { mapStyle } from '../utilis/mapStyle';
 
 const RentScreen: React.FC = () => {
-  const {latitude, longitude, setLocation} = useLocationStore();
+  const { latitude, longitude, setLocation } = useLocationStore();
+  const [selectedHub, setSelectedHub] = useState<{ id: string; latitude: number; longitude: number } | null>(null);
+  const [mapCenter, setMapCenter] = useState<{ latitude: number; longitude: number }>({
+    latitude: latitude || 28.7041,
+    longitude: longitude || 77.1025,
+  });
+  const mapRef = useRef<MapView>(null);
+
+  const memoizedHubs = useMemo(() => scooterHubs, []);
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -27,72 +30,88 @@ const RentScreen: React.FC = () => {
           return;
         }
       }
-      // getCurrentLocation();
+      getCurrentLocation();
     };
 
     const getCurrentLocation = () => {
       Geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          console.log('Current location:', {latitude: lat, longitude: lng});
           setLocation(lat, lng);
-        },
-        error => console.log('Error getting current location:', error),
-        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-      );
+          setMapCenter({ latitude: lat, longitude: lng });
 
-      Geolocation.watchPosition(
-        position => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          console.log('Updated location:', {latitude: lat, longitude: lng});
-          setLocation(lat, lng);
+          mapRef.current?.animateToRegion({
+            latitude: lat,
+            longitude: lng,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          });
         },
-        error => console.log('Error watching location:', error),
-        {enableHighAccuracy: true, distanceFilter: 1, interval: 1000},
+        (error) => console.log('Error getting current location:', error),
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     };
 
     requestLocationPermission();
+  }, [setLocation]);
 
-    getCurrentLocation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const onRegionChangeComplete = (region: Region) => {
+    setMapCenter({
+      latitude: region.latitude,
+      longitude: region.longitude,
+    });
+  };
 
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
+        zoomEnabled={true}
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         followsUserLocation={true}
-        key={'AIzaSyA4_-URnAPZCngJLIbQ9mhMuy-Lq1-iz-Y'}
-        region={{
-          latitude,
-          longitude,
-          latitudeDelta: 0.02,
-          longitudeDelta: 0.02,
-        }}>
-        <UserLocationMarker latitude={latitude} longitude={longitude} />
-
-        {scooterHubs.map(hub => (
+        customMapStyle={mapStyle}
+        initialRegion={{
+          latitude: latitude || 28.7041,
+          longitude: longitude || 77.1025,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+        onRegionChangeComplete={onRegionChangeComplete} 
+        onPress={(e) => e.stopPropagation()}
+      >
+        <UserLocationMarker />
+        {memoizedHubs.map((hub) => (
           <NearestHubMarker
             key={hub.id}
             latitude={hub.latitude}
             longitude={hub.longitude}
             name={hub.name}
+            isSelected={selectedHub?.id === hub.id.toString()}
+            onPress={(e) => {
+              e.stopPropagation();
+              setSelectedHub((prevHub) =>
+                prevHub?.id === hub.id.toString()
+                  ? null
+                  : { id: hub.id.toString(), latitude: hub.latitude, longitude: hub.longitude }
+              );
+            }}
           />
         ))}
-      </MapView>
 
-      <View style={styles.bottomContainer}>
-        <ButtonWithIcon
-          variant="primary"
-          onPress={() => console.log('Unlock Pressed')}
-          IconComponent={ScanIcon}>
-          Unlock
-        </ButtonWithIcon>
-      </View>
+        {selectedHub && (
+          <Polyline
+            coordinates={[
+              { latitude: mapCenter.latitude, longitude: mapCenter.longitude }, 
+              { latitude: selectedHub.latitude, longitude: selectedHub.longitude },
+            ]}
+            strokeColor="#296AEB"
+            strokeWidth={4}
+            geodesic={true}
+          />
+        )}
+      </MapView>
     </View>
   );
 };
@@ -103,13 +122,6 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
-  bottomContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
   },
 });
 

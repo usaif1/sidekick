@@ -4,13 +4,13 @@ import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // components
-import WalletCard from '../components/WalletCard';
-import SecurityDepositBar from '../components/SecurityDepositBar';
-import TransactionList from '../components/TransactionList';
-import AddFundsButton from '../components/AddFundsButton';
+import WalletCard from '@/modules/wallet/components/WalletCard';
+import SecurityDepositBar from '@/modules/wallet/components/SecurityDepositBar';
+import TransactionList from '@/modules/wallet/components/TransactionList';
+import AddFundsButton from '@/modules/wallet/components/AddFundsButton';
 
 // data
-import {mockWalletData} from '../constants/mockData';
+import {mockWalletData} from '@/modules/wallet/constants/mockData';
 
 // store
 import {useThemeStore} from '@/globalStore';
@@ -34,8 +34,7 @@ const WalletScreen: React.FC = () => {
   // Handle add funds button press
   const handleAddFunds = () => {
     console.log('pressed');
-    // @ts-ignore
-    navigation.navigate('wallet', {screen: 'WalletScreen'});
+    navigation.navigate('walletNavigator', {screen: 'AddFundsScreen'});
   };
 
   // List header component
@@ -54,8 +53,7 @@ const WalletScreen: React.FC = () => {
   );
 
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: colors.lightGray}]}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         {/* Wallet balance card */}
         <WalletCard
@@ -94,6 +92,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     paddingHorizontal: '23@ms',
     justifyContent: 'center',
+    backgroundColor: colors.white,
   },
   content: {
     flex: 1,

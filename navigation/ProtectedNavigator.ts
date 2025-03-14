@@ -18,7 +18,7 @@ const ProtectedNavigator = createNativeStackNavigator({
     user: {
       screen: UserNavigator,
     },
-    wallet: {
+    walletNavigator: {
       screen: WalletNavigator,
     },
   },

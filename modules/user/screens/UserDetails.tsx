@@ -1,6 +1,8 @@
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+// dependencies
+import {View, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 // components
 import ProfileCard from '@/modules/user/components/ProfileCard';

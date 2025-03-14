@@ -165,7 +165,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
-				6CE8FEA893A146EE6E6B37CA /* [CP-User] [RNFB] Core Configuration */,
+				9A92563B9B414D7EA9B555C2 /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -269,7 +269,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-sidekickv1/Pods-sidekickv1-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6CE8FEA893A146EE6E6B37CA /* [CP-User] [RNFB] Core Configuration */ = {
+		9A92563B9B414D7EA9B555C2 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

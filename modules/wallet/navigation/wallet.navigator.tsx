@@ -1,13 +1,19 @@
 // dependencies
+import {Platform} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // screens
 import WalletScreen from '../screens/WalletScreen';
 import AddFundsScreen from '../screens/AddFundsScreen';
 
+// components
+import {BackArrowButton} from '@/components';
+
 const WalletNavigator = createNativeStackNavigator({
   initialRouteName: 'WalletScreen',
   screenOptions: {
+    // this prevent flickering on android
+    presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
     headerStyle: {
       backgroundColor: 'transparent',
     },
@@ -18,13 +24,17 @@ const WalletNavigator = createNativeStackNavigator({
       screen: WalletScreen,
       options: {
         title: 'Wallet',
-        headerShown: true,
       },
     },
     AddFundsScreen: {
       screen: AddFundsScreen,
       options: {
-        headerShown: true,
+        title: '',
+        headerLeft: () => <BackArrowButton title="Add Funds" />,
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: '#FFFFFF',
+        },
       },
     },
   },
