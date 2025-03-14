@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { useThemeStore } from '@/globalStore';
+import { P2, H1 } from '@/components/Typography';
 
 interface WalletCardProps {
   /**
@@ -20,54 +21,41 @@ const WalletCard: React.FC<WalletCardProps> = ({
   balance,
   testID = 'wallet-card',
 }) => {
-  const { colors, spacing, 
-    // borderRadius,
-     typography, shadows } = useThemeStore(state => state.theme);
+  const { theme } = useThemeStore();
 
   return (
     <View 
       style={[
-        styles.container,
+        styles.container(theme),
         {
-          borderRadius: 20,
-          borderColor: colors.highlight,
-          backgroundColor: colors.lightGray,
+          borderColor: theme.colors.highlight,
+          backgroundColor: theme.colors.lightGray,
         }
       ]}
       testID={testID}
     >
-      <Text 
-        style={[
-          styles.label,
-          {
-            color: colors.textSecondary,
-            fontSize: typography.skP2.fontSize,
-          }
-        ]}
+      <P2 
+        textColor="textSecondary"
+        weight="500"
       >
         Current Balance
-      </Text>
-      <Text 
-        style={[
-          styles.balance,
-          {
-            color: colors.textPrimary,
-            fontSize: typography.skH1.fontSize,
-          }
-        ]}
+      </P2>
+      <H1 
+        textColor="textPrimary"
+        customStyles={styles.balance}
       >
         ₹{balance.toFixed(1)}
-      </Text>
+      </H1>
       
-      {/* Diagonal pattern background */}
+      {/* Diagonal pattern background - commented out in original */}
       {/* <View style={styles.patternContainer}>
         {Array.from({ length: 10 }).map((_, index) => (
           <View 
             key={index} 
             style={[
-              styles.diagonalLine,
+              styles.diagonalLine(theme),
               {
-                backgroundColor: colors.highlight,
+                backgroundColor: theme.colors.highlight,
                 top: index * 10,
               }
             ]} 
@@ -77,9 +65,9 @@ const WalletCard: React.FC<WalletCardProps> = ({
           <View 
             key={index} 
             style={[
-              styles.diagonalLineReverse,
+              styles.diagonalLineReverse(theme),
               {
-                backgroundColor: colors.highlight,
+                backgroundColor: theme.colors.highlight,
                 top: index * 10,
               }
             ]} 
@@ -90,51 +78,49 @@ const WalletCard: React.FC<WalletCardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
+const styles = {
+  container: (theme: any) => ({
+    padding: theme.padding.horizontal.md_20,
     width: '100%',
-    overflow: 'hidden',
-    position: 'relative',
+    overflow: 'hidden' as const,
+    position: 'relative' as const,
     borderWidth: 1,
+    borderRadius: theme.borderRadius.xl,
     height: '30%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  label: {
-    fontWeight: '500',
-  },
+    flexDirection: 'column' as const,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+  }),
   balance: {
     fontWeight: '900',
   },
   patternContainer: {
-    position: 'absolute',
+    position: 'absolute' as const,
     bottom: 0,
     left: 0,
     right: 0,
     height: '60%',
-    overflow: 'hidden',
+    overflow: 'hidden' as const,
     zIndex: -1,
   },
-  diagonalLine: {
-    position: 'absolute',
+  diagonalLine: (theme: any) => ({
+    position: 'absolute' as const,
     height: 1,
     width: '200%',
-    top:50,
+    top: 50,
     left: 50,
     transform: [{ rotate: '-10deg' }],
     opacity: 0.5,
-  },
-  diagonalLineReverse: {
-    position: 'absolute',
+  }),
+  diagonalLineReverse: (theme: any) => ({
+    position: 'absolute' as const,
     height: 1,
-    top:50,
+    top: 50,
     width: '200%',
     right: 50,
     transform: [{ rotate: '10deg' }],
     opacity: 0.5,
-  },
-});
+  }),
+};
 
 export default WalletCard; 

@@ -65,6 +65,13 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
     }
   };
 
+  const handleAddFunds = () => {
+    console.log('Attempting to navigate to AddFundsScreen');
+    // @ts-ignore
+    navigation.navigate('wallet', {screen: 'AddFundsScreen'});
+    console.log('Navigation command executed');
+  };
+
   return (
     <CommonModal visible={visible} onClose={onClose} testID={testID}>
       <View style={styles.container}>

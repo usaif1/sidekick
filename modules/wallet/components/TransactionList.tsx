@@ -1,8 +1,9 @@
 import React, { useCallback, memo } from 'react';
-import { View, Text, StyleSheet, FlatList, ListRenderItemInfo } from 'react-native';
+import { View, FlatList, ListRenderItemInfo } from 'react-native';
 import { useThemeStore } from '@/globalStore';
 import TransactionCard from './TransactionCard';
 import { Transaction } from '../constants/mockData';
+import { P1 } from '@/components/Typography';
 
 interface TransactionListProps {
   /**
@@ -25,7 +26,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
   testID = 'transaction-list',
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
+  const { theme } = useThemeStore();
 
   // Optimized render function
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Transaction>) => {
@@ -37,17 +38,12 @@ const TransactionList: React.FC<TransactionListProps> = ({
 
   // Empty list component
   const ListEmptyComponent = useCallback(() => (
-    <View style={styles.emptyContainer}>
-      <Text 
-        style={[
-          styles.emptyText,
-          { color: colors.textPrimary }
-        ]}
-      >
+    <View style={styles.emptyContainer(theme)}>
+      <P1 textColor="textPrimary">
         No transactions yet
-      </Text>
+      </P1>
     </View>
-  ), [colors.textPrimary]);
+  ), [theme]);
 
   return (
     <FlatList
@@ -66,26 +62,20 @@ const TransactionList: React.FC<TransactionListProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   listContent: {
     flexGrow: 1,
   },
-  headerContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+  headerContainer: (theme: any) => ({
+    paddingVertical: theme.padding.vertical.sm_8,
+    paddingHorizontal: theme.padding.horizontal.md_16,
     borderBottomWidth: 1,
-  },
-  headerText: {
-    fontWeight: '600',
-  },
-  emptyContainer: {
-    padding: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-  },
-});
+  }),
+  emptyContainer: (theme: any) => ({
+    padding: theme.padding.horizontal.lg_24,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  }),
+};
 
 export default TransactionList; 

@@ -10,6 +10,7 @@ type Props = {
   children: ReactNode;
   onPress: () => void;
   variant: 'primary' | 'secondary' | 'highlight';
+  customStyles?: ViewStyle;
 };
 
 type ContainerStyles = {
@@ -20,7 +21,7 @@ type ContainerStyles = {
 
 const {typography, colors, spacing} = useThemeStore.getState().theme;
 
-const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
+const ButtonText: React.FC<Props> = ({children, onPress, variant, customStyles}) => {
   const containerStyles: ContainerStyles = {
     primary: {
       backgroundColor: colors.primary,
@@ -34,6 +35,7 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
       backgroundColor: colors.highlight,
       padding: spacing.sm,
       borderRadius: 14,
+      height: 40,
     },
   };
 
@@ -77,6 +79,6 @@ const styles = ScaledSheet.create({
     color: colors.textPrimary,
   },
   highlight: {
-    color: colors.highlight,
+    color: colors.white,
   },
 });

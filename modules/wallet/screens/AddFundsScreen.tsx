@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -14,6 +11,8 @@ import ButtonText from '@/components/ButtonText';
 import {useThemeStore} from '@/globalStore';
 import {useModal} from '@/components/Modal/ModalProvider';
 import PaymentSuccessModal from '../components/PaymentSuccessModal';
+import {H2, P1, P2} from '@/components/Typography';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 // Payment method type
 type PaymentMethod = 'upi' | 'card' | 'netbanking';
@@ -23,9 +22,7 @@ const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
 const AddFundsScreen = () => {
   const navigation = useNavigation();
-  const {colors, spacing, borderRadius, typography, shadows} = useThemeStore(
-    state => state.theme,
-  );
+  const {theme} = useThemeStore();
   const {showModal, hideModal} = useModal();
 
   // State for amount and payment method
@@ -69,41 +66,25 @@ const AddFundsScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header with back button */}
-      <View style={styles.header}>
+      <View style={styles.header(theme)}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.backButton}
+          style={styles.backButton(theme)}
           accessibilityLabel="Go back"
           accessibilityRole="button">
-          <Icon name="chevron-left" size={24} color={colors.highlight} />
+          <Icon name="chevron-left" size={24} color={theme.colors.highlight} />
         </TouchableOpacity>
-        <Text
-          style={[
-            styles.headerTitle,
-            {
-              color: colors.textPrimary,
-              fontSize: typography.skH2.fontSize,
-            },
-          ]}>
+        <H2 
+          textColor="textPrimary"
+          customStyles={styles.headerTitle(theme)}
+        >
           Add Funds
-        </Text>
+        </H2>
       </View>
 
-      <ScrollView style={styles.content}>
+      <ScrollView style={styles.content(theme)}>
         {/* Amount input section */}
-        <View style={styles.section}>
-          {/* <Text 
-            style={[
-              styles.sectionTitle,
-              { 
-                color: colors.textPrimary,
-                fontSize: typography.skP1.fontSize,
-              }
-            ]}
-          >
-            Enter Amount
-          </Text> */}
-
+        <View style={styles.section(theme)}>
           <Input
             title="Available Balance ₹56.0"
             placeholder="Enter amount"
@@ -112,7 +93,7 @@ const AddFundsScreen = () => {
             inputType="numeric"
             variant="currency"
             testID="amount-input"
-            containerStyle={styles.amountInput}
+            containerStyle={styles.amountInput(theme)}
           />
 
           {/* Quick amount options */}
@@ -121,132 +102,115 @@ const AddFundsScreen = () => {
               <TouchableOpacity
                 key={value}
                 style={[
-                  styles.quickAmountButton,
+                  styles.quickAmountButton(theme),
                   {
                     backgroundColor:
                       amount === value.toString()
-                        ? colors.secondary
-                        : colors.lightGray,
+                        ? theme.colors.secondary
+                        : theme.colors.lightGray,
                     borderColor:
                       amount === value.toString()
-                        ? colors.primary
-                        : colors.textSecondary,
+                        ? theme.colors.primary
+                        : theme.colors.textSecondary,
                   },
                 ]}
                 onPress={() => handleQuickAmountSelect(value)}>
-                <Text
-                  style={[
-                    styles.quickAmountText,
-                    {
-                      color:
-                        amount === value.toString()
-                          ? colors.highlight
-                          : colors.textPrimary,
-                    },
-                  ]}>
+                <P2
+                  textColor={amount === value.toString() ? "highlight" : "textPrimary"}
+                  weight="500"
+                  customStyles={styles.quickAmountText}
+                >
                   + {value}
-                </Text>
+                </P2>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
         {/* Payment methods section */}
-        <View style={styles.section}>
-          <Text
-            style={[
-              styles.sectionTitle,
-              {
-                color: colors.textPrimary,
-                fontSize: typography.skP1.fontSize,
-              },
-            ]}>
+        <View style={styles.section(theme)}>
+          <P1
+            textColor="textPrimary"
+            weight="600"
+            customStyles={styles.sectionTitle(theme)}
+          >
             Payment Method
-          </Text>
+          </P1>
 
           {/* UPI option */}
           <TouchableOpacity
             style={[
-              styles.paymentOption,
+              styles.paymentOption(theme),
               {
                 borderColor:
-                  selectedMethod === 'upi' ? colors.primary : colors.lightGray,
+                  selectedMethod === 'upi' ? theme.colors.primary : theme.colors.lightGray,
               },
             ]}
             onPress={() => handleMethodSelect('upi')}>
             <View style={styles.paymentOptionContent}>
-              <Icon name="smartphone" size={20} color={colors.highlight} />
-              <Text
-                style={[
-                  styles.paymentOptionText,
-                  {
-                    color: colors.textPrimary,
-                    marginLeft: spacing.sm,
-                  },
-                ]}>
+              <Icon name="smartphone" size={20} color={theme.colors.highlight} />
+              <P2
+                textColor="textPrimary"
+                weight="500"
+                customStyles={{marginLeft: theme.spacing.sm}}
+              >
                 UPI
-              </Text>
+              </P2>
             </View>
             {selectedMethod === 'upi' && (
-              <Icon name="check-circle" size={20} color={colors.primary} />
+              <Icon name="check-circle" size={20} color={theme.colors.primary} />
             )}
           </TouchableOpacity>
 
           {/* Card option */}
           <TouchableOpacity
             style={[
-              styles.paymentOption,
+              styles.paymentOption(theme),
               {
                 borderColor:
-                  selectedMethod === 'card' ? colors.primary : colors.lightGray,
+                  selectedMethod === 'card' ? theme.colors.primary : theme.colors.lightGray,
               },
             ]}
             onPress={() => handleMethodSelect('card')}>
             <View style={styles.paymentOptionContent}>
-              <Icon name="credit-card" size={20} color={colors.highlight} />
-              <Text
-                style={[
-                  styles.paymentOptionText,
-                  {
-                    color: colors.textPrimary,
-                    marginLeft: spacing.sm,
-                  },
-                ]}>
+              <Icon name="credit-card" size={20} color={theme.colors.highlight} />
+              <P2
+                textColor="textPrimary"
+                weight="500"
+                customStyles={{marginLeft: theme.spacing.sm}}
+              >
                 Credit/Debit Card
-              </Text>
+              </P2>
             </View>
             {selectedMethod === 'card' && (
-              <Icon name="check-circle" size={20} color={colors.primary} />
+              <Icon name="check-circle" size={20} color={theme.colors.primary} />
             )}
           </TouchableOpacity>
 
           {/* Net Banking option */}
           <TouchableOpacity
             style={[
-              styles.paymentOption,
+              styles.paymentOption(theme),
               {
                 borderColor:
                   selectedMethod === 'netbanking'
-                    ? colors.primary
-                    : colors.lightGray,
+                    ? theme.colors.primary
+                    : theme.colors.lightGray,
               },
             ]}
             onPress={() => handleMethodSelect('netbanking')}>
             <View style={styles.paymentOptionContent}>
-              <Icon name="globe" size={20} color={colors.highlight} />
-              <Text
-                style={[
-                  styles.paymentOptionText,
-                  {
-                    color: colors.textPrimary,
-                    marginLeft: spacing.sm,
-                  },
-                ]}>
+              <Icon name="globe" size={20} color={theme.colors.highlight} />
+              <P2
+                textColor="textPrimary"
+                weight="500"
+                customStyles={{marginLeft: theme.spacing.sm}}
+              >
                 Net Banking
-              </Text>
+              </P2>
             </View>
             {selectedMethod === 'netbanking' && (
-              <Icon name="check-circle" size={20} color={colors.primary} />
+              <Icon name="check-circle" size={20} color={theme.colors.primary} />
             )}
           </TouchableOpacity>
         </View>
@@ -254,44 +218,44 @@ const AddFundsScreen = () => {
         {/* Summary section */}
         <View
           style={[
-            styles.summarySection,
+            styles.summarySection(theme),
             {
-              backgroundColor: colors.lightGray,
-              borderRadius: 16,
+              backgroundColor: theme.colors.lightGray,
+              borderRadius: theme.borderRadius.lg,
             },
           ]}>
-          <View style={styles.summaryRow}>
-            <Text style={{color: colors.textPrimary}}>Amount</Text>
-            <Text style={{color: colors.textPrimary, fontWeight: '600'}}>
+          <View style={styles.summaryRow(theme)}>
+            <P2 textColor="textPrimary">Amount</P2>
+            <P2 textColor="textPrimary" weight="600">
               ₹{amount || '0'}
-            </Text>
+            </P2>
           </View>
 
-          <View style={styles.summaryRow}>
-            <Text style={{color: colors.textPrimary}}>Security Deposit</Text>
-            <Text style={{color: colors.textPrimary, fontWeight: '600'}}>
+          <View style={styles.summaryRow(theme)}>
+            <P2 textColor="textPrimary">Security Deposit</P2>
+            <P2 textColor="textPrimary" weight="600">
               ₹200
-            </Text>
+            </P2>
           </View>
 
           <View
-            style={[styles.summaryDivider, {backgroundColor: colors.lightGray}]}
+            style={[styles.summaryDivider(theme), {backgroundColor: theme.colors.lightGray}]}
           />
 
-          <View style={styles.summaryRow}>
-            <Text style={{color: colors.textPrimary, fontWeight: '600'}}>
+          <View style={styles.summaryRow(theme)}>
+            <P2 textColor="textPrimary" weight="600">
               Total
-            </Text>
-            <Text style={{color: colors.textPrimary, fontWeight: '700'}}>
+            </P2>
+            <P2 textColor="textPrimary" weight="700">
               ₹{(parseFloat(amount || '0') + 200).toFixed(1)}
-            </Text>
+            </P2>
           </View>
         </View>
       </ScrollView>
 
       {/* Pay button */}
       {amount && (
-        <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer(theme)}>
           <ButtonText variant="primary" onPress={handlePay}>
             Pay ₹{(parseFloat(amount || '0') + 200).toFixed(2)}
           </ButtonText>
@@ -301,88 +265,83 @@ const AddFundsScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
+  header: (theme: any) => ({
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    paddingHorizontal: theme.padding.horizontal.md_16,
+    paddingVertical: theme.padding.vertical.sm_8,
+  }),
+  backButton: (theme: any) => ({
+    padding: theme.padding.horizontal.sm_8,
+  }),
+  headerTitle: (theme: any) => ({
     flex: 1,
-    textAlign: 'left',
-    marginLeft: 16,
-  },
-  content: {
+    textAlign: 'left' as const,
+    marginLeft: theme.margin.horizontal.md_16,
+  }),
+  content: (theme: any) => ({
     flex: 1,
-    padding: 16,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  amountInput: {
-    marginBottom: 16,
-  },
+    padding: theme.padding.horizontal.md_16,
+  }),
+  section: (theme: any) => ({
+    marginBottom: theme.margin.vertical.lg_24,
+  }),
+  sectionTitle: (theme: any) => ({
+    marginBottom: theme.margin.vertical.sm_8,
+  }),
+  amountInput: (theme: any) => ({
+    marginBottom: theme.margin.vertical.md_16,
+  }),
   quickAmounts: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: 'row' as const,
+    flexWrap: 'wrap' as const,
     marginHorizontal: -4,
   },
-  quickAmountButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+  quickAmountButton: (theme: any) => ({
+    paddingVertical: theme.padding.vertical.sm_8,
+    paddingHorizontal: theme.padding.horizontal.md_16,
     margin: 4,
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: theme.borderRadius.lg,
     width: '22%',
-  },
+  }),
   quickAmountText: {
-    fontWeight: '500',
-    textAlign: 'center',
+    textAlign: 'center' as const,
   },
-  paymentOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    marginBottom: 12,
+  paymentOption: (theme: any) => ({
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    justifyContent: 'space-between' as const,
+    padding: theme.padding.horizontal.md_16,
+    marginBottom: theme.margin.vertical.sm_8,
     borderWidth: 1,
-  },
+  }),
   paymentOptionContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
   },
-  paymentOptionText: {
-    fontWeight: '500',
-  },
-  summarySection: {
-    padding: 16,
-    marginBottom: 24,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  summaryDivider: {
+  summarySection: (theme: any) => ({
+    padding: theme.padding.horizontal.md_16,
+    marginBottom: theme.margin.vertical.lg_24,
+  }),
+  summaryRow: (theme: any) => ({
+    flexDirection: 'row' as const,
+    justifyContent: 'space-between' as const,
+    marginBottom: theme.margin.vertical.sm_8,
+  }),
+  summaryDivider: (theme: any) => ({
     height: 1,
-    marginVertical: 8,
-  },
-  buttonContainer: {
-    padding: 16,
-    paddingHorizontal: 96,
-  },
-});
+    marginVertical: theme.margin.vertical.sm_8,
+  }),
+  buttonContainer: (theme: any) => ({
+    padding: theme.padding.horizontal.md_16,
+    paddingHorizontal: 96, // Keeping this specific value as it seems intentional for button width
+  }),
+};
 
 export default AddFundsScreen;

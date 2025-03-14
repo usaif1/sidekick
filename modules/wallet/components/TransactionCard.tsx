@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import {useThemeStore} from '@/globalStore';
 import {Transaction} from '../constants/mockData';
+import {P1, P2, P3} from '@/components/Typography';
 
 interface TransactionCardProps {
   /**
@@ -21,80 +22,62 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   transaction,
   testID = `transaction-card-${transaction.id}`,
 }) => {
-  const {colors, spacing, typography} = useThemeStore(state => state.theme);
+  const {theme} = useThemeStore();
 
   const isCredit = transaction.type === 'credit';
 
   return (
     <View
       style={[
-        styles.container,
+        styles.container(theme),
         {
-          borderBottomColor: colors.lightGray,
+          borderBottomColor: theme.colors.lightGray,
         },
       ]}
       testID={testID}>
-      <View style={styles.leftContent}>
-        <Text
-          style={[
-            styles.name,
-            {
-              color: colors.textPrimary,
-              fontSize: typography.skP2.fontSize,
-            },
-          ]}
-          numberOfLines={1}>
+      <View style={styles.leftContent(theme)}>
+        <P2
+          textColor="textPrimary"
+          weight="500"
+          customStyles={styles.name(theme)}>
           {transaction.name}
-        </Text>
-        <Text
-          style={[
-            styles.dateTime,
-            {
-              color: colors.textSecondary,
-              fontSize: typography.skP3.fontSize,
-            },
-          ]}>
+        </P2>
+        <P3
+          textColor="textSecondary"
+          weight="400"
+          customStyles={styles.dateTime}>
           {transaction.date} • {transaction.time}
-        </Text>
+        </P3>
       </View>
 
-      <Text
-        style={[
-          styles.amount,
-          {
-            color: isCredit ? colors.primary : colors.error,
-            fontSize: typography.skP1.fontSize,
-          },
-        ]}>
+      <P1
+        textColor={isCredit ? "primary" : "error"}
+        weight="600">
         {isCredit ? '+ ' : '- '}₹{transaction.amount.toFixed(1)}
-      </Text>
+      </P1>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+const styles = {
+  container: (theme: any) => ({
+    flexDirection: 'row' as const,
+    justifyContent: 'space-between' as const,
+    alignItems: 'center' as const,
+    paddingVertical: theme.padding.vertical.sm_8,
+    paddingHorizontal: theme.padding.horizontal.md_16,
     borderBottomWidth: 1,
-  },
-  leftContent: {
+  }),
+  leftContent: (theme: any) => ({
     flex: 1,
-    marginRight: 8,
-  },
-  name: {
-    fontWeight: '500',
-    marginBottom: 4,
-  },
+    marginRight: theme.margin.horizontal.sm_8,
+  }),
+  name: (theme: any) => ({
+    marginBottom: theme.margin.vertical.xs_4,
+  }),
   dateTime: {
-    fontWeight: '400',
+    // No additional styles needed
   },
-  amount: {
-    fontWeight: '600',
-  },
-});
+};
 
 export default TransactionCard;
