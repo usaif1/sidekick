@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useThemeStore } from '@/globalStore';
 import ButtonText from '@/components/ButtonText';
 import CommonModal from '@/components/Modal/CommonModal';
+import { H2, P3 } from '@/components/Typography';
 
 interface PaymentSuccessModalProps {
   /**
@@ -43,7 +44,7 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
   onContinueToRide,
   onCheckWallet,
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
+  const { theme } = useThemeStore();
   
   // Handle continue to ride
   const handleContinueToRide = () => {
@@ -74,44 +75,34 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
 
   return (
     <CommonModal visible={visible} onClose={onClose} testID={testID}>
-      <View style={styles.container}>
+      <View style={styles.container(theme)}>
         {/* Success icon */}
         <View 
           style={[
-            styles.iconContainer,
-            { backgroundColor: colors.highlight }
+            styles.iconContainer(theme),
+            { backgroundColor: theme.colors.highlight }
           ]}
         >
-          <Icon name="check" size={32} color={colors.white} />
+          <Icon name="check" size={32} color={theme.colors.white} />
         </View>
         
         {/* Success message */}
-        <Text 
-          style={[
-            styles.amountText,
-            {
-              color: colors.textPrimary,
-              fontSize: typography.skH2.fontSize,
-            }
-          ]}
+        <H2 
+          textColor="textPrimary"
+          customStyles={styles.amountText(theme)}
         >
           ₹{amount.toFixed(1)} Added to Wallet
-        </Text>
+        </H2>
         
-        <Text 
-          style={[
-            styles.messageText,
-            {
-              color: colors.textSecondary,
-              fontSize: typography.skP3.fontSize,
-            }
-          ]}
+        <P3 
+          textColor="textSecondary"
+          customStyles={styles.messageText(theme)}
         >
           Please pick any option to continue
-        </Text>
+        </P3>
         
         {/* Action buttons */}
-        <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer(theme)}>
           <ButtonText
             variant="primary"
             onPress={handleContinueToRide}
@@ -120,7 +111,7 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
           </ButtonText>
         </View>
         
-        <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer(theme)}>
           <ButtonText
             variant="secondary"
             onPress={handleCheckWallet}
@@ -133,32 +124,32 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingTop: 24,
-  },
-  iconContainer: {
+const styles = {
+  container: (theme: any) => ({
+    alignItems: 'center' as const,
+    paddingTop: theme.padding.vertical.lg_24,
+  }),
+  iconContainer: (theme: any) => ({
     width: 64,
     height: 64,
     borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  amountText: {
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    marginBottom: theme.margin.vertical.md_16,
+  }),
+  amountText: (theme: any) => ({
     fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  messageText: {
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  buttonContainer: {
+    textAlign: 'center' as const,
+    marginBottom: theme.margin.vertical.sm_8,
+  }),
+  messageText: (theme: any) => ({
+    textAlign: 'center' as const,
+    marginBottom: theme.margin.vertical.lg_24,
+  }),
+  buttonContainer: (theme: any) => ({
     width: '100%',
-    marginBottom: 12,
-  },
-});
+    marginBottom: theme.margin.vertical.sm_8,
+  }),
+};
 
 export default PaymentSuccessModal; 
