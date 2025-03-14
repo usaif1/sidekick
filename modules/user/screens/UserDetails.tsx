@@ -1,69 +1,76 @@
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+// dependencies
+import {View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+
+// components
 import ProfileCard from '@/modules/user/components/ProfileCard';
 import Menu from '@/modules/user/components/Menu';
 import SupportModal from '@/modules/user/components/SupportModal';
-import { useModal } from '@/components/Modal/ModalProvider';
-import { useThemeStore } from '@/globalStore';
-import CustomSafeArea from '@/wrappers/customSafeArea/CustomSafeArea';
+import {useModal} from '@/components/Modal/ModalProvider';
 import Divider from '@/components/Divider';
+import Profile from '../assets/profile.svg';
+import Notification from '../assets/notification.svg';
+import Help from '../assets/help.svg';
+import {useThemeStore} from '@/globalStore';
 
-// You can import a profile image or use a require statement
-// const profileImage = require('../assets/profile-image.jpg');
+const {colors} = useThemeStore.getState().theme;
 
-const UserDetails = () => {
+const UserDetails: React.FC = () => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const { showModal, hideModal } = useModal();
-  const { colors } = useThemeStore(state => state.theme);
-  
+  const {showModal, hideModal} = useModal();
+
   // User data
   const userData = {
-    name: "Christian Miller",
-    email: "christian.miller@infosys.com",
-    phone: "9876543210"
+    name: 'Christian Miller',
+    email: 'christian.miller@infosys.com',
+    phone: '9876543210',
   };
-  
+
   // Menu items with the notifications item using a switch
   const menuItems = [
     {
-      icon: 'edit-2',
+      icon: Profile,
       label: 'Edit Profile',
       controlType: 'none' as const,
-      onPress: () => navigation.navigate('user', { screen: 'EditProfile' }),
-      testID: 'edit-profile-button'
+      // @ts-ignore
+      onPress: () => navigation.navigate('user', {screen: 'EditProfile'}),
+      testID: 'edit-profile-button',
     },
     {
-      icon: 'bell',
+      icon: Notification,
       label: 'Show Notifications',
       controlType: 'switch' as const,
       isToggled: notificationsEnabled,
-      onToggle: (value) => {
+      // @ts-ignore
+      onToggle: value => {
         setNotificationsEnabled(value);
         console.log('Notifications toggled:', value);
       },
       onPress: () => {}, // No-op since the switch handles the interaction
-      testID: 'notifications-button'
+      testID: 'notifications-button',
     },
     {
-      icon: 'help-circle',
+      icon: Help,
       label: 'Need Help?',
       controlType: 'none' as const,
-      onPress: () => showModal(
-        <SupportModal
-          visible={true}
-          onClose={hideModal}
-          supportEmail="help@sidekick.com"
-          emailSubject="Support Request from Sidekick App"
-        />
-      ),
-      testID: 'help-button'
-    }
+      onPress: () =>
+        showModal(
+          <SupportModal
+            visible={true}
+            onClose={hideModal}
+            supportEmail="help@sidekick.com"
+            emailSubject="Support Request from Sidekick App"
+          />,
+        ),
+      testID: 'help-button',
+    },
   ];
 
   return (
-    <CustomSafeArea>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <ProfileCard
           fullName={userData.name}
@@ -75,31 +82,28 @@ const UserDetails = () => {
         />
 
         <Divider height={16} />
-        
-        <Menu 
-          items={menuItems}
-          style={styles.menu}
-          testID="user-menu"
-        />
+
+        <Menu items={menuItems} style={styles.menu} testID="user-menu" />
       </View>
-    </CustomSafeArea>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: colors.appBaseBg,
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
   profileCard: {
     marginBottom: 16,
   },
   menu: {
     marginHorizontal: 16,
-  }
+  },
 });
 
 export default UserDetails;

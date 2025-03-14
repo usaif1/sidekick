@@ -1,9 +1,10 @@
+// dependencies
 import React from 'react';
-import { View, Text, StyleSheet, Linking, Platform } from 'react-native';
-import { useThemeStore } from '@/globalStore';
+import {View, StyleSheet, Linking} from 'react-native';
+
+// components
 import CommonModal from '@/components/Modal/CommonModal';
-import ButtonText from '@/components/ButtonText';
-import Icon from 'react-native-vector-icons/Feather';
+import {H2, P2, Divider, ButtonText} from '@/components';
 
 interface SupportModalProps {
   /**
@@ -38,10 +39,10 @@ const SupportModal: React.FC<SupportModalProps> = ({
   emailSubject = 'Support Request',
   testID = 'support-modal',
 }) => {
-  const { colors, spacing, typography } = useThemeStore(state => state.theme);
-
   const handleContactSupport = async () => {
-    const emailUrl = `mailto:${supportEmail}?subject=${encodeURIComponent(emailSubject)}`;
+    const emailUrl = `mailto:${supportEmail}?subject=${encodeURIComponent(
+      emailSubject,
+    )}`;
 
     try {
       const supported = await Linking.canOpenURL(emailUrl);
@@ -56,46 +57,25 @@ const SupportModal: React.FC<SupportModalProps> = ({
   };
 
   return (
-  <CommonModal visible={visible} onClose={onClose} testID={testID}>
-  <View style={styles.container}>
-    {/* Icon */}
-    {/* <View style={[styles.iconContainer, { backgroundColor: colors.primary[300] }]}>
-      <Icon name="mail" size={32} color={colors.primary[500]} />
-    </View> */}
-    
-    {/* Title */}
-    <Text 
-      style={[
-        styles.title, 
-        { 
-          color: colors.textPrimary,
-          fontSize: typography.skH2.fontSize,
-        }
-      ]}
-    >
-      Sorry for the inconvenience !
-    </Text>
-    
-    {/* Message */}
-    <Text 
-      style={[
-        styles.message, 
-        { 
-          color: colors.textSecondary,
-          fontSize: typography.skP3.fontSize,
-        }
-      ]}
-    >
-      Please drop us an email and we'll get back to you
-    </Text>
-    
-    {/* Button */}
-    <ButtonText variant="primary" onPress={handleContactSupport}>
-      Drop an Email
-    </ButtonText>
-  </View>
-</CommonModal>
-);
+    <CommonModal visible={visible} onClose={onClose} testID={testID}>
+      <View style={styles.container}>
+        {/* Title */}
+        <H2>Sorry for the inconvenience !</H2>
+
+        {/* Message */}
+        <Divider height={5} />
+        <P2 textColor="textSecondary">
+          Please drop us an email and we'll get back to you
+        </P2>
+
+        {/* Button */}
+        <Divider height={16} />
+        <ButtonText variant="primary" onPress={handleContactSupport}>
+          Drop an Email
+        </ButtonText>
+      </View>
+    </CommonModal>
+  );
 };
 
 const styles = StyleSheet.create({

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useThemeStore } from '@/globalStore';
-import { Transaction } from '../constants/mockData';
+import {View, Text, StyleSheet} from 'react-native';
+import {useThemeStore} from '@/globalStore';
+import {Transaction} from '../constants/mockData';
 
 interface TransactionCardProps {
   /**
@@ -21,55 +21,51 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   transaction,
   testID = `transaction-card-${transaction.id}`,
 }) => {
-  const { colors, spacing, typography } = useThemeStore(state => state.theme);
+  const {colors, spacing, typography} = useThemeStore(state => state.theme);
 
   const isCredit = transaction.type === 'credit';
 
   return (
-    <View 
+    <View
       style={[
         styles.container,
         {
           borderBottomColor: colors.lightGray,
-        }
+        },
       ]}
-      testID={testID}
-    >
+      testID={testID}>
       <View style={styles.leftContent}>
-        <Text 
+        <Text
           style={[
             styles.name,
             {
               color: colors.textPrimary,
               fontSize: typography.skP2.fontSize,
-            }
+            },
           ]}
-          numberOfLines={1}
-        >
+          numberOfLines={1}>
           {transaction.name}
         </Text>
-        <Text 
+        <Text
           style={[
             styles.dateTime,
             {
               color: colors.textSecondary,
               fontSize: typography.skP3.fontSize,
-            }
-          ]}
-        >
+            },
+          ]}>
           {transaction.date} • {transaction.time}
         </Text>
       </View>
-      
-      <Text 
+
+      <Text
         style={[
           styles.amount,
           {
             color: isCredit ? colors.primary : colors.error,
             fontSize: typography.skP1.fontSize,
-          }
-        ]}
-      >
+          },
+        ]}>
         {isCredit ? '+ ' : '- '}₹{transaction.amount.toFixed(1)}
       </Text>
     </View>
@@ -101,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TransactionCard; 
+export default TransactionCard;

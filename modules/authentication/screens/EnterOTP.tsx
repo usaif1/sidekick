@@ -1,3 +1,4 @@
+import {CommonTextInput, Divider} from '@/components';
 import ButtonText from '@/components/ButtonText';
 import {useGlobalStore, useThemeStore} from '@/globalStore';
 import React from 'react';
@@ -8,7 +9,6 @@ import {
   ImageBackground,
   Dimensions,
 } from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
@@ -23,18 +23,10 @@ const Login = () => {
       <View style={styles.contentContainer}>
         <View style={{width: '100%'}}>
           <Text style={styles.label}>Please Enter the OTP Received</Text>
-          <TextInput
+          <Divider height={10} />
+          <CommonTextInput
             placeholder="XXXX"
-            style={{
-              borderWidth: 2,
-              width: '100%',
-              height: 60,
-              borderColor: theme.colors.lightGray,
-              borderRadius: 20,
-              marginTop: 12,
-              paddingLeft: 20,
-              fontWeight: '600',
-              fontSize: 16,
+            customStyle={{
               textAlign: 'center',
             }}
           />

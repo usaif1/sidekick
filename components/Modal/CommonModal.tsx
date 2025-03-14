@@ -1,15 +1,14 @@
-import React, { ReactNode } from 'react';
-import { 
-  Modal, 
-  View, 
-  StyleSheet, 
-  TouchableOpacity, 
+import React, {ReactNode} from 'react';
+import {
+  Modal,
+  View,
+  StyleSheet,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   Dimensions,
-  Platform
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import { useThemeStore } from '@/globalStore';
+import {useThemeStore} from '@/globalStore';
+import Cross from '../assets/cross.svg';
 
 interface CommonModalProps {
   /**
@@ -45,6 +44,8 @@ interface CommonModalProps {
 /**
  * A reusable modal component that can be used throughout the app
  */
+const {colors, shadows} = useThemeStore.getState().theme;
+
 const CommonModal: React.FC<CommonModalProps> = ({
   visible,
   children,
@@ -52,10 +53,6 @@ const CommonModal: React.FC<CommonModalProps> = ({
   closeOnBackdropPress = true,
   testID = 'common-modal',
 }) => {
-  const { colors, 
-    // borderRadius,
-     shadows } = useThemeStore(state => state.theme);
-
   const handleBackdropPress = () => {
     if (closeOnBackdropPress) {
       onClose();
@@ -68,35 +65,30 @@ const CommonModal: React.FC<CommonModalProps> = ({
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
-      testID={testID}
-    >
+      testID={testID}>
       <TouchableWithoutFeedback onPress={handleBackdropPress}>
         <View style={styles.backdrop}>
           <TouchableWithoutFeedback onPress={e => e.stopPropagation()}>
-            <View 
+            <View
               style={[
                 styles.modalContainer,
-                { 
+                {
                   backgroundColor: colors.white,
                   // borderRadius: borderRadius.lg,
-                  ...shadows.md
-                }
-              ]}
-            >
-              <TouchableOpacity 
-                style={styles.closeButton} 
+                  ...shadows.md,
+                },
+              ]}>
+              <TouchableOpacity
+                style={styles.closeButton}
                 onPress={onClose}
-                hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}
                 accessibilityLabel="Close modal"
                 accessibilityRole="button"
-                testID={`${testID}-close-button`}
-              >
-                <Icon name="x" size={20} color={colors.textPrimary} />
+                testID={`${testID}-close-button`}>
+                <Cross />
               </TouchableOpacity>
-              
-              <View style={styles.content}>
-                {children}
-              </View>
+
+              <View style={styles.content}>{children}</View>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -105,7 +97,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
   );
 };
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   backdrop: {
@@ -115,10 +107,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    width: width * 0.85,
-    maxWidth: 400,
+    width: width * 0.9,
+    maxWidth: '99%',
     padding: 24,
     position: 'relative',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.textSecondary,
   },
   closeButton: {
     position: 'absolute',
@@ -132,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CommonModal; 
+export default CommonModal;

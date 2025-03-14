@@ -1,4 +1,5 @@
 // dependencies
+import {Platform} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import type {StaticParamList} from '@react-navigation/native';
 
@@ -15,6 +16,7 @@ const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
   initialRouteName: 'login',
   screenOptions: {
     headerShown: false,
+    presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
   },
   screens: {
     login: Login,

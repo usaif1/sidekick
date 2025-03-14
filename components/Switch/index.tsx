@@ -1,15 +1,14 @@
 // src/components/Switch/Switch.tsx
-import React, { useState } from 'react';
-import { 
-  StyleSheet, 
-  View, 
-  TouchableOpacity, 
-  Animated, 
-  ViewStyle, 
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  ViewStyle,
   Easing,
-  AccessibilityState
+  AccessibilityState,
 } from 'react-native';
-import { useThemeStore } from '@/globalStore';
+import {useThemeStore} from '@/globalStore';
 
 interface SwitchProps {
   /**
@@ -45,6 +44,9 @@ interface SwitchProps {
 /**
  * Switch component provides a toggle control with animated state transition
  */
+
+const {colors, spacing} = useThemeStore.getState().theme;
+
 const Switch: React.FC<SwitchProps> = ({
   isOn = false,
   onToggle,
@@ -55,14 +57,14 @@ const Switch: React.FC<SwitchProps> = ({
   accessibilityLabel = 'Toggle switch',
 }) => {
   // Access theme values from the store
-  const { colors, spacing } = useThemeStore(state => state.theme);
-  
+  // const {colors, spacing} = useThemeStore(state => state.theme);
+
   // Internal state to track controlled/uncontrolled behavior
   const [internalIsOn, setInternalIsOn] = useState(isOn);
-  
+
   // Use the right value based on controlled vs uncontrolled usage
   const isToggled = onToggle ? isOn : internalIsOn;
-  
+
   // Animation value for the toggle movement
   const [animatedValue] = useState(new Animated.Value(isToggled ? 1 : 0));
 
@@ -112,10 +114,10 @@ const Switch: React.FC<SwitchProps> = ({
   // Handle toggle action
   const handleToggle = () => {
     if (disabled) return;
-    
+
     // Calculate new toggled state
     const newValue = !isToggled;
-    
+
     // If controlled component, use the callback
     if (onToggle) {
       onToggle(newValue);
@@ -123,7 +125,7 @@ const Switch: React.FC<SwitchProps> = ({
       // Otherwise update internal state
       setInternalIsOn(newValue);
     }
-    
+
     // Run the animation
     Animated.timing(animatedValue, {
       toValue: newValue ? 1 : 0,
@@ -136,12 +138,17 @@ const Switch: React.FC<SwitchProps> = ({
   // Interpolate animation values
   const togglePosition = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, sizeStyles[size].container.width - sizeStyles[size].toggle.width - (sizeStyles[size].container.padding * 2)],
+    outputRange: [
+      0,
+      sizeStyles[size].container.width -
+        sizeStyles[size].toggle.width -
+        sizeStyles[size].container.padding * 2,
+    ],
   });
 
   const backgroundColorInterpolation = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [colors.lightGray, colors.primary], // Off color to On color
+    outputRange: [colors.lightGray, colors.lightGray], // Off color to On color
   });
 
   // Set accessibility props
@@ -159,8 +166,7 @@ const Switch: React.FC<SwitchProps> = ({
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="switch"
       accessibilityState={accessibilityState}
-      style={style}
-    >
+      style={style}>
       <Animated.View
         style={[
           styles.container,
@@ -169,14 +175,18 @@ const Switch: React.FC<SwitchProps> = ({
             backgroundColor: backgroundColorInterpolation,
             opacity: disabled ? 0.5 : 1,
           },
-        ]}
-      >
+        ]}>
         <Animated.View
           style={[
             styles.toggle,
+            {
+              backgroundColor: isToggled
+                ? colors.highlight
+                : colors.textSecondary,
+            },
             sizeStyles[size].toggle,
             {
-              transform: [{ translateX: togglePosition }],
+              transform: [{translateX: togglePosition}],
             },
           ]}
         />
@@ -190,13 +200,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // Additional styling is applied dynamically based on size
     // The dark outline shown in the image
-    borderWidth: 1,
     borderColor: '#333333',
   },
   toggle: {
-    backgroundColor: 'white',
+    // backgroundColor: colors.highlight,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     shadowRadius: 1,
     elevation: 2,

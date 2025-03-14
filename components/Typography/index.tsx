@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet, TextStyle } from 'react-native';
-import { useThemeStore } from '@/globalStore';
+import {Text, StyleSheet, TextStyle} from 'react-native';
+import {useThemeStore} from '@/globalStore';
 
 interface TypographyProps {
   /**
@@ -24,20 +24,23 @@ interface TypographyProps {
 /**
  * Heading - Large prominent text for titles and headers
  */
-export const Heading: React.FC<TypographyProps> = ({ 
-  children, 
-  style, 
+export const Heading: React.FC<TypographyProps> = ({
+  children,
+  style,
   numberOfLines,
-  testID = 'heading'
+  testID = 'heading',
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
-  
+  const {colors, typography} = useThemeStore(state => state.theme);
+
   return (
     <Text
-      style={[styles.heading, { color: colors.textPrimary, fontSize: typography.skH2.fontSize }, style]}
+      style={[
+        styles.heading,
+        {color: colors.textPrimary, fontSize: typography.skH2.fontSize},
+        style,
+      ]}
       numberOfLines={numberOfLines}
-      testID={testID}
-    >
+      testID={testID}>
       {children}
     </Text>
   );
@@ -46,20 +49,23 @@ export const Heading: React.FC<TypographyProps> = ({
 /**
  * Subtitle - Secondary text often paired with headings
  */
-export const Subtitle: React.FC<TypographyProps> = ({ 
-  children, 
-  style, 
+export const Subtitle: React.FC<TypographyProps> = ({
+  children,
+  style,
   numberOfLines,
-  testID = 'subtitle'
+  testID = 'subtitle',
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
-  
+  const {colors, typography} = useThemeStore(state => state.theme);
+
   return (
     <Text
-      style={[styles.subtitle, { color: colors.textPrimary, fontSize: typography.skP1.fontSize }, style]}
+      style={[
+        styles.subtitle,
+        {color: colors.textPrimary, fontSize: typography.skP1.fontSize},
+        style,
+      ]}
       numberOfLines={numberOfLines}
-      testID={testID}
-    >
+      testID={testID}>
       {children}
     </Text>
   );
@@ -68,20 +74,23 @@ export const Subtitle: React.FC<TypographyProps> = ({
 /**
  * StatLabel - Bold text for highlighting statistics or metrics
  */
-export const StatLabel: React.FC<TypographyProps> = ({ 
-  children, 
-  style, 
+export const StatLabel: React.FC<TypographyProps> = ({
+  children,
+  style,
   numberOfLines,
-  testID = 'stat-label'
+  testID = 'stat-label',
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
-  
+  const {colors, typography} = useThemeStore(state => state.theme);
+
   return (
     <Text
-      style={[styles.statLabel, { color: colors.textSecondary, fontSize: typography.skP2.fontSize }, style]}
+      style={[
+        styles.statLabel,
+        {color: colors.textSecondary, fontSize: typography.skP2.fontSize},
+        style,
+      ]}
       numberOfLines={numberOfLines}
-      testID={testID}
-    >
+      testID={testID}>
       {children}
     </Text>
   );
@@ -90,20 +99,23 @@ export const StatLabel: React.FC<TypographyProps> = ({
 /**
  * StatValue - Smaller text for describing statistics
  */
-export const StatValue: React.FC<TypographyProps> = ({ 
-  children, 
-  style, 
+export const StatValue: React.FC<TypographyProps> = ({
+  children,
+  style,
   numberOfLines,
-  testID = 'stat-value'
+  testID = 'stat-value',
 }) => {
-  const { colors, typography } = useThemeStore(state => state.theme);
-  
+  const {colors, typography} = useThemeStore(state => state.theme);
+
   return (
     <Text
-      style={[styles.statValue, { color: colors.textPrimary, fontSize: typography.skH1.fontSize }, style]}
+      style={[
+        styles.statValue,
+        {color: colors.textPrimary, fontSize: typography.skH1.fontSize},
+        style,
+      ]}
       numberOfLines={numberOfLines}
-      testID={testID}
-    >
+      testID={testID}>
       {children}
     </Text>
   );
@@ -125,5 +137,5 @@ const styles = StyleSheet.create({
   statValue: {
     fontWeight: '900',
     letterSpacing: 0.1,
-  }
-}); 
+  },
+});

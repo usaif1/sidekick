@@ -1,9 +1,15 @@
 // src/components/Avatar/Avatar.tsx
 import React from 'react';
-import { StyleSheet, ViewStyle, TextStyle, Image, ImageSourcePropType } from 'react-native';
-import { TouchableOpacity, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  Image,
+  ImageSourcePropType,
+} from 'react-native';
+import {TouchableOpacity, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'; // Assuming you're using Feather icons
-import { useThemeStore } from '@/globalStore';
+import {useThemeStore} from '@/globalStore';
 
 // Define strong TypeScript interfaces
 interface AvatarProps {
@@ -70,16 +76,19 @@ const Avatar: React.FC<AvatarProps> = ({
   accessibilityLabel,
 }) => {
   // Access theme values from the store
-  const { colors, spacing, typography } = useThemeStore(state => state.theme);
-  
+  const {colors, spacing, typography} = useThemeStore(state => state.theme);
+
   // Calculate initials from fullName
   const getInitials = (name: string): string => {
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return '';
     }
-    
-    const parts = name.trim().split(' ').filter(part => part.length > 0);
-    
+
+    const parts = name
+      .trim()
+      .split(' ')
+      .filter(part => part.length > 0);
+
     // Handle different name formats
     if (parts.length === 0) return '';
     if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
@@ -103,11 +112,14 @@ const Avatar: React.FC<AvatarProps> = ({
       borderRadius: 8, // Using a fixed value since borderRadius.md is commented out
       backgroundColor: colors.highlight,
       borderWidth: 0,
-    }
+    },
   };
 
   // Define size styles as a mapping
-  const sizeStyles: Record<string, ViewStyle & { fontSize: number, iconSize: number }> = {
+  const sizeStyles: Record<
+    string,
+    ViewStyle & {fontSize: number; iconSize: number}
+  > = {
     small: {
       width: spacing.xl,
       height: spacing.xl,
@@ -131,13 +143,13 @@ const Avatar: React.FC<AvatarProps> = ({
   // Define text variant styles
   const textVariantStyles: Record<string, TextStyle> = {
     rounded: {
-      color: colors.white
+      color: colors.white,
     },
     outlined: {
       color: colors.highlight,
     },
     squared: {
-      color: colors.white
+      color: colors.white,
     },
   };
 
@@ -146,51 +158,48 @@ const Avatar: React.FC<AvatarProps> = ({
     if (children) {
       return children;
     }
-    
+
     if (imageSource) {
       return (
-        <Image 
-          source={imageSource} 
-          style={styles.image} 
-          resizeMode="cover"
-        />
+        <Image source={imageSource} style={styles.image} resizeMode="cover" />
       );
     }
-    
+
     if (showProfileIcon) {
       return (
-        <Icon 
-          name="user" 
-          size={sizeStyles[size].iconSize} 
-          color={variant === 'outlined' ? colors.highlight : colors.white} 
+        <Icon
+          name="user"
+          size={sizeStyles[size].iconSize}
+          color={variant === 'outlined' ? colors.highlight : colors.white}
         />
       );
     }
-    
+
     // Default to initials
     return (
-      <Text style={[
-        styles.text,
-        textVariantStyles[variant],
-        { fontSize: sizeStyles[size].fontSize },
-        textStyle, // Allow custom overrides
-      ]}>
+      <Text
+        style={[
+          styles.text,
+          textVariantStyles[variant],
+          {fontSize: sizeStyles[size].fontSize},
+          textStyle, // Allow custom overrides
+        ]}>
         {getInitials(fullName)}
       </Text>
     );
   };
-  
+
   // Build the accessibility label if not provided
-  const computedAccessibilityLabel = accessibilityLabel || 
-    (fullName ? `Avatar for ${fullName}` : 'Avatar');
+  const computedAccessibilityLabel =
+    accessibilityLabel || (fullName ? `Avatar for ${fullName}` : 'Avatar');
 
   // Compose the styles
   const containerStyle = [
     styles.base,
     variantStyles[variant],
-    { 
-      width: sizeStyles[size].width, 
-      height: sizeStyles[size].height 
+    {
+      width: sizeStyles[size].width,
+      height: sizeStyles[size].height,
     },
     style, // Allow custom overrides
   ];
@@ -203,8 +212,7 @@ const Avatar: React.FC<AvatarProps> = ({
       testID={testID}
       accessibilityLabel={computedAccessibilityLabel}
       accessible={true}
-      accessibilityRole="button"
-    >
+      accessibilityRole="button">
       {renderContent()}
     </TouchableOpacity>
   ) : (
@@ -213,8 +221,7 @@ const Avatar: React.FC<AvatarProps> = ({
       testID={testID}
       accessibilityLabel={computedAccessibilityLabel}
       accessible={true}
-      accessibilityRole="image"
-    >
+      accessibilityRole="image">
       {renderContent()}
     </TouchableOpacity>
   );
