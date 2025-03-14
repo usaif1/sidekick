@@ -1,6 +1,6 @@
 import {darkColors, lightColors} from './colors';
 import {TYPOGRAPHY} from './typography';
-import {Theme} from './theme.type';
+import {Theme} from './themes.type';
 
 export const lightTheme: Theme = {
   colors: lightColors,

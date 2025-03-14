@@ -25,18 +25,15 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
     primary: {
       backgroundColor: colors.primary,
       padding: spacing.md,
-      borderRadius: 30,
     },
     secondary: {
       backgroundColor: colors.lightGray,
       padding: spacing.md,
-      borderRadius: 30,
     },
     highlight: {
       backgroundColor: colors.highlight,
       padding: spacing.sm,
       borderRadius: 14,
-      height: '16@vs',
     },
   };
 
@@ -68,6 +65,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '48@vs',
+    borderRadius: 30,
   },
   commonTextStyle: {
     ...typography.skButtonMedium,
@@ -79,6 +77,6 @@ const styles = ScaledSheet.create({
     color: colors.textPrimary,
   },
   highlight: {
-    color: colors.white,
+    color: colors.highlight,
   },
 });

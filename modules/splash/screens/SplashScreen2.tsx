@@ -1,13 +1,18 @@
+// dependencies
 import React, {useRef, useState} from 'react';
 import {Dimensions, View, Text, StyleSheet, Pressable} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import ButtonText from '@/components/ButtonText';
+import {MMKV} from 'react-native-mmkv';
+import {useNavigation} from '@react-navigation/native';
+
+// store
+import {useThemeStore} from '@/globalStore';
+
+// components
+import {H1, P1, Divider, ButtonText} from '@/components';
 import SideKickSplash1 from '../assets/sidekick_splash_1.svg';
 import SideKickSplash2 from '../assets/sidekick_splash_2.svg';
 import SideKickSplash3 from '../assets/sidekick_splash_3.svg';
-import {useThemeStore} from '@/globalStore';
-import {useNavigation} from '@react-navigation/native';
-import {MMKV} from 'react-native-mmkv';
 
 // Initialize MMKV
 const onboardingStorage = new MMKV({
@@ -54,15 +59,15 @@ const SplashScreenCarousel: React.FC = () => {
     return (
       <View style={styles.slide}>
         {item.image}
-        <Text style={[styles.title, {color: theme.colors.textPrimary}]}>
-          {item.heading}
-        </Text>
-        <Text style={[{color: theme.colors.textPrimary}]}>
+        <Divider height={32} />
+        <H1>{item.heading}</H1>
+        <Divider height={9.6} />
+        <P1 weight={'600'} customStyles={{textAlign: 'center'}}>
           {item.subHeading}
-        </Text>
+        </P1>
       </View>
     );
-  }; 
+  };
 
   const handleCompleteOnboarding = () => {
     onboardingStorage.set('onboarding_complete', 'true');
@@ -159,6 +164,7 @@ const styles = StyleSheet.create({
   },
   pagination: {
     flexDirection: 'row',
+    columnGap: 20,
     justifyContent: 'center',
     position: 'absolute',
     bottom: 120,

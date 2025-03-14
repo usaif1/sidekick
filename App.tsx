@@ -1,7 +1,11 @@
-import React, {useEffect} from 'react';
+// dependencies
+import React, { useEffect } from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 // import {SafeAreaProvider} from 'react-native-safe-area-context';
 // import {NavigationContainer} from '@react-navigation/native';
+import {StatusBar} from 'react-native';
+
+// components
 import {ModalProvider} from '@/components/Modal/ModalProvider';
 
 // navigation
@@ -35,6 +39,7 @@ function App(): React.JSX.Element {
   return (
     <>
       <GestureHandlerRootView style={{flex: 1}}>
+        <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
         {firsTime ? (
           <SplashNavigation />
         ) : loggedIn ? (
@@ -47,15 +52,6 @@ function App(): React.JSX.Element {
         <GlobalModal />
       </GestureHandlerRootView>
     </>
-    // <SafeAreaProvider>
-    //     <NavigationContainer>
-    //   <ModalProvider>
-    //       <GestureHandlerRootView style={{flex: 1}}>
-    //         {firsTime ? <SplashNavigation /> : <ProtectedNavigation />}
-    //       </GestureHandlerRootView>
-    //   </ModalProvider>
-    //     </NavigationContainer>
-    // </SafeAreaProvider>
   );
 }
 

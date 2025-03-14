@@ -6,16 +6,21 @@ import HomeNavigator from '@/modules/home/navigation/home.navigator';
 import UserNavigator from '@/modules/user/navigation/user.navigator';
 import WalletNavigator from '@/modules/wallet/navigation/wallet.navigator';
 
-
 const ProtectedNavigator = createNativeStackNavigator({
   initialRouteName: 'home',
-  screens: {
-    home: HomeNavigator,
-    user: UserNavigator,
-    wallet: WalletNavigator,
-  },
   screenOptions: {
     headerShown: false,
+  },
+  screens: {
+    home: {
+      screen: HomeNavigator,
+    },
+    user: {
+      screen: UserNavigator,
+    },
+    wallet: {
+      screen: WalletNavigator,
+    },
   },
 });
 
