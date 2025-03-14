@@ -11,7 +11,7 @@ import ButtonText from '@/components/ButtonText';
 import {useThemeStore} from '@/globalStore';
 import {useModal} from '@/components/Modal/ModalProvider';
 import PaymentSuccessModal from '../components/PaymentSuccessModal';
-import {H2, P1, P2} from '@/components/Typography';
+import {P1, P2} from '@/components/Typography';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // Payment method type
@@ -65,22 +65,7 @@ const AddFundsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header with back button */}
-      <View style={styles.header(theme)}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton(theme)}
-          accessibilityLabel="Go back"
-          accessibilityRole="button">
-          <Icon name="chevron-left" size={24} color={theme.colors.highlight} />
-        </TouchableOpacity>
-        <H2 
-          textColor="textPrimary"
-          customStyles={styles.headerTitle(theme)}
-        >
-          Add Funds
-        </H2>
-      </View>
+      
 
       <ScrollView style={styles.content(theme)}>
         {/* Amount input section */}
@@ -270,23 +255,9 @@ const styles = {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: (theme: any) => ({
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    paddingHorizontal: theme.padding.horizontal.md_16,
-    paddingVertical: theme.padding.vertical.sm_8,
-  }),
-  backButton: (theme: any) => ({
-    padding: theme.padding.horizontal.sm_8,
-  }),
-  headerTitle: (theme: any) => ({
-    flex: 1,
-    textAlign: 'left' as const,
-    marginLeft: theme.margin.horizontal.md_16,
-  }),
   content: (theme: any) => ({
     flex: 1,
-    padding: theme.padding.horizontal.md_16,
+    paddingHorizontal: theme.padding.horizontal.md_16,
   }),
   section: (theme: any) => ({
     marginBottom: theme.margin.vertical.lg_24,

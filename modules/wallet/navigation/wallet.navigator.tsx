@@ -6,6 +6,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WalletScreen from '../screens/WalletScreen';
 import AddFundsScreen from '../screens/AddFundsScreen';
 
+// components
+import {BackArrowButton} from '@/components';
+
 const Stack = createNativeStackNavigator();
 
 const WalletNavigator = () => (
@@ -24,15 +27,18 @@ const WalletNavigator = () => (
       name="WalletScreen"
       component={WalletScreen}
       options={{
-        title: 'Wallet',
-        headerShown: true,
+        headerShown: false,
       }}
     />
     <Stack.Screen
       name="AddFundsScreen"
       component={AddFundsScreen}
       options={{
-        headerShown: true,
+        headerLeft: () => <BackArrowButton title="Add Funds" />,
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: '#FFFFFF',
+        },
       }}
     />
   </Stack.Navigator>

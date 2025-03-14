@@ -4,8 +4,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // screens
 import RentScreen from '../screens/RentScreen';
-import WalletScreen from '@/modules/wallet/screens/WalletScreen';
-import UserScreen from '@/modules/user/screens/UserDetails';
 
 // assets
 import RentScooterIcon from '../assets/rentScooterIcon.svg';
@@ -16,6 +14,8 @@ import ProfileIcon from '../assets/profileIcon.svg';
 import ProfileIconFilled from '../assets/profileIconFilled.svg';
 import {ScaledSheet} from 'react-native-size-matters';
 import {Platform} from 'react-native';
+import WalletNavigator from '@/modules/wallet/navigation/wallet.navigator';
+import UserNavigator from '@/modules/user/navigation/user.navigator';
 
 const ProfileTabBar = ({focused}: {focused: boolean}) => {
   return focused ? <ProfileIconFilled /> : <ProfileIcon />;
@@ -47,7 +47,7 @@ const HomeNavigator = createBottomTabNavigator({
   },
   screens: {
     wallet: {
-      screen: WalletScreen,
+      screen: WalletNavigator,
       options: {
         tabBarIcon: ({focused}) => <WalletTabBar focused={focused} />,
         tabBarButton: props => (
@@ -65,7 +65,7 @@ const HomeNavigator = createBottomTabNavigator({
       },
     },
     profile: {
-      screen: UserScreen,
+      screen: UserNavigator,
       options: {
         tabBarIcon: ({focused}) => <ProfileTabBar focused={focused} />,
         tabBarButton: props => (

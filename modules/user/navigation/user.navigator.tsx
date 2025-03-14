@@ -18,13 +18,13 @@ const UserNavigator = createNativeStackNavigator({
       screen: UserDetails,
       options: {
         title: 'User Details',
+        headerShown: false,
         headerShadowVisible: false,
       },
     },
     EditProfile: {
       screen: EditProfile,
       options: {
-        title: '',
         headerLeft: () => <BackArrowButton title="Edit Profile" />,
         headerShadowVisible: false,
         headerStyle: {
