@@ -1,41 +1,48 @@
-// dependencies
-import {create} from 'zustand';
+import { create } from "zustand";
 
 // utils
-import createSelectors from '@/utils/selectors';
+import createSelectors from "@/utils/selectors";
 
 type GlobalStore = {
   firsTime: boolean;
   loggedIn: boolean;
 
-  // modal
+  // Modal
   isModalOpen: boolean;
-  closeModalCallback: () => void;
+  ModalComponent: React.FC | null;
+  closeModalCallback: (() => void) | null;
 };
 
 type GlobalActions = {
-  openModal: () => void;
+  openModal: (Component: React.FC, onClose?: () => void) => void;
   closeModal: () => void;
-
-  // reset modal store
   resetGlobalStore: () => void;
 };
 
 const globalInitialState: GlobalStore = {
   firsTime: true,
   loggedIn: false,
-  // modal
 
+  // Modal
   isModalOpen: false,
-  closeModalCallback: () => null,
+  ModalComponent: null,
+  closeModalCallback: null,
 };
 
-const globalStore = create<GlobalStore & GlobalActions>(set => ({
+const globalStore = create<GlobalStore & GlobalActions>((set) => ({
   ...globalInitialState,
-  openModal: () => set({isModalOpen: true}),
-  closeModal: () => set({isModalOpen: false}),
 
-  // reset address store
+  openModal: (Component, onClose) =>
+    set({ isModalOpen: true, ModalComponent: Component, closeModalCallback: onClose || null }),
+
+  closeModal: () =>
+    set((state) => {
+      if (state.closeModalCallback) {
+        state.closeModalCallback(); 
+      }
+      return { isModalOpen: false, ModalComponent: null, closeModalCallback: null };
+    }),
+
   resetGlobalStore: () => set(globalInitialState),
 }));
 
