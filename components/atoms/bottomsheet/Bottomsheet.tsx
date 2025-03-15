@@ -5,10 +5,10 @@ import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdropProps
 } from '@gorhom/bottom-sheet';
-import { StyleProp, StyleSheet, View, ViewStyle, Keyboard, Platform } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle, Keyboard } from 'react-native';
 import { useKeyboardHeight } from '@/hooks/useKeyboardHeight';
 import { useThemeStore } from '@/globalStore';
-import { H2 } from '@/components'; // Assuming you have H2 component
+import { H2 } from '@/components';
 
 export interface BottomSheetMethods {
   snapToIndex: (index: number) => void;

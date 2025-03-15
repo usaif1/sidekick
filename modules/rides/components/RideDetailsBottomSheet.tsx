@@ -63,6 +63,7 @@ const RideDetailsBottomSheet = forwardRef<BottomSheet, RideDetailsBottomSheetPro
           snapPoints={['40%', '85%']}
           enablePanDownToClose
           onClose={onClose}
+          onChange={handleSheetChanges}
         >
           <View style={styles.header}>
             <View style={styles.headerContent}>

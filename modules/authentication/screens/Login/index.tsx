@@ -1,16 +1,30 @@
 // dependencies
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useRef} from 'react';
 import {View, ImageBackground, Dimensions} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 // components
 import {H1, P1, ButtonText, Divider} from '@/components';
+import RegisterUserBottomSheet from '../../components/RegisterUserBottomSheet';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const Login = () => {
   const navigation = useNavigation();
+  // Create ref for the bottom sheet
+  const registerBottomSheetRef = useRef<BottomSheet>(null);
+
+  // Function to open the bottom sheet
+  const handleOpenRegisterSheet = () => {
+    registerBottomSheetRef.current?.expand();
+  };
+
+  // Function to close the bottom sheet
+  const handleCloseRegisterSheet = () => {
+    registerBottomSheetRef.current?.close();
+  };
 
   return (
     <ImageBackground
@@ -31,7 +45,7 @@ const Login = () => {
             variant="primary">
             New User
           </ButtonText>
-          <ButtonText onPress={() => {}} variant="secondary">
+          <ButtonText onPress={handleOpenRegisterSheet} variant="secondary">
             Already a User
           </ButtonText>
           <ButtonText onPress={() => {}} variant="secondary">
@@ -39,6 +53,12 @@ const Login = () => {
           </ButtonText>
         </View>
       </View>
+
+      {/* Add RegisterUserBottomSheet */}
+      <RegisterUserBottomSheet
+        ref={registerBottomSheetRef}
+        onClose={handleCloseRegisterSheet}
+      />
     </ImageBackground>
   );
 };
