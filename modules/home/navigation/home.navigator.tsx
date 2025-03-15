@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // screens
 import RentScreen from '../screens/RentScreen';
-import WalletScreen from '../screens/WalletScreen';
+import WalletScreen from '@/modules/wallet/screens/WalletScreen';
 import UserScreen from '@/modules/user/screens/UserDetails';
 
 // assets

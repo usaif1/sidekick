@@ -24,7 +24,7 @@ const WalletScreen: React.FC = () => {
   const navigation = useNavigation();
 
   // Use wallet store instead of mock data
-  const balance = walletStore.use.currentBalance();
+  const balance = walletStore.use.balance();
   const securityDeposit = walletStore.use.securityDeposit();
   const transactions = walletStore.use.transactions();
 
