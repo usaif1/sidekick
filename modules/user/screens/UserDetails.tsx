@@ -1,6 +1,6 @@
 // dependencies
 import {View, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -14,20 +14,19 @@ import Profile from '../assets/profile.svg';
 import Notification from '../assets/notification.svg';
 import Help from '../assets/help.svg';
 import {useThemeStore} from '@/globalStore';
+import userStore from '../store';
 
 const {colors} = useThemeStore.getState().theme;
 
 const UserDetails: React.FC = () => {
   const navigation = useNavigation();
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const {showModal, hideModal} = useModal();
-
-  // User data
-  const userData = {
-    name: 'Christian Miller',
-    email: 'christian.miller@infosys.com',
-    phone: '9876543210',
-  };
+  
+  // Get user data and actions from store
+  const profile = userStore.use.profile();
+  const usageStats = userStore.use.usageStats();
+  const notificationsEnabled = userStore.use.settings().notificationsEnabled;
+  const toggleNotifications = userStore.use.toggleNotifications();
 
   // Menu items with the notifications item using a switch
   const menuItems = [
@@ -36,7 +35,14 @@ const UserDetails: React.FC = () => {
       label: 'Edit Profile',
       controlType: 'none' as const,
       // @ts-ignore
-      onPress: () => navigation.navigate('user', {screen: 'EditProfile'}),
+      onPress: () => navigation.navigate('user', {
+        screen: 'EditProfile',
+        params: {
+          initialName: profile.name,
+          initialEmail: profile.email,
+          initialPhone: profile.phone
+        }
+      }),
       testID: 'edit-profile-button',
     },
     {
@@ -45,9 +51,8 @@ const UserDetails: React.FC = () => {
       controlType: 'switch' as const,
       isToggled: notificationsEnabled,
       // @ts-ignore
-      onToggle: value => {
-        setNotificationsEnabled(value);
-        console.log('Notifications toggled:', value);
+      onToggle: (value) => {
+        toggleNotifications(value);
       },
       onPress: () => {}, // No-op since the switch handles the interaction
       testID: 'notifications-button',
@@ -73,10 +78,10 @@ const UserDetails: React.FC = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <ProfileCard
-          fullName={userData.name}
-          company="Infosys"
-          totalMinutes={48}
-          totalKilometers={2.9}
+          fullName={profile.name}
+          company={profile.company}
+          totalMinutes={usageStats.totalMinutes}
+          totalKilometers={usageStats.totalKilometers}
           // profileImage={profileImage} // Uncomment if you have a profile image
           style={styles.profileCard}
         />
