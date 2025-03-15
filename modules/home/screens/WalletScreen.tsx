@@ -33,7 +33,7 @@ const WalletScreen: React.FC = () => {
 
   // Handle add funds button press
   const handleAddFunds = () => {
-    console.log('pressed');
+    // @ts-ignore
     navigation.navigate('walletNavigator', {screen: 'AddFundsScreen'});
   };
 

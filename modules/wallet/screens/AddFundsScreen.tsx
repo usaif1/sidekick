@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -50,7 +49,7 @@ const AddFundsScreen = () => {
 
     // Add funds to wallet using store
     const amountValue = parseFloat(amount);
-    addFunds(amountValue, selectedMethod);
+    addFunds(amountValue);
 
     // Show payment success modal with navigation callbacks
     showModal(
@@ -104,7 +103,7 @@ const AddFundsScreen = () => {
               <TouchableOpacity
                 key={value}
                 style={[
-                  styles.quickAmountButton(theme),
+                  styles.quickAmountButton,
                   {
                     backgroundColor:
                       amount === value.toString()
@@ -128,7 +127,7 @@ const AddFundsScreen = () => {
                     },
                   ]}>
                   + {value}
-                </P2>
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -137,7 +136,7 @@ const AddFundsScreen = () => {
 
       {/* Pay button */}
       {amount && (
-        <View style={styles.buttonContainer(theme)}>
+        <View style={styles.buttonContainer}>
           <ButtonText variant="primary" onPress={handlePay}>
             Pay ₹{(parseFloat(amount || '0') + 200).toFixed(2)}
           </ButtonText>
@@ -184,39 +183,14 @@ const styles = ScaledSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     width: '22%',
-  }),
+  },
   quickAmountText: {
-    textAlign: 'center' as const,
+    textAlign: 'center',
   },
-  paymentOption: (theme: any) => ({
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    justifyContent: 'space-between' as const,
-    padding: theme.padding.horizontal.md_16,
-    marginBottom: theme.margin.vertical.sm_8,
-    borderWidth: 1,
-  }),
-  paymentOptionContent: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
+  buttonContainer: {
+    padding: '16@ms',
+    paddingHorizontal: '96@ms',
   },
-  summarySection: (theme: any) => ({
-    padding: theme.padding.horizontal.md_16,
-    marginBottom: theme.margin.vertical.lg_24,
-  }),
-  summaryRow: (theme: any) => ({
-    flexDirection: 'row' as const,
-    justifyContent: 'space-between' as const,
-    marginBottom: theme.margin.vertical.sm_8,
-  }),
-  summaryDivider: (theme: any) => ({
-    height: 1,
-    marginVertical: theme.margin.vertical.sm_8,
-  }),
-  buttonContainer: (theme: any) => ({
-    padding: theme.padding.horizontal.md_16,
-    paddingHorizontal: 96, // Keeping this specific value as it seems intentional for button width
-  }),
-};
+});
 
 export default AddFundsScreen;

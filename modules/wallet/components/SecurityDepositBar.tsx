@@ -82,10 +82,6 @@ const styles = ScaledSheet.create({
   buttonWrapper: {
     width: 120,
   },
-  button: (theme: any) => ({
-    width: 120,
-    height: 10,
-  }),
-};
+});
 
 export default SecurityDepositBar;
