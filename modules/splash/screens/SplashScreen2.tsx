@@ -118,11 +118,13 @@ const SplashScreenCarousel: React.FC = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              paddingHorizontal: 40,
+              paddingHorizontal: 0,
               marginTop: 10,
             }}>
             <Pressable onPress={() => carouselRef.current?.snapToPrev()}>
-              <Text style={{fontWeight: '600', fontSize: 16}}>Back</Text>
+              <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
+                Back
+              </Text>
             </Pressable>
             <View style={{width: 160}}>
               <ButtonText

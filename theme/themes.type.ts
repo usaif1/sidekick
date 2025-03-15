@@ -18,7 +18,7 @@ export type ColorPalette = {
 
 type CustomTextStyle = {
   fontSize: number | undefined;
-  lineHeight: number | undefined;
+  lineHeight?: number | undefined;
   fontFamily: string;
   fontWeight: TextStyle['fontWeight'];
 };

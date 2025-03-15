@@ -1,10 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { useThemeStore } from '@/globalStore';
+import {useThemeStore} from '@/globalStore';
 import ButtonText from '@/components/ButtonText';
 import CommonModal from '@/components/Modal/CommonModal';
-import { H2, P3 } from '@/components/Typography';
+import {Divider, H2, P2} from '@/components';
+import TickMark from '@/assets/tick-mark.svg';
 
 interface PaymentSuccessModalProps {
   /**
@@ -44,8 +45,8 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
   onContinueToRide,
   onCheckWallet,
 }) => {
-  const { theme } = useThemeStore();
-  
+  const {colors, typography} = useThemeStore(state => state.theme);
+
   // Handle continue to ride
   const handleContinueToRide = () => {
     // Close modal first
@@ -55,7 +56,7 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
       onContinueToRide();
     }
   };
-  
+
   // Handle check wallet
   const handleCheckWallet = () => {
     // Close modal
@@ -77,45 +78,27 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
     <CommonModal visible={visible} onClose={onClose} testID={testID}>
       <View style={styles.container(theme)}>
         {/* Success icon */}
-        <View 
-          style={[
-            styles.iconContainer(theme),
-            { backgroundColor: theme.colors.highlight }
-          ]}
-        >
-          <Icon name="check" size={32} color={theme.colors.white} />
+        <View
+          style={[styles.iconContainer, {backgroundColor: colors.highlight}]}>
+          <TickMark />
         </View>
-        
+
         {/* Success message */}
-        <H2 
-          textColor="textPrimary"
-          customStyles={styles.amountText(theme)}
-        >
-          ₹{amount.toFixed(1)} Added to Wallet
-        </H2>
-        
-        <P3 
-          textColor="textSecondary"
-          customStyles={styles.messageText(theme)}
-        >
-          Please pick any option to continue
-        </P3>
-        
+        <Divider height={16} />
+        <H2>₹{amount.toFixed(1)} Added to Wallet</H2>
+        <Divider height={3.2} />
+        <P2 textColor="textSecondary">Please pick any option to continue</P2>
+
         {/* Action buttons */}
-        <View style={styles.buttonContainer(theme)}>
-          <ButtonText
-            variant="primary"
-            onPress={handleContinueToRide}
-          >
+        <Divider height={16} />
+        <View style={styles.buttonContainer}>
+          <ButtonText variant="primary" onPress={handleContinueToRide}>
             Continue to Ride
           </ButtonText>
         </View>
-        
-        <View style={styles.buttonContainer(theme)}>
-          <ButtonText
-            variant="secondary"
-            onPress={handleCheckWallet}
-          >
+
+        <View style={styles.buttonContainer}>
+          <ButtonText variant="secondary" onPress={handleCheckWallet}>
             Check Wallet
           </ButtonText>
         </View>
@@ -152,4 +135,4 @@ const styles = {
   }),
 };
 
-export default PaymentSuccessModal; 
+export default PaymentSuccessModal;

@@ -9,39 +9,35 @@ import AddFundsScreen from '../screens/AddFundsScreen';
 // components
 import {BackArrowButton} from '@/components';
 
-const Stack = createNativeStackNavigator();
-
-const WalletNavigator = () => (
-  <Stack.Navigator
-    initialRouteName="WalletScreen"
-    screenOptions={{
-      // this prevent flickering on android
-      presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
-      headerStyle: {
-        backgroundColor: 'transparent',
+const WalletNavigator = createNativeStackNavigator({
+  initialRouteName: 'WalletScreen',
+  screenOptions: {
+    // this prevent flickering on android
+    presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
+    headerStyle: {
+      backgroundColor: 'transparent',
+    },
+    headerShadowVisible: false,
+  },
+  screens: {
+    WalletScreen: {
+      screen: WalletScreen,
+      options: {
+        title: 'Wallet',
       },
-      headerShadowVisible: false,
-    }}
-  >
-    <Stack.Screen
-      name="WalletScreen"
-      component={WalletScreen}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <Stack.Screen
-      name="AddFundsScreen"
-      component={AddFundsScreen}
-      options={{
+    },
+    AddFundsScreen: {
+      screen: AddFundsScreen,
+      options: {
+        title: '',
         headerLeft: () => <BackArrowButton title="Add Funds" />,
         headerShadowVisible: false,
         headerStyle: {
           backgroundColor: '#FFFFFF',
         },
-      }}
-    />
-  </Stack.Navigator>
-);
+      },
+    },
+  },
+});
 
 export default WalletNavigator;

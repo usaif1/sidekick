@@ -8,12 +8,18 @@ type Props = {
   longitude: number;
   name: string;
   isSelected: boolean;
-  onPress: () => void;
+  onPress: (e: any) => void;  
 };
 
 const NearestHubMarker: React.FC<Props> = ({ latitude, longitude, name, isSelected, onPress }) => {
   return (
-    <Marker coordinate={{ latitude, longitude }} title={name} onPress={onPress} anchor={{ x: 0.5, y: 0.5 }} >
+    <Marker 
+      coordinate={{ latitude, longitude }} 
+      title={name} 
+      onPress={onPress}  
+      anchor={{ x: 0.5, y: 0.5 }} 
+      tracksViewChanges={false} 
+    >
       {isSelected ? <NavigationPointerIcon /> : <HubMarkerIcon />}
     </Marker>
   );

@@ -1,126 +1,58 @@
+// dependencies
 import React from 'react';
-import { View } from 'react-native';
-import { useThemeStore } from '@/globalStore';
-import { P2, H1 } from '@/components/Typography';
+import {View, StyleSheet, Image} from 'react-native';
+
+// store
+import {useThemeStore} from '@/globalStore';
+
+// components
+import {H1, P1, Divider} from '@/components';
 
 interface WalletCardProps {
-  /**
-   * Current wallet balance
-   */
   balance: number;
-  /**
-   * Optional test ID for testing
-   */
   testID?: string;
 }
 
-/**
- * Card displaying the current wallet balance
- */
+const {colors} = useThemeStore.getState().theme;
+
 const WalletCard: React.FC<WalletCardProps> = ({
   balance,
   testID = 'wallet-card',
 }) => {
-  const { theme } = useThemeStore();
-
   return (
-    <View 
-      style={[
-        styles.container(theme),
-        {
-          borderColor: theme.colors.highlight,
-          backgroundColor: theme.colors.lightGray,
-        }
-      ]}
-      testID={testID}
-    >
-      <P2 
-        textColor="textSecondary"
-        weight="500"
-      >
-        Current Balance
-      </P2>
-      <H1 
-        textColor="textPrimary"
-        customStyles={styles.balance}
-      >
-        ₹{balance.toFixed(1)}
-      </H1>
-      
-      {/* Diagonal pattern background - commented out in original */}
-      {/* <View style={styles.patternContainer}>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <View 
-            key={index} 
-            style={[
-              styles.diagonalLine(theme),
-              {
-                backgroundColor: theme.colors.highlight,
-                top: index * 10,
-              }
-            ]} 
-          />
-        ))}
-        {Array.from({ length: 10 }).map((_, index) => (
-          <View 
-            key={index} 
-            style={[
-              styles.diagonalLineReverse(theme),
-              {
-                backgroundColor: theme.colors.highlight,
-                top: index * 10,
-              }
-            ]} 
-          />
-        ))}
-      </View> */}
+    <View style={[styles.container]} testID={testID}>
+      <Image
+        source={require('../assets/wallet-texture.png')}
+        style={styles.backgroundImage}
+      />
+      <P1 textColor="textSecondary">Current Balance</P1>
+      <Divider height={4} />
+      <H1>₹{balance.toFixed(1)}</H1>
     </View>
   );
 };
 
-const styles = {
-  container: (theme: any) => ({
-    padding: theme.padding.horizontal.md_20,
+const styles = StyleSheet.create({
+  container: {
     width: '100%',
     overflow: 'hidden' as const,
     position: 'relative' as const,
     borderWidth: 1,
     borderRadius: theme.borderRadius.xl,
     height: '30%',
-    flexDirection: 'column' as const,
-    justifyContent: 'center' as const,
-    alignItems: 'center' as const,
-  }),
-  balance: {
-    fontWeight: '900',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    borderColor: colors.highlight,
+    backgroundColor: colors.lightGray,
   },
-  patternContainer: {
-    position: 'absolute' as const,
+  backgroundImage: {
+    position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
-    height: '60%',
-    overflow: 'hidden' as const,
-    zIndex: -1,
+    width: '100%',
+    resizeMode: 'cover', // Ensures image covers width/height without stretching
   },
-  diagonalLine: (theme: any) => ({
-    position: 'absolute' as const,
-    height: 1,
-    width: '200%',
-    top: 50,
-    left: 50,
-    transform: [{ rotate: '-10deg' }],
-    opacity: 0.5,
-  }),
-  diagonalLineReverse: (theme: any) => ({
-    position: 'absolute' as const,
-    height: 1,
-    top: 50,
-    width: '200%',
-    right: 50,
-    transform: [{ rotate: '10deg' }],
-    opacity: 0.5,
-  }),
-};
+});
 
-export default WalletCard; 
+export default WalletCard;

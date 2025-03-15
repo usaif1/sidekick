@@ -1,9 +1,14 @@
-import React, { useCallback, memo } from 'react';
-import { View, FlatList, ListRenderItemInfo } from 'react-native';
-import { useThemeStore } from '@/globalStore';
+import React, {useCallback, memo} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ListRenderItemInfo,
+} from 'react-native';
+import {useThemeStore} from '@/globalStore';
 import TransactionCard from './TransactionCard';
-import { Transaction } from '../constants/mockData';
-import { P1 } from '@/components/Typography';
+import {Transaction} from '../constants/mockData';
 
 interface TransactionListProps {
   /**
@@ -26,10 +31,10 @@ const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
   testID = 'transaction-list',
 }) => {
-  const { theme } = useThemeStore();
+  const {colors, typography} = useThemeStore(state => state.theme);
 
   // Optimized render function
-  const renderItem = useCallback(({ item }: ListRenderItemInfo<Transaction>) => {
+  const renderItem = useCallback(({item}: ListRenderItemInfo<Transaction>) => {
     return <MemoizedTransactionCard transaction={item} />;
   }, []);
 
@@ -37,13 +42,16 @@ const TransactionList: React.FC<TransactionListProps> = ({
   const keyExtractor = useCallback((item: Transaction) => item.id, []);
 
   // Empty list component
-  const ListEmptyComponent = useCallback(() => (
-    <View style={styles.emptyContainer(theme)}>
-      <P1 textColor="textPrimary">
-        No transactions yet
-      </P1>
-    </View>
-  ), [theme]);
+  const ListEmptyComponent = useCallback(
+    () => (
+      <View style={styles.emptyContainer}>
+        <Text style={[styles.emptyText, {color: colors.textPrimary}]}>
+          No transactions yet
+        </Text>
+      </View>
+    ),
+    [colors.textPrimary],
+  );
 
   return (
     <FlatList
@@ -78,4 +86,4 @@ const styles = {
   }),
 };
 
-export default TransactionList; 
+export default TransactionList;

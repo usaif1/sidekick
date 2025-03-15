@@ -50,6 +50,7 @@ const HomeNavigator = createBottomTabNavigator({
       screen: WalletNavigator,
       options: {
         tabBarIcon: ({focused}) => <WalletTabBar focused={focused} />,
+        tabBarLabel: 'Wallet',
         tabBarButton: props => (
           <Pressable {...props} android_ripple={{color: 'transparent'}} />
         ),
@@ -59,6 +60,7 @@ const HomeNavigator = createBottomTabNavigator({
       screen: RentScreen,
       options: {
         tabBarIcon: ({focused}) => <RentTabBar focused={focused} />,
+        tabBarLabel: 'Rent',
         tabBarButton: props => (
           <Pressable {...props} android_ripple={{color: 'transparent'}} />
         ),
@@ -68,6 +70,7 @@ const HomeNavigator = createBottomTabNavigator({
       screen: UserNavigator,
       options: {
         tabBarIcon: ({focused}) => <ProfileTabBar focused={focused} />,
+        tabBarLabel: 'Profile',
         tabBarButton: props => (
           <Pressable {...props} android_ripple={{color: 'transparent'}} />
         ),

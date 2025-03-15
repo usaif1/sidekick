@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {
   View,
+  Text,
+  SafeAreaView,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Feather';
-import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
 import {useThemeStore} from '@/globalStore';
 import {useModal} from '@/components/Modal/ModalProvider';
@@ -14,9 +14,11 @@ import PaymentSuccessModal from '../components/PaymentSuccessModal';
 import {P1, P2} from '@/components/Typography';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import walletStore from '../store';
+import {B1, B2, Divider} from '@/components';
+import {ms, ScaledSheet} from 'react-native-size-matters';
+import {TextInput} from 'react-native-gesture-handler';
 
-// Payment method type
-type PaymentMethod = 'upi' | 'card' | 'netbanking';
+const {colors} = useThemeStore.getState().theme;
 
 // Quick amount options
 const QUICK_AMOUNTS = [100, 200, 500, 1000];
@@ -32,16 +34,10 @@ const AddFundsScreen = () => {
 
   // State for amount and payment method
   const [amount, setAmount] = useState('');
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>('upi');
 
   // Handle quick amount selection
   const handleQuickAmountSelect = (value: number) => {
     setAmount(value.toString());
-  };
-
-  // Handle payment method selection
-  const handleMethodSelect = (method: PaymentMethod) => {
-    setSelectedMethod(method);
   };
 
   // Handle pay button press
@@ -74,23 +70,35 @@ const AddFundsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      
-
-      <ScrollView style={styles.content(theme)}>
+      <ScrollView style={styles.content}>
         {/* Amount input section */}
-        <View style={styles.section(theme)}>
-          <Input
-            title={`Available Balance ₹${balance.toFixed(1)}`}
-            placeholder="Enter amount"
-            value={amount}
-            onChangeText={setAmount}
-            inputType="numeric"
-            variant="currency"
-            testID="amount-input"
-            containerStyle={styles.amountInput(theme)}
-          />
+        <View style={styles.section}>
+          <View>
+            <B2 textColor="highlight">Available Balance: ₹56.0</B2>
+            <Divider height={9.6} />
+            <View style={styles.amountInput}>
+              <B1 textColor="highlight">₹</B1>
+              <TextInput
+                numberOfLines={1}
+                keyboardType="numeric"
+                placeholder="00.0"
+                value={amount}
+                onChangeText={text => {
+                  setAmount(text);
+                }}
+                placeholderTextColor={colors.textPrimary}
+                style={{
+                  width: '50%',
+                  fontSize: ms(23),
+                  textAlign: 'right',
+                  fontWeight: '600',
+                }}
+              />
+            </View>
+          </View>
 
           {/* Quick amount options */}
+          <Divider height={9.6} />
           <View style={styles.quickAmounts}>
             {QUICK_AMOUNTS.map(value => (
               <TouchableOpacity
@@ -100,149 +108,29 @@ const AddFundsScreen = () => {
                   {
                     backgroundColor:
                       amount === value.toString()
-                        ? theme.colors.secondary
-                        : theme.colors.lightGray,
+                        ? colors.highlight
+                        : colors.lightGray,
                     borderColor:
                       amount === value.toString()
-                        ? theme.colors.primary
-                        : theme.colors.textSecondary,
+                        ? colors.highlight
+                        : colors.textSecondary,
                   },
                 ]}
                 onPress={() => handleQuickAmountSelect(value)}>
-                <P2
-                  textColor={amount === value.toString() ? "highlight" : "textPrimary"}
-                  weight="500"
-                  customStyles={styles.quickAmountText}
-                >
+                <Text
+                  style={[
+                    styles.quickAmountText,
+                    {
+                      color:
+                        amount === value.toString()
+                          ? colors.white
+                          : colors.textPrimary,
+                    },
+                  ]}>
                   + {value}
                 </P2>
               </TouchableOpacity>
             ))}
-          </View>
-        </View>
-
-        {/* Payment methods section */}
-        <View style={styles.section(theme)}>
-          <P1
-            textColor="textPrimary"
-            weight="600"
-            customStyles={styles.sectionTitle(theme)}
-          >
-            Payment Method
-          </P1>
-
-          {/* UPI option */}
-          <TouchableOpacity
-            style={[
-              styles.paymentOption(theme),
-              {
-                borderColor:
-                  selectedMethod === 'upi' ? theme.colors.primary : theme.colors.lightGray,
-              },
-            ]}
-            onPress={() => handleMethodSelect('upi')}>
-            <View style={styles.paymentOptionContent}>
-              <Icon name="smartphone" size={20} color={theme.colors.highlight} />
-              <P2
-                textColor="textPrimary"
-                weight="500"
-                customStyles={{marginLeft: theme.spacing.sm}}
-              >
-                UPI
-              </P2>
-            </View>
-            {selectedMethod === 'upi' && (
-              <Icon name="check-circle" size={20} color={theme.colors.primary} />
-            )}
-          </TouchableOpacity>
-
-          {/* Card option */}
-          <TouchableOpacity
-            style={[
-              styles.paymentOption(theme),
-              {
-                borderColor:
-                  selectedMethod === 'card' ? theme.colors.primary : theme.colors.lightGray,
-              },
-            ]}
-            onPress={() => handleMethodSelect('card')}>
-            <View style={styles.paymentOptionContent}>
-              <Icon name="credit-card" size={20} color={theme.colors.highlight} />
-              <P2
-                textColor="textPrimary"
-                weight="500"
-                customStyles={{marginLeft: theme.spacing.sm}}
-              >
-                Credit/Debit Card
-              </P2>
-            </View>
-            {selectedMethod === 'card' && (
-              <Icon name="check-circle" size={20} color={theme.colors.primary} />
-            )}
-          </TouchableOpacity>
-
-          {/* Net Banking option */}
-          <TouchableOpacity
-            style={[
-              styles.paymentOption(theme),
-              {
-                borderColor:
-                  selectedMethod === 'netbanking'
-                    ? theme.colors.primary
-                    : theme.colors.lightGray,
-              },
-            ]}
-            onPress={() => handleMethodSelect('netbanking')}>
-            <View style={styles.paymentOptionContent}>
-              <Icon name="globe" size={20} color={theme.colors.highlight} />
-              <P2
-                textColor="textPrimary"
-                weight="500"
-                customStyles={{marginLeft: theme.spacing.sm}}
-              >
-                Net Banking
-              </P2>
-            </View>
-            {selectedMethod === 'netbanking' && (
-              <Icon name="check-circle" size={20} color={theme.colors.primary} />
-            )}
-          </TouchableOpacity>
-        </View>
-
-        {/* Summary section */}
-        <View
-          style={[
-            styles.summarySection(theme),
-            {
-              backgroundColor: theme.colors.lightGray,
-              borderRadius: theme.borderRadius.lg,
-            },
-          ]}>
-          <View style={styles.summaryRow(theme)}>
-            <P2 textColor="textPrimary">Amount</P2>
-            <P2 textColor="textPrimary" weight="600">
-              ₹{amount || '0'}
-            </P2>
-          </View>
-
-          <View style={styles.summaryRow(theme)}>
-            <P2 textColor="textPrimary">Security Deposit</P2>
-            <P2 textColor="textPrimary" weight="600">
-              ₹200
-            </P2>
-          </View>
-
-          <View
-            style={[styles.summaryDivider(theme), {backgroundColor: theme.colors.lightGray}]}
-          />
-
-          <View style={styles.summaryRow(theme)}>
-            <P2 textColor="textPrimary" weight="600">
-              Total
-            </P2>
-            <P2 textColor="textPrimary" weight="700">
-              ₹{(parseFloat(amount || '0') + 200).toFixed(1)}
-            </P2>
           </View>
         </View>
       </ScrollView>
@@ -259,35 +147,42 @@ const AddFundsScreen = () => {
   );
 };
 
-const styles = {
+const styles = ScaledSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  content: (theme: any) => ({
+
+  content: {
     flex: 1,
-    paddingHorizontal: theme.padding.horizontal.md_16,
-  }),
-  section: (theme: any) => ({
-    marginBottom: theme.margin.vertical.lg_24,
-  }),
-  sectionTitle: (theme: any) => ({
-    marginBottom: theme.margin.vertical.sm_8,
-  }),
-  amountInput: (theme: any) => ({
-    marginBottom: theme.margin.vertical.md_16,
-  }),
+    padding: 16,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  amountInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 2,
+    borderColor: colors.textSecondary,
+    padding: '19@ms',
+    borderRadius: 20,
+  },
   quickAmounts: {
     flexDirection: 'row' as const,
     flexWrap: 'wrap' as const,
     marginHorizontal: -4,
   },
-  quickAmountButton: (theme: any) => ({
-    paddingVertical: theme.padding.vertical.sm_8,
-    paddingHorizontal: theme.padding.horizontal.md_16,
-    margin: 4,
+  quickAmountButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginHorizontal: 4,
     borderWidth: 1,
-    borderRadius: theme.borderRadius.lg,
+    borderRadius: 12,
     width: '22%',
   }),
   quickAmountText: {
