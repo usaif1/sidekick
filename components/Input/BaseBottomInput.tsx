@@ -1,8 +1,6 @@
-// src/components/Input/Input.tsx
 import React, {useState, useRef} from 'react';
 import {
   View,
-  TextInput,
   Text,
   StyleSheet,
   TouchableOpacity,
@@ -13,24 +11,18 @@ import {
   FlatList,
   KeyboardTypeOptions,
 } from 'react-native';
+import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/Feather';
 import {useThemeStore} from '@/globalStore';
-
-// Define the variant types our input supports
-type InputVariant = 'default' | 'dropdown' | 'phone' | 'currency';
-
-// Define dropdown option interface for dropdown variant
-interface DropdownOption {
-  label: string;
-  value: string;
-}
+import {ms, ScaledSheet} from 'react-native-size-matters';
+import {InputVariant, DropdownOption} from './BaseInput';
 
 // Extend the TextInputProps with our custom props
-interface InputProps extends Omit<TextInputProps, 'style'> {
+export interface BaseBottomInputProps extends Omit<TextInputProps, 'style'> {
   /**
    * Input label/title displayed above the input
    */
-  title?: string;
+  label?: string;
 
   /**
    * Variant of the input to display
@@ -50,7 +42,7 @@ interface InputProps extends Omit<TextInputProps, 'style'> {
   /**
    * Custom label/title style
    */
-  titleStyle?: TextStyle;
+  labelStyle?: TextStyle;
 
   /**
    * Error message to display below the input
@@ -94,14 +86,14 @@ interface InputProps extends Omit<TextInputProps, 'style'> {
 }
 
 /**
- * Custom Input component with multiple variants: default, dropdown, phone, and currency
+ * Base Bottom Input component optimized for bottom sheets
  */
-const Input: React.FC<InputProps> = ({
-  title,
+const BaseBottomInput: React.FC<BaseBottomInputProps> = ({
+  label,
   variant = 'default',
   containerStyle,
   inputStyle,
-  titleStyle,
+  labelStyle,
   error,
   required = false,
   dropdownOptions = [],
@@ -111,17 +103,17 @@ const Input: React.FC<InputProps> = ({
   placeholder = '',
   value,
   onChangeText,
-  testID = 'custom-input',
+  testID = 'base-bottom-input',
   ...restProps
 }) => {
   // Access theme values
-  const {colors, spacing, typography} = useThemeStore(state => state.theme);
+  const {colors} = useThemeStore(state => state.theme);
 
   // State for dropdown modal
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   // Reference to the input for focusing
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<any>(null);
 
   // Determine keyboard type based on inputType
   const getKeyboardType = (): KeyboardTypeOptions => {
@@ -176,17 +168,11 @@ const Input: React.FC<InputProps> = ({
   const renderCurrencyPrefix = () => {
     if (variant === 'currency') {
       return (
-        <View style={styles.phonePrefixContainer}>
-          <Text
-            style={[
-              styles.prefixText,
-              {color: colors.highlight, fontSize: typography.skP2.fontSize},
-            ]}>
+        <View style={styles.prefixContainer}>
+          <Text style={[styles.prefixText, {color: colors.highlight}]}>
             ₹
           </Text>
-          <View
-            style={[styles.divider, {backgroundColor: colors.textSecondary}]}
-          />
+          <View style={[styles.divider, {backgroundColor: colors.textPrimary}]} />
         </View>
       );
     }
@@ -197,17 +183,11 @@ const Input: React.FC<InputProps> = ({
   const renderPhonePrefix = () => {
     if (variant === 'phone') {
       return (
-        <View style={styles.phonePrefixContainer}>
-          <Text
-            style={[
-              styles.prefixText,
-              {color: colors.highlight, fontSize: typography.skP2.fontSize},
-            ]}>
-            {countryCode}
+        <View style={styles.countryCodeContainer}>
+          <Text style={[styles.countryCode, {color: colors.highlight}]}>
+            {countryCode}{' '}
           </Text>
-          <View
-            style={[styles.divider, {backgroundColor: colors.textSecondary}]}
-          />
+          <View style={[styles.divider, {backgroundColor: colors.textPrimary}]} />
         </View>
       );
     }
@@ -228,25 +208,13 @@ const Input: React.FC<InputProps> = ({
           style={styles.modalOverlay}
           activeOpacity={1}
           onPress={() => setDropdownVisible(false)}>
-          <View
-            style={[
-              styles.dropdownContainer,
-              {
-                top: 200, // This should be calculated based on input position
-                backgroundColor: colors.white,
-                borderRadius: 20,
-                borderColor: colors.textSecondary,
-              },
-            ]}>
+          <View style={[styles.dropdownContainer, {backgroundColor: colors.white}]}>
             <FlatList
               data={dropdownOptions}
               keyExtractor={item => item.value}
               renderItem={({item}) => (
                 <TouchableOpacity
-                  style={[
-                    styles.dropdownItem,
-                    {borderBottomColor: colors.lightGray},
-                  ]}
+                  style={[styles.dropdownItem, {borderBottomColor: colors.lightGray}]}
                   onPress={() => handleSelectOption(item)}>
                   <Text style={{color: colors.textPrimary}}>{item.label}</Text>
                 </TouchableOpacity>
@@ -260,81 +228,69 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <View style={[styles.container, containerStyle]} testID={testID}>
-      {/* Title/Label */}
-      {title && (
-        <Text
-          style={[
-            styles.title,
-            {
-              color:
-                variant === 'currency' ? colors.highlight : colors.textPrimary,
-              fontSize: typography.skP2.fontSize,
-              fontWeight: '500',
-            },
-            titleStyle,
-          ]}>
-          {title}
-          {required && <Text style={{color: colors.error}}> *</Text>}
-        </Text>
+      {/* Label */}
+      {label && (
+        <View style={{flexDirection: 'row'}}>
+          <Text
+            style={[
+              styles.label,
+              {color: colors.textPrimary},
+              labelStyle,
+            ]}>
+            {label}
+          </Text>
+          {required && <Text style={{color: colors.error, marginLeft: ms(2)}}>*</Text>}
+        </View>
       )}
 
       {/* Input Container */}
-      <View
-        style={[
-          styles.inputContainer,
-          {
-            borderColor: error ? colors.error : colors.textSecondary,
-            borderRadius: 20,
-            backgroundColor: colors.white,
-          },
-        ]}>
-        {/* Phone Prefix */}
-        {renderPhonePrefix()}
-
-        {/* Currency Prefix */}
-        {renderCurrencyPrefix()}
-
-        {/* Text Input */}
-        <TextInput
-          ref={inputRef}
+      {variant === 'phone' ? (
+        <View
           style={[
-            styles.input,
-            {
-              color: colors.textPrimary,
-              fontSize: typography.skP2.fontSize,
-              paddingLeft:
-                variant === 'phone' || variant === 'currency'
-                  ? spacing.xs
-                  : spacing.md,
-              textAlign: variant === 'currency' ? 'right' : 'left',
-              flex: 1,
-            },
+            styles.phoneInputContainer,
+            {borderColor: error ? colors.error : colors.textSecondary},
             inputStyle,
-          ]}
-          placeholder={placeholder}
-          placeholderTextColor={colors.error}
-          value={value}
-          onChangeText={onChangeText}
-          keyboardType={getKeyboardType()}
-          secureTextEntry={inputType === 'password'}
-          onFocus={() => variant === 'dropdown' && setDropdownVisible(false)}
-          {...restProps}
-        />
-
-        {/* Dropdown Icon */}
-        {renderDropdownIcon()}
-      </View>
+          ]}>
+          {renderPhonePrefix()}
+          <BottomSheetTextInput
+            ref={inputRef}
+            style={styles.phoneInput}
+            placeholder={placeholder}
+            placeholderTextColor={colors.textSecondary}
+            value={value}
+            onChangeText={onChangeText}
+            keyboardType={getKeyboardType()}
+            secureTextEntry={inputType === 'password'}
+            {...restProps}
+          />
+        </View>
+      ) : (
+        <View
+          style={[
+            styles.textInputContainer,
+            {borderColor: error ? colors.error : colors.textSecondary},
+            inputStyle,
+          ]}>
+          {renderCurrencyPrefix()}
+          <BottomSheetTextInput
+            ref={inputRef}
+            style={styles.textInput}
+            placeholder={placeholder}
+            placeholderTextColor={colors.textSecondary}
+            value={value}
+            onChangeText={onChangeText}
+            keyboardType={getKeyboardType()}
+            secureTextEntry={inputType === 'password'}
+            onFocus={() => variant === 'dropdown' && setDropdownVisible(false)}
+            {...restProps}
+          />
+          {renderDropdownIcon()}
+        </View>
+      )}
 
       {/* Error Message */}
       {error && (
-        <Text
-          style={[
-            styles.errorText,
-            {
-              color: colors.error,
-              fontSize: typography.skP3.fontSize,
-            },
-          ]}>
+        <Text style={[styles.errorText, {color: colors.error}]}>
           {error}
         </Text>
       )}
@@ -345,46 +301,80 @@ const Input: React.FC<InputProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
-    marginBottom: 16,
+    width: '100%',
+    marginBottom: '8@vs',
   },
-  title: {
-    marginBottom: 10,
-    marginLeft: 14,
+  label: {
+    marginBottom: '5@ms',
+    fontWeight: '500',
+    fontSize: '14@ms',
+    paddingLeft: '18@s',
   },
-  inputContainer: {
+  textInputContainer: {
+    borderWidth: 2,
+    borderRadius: 20,
+    height: '48@vs',
+    paddingHorizontal: '18@s',
+    justifyContent: 'center',
+  },
+  textInput: {
+    fontWeight: '600',
+    paddingVertical: 0,
+    fontSize: '15.2@ms',
+    height: '40@vs',
+  },
+  phoneInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
-    height: 64,
-    overflow: 'hidden',
+    width: '100%',
+    height: '48@vs',
+    borderRadius: 20,
+    paddingLeft: '18@s',
   },
-  input: {
-    paddingRight: 16,
-  },
-  dropdownIconContainer: {
-    padding: 12,
-    justifyContent: 'center',
+  countryCodeContainer: {
+    flexDirection: 'row',
+    columnGap: 10,
     alignItems: 'center',
   },
-  phonePrefixContainer: {
+  countryCode: {
+    fontSize: 16,
+    fontFamily: 'PlusJakartaSans-Bold',
+  },
+  divider: {
+    width: 1,
+    height: 20,
+  },
+  phoneInput: {
+    flex: 1,
+    fontWeight: '600',
+    paddingVertical: 0,
+    fontSize: '15.2@ms',
+    marginLeft: '10@s',
+  },
+  prefixContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 16,
+    marginRight: '8@s',
   },
   prefixText: {
     fontWeight: '500',
-    marginRight: 8,
+    marginRight: '8@ms',
+    fontSize: '14@ms',
   },
-  divider: {
-    width: 2,
-    height: 20,
-    marginRight: 6,
+  dropdownIconContainer: {
+    padding: '8@ms',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: '10@s',
   },
   errorText: {
-    marginTop: 4,
-    marginLeft: 14,
+    marginTop: '4@ms',
+    fontSize: '12@ms',
+    paddingLeft: '18@s',
   },
   modalOverlay: {
     flex: 1,
@@ -394,10 +384,11 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     position: 'absolute',
-    left: 20,
-    right: 20,
-    maxHeight: 200,
+    left: '20@ms',
+    right: '20@ms',
+    maxHeight: '200@ms',
     borderWidth: 1,
+    borderRadius: '8@ms',
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
@@ -405,9 +396,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   dropdownItem: {
-    padding: 12,
+    padding: '12@ms',
     borderBottomWidth: 1,
   },
 });
 
-export default Input;
+export default BaseBottomInput; 

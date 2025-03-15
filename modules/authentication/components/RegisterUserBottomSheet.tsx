@@ -1,15 +1,27 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { View, Text, TextInput, Dimensions, LayoutAnimation } from 'react-native';
-import { ScaledSheet, scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { View, Dimensions } from 'react-native';
+import { ScaledSheet } from 'react-native-size-matters';
 import { Portal } from '@gorhom/portal';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
 // Components
 import BaseBottomSheet, { BottomSheetContent } from '@/components/atoms/bottomsheet/Bottomsheet';
-import { Divider, LabelPrimary, ButtonText } from '@/components';
+import { Divider, ButtonText } from '@/components';
 import { useThemeStore } from '@/globalStore';
+import CustomBottomFormInput from '@/components/Input/CustomBottomFormInput';
+
+// Define validation schema with Zod
+const registerSchema = z.object({
+  fullName: z.string().min(1, { message: 'Full name is required' }),
+  email: z.string().email({ message: 'Invalid email address' }).optional().or(z.literal('')),
+  phoneNumber: z.string().length(10, { message: 'Phone number must be 10 digits' }),
+});
+
+type RegisterFormData = z.infer<typeof registerSchema>;
 
 interface RegisterUserBottomSheetProps {
   onClose: () => void;
@@ -19,23 +31,26 @@ const { width } = Dimensions.get('window');
 
 const RegisterUserBottomSheet = forwardRef<BottomSheet, RegisterUserBottomSheetProps>(
   ({ onClose }, ref) => {
-    const { theme } = useThemeStore();
-    const [isInputFocused, setIsInputFocused] = useState(false);
+    const { colors } = useThemeStore(state => state.theme);
     const navigation = useNavigation();
 
-    // Add animation for smooth transition
-    const handleFocus = () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setIsInputFocused(true);
-    };
+    // Initialize form with React Hook Form + Zod
+    const {
+      control,
+      handleSubmit,
+      formState: { errors, isSubmitting },
+    } = useForm<RegisterFormData>({
+      resolver: zodResolver(registerSchema),
+      defaultValues: {
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+      },
+    });
 
-    const handleBlur = () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setIsInputFocused(false);
-    };
-
-    const handleContinue = useCallback(() => {
+    const handleContinue = useCallback((data: RegisterFormData) => {
       // Navigate to OTP screen or handle registration
+      console.log('Form data:', data);
       // @ts-ignore
       navigation.navigate('otp');
       if (ref && 'current' in ref && ref.current) {
@@ -58,83 +73,47 @@ const RegisterUserBottomSheet = forwardRef<BottomSheet, RegisterUserBottomSheetP
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.formContainer}>
-              <View style={styles.inputContainer}>
-                <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
-                  Enter your Full Name
-                </LabelPrimary>
-                <Divider height={10} />
-                <View style={[styles.textInputContainer, { borderColor: theme.colors.textSecondary }]}>
-                  <BottomSheetTextInput
-                    placeholder="John Doe"
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    style={styles.textInput}
-                    placeholderTextColor={theme.colors.textSecondary}
-                  />
-                </View>
-              </View>
+              <CustomBottomFormInput
+                name="fullName"
+                label="Enter your Full Name"
+                control={control}
+                errors={errors}
+                placeholder="John Doe"
+                required={true}
+                containerStyle={styles.inputContainer}
+              />
 
-              <View style={styles.inputContainer}>
-                <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
-                  Enter Email ID
-                  <LabelPrimary
-                    labelColor="textSecondary"
-                    customStyles={{fontStyle: 'italic'}}>
-                    {' '}
-                    (optional)
-                  </LabelPrimary>
-                </LabelPrimary>
-                <Divider height={10} />
-                <View style={[styles.textInputContainer, { borderColor: theme.colors.textSecondary }]}>
-                  <BottomSheetTextInput
-                    placeholder="example@email.com"
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    style={styles.textInput}
-                    placeholderTextColor={theme.colors.textSecondary}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
-                </View>
-              </View>
+              <CustomBottomFormInput
+                name="email"
+                label="Enter Email ID (optional)"
+                control={control}
+                errors={errors}
+                placeholder="example@email.com"
+                inputType="email"
+                containerStyle={styles.inputContainer}
+              />
 
-              <View style={styles.inputContainer}>
-                <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
-                  Enter Your Phone Number
-                </LabelPrimary>
-                <Divider height={10} />
-                <View
-                  style={[
-                    styles.phoneInputContainer,
-                    { borderColor: theme.colors.textSecondary }
-                  ]}>
-                  <View style={styles.countryCodeContainer}>
-                    <Text
-                      style={[
-                        styles.countryCode,
-                        { color: theme.colors.highlight }
-                      ]}>
-                      +91{' '}
-                    </Text>
-                    <View style={[styles.divider, { backgroundColor: theme.colors.textPrimary }]} />
-                  </View>
-                  <BottomSheetTextInput
-                    placeholder="XXXXXXXXXX"
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    placeholderTextColor={theme.colors.textSecondary}
-                    style={styles.phoneInput}
-                    keyboardType="phone-pad"
-                    maxLength={10}
-                  />
-                </View>
-              </View>
+              <CustomBottomFormInput
+                name="phoneNumber"
+                label="Enter Your Phone Number"
+                control={control}
+                errors={errors}
+                placeholder="XXXXXXXXXX"
+                required={true}
+                variant="phone"
+                countryCode="+91"
+                inputType="numeric"
+                maxLength={10}
+                containerStyle={styles.inputContainer}
+              />
 
               <View style={styles.buttonContainer}>
                 <ButtonText
                   variant="primary"
-                  onPress={handleContinue}>
-                  Continue
+                  onPress={handleSubmit(handleContinue)}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Processing...' : 'Continue'}
                 </ButtonText>
               </View>
             </View>
@@ -157,48 +136,6 @@ const styles = ScaledSheet.create({
   inputContainer: {
     width: '100%',
     marginBottom: '8@vs',
-  },
-  textInputContainer: {
-    borderWidth: 2,
-    borderRadius: 20,
-    height: '48@vs',
-    paddingHorizontal: '18@s',
-    justifyContent: 'center',
-  },
-  textInput: {
-    fontWeight: '600',
-    paddingVertical: 0,
-    fontSize: '15.2@ms',
-    height: '40@vs',
-  },
-  phoneInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 2,
-    width: '100%',
-    height: '48@vs',
-    borderRadius: 20,
-    paddingLeft: '18@s',
-  },
-  countryCodeContainer: {
-    flexDirection: 'row',
-    columnGap: 10,
-    alignItems: 'center',
-  },
-  countryCode: {
-    fontSize: 16,
-    fontFamily: 'PlusJakartaSans-Bold',
-  },
-  divider: {
-    width: 1,
-    height: 20,
-  },
-  phoneInput: {
-    flex: 1,
-    fontWeight: '600',
-    paddingVertical: 0,
-    fontSize: '15.2@ms',
-    marginLeft: '10@s',
   },
   buttonContainer: {
     marginTop: '20@vs',
