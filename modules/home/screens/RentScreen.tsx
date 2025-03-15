@@ -82,7 +82,7 @@ const RentScreen: React.FC = () => {
         onPress={(e) => e.stopPropagation()}
       >
         <UserLocationMarker />
-        {memoizedHubs.map((hub) => (
+        {/* {memoizedHubs.map((hub) => (
           <NearestHubMarker
             key={hub.id}
             latitude={hub.latitude}
@@ -98,9 +98,9 @@ const RentScreen: React.FC = () => {
               );
             }}
           />
-        ))}
+        ))} */}
 
-        {selectedHub && (
+        {/* {selectedHub && (
           <Polyline
             coordinates={[
               { latitude: mapCenter.latitude, longitude: mapCenter.longitude }, 
@@ -110,7 +110,7 @@ const RentScreen: React.FC = () => {
             strokeWidth={4}
             geodesic={true}
           />
-        )}
+        )} */}
       </MapView>
     </View>
   );
