@@ -127,7 +127,7 @@ const AddFundsScreen = () => {
       {amount && (
         <View style={styles.buttonContainer}>
           <ButtonText variant="primary" onPress={handlePay}>
-            Pay ₹{(parseFloat(amount || '0') + 200).toFixed(2)}
+            Pay ₹{(parseFloat(amount || '0')).toFixed(2)}
           </ButtonText>
         </View>
       )}
