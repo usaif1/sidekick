@@ -87,7 +87,6 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
               containerStyle={styles.inputContainer}
             />
 
-
             {/* Email input */}
             <CustomFormInput
               name="email"
@@ -99,7 +98,6 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
               inputType="email"
               containerStyle={styles.inputContainer}
             />
-
 
             {/* Phone input */}
             <CustomFormInput

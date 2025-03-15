@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useForm, Controller} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import ButtonText from '@/components/ButtonText';
 import {useThemeStore} from '@/globalStore';
 import {useModal} from '@/components/Modal/ModalProvider';
@@ -16,37 +19,60 @@ import {ms, ScaledSheet} from 'react-native-size-matters';
 import {TextInput} from 'react-native-gesture-handler';
 import walletStore from '../store';
 
-const {colors} = useThemeStore.getState().theme;
+// Define validation schema with Zod
+const addFundsSchema = z.object({
+  amount: z
+    .string()
+    .min(1, {message: 'Amount is required'})
+    .refine(val => !isNaN(parseFloat(val)), {
+      message: 'Amount must be a valid number',
+    })
+    .refine(val => parseFloat(val) > 0, {
+      message: 'Amount must be greater than 0',
+    }),
+});
+
+type AddFundsFormData = z.infer<typeof addFundsSchema>;
 
 // Quick amount options
 const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
+const {theme} = useThemeStore.getState();
 const AddFundsScreen = () => {
   const navigation = useNavigation();
   const {showModal, hideModal} = useModal();
-
-  // State for amount and payment method
-  const [amount, setAmount] = useState('');
-
-  // Handle quick amount selection
-  const handleQuickAmountSelect = (value: number) => {
-    setAmount(value.toString());
-  };
+  const {colors} = useThemeStore(state => state.theme);
 
   // Get wallet data and actions from store
   const balance = walletStore.use.balance();
   const addFunds = walletStore.use.addFunds();
 
-// Handle pay button press
-  const handlePay = () => {
-    // Validate amount
-    if (!amount || parseFloat(amount) <= 0) {
-      // Show error
-      return;
-    }
+  // Initialize form with React Hook Form + Zod
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: {errors},
+  } = useForm<AddFundsFormData>({
+    resolver: zodResolver(addFundsSchema),
+    defaultValues: {
+      amount: '',
+    },
+  });
 
+  // Watch amount value for conditional rendering
+  const amountValue = watch('amount');
+
+  // Handle quick amount selection
+  const handleQuickAmountSelect = (value: number) => {
+    setValue('amount', value.toString(), {shouldValidate: true});
+  };
+
+  // Handle pay button press
+  const onSubmit = (data: AddFundsFormData) => {
     // Add funds to wallet using store
-    const amountValue = parseFloat(amount);
+    const amountValue = parseFloat(data.amount);
     addFunds(amountValue);
 
     // Show payment success modal with navigation callbacks
@@ -74,25 +100,32 @@ const AddFundsScreen = () => {
           <View>
             <B2 textColor="highlight">Available Balance: ₹{balance}</B2>
             <Divider height={9.6} />
-            <View style={styles.amountInput}>
-              <B1 textColor="highlight">₹</B1>
-              <TextInput
-                numberOfLines={1}
-                keyboardType="numeric"
-                placeholder="00.0"
-                value={amount}
-                onChangeText={text => {
-                  setAmount(text);
-                }}
-                placeholderTextColor={colors.textPrimary}
-                style={{
-                  width: '50%',
-                  fontSize: ms(23),
-                  textAlign: 'right',
-                  fontWeight: '600',
-                }}
-              />
-            </View>
+            <Controller
+              control={control}
+              name="amount"
+              render={({field: {onChange, value}}) => (
+                <View style={styles.amountInput}>
+                  <B1 textColor="highlight">₹</B1>
+                  <TextInput
+                    numberOfLines={1}
+                    keyboardType="numeric"
+                    placeholder="00.0"
+                    value={value}
+                    onChangeText={onChange}
+                    placeholderTextColor={colors.textPrimary}
+                    style={{
+                      width: '50%',
+                      fontSize: ms(23),
+                      textAlign: 'right',
+                      fontWeight: '600',
+                    }}
+                  />
+                </View>
+              )}
+            />
+            {errors.amount && (
+              <Text style={styles.errorText}>{errors.amount.message}</Text>
+            )}
           </View>
 
           {/* Quick amount options */}
@@ -105,11 +138,11 @@ const AddFundsScreen = () => {
                   styles.quickAmountButton,
                   {
                     backgroundColor:
-                      amount === value.toString()
+                      amountValue === value.toString()
                         ? colors.highlight
                         : colors.lightGray,
                     borderColor:
-                      amount === value.toString()
+                      amountValue === value.toString()
                         ? colors.highlight
                         : colors.textSecondary,
                   },
@@ -120,7 +153,7 @@ const AddFundsScreen = () => {
                     styles.quickAmountText,
                     {
                       color:
-                        amount === value.toString()
+                        amountValue === value.toString()
                           ? colors.white
                           : colors.textPrimary,
                     },
@@ -134,10 +167,10 @@ const AddFundsScreen = () => {
       </ScrollView>
 
       {/* Pay button */}
-      {amount && (
+      {amountValue && (
         <View style={styles.buttonContainer}>
-          <ButtonText variant="primary" onPress={handlePay}>
-            Pay ₹{(parseFloat(amount || '0')).toFixed(2)}
+          <ButtonText variant="primary" onPress={handleSubmit(onSubmit)}>
+            Pay ₹{(parseFloat(amountValue || '0')).toFixed(2)}
           </ButtonText>
         </View>
       )}
@@ -166,7 +199,7 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderWidth: 2,
-    borderColor: colors.textSecondary,
+    borderColor: theme.colors.textSecondary,
     padding: '19@ms',
     borderRadius: 20,
   },
@@ -187,33 +220,10 @@ const styles = ScaledSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
-  paymentOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-  },
-  paymentOptionContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  paymentOptionText: {
-    fontWeight: '500',
-  },
-  summarySection: {
-    padding: 16,
-    marginBottom: 24,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  summaryDivider: {
-    height: 1,
-    marginVertical: 8,
+  errorText: {
+    color: theme.colors.error,
+    marginTop: '4@ms',
+    fontSize: '12@ms',
   },
   buttonContainer: {
     padding: 16,

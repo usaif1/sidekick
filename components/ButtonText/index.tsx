@@ -10,6 +10,7 @@ type Props = {
   children: ReactNode;
   onPress: () => void;
   variant: 'primary' | 'secondary' | 'highlight';
+  disabled?: boolean;
 };
 
 type ContainerStyles = {
@@ -20,7 +21,7 @@ type ContainerStyles = {
 
 const {typography, colors, spacing} = useThemeStore.getState().theme;
 
-const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
+const ButtonText: React.FC<Props> = ({children, onPress, variant, disabled}) => {
   const containerStyles: ContainerStyles = {
     primary: {
       backgroundColor: colors.primary,
@@ -40,7 +41,8 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.pressableContainer, containerStyles[variant]]}>
+      style={[styles.pressableContainer, containerStyles[variant]]}
+      disabled={disabled}>
       <ChildText variant={variant}>{children}</ChildText>
     </Pressable>
   );
