@@ -12,7 +12,7 @@ const ScanQrCodeComponent = () => {
   return (
     <View style={styles.container}>
       <View style={styles.secondaryContainer}>
-        <H2>Scan QR Code</H2>
+        <H2 customStyles={styles.centerText}>Scan QR Code</H2>
         <Divider height={5} />
         <P2 textColor="textSecondary" customStyles={styles.centerText}>
           Please scan the QR Code in the middle of the Scooter’s handle
@@ -28,7 +28,7 @@ const ScanQrCodeComponent = () => {
       <Divider height={12} />
 
       <View style={styles.secondaryContainer}>
-        <H2>Enter Scooter Number</H2>
+        <H2 customStyles={styles.centerText}>Enter Scooter Number</H2>
         <Divider height={5} />
         <P2 textColor="textSecondary" customStyles={styles.centerText}>
           Please enter the number you see
