@@ -38,7 +38,7 @@ const WalletScreen: React.FC = () => {
   const handleAddFunds = () => {
     console.log('pressed');
     // @ts-ignore
-    navigation.navigate('wallet', {screen: 'WalletScreen'});
+    navigation.navigate('walletNavigator', {screen: 'AddFundsScreen'});
   };
 
   // List header component

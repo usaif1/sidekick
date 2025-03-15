@@ -8,7 +8,7 @@ import {useThemeStore} from '@/globalStore';
 import userStore from '../store';
 
 // components
-import Input from '@/components/Input';
+import {BaseInput, PhoneInput} from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
 
 interface EditProfileProps {
@@ -89,7 +89,7 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
       {/* Form container with blue border */}
       <View style={[styles.formContainer]}>
         {/* Name input */}
-        <Input
+        <BaseInput
           title="Name"
           placeholder="XXXXXXXXXX"
           placeholderTextColor={colors.textSecondary}
@@ -103,7 +103,7 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
         />
 
         {/* Email input */}
-        <Input
+        <BaseInput
           title="Email Address"
           placeholder="XXXXXXXXXX"
           placeholderTextColor={colors.textSecondary}
@@ -117,7 +117,7 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
         />
 
         {/* Phone input */}
-        <Input
+        <PhoneInput
           title="Phone"
           placeholder="XXXXXXXXXX"
           placeholderTextColor={colors.textSecondary}
@@ -125,9 +125,7 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
           onChangeText={setPhone}
           error={errors.phone}
           required
-          variant="phone"
           countryCode="+91"
-          inputType="numeric"
           testID="phone-input"
           containerStyle={styles.inputContainer}
         />
