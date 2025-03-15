@@ -14,6 +14,7 @@ import PaymentSuccessModal from '../components/PaymentSuccessModal';
 import {B1, B2, Divider} from '@/components';
 import {ms, ScaledSheet} from 'react-native-size-matters';
 import {TextInput} from 'react-native-gesture-handler';
+import walletStore from '../store';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -32,7 +33,11 @@ const AddFundsScreen = () => {
     setAmount(value.toString());
   };
 
-  // Handle pay button press
+  // Get wallet data and actions from store
+  const balance = walletStore.use.balance();
+  const addFunds = walletStore.use.addFunds();
+
+// Handle pay button press
   const handlePay = () => {
     // Validate amount
     if (!amount || parseFloat(amount) <= 0) {
@@ -40,17 +45,22 @@ const AddFundsScreen = () => {
       return;
     }
 
+    // Add funds to wallet using store
+    const amountValue = parseFloat(amount);
+    addFunds(amountValue);
+
     // Show payment success modal with navigation callbacks
     showModal(
       <PaymentSuccessModal
         visible={true}
         onClose={hideModal}
-        amount={parseFloat(amount)}
+        amount={amountValue}
         testID="payment-success-modal"
         onContinueToRide={() => navigation.navigate('home')}
         onCheckWallet={() => {
           // Already in wallet, so no navigation needed
-          // Or you could navigate to a specific wallet tab if needed
+          hideModal();
+          navigation.goBack();
         }}
       />,
     );
@@ -62,7 +72,7 @@ const AddFundsScreen = () => {
         {/* Amount input section */}
         <View style={styles.section}>
           <View>
-            <B2 textColor="highlight">Available Balance: ₹56.0</B2>
+            <B2 textColor="highlight">Available Balance: ₹{balance}</B2>
             <Divider height={9.6} />
             <View style={styles.amountInput}>
               <B1 textColor="highlight">₹</B1>

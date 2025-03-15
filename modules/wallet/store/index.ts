@@ -69,7 +69,7 @@ const walletStore = create<WalletState & WalletActions>((set) => ({
     })),
 
   // Add funds to wallet
-  addFunds: (amount, paymentMethod) =>
+  addFunds: (amount) =>
     set((state) => ({
       balance: state.balance + amount,
       transactions: [
@@ -79,7 +79,7 @@ const walletStore = create<WalletState & WalletActions>((set) => ({
           type: 'credit',
           description: 'Wallet recharge',
           date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
-          name: `Added via ${paymentMethod}`,
+          name: `Christ University`,
           time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
         },
         ...state.transactions,
