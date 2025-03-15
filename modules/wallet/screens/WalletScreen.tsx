@@ -16,14 +16,17 @@ import {mockWalletData} from '../constants/mockData';
 import {useThemeStore} from '@/globalStore';
 import {ScaledSheet} from 'react-native-size-matters';
 import {Divider, H3} from '@/components';
+import walletStore from '../store';
 
 const {colors} = useThemeStore.getState().theme;
 
 const WalletScreen: React.FC = () => {
   const navigation = useNavigation();
 
-  // Use mock data
-  const [walletData, setWalletData] = useState(mockWalletData);
+  // Use wallet store instead of mock data
+  const balance = walletStore.use.balance();
+  const securityDeposit = walletStore.use.securityDeposit();
+  const transactions = walletStore.use.transactions();
 
   // Handle withdraw button press
   const handleWithdraw = () => {
@@ -59,14 +62,14 @@ const WalletScreen: React.FC = () => {
       <View style={styles.content}>
         {/* Wallet balance card */}
         <WalletCard
-          balance={walletData.currentBalance}
+          balance={balance}
           testID="wallet-balance-card"
         />
 
         {/* Security deposit bar */}
         <Divider height={9.5} />
         <SecurityDepositBar
-          depositAmount={walletData.securityDeposit}
+          depositAmount={securityDeposit}
           onWithdraw={handleWithdraw}
           testID="security-deposit-bar"
         />
@@ -77,7 +80,7 @@ const WalletScreen: React.FC = () => {
           <ListHeaderComponent />
           <Divider height={4.5} />
           <TransactionList
-            transactions={walletData.transactions}
+            transactions={transactions}
             testID="transactions-list"
           />
         </View>
