@@ -1,24 +1,23 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Marker } from 'react-native-maps';
 import UserPointerIcon from '../assets/userPointer.svg';
 
-const UserLocationMarker: React.FC = () => {
-  return (
-    <View style={styles.markerContainer}>
-    <UserPointerIcon width={32} height={32} />
-    </View>
-  );
+type Props = {
+  latitude: number;
+  longitude: number;
+  heading: number;
 };
 
-const styles = StyleSheet.create({
-  markerContainer: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{translateX: -16}, {translateY: -32}],
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const UserLocationMarker: React.FC<Props> = React.memo(({ latitude, longitude, heading }) => {
+  return (
+    <Marker 
+      coordinate={{ latitude, longitude }} 
+      anchor={{ x: 0.5, y: 0.5 }}
+      rotation={heading}
+    >
+      <UserPointerIcon width={32} height={32} />
+    </Marker>
+  );
 });
 
 export default UserLocationMarker;
