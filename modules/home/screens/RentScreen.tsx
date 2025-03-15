@@ -13,6 +13,8 @@ import ScanQrCodeComponent from "../components/ScanQrCodeComponent";
 import { HubLocation, PolylineCoordinates } from "../types/mapTypes";
 import { updatePolylineAndFitMap } from "../utilis/updatePolylineAndFitMap";
 import UserLocationMarker from "../components/UserLocationMarker";
+import RideDetailsBottomSheet from "@/modules/rides/components/RideDetailsBottomSheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 const RentScreen: React.FC = () => {
   const latitude = useLocationStore(state => state.latitude);
@@ -24,9 +26,18 @@ const RentScreen: React.FC = () => {
   const mapRef = useRef<MapView>(null);
   const [polylineCoords, setPolylineCoords] = useState<PolylineCoordinates>([]);
   const [heading, setHeading] = useState<number>(0);
+  const rideDetailsBottomSheetRef = useRef<BottomSheet>(null);
 
   const handleOpenModal = () => {
     openModal(ScanQrCodeComponent);
+  };
+
+  const handleOpenRideDetails = () => {
+    rideDetailsBottomSheetRef.current?.expand();
+  };
+
+  const handleCloseRideDetails = () => {
+    rideDetailsBottomSheetRef.current?.close();
   };
 
   useEffect(() => {
@@ -65,11 +76,12 @@ const RentScreen: React.FC = () => {
 
     requestLocationPermission();
   }, [setLocation]);
+  
   useEffect(() => {
     const { polylineCoords, heading } = updatePolylineAndFitMap(selectedHub, latitude, longitude, mapRef);
     setPolylineCoords(polylineCoords); 
     setHeading(heading); 
-}, [selectedHub, latitude, longitude]);
+  }, [selectedHub, latitude, longitude]);
 
   return (
     <View style={styles.container}>
@@ -88,7 +100,7 @@ const RentScreen: React.FC = () => {
         }}
       >
         {latitude && longitude && (
-        <UserLocationMarker latitude={latitude} longitude={longitude} heading={heading} />
+          <UserLocationMarker latitude={latitude} longitude={longitude} heading={heading} />
         )}
         {scooterHubs.map((hub) => (
           <NearestHubMarker
@@ -106,17 +118,40 @@ const RentScreen: React.FC = () => {
               );
             }}
           />
-        ))} */}
+        ))}
 
         {polylineCoords.length > 0 && (
           <Polyline coordinates={polylineCoords} strokeWidth={4} strokeColor="#296AEB" />
         )}
       </MapView>
       <View style={styles.bottomContainer}>
-        <ButtonWithIcon variant="primary" onPress={handleOpenModal} IconComponent={ScanIcon}>
+        <ButtonWithIcon 
+          variant="primary" 
+          onPress={handleOpenRideDetails} 
+          IconComponent={ScanIcon}
+        >
           Unlock
         </ButtonWithIcon>
       </View>
+      
+      <RideDetailsBottomSheet
+        ref={rideDetailsBottomSheetRef}
+        onClose={handleCloseRideDetails}
+        rideData={{
+          id: 'ride-123',
+          from: 'Current Location',
+          to: selectedHub ? `Hub: ${scooterHubs.find(hub => hub.id.toString() === selectedHub.id)?.name || 'Selected Hub'}` : 'Destination Hub',
+          date: new Date().toLocaleDateString(),
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          price: '150',
+          distance: polylineCoords.length > 0 ? '2.5 km' : '0 km',
+          duration: '15 mins',
+          driverName: 'You',
+          driverRating: 5.0,
+          vehicleType: 'Electric Scooter',
+          vehicleNumber: 'SC-1234',
+        }}
+      />
     </View>
   );
 };

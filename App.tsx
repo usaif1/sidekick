@@ -4,7 +4,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 // import {SafeAreaProvider} from 'react-native-safe-area-context';
 // import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
-
+import { PortalProvider } from '@gorhom/portal';
 // components
 import {ModalProvider} from '@/components/Modal/ModalProvider';
 
@@ -43,11 +43,14 @@ function App(): React.JSX.Element {
         {firsTime ? (
           <SplashNavigation />
         ) : loggedIn ? (
+          <PortalProvider>
           <ModalProvider>
             <ProtectedNavigation />
           </ModalProvider>
+          </PortalProvider>
         ) : (
-          <AuthNavigation />
+          <PortalProvider>
+          <AuthNavigation /></PortalProvider>
         )}
         <GlobalModal />
       </GestureHandlerRootView>
