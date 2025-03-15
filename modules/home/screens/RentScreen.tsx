@@ -15,7 +15,10 @@ import { updatePolylineAndFitMap } from "../utilis/updatePolylineAndFitMap";
 import UserLocationMarker from "../components/UserLocationMarker";
 
 const RentScreen: React.FC = () => {
-  const { latitude, longitude, setLocation } = useLocationStore();
+  const latitude = useLocationStore(state => state.latitude);
+  const longitude = useLocationStore(state => state.longitude);
+  const setLocation = useLocationStore(state => state.setLocation);
+
   const openModal = globalStore.use.openModal();
   const [selectedHub, setSelectedHub] = useState<HubLocation>(null);
   const mapRef = useRef<MapView>(null);
