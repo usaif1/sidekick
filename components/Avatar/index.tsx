@@ -7,7 +7,7 @@ import {
   Image,
   ImageSourcePropType,
 } from 'react-native';
-import {TouchableOpacity, Text, View} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'; // Assuming you're using Feather icons
 import {useThemeStore} from '@/globalStore';
 

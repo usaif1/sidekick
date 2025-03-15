@@ -2,7 +2,6 @@ import React, {useCallback, memo} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
   ListRenderItemInfo,
 } from 'react-native';
@@ -31,7 +30,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
   testID = 'transaction-list',
 }) => {
-  const {colors, typography} = useThemeStore(state => state.theme);
+  const {colors} = useThemeStore(state => state.theme);
 
   // Optimized render function
   const renderItem = useCallback(({item}: ListRenderItemInfo<Transaction>) => {
@@ -45,7 +44,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   const ListEmptyComponent = useCallback(
     () => (
       <View style={styles.emptyContainer}>
-        <Text style={[styles.emptyText, {color: colors.textPrimary}]}>
+        <Text style={[ {color: colors.textPrimary}]}>
           No transactions yet
         </Text>
       </View>
@@ -73,17 +72,11 @@ const TransactionList: React.FC<TransactionListProps> = ({
 const styles = {
   listContent: {
     flexGrow: 1,
-  },
-  headerContainer: (theme: any) => ({
-    paddingVertical: theme.padding.vertical.sm_8,
-    paddingHorizontal: theme.padding.horizontal.md_16,
-    borderBottomWidth: 1,
-  }),
-  emptyContainer: (theme: any) => ({
-    padding: theme.padding.horizontal.lg_24,
+  },  emptyContainer: {
+    padding: 20,
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
-  }),
+  },
 };
 
 export default TransactionList;

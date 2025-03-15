@@ -10,7 +10,7 @@ import ButtonText from '@/components/ButtonText';
 import {useThemeStore} from '@/globalStore';
 import {useModal} from '@/components/Modal/ModalProvider';
 import PaymentSuccessModal from '../components/PaymentSuccessModal';
-import {P1, P2} from '@/components/Typography';
+// import {P1, P2} from '@/components/Typography';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import walletStore from '../store';
 import {B1, B2, Divider} from '@/components';
@@ -24,7 +24,7 @@ const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
 const AddFundsScreen = () => {
   const navigation = useNavigation();
-  const {theme} = useThemeStore();
+  // const {theme} = useThemeStore();
   const {showModal, hideModal} = useModal();
   
   // Get wallet data and actions from store
@@ -73,7 +73,7 @@ const AddFundsScreen = () => {
         {/* Amount input section */}
         <View style={styles.section}>
           <View>
-            <B2 textColor="highlight">Available Balance: ₹56.0</B2>
+            <B2 textColor="highlight">Available Balance: {balance}</B2>
             <Divider height={9.6} />
             <View style={styles.amountInput}>
               <B1 textColor="highlight">₹</B1>

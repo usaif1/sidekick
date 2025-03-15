@@ -1,4 +1,6 @@
-import React, {useState, useCallback} from 'react';
+import React, {
+  // useState, 
+  useCallback} from 'react';
 import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -8,7 +10,7 @@ import WalletCard from '../components/WalletCard';
 import SecurityDepositBar from '../components/SecurityDepositBar';
 import TransactionList from '../components/TransactionList';
 import AddFundsButton from '../components/AddFundsButton';
-import {P2} from '@/components/Typography';
+// import {P2} from '@/components/Typography';
 
 // store
 import {useThemeStore} from '@/globalStore';
@@ -37,7 +39,7 @@ const WalletScreen: React.FC = () => {
   // Handle add funds button press
   const handleAddFunds = () => {
     // @ts-ignore
-    navigation.navigate('wallet', {screen: 'AddFundsScreen'});
+    navigation.navigate('walletNavigator', {screen: 'AddFundsScreen'});
   };
 
   // List header component
@@ -57,8 +59,8 @@ const WalletScreen: React.FC = () => {
 
   return (
     <SafeAreaView
-      style={[styles.container(theme), {backgroundColor: theme.colors.lightGray}]}>
-      <View style={styles.content(theme)}>
+      style={[styles.container, {backgroundColor: theme.colors.lightGray}]}>
+      <View style={styles.content}>
         {/* Wallet balance card */}
         <WalletCard
           balance={balance}
@@ -99,20 +101,20 @@ const styles = ScaledSheet.create({
   },
   content: {
     flex: 1,
-    paddingTop: theme.padding.vertical.md_16,
-  }),
+    paddingTop: 16,
+  },
   transactionsContainer: {
     flex: 1,
   },
-  header: (theme: any) => ({
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    paddingVertical: theme.padding.vertical.sm_8,
-  }),
-  backButton: (theme: any) => ({
-    padding: theme.padding.horizontal.sm_8,
-  }),
-  headerTitle: (theme: any) => ({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerTitle: {
     flex: 1,
     textAlign: 'left',
     marginLeft: 16,
@@ -127,8 +129,9 @@ const styles = ScaledSheet.create({
     borderColor: colors.textSecondary,
   },
   headerText: {
+    fontWeight: '600',
     textAlign: 'center',
   },
-};
+});
 
 export default WalletScreen;
