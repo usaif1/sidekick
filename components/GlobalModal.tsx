@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-native-modal";
-import { View,  Button, StyleSheet, TouchableOpacity } from "react-native";
+import { View,  StyleSheet, TouchableOpacity } from "react-native";
 import globalStore from "@/globalStore/globalStore";
 import Close from "@/assets/cross.svg"; 
 
@@ -23,8 +23,7 @@ const GlobalModal: React.FC = () => {
       <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
           <Close width={24} height={24} />
         </TouchableOpacity>
-        {ModalComponent && <ModalComponent />} 
-        <Button title="Close" onPress={closeModal} />
+        {ModalComponent && <ModalComponent />}
       </View>
     </Modal>
   );
