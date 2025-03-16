@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Alert, Platform } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
@@ -39,20 +39,21 @@ const ScanQrCodeComponent = () => {
     checkPermissions();
   }, []);
 
-  const handleCodeScanned = ((codes:any) => {
+  const handleCodeScanned = (codes: any) => {
     const scannedValue = codes[0]?.value;
     if (scannedValue) {
       setCode(scannedValue);
-      Alert.alert("QR Code Scanned", `Code: ${scannedValue}`);
-      closeModal();
+      Alert.alert("QR Code Scanned", `Code: ${scannedValue}`, [
+        { text: "OK", onPress: () => closeModal() }
+      ]);
     }
-  });
+  };
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = () => {
     if (code) {
       closeModal();
     }
-  }, [code, closeModal]);
+  };
 
   return (
     <View style={styles.container}>
@@ -85,12 +86,15 @@ const ScanQrCodeComponent = () => {
       <View style={styles.secondaryContainer}>
         <H2 customStyles={styles.centerText}>Enter Scooter Number</H2>
         <Divider height={8} />
+        <P2 textColor="textSecondary" customStyles={styles.centerText}>
+        Please enter the number you see
+        </P2>
       </View>
 
       <Divider height={16} />
       <View style={styles.wrapper}>
         <View style={styles.textInputContainer}>
-          <CommonTextInputSm placeholder="Enter Number" customStyle={styles.inputCustom} value={code} onChangeText={setCode} />
+          <CommonTextInputSm placeholder="XX XX XX" customStyle={styles.inputCustom} value={code} onChangeText={setCode} />
         </View>
         <View style={styles.buttonContainer}>
           <ButtonTextSm onPress={handleContinue} variant="highlight">
