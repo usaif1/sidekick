@@ -15,6 +15,7 @@ import UserLocationMarker from '@/modules/home/components/UserLocationMarker';
 import NearestHubMarker from '@/modules/home/components/NearestHubMarker';
 import {RideDetails} from '../components';
 import {useGlobalStore} from '@/globalStore';
+import {GlobalModal} from '@/components';
 
 const RideScreen: React.FC = () => {
   const latitude = useLocationStore(state => state.latitude);
@@ -63,13 +64,14 @@ const RideScreen: React.FC = () => {
     setHeading(heading);
   }, [selectedHub, latitude, longitude]);
 
-  const {setGlobalBottomSheetComponent, openBottomSheet} = useGlobalStore();
+  const {setGlobalBottomSheetComponent, openGlobalBottomSheet} =
+    useGlobalStore();
 
   // bottom sheet logic
   useEffect(() => {
     setGlobalBottomSheetComponent(RideDetails);
     setTimeout(() => {
-      openBottomSheet();
+      openGlobalBottomSheet();
     }, 300);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -126,6 +128,8 @@ const RideScreen: React.FC = () => {
           />
         )}
       </MapView>
+
+      <GlobalModal />
     </View>
   );
 };

@@ -16,10 +16,16 @@ const GlobalModal: React.FC = () => {
       statusBarTranslucent
       deviceHeight={Dimensions.get('screen').height}
       style={{zIndex: 9999, flex: 1}}
-      backdropTransitionOutTiming={0}
-      backdropTransitionInTiming={1000}
       backdropOpacity={0.5}
+      useNativeDriver // Add this
+      hideModalContentWhileAnimating // Add this
+      avoidKeyboard // Helps with Android keyboard
+      renderToHardwareTextureAndroid
       animationIn="slideInUp"
+      animationInTiming={350}
+      animationOutTiming={100}
+      backdropTransitionOutTiming={100}
+      backdropTransitionInTiming={300}
       animationOut="slideOutDown"
       onBackdropPress={closeModal}>
       <View style={styles.modalContainer}>
@@ -37,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 16,
-    maxHeight: '60%',
+    maxHeight: '90%',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -52,6 +58,7 @@ const styles = StyleSheet.create({
     top: 12,
     right: 12,
     padding: 4,
+    zIndex: 99,
   },
 });
 

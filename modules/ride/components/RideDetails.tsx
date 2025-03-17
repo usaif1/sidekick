@@ -1,17 +1,28 @@
 // dependencies
 import {Dimensions, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useGlobalStore, useThemeStore} from '@/globalStore';
+
+// components
 import {ButtonText, Divider, H1, H2, H3, P1} from '@/components';
+import {EndRide} from '../components';
 
 const {
   theme: {colors},
 } = useThemeStore.getState();
 
 const RideDetails: React.FC = () => {
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+
+  const {openModal} = useGlobalStore();
+
+  const endRide = () => {
+    openModal(EndRide);
+  };
+
   return (
     <View style={{height: '100%'}}>
       <View style={styles.targetHubWrapper}>
@@ -49,16 +60,29 @@ const RideDetails: React.FC = () => {
             }}>
             <ButtonText
               variant="error"
-              onPress={() => {}}
+              onPress={endRide}
               customStyle={{width: '48%'}}>
               End Ride
             </ButtonText>
-            <ButtonText
-              variant="primary"
-              onPress={() => {}}
-              customStyle={{width: '48%'}}>
-              Pause Ride
-            </ButtonText>
+            {isPaused ? (
+              <ButtonText
+                variant="primary"
+                onPress={() => {
+                  setIsPaused(false);
+                }}
+                customStyle={{width: '48%'}}>
+                Resume Ride
+              </ButtonText>
+            ) : (
+              <ButtonText
+                variant="primary"
+                onPress={() => {
+                  setIsPaused(true);
+                }}
+                customStyle={{width: '48%'}}>
+                Pause Ride
+              </ButtonText>
+            )}
           </View>
         </View>
       </View>

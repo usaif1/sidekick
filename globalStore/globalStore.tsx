@@ -38,7 +38,7 @@ type GlobalActions = {
   // bottom sheet actions
   setGlobalBottomSheetRef: (ref: RefObject<BottomSheetMethods | null>) => void;
   setGlobalBottomSheetComponent: (Component: React.FC) => void;
-  openBottomSheet: () => void;
+  openGlobalBottomSheet: () => void;
   closeBottomSheet: () => void;
   setGlobalBottomSheetSnapPoints: (snapPoints: any) => void;
 
@@ -97,7 +97,7 @@ const globalStore = create<GlobalStore & GlobalActions>(set => ({
       GlobalBottomSheetComponent: Component,
     }),
 
-  openBottomSheet: () =>
+  openGlobalBottomSheet: () =>
     set(state => {
       if (state.globalBottomSheetRef?.current) {
         state.globalBottomSheetRef.current.expand();
