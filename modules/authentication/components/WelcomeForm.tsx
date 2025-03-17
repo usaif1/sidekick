@@ -1,32 +1,27 @@
 // dependencies
-import {useNavigation} from '@react-navigation/native';
+import {View} from 'react-native';
 import React from 'react';
-import {View, ImageBackground, Dimensions} from 'react-native';
+import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // components
-import {H1, P1, ButtonText, Divider} from '@/components';
+import {ButtonText, Divider, H1, P1} from '@/components';
 
-const {width, height} = Dimensions.get('window'); // Get screen dimensions
+// utils
+import {authUtils} from '../utils';
 
-const Login = () => {
-  const navigation = useNavigation();
-
+const WelcomeForm: React.FC = () => {
   return (
-    <ImageBackground
-      source={require('../../assets/Map.png')} // Path to your background image
-      style={[styles.background, {width, height}]} // Set width and height dynamically
-    >
+    <BottomSheetView>
       <View style={styles.contentContainer}>
         <H1>Welcome!</H1>
-        <Divider height={10} />
+        <Divider height={9.6} />
         <P1>Please Sign In to Continue</P1>
-        <View style={{height: 32}} />
+        <Divider height={26} />
         <View style={{width: '100%', rowGap: 12}}>
           <ButtonText
             onPress={() => {
-              // @ts-ignore
-              navigation.navigate('signup');
+              authUtils.setBottomSheetView('new');
             }}
             variant="primary">
             New User
@@ -39,24 +34,20 @@ const Login = () => {
           </ButtonText>
         </View>
       </View>
-    </ImageBackground>
+    </BottomSheetView>
   );
 };
 
+export default WelcomeForm;
+
 const styles = ScaledSheet.create({
-  background: {
-    flex: 1,
-  },
   contentContainer: {
-    position: 'absolute',
-    bottom: 0,
+    alignItems: 'center',
     width: '100%',
     backgroundColor: 'white', // Optional: Adds a dark overlay for text readability
     borderRadius: 20,
-    alignItems: 'center',
-    paddingTop: '30@ms',
+    paddingTop: 32,
     paddingHorizontal: 24,
-    height: Dimensions.get('window').height * 0.5,
   },
   title: {
     fontSize: 30,
@@ -67,5 +58,3 @@ const styles = ScaledSheet.create({
     fontSize: 18,
   },
 });
-
-export default Login;

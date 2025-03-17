@@ -1,9 +1,8 @@
 // dependencies
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-// import {SafeAreaProvider} from 'react-native-safe-area-context';
-// import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
 // components
 import {ModalProvider} from '@/components/Modal/ModalProvider';
@@ -15,25 +14,23 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 
 // misc
 import './ReactotronConfig';
-import {useGlobalStore} from './globalStore';
+import {useAuthStore, useGlobalStore} from './globalStore';
 import GlobalModal from './components/GlobalModal';
-import requestLocationPermission from './components/LocationPermission';
-import Geolocation from '@react-native-community/geolocation';
 
 function App(): React.JSX.Element {
   const {firsTime, loggedIn} = useGlobalStore();
 
+  const {
+    setAuthBottomSheetRef,
+    AuthBottomSheetComponent,
+    authBottomSheetSnapPoints,
+  } = useAuthStore();
+
+  const authBottomSheetRef = useRef<BottomSheet>(null);
+
   useEffect(() => {
-    requestLocationPermission();
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('Location:', position);
-      },
-      error => {
-        console.log('Error getting location:', error);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
+    setAuthBottomSheetRef(authBottomSheetRef);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -47,7 +44,26 @@ function App(): React.JSX.Element {
             <ProtectedNavigation />
           </ModalProvider>
         ) : (
-          <AuthNavigation />
+          <>
+            <AuthNavigation />
+            <BottomSheet
+              ref={authBottomSheetRef}
+              enablePanDownToClose={false}
+              enableOverDrag={false}
+              enableHandlePanningGesture={false}
+              handleComponent={() => null}
+              style={{flex: 1}}
+              keyboardBehavior="interactive"
+              enableContentPanningGesture={false}
+              android_keyboardInputMode="adjustPan"
+              keyboardBlurBehavior="restore"
+              index={1}
+              snapPoints={authBottomSheetSnapPoints}>
+              <BottomSheetView>
+                {AuthBottomSheetComponent && <AuthBottomSheetComponent />}
+              </BottomSheetView>
+            </BottomSheet>
+          </>
         )}
         <GlobalModal />
       </GestureHandlerRootView>

@@ -1,13 +1,13 @@
-import React from "react";
-import Modal from "react-native-modal";
-import { View,  StyleSheet, TouchableOpacity } from "react-native";
-import globalStore from "@/globalStore/globalStore";
-import Close from "@/assets/cross.svg"; 
+import React from 'react';
+import Modal from 'react-native-modal';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import globalStore from '@/globalStore/globalStore';
+import Close from '@/assets/cross.svg';
 
 const GlobalModal: React.FC = () => {
-    const isModalOpen = globalStore.use.isModalOpen();
-    const ModalComponent = globalStore.use.ModalComponent();
-    const closeModal = globalStore.use.closeModal();
+  const isModalOpen = globalStore.use.isModalOpen();
+  const ModalComponent = globalStore.use.ModalComponent();
+  const closeModal = globalStore.use.closeModal();
 
   return (
     <Modal
@@ -17,10 +17,9 @@ const GlobalModal: React.FC = () => {
       backdropOpacity={0.5}
       animationIn="slideInUp"
       animationOut="slideOutDown"
-      onBackdropPress={closeModal}
-    >
+      onBackdropPress={closeModal}>
       <View style={styles.modalContainer}>
-      <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+        <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
           <Close width={24} height={24} />
         </TouchableOpacity>
         {ModalComponent && <ModalComponent />}
@@ -31,16 +30,16 @@ const GlobalModal: React.FC = () => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 20,
     borderRadius: 16,
     maxHeight: '60%',
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "#86A0CA",
-    borderStyle: "solid",
-    position: "relative",
+    borderColor: '#86A0CA',
+    borderStyle: 'solid',
+    position: 'relative',
   },
   closeButton: {
     position: 'absolute',

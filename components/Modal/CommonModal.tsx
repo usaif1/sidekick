@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {useThemeStore} from '@/globalStore';
-import Cross from '../assets/cross.svg';
+import Cross from '@/assets/cross.svg';
 
 interface CommonModalProps {
   /**
