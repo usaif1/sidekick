@@ -3,9 +3,12 @@ import {Dimensions, FlatList, Pressable, View} from 'react-native';
 import React, {useState} from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
+// components
+import {ReachedHub} from '../components';
+import {ButtonText, Divider, H2, H3, P2} from '@/components';
+
 // store
 import {useGlobalStore, useThemeStore} from '@/globalStore';
-import {ButtonText, Divider, H2, H3, P2} from '@/components';
 
 const {
   theme: {colors},
@@ -79,7 +82,13 @@ const NearestHubCard: React.FC<NearestHubCardProps> = ({
 const EndRide: React.FC = () => {
   const [selectedHub, setSelectedHub] = useState<string>('car_parking');
 
-  const {closeModal} = useGlobalStore();
+  const {openModal, closeModal} = useGlobalStore();
+
+  const {} = useGlobalStore();
+
+  const onEndRide = () => {
+    openModal(ReachedHub);
+  };
 
   return (
     <View style={styles.endRideWrapper}>
@@ -109,7 +118,7 @@ const EndRide: React.FC = () => {
         <ButtonText variant="primary" onPress={closeModal}>
           Resume Ride
         </ButtonText>
-        <ButtonText variant="error" onPress={() => {}}>
+        <ButtonText variant="error" onPress={onEndRide}>
           End Ride
         </ButtonText>
       </View>
