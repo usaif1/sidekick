@@ -1927,6 +1927,12 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
+  - VisionCamera (4.6.4):
+    - VisionCamera/Core (= 4.6.4)
+    - VisionCamera/React (= 4.6.4)
+  - VisionCamera/Core (4.6.4)
+  - VisionCamera/React (4.6.4):
+    - React-Core
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2012,6 +2018,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2178,6 +2185,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  VisionCamera:
+    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2263,6 +2272,7 @@ SPEC CHECKSUMS:
   RNSVG: 8588ee1ca9b2e6fd2c99466e35b3db0e9f81bb40
   RNVectorIcons: 14a0c42f16a26bcc3e79a19bc1c5718284b1d469
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  VisionCamera: b5c2b3c45e641102902a5194af11dc532805221e
   Yoga: 9b7fb56e7b08cde60e2153344fa6afbd88e5d99f
 
 PODFILE CHECKSUM: ab07dac28e1d215a2ed75766b3bed03d3a4781e3

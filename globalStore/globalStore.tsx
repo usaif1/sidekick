@@ -8,9 +8,13 @@ import createSelectors from '@/utils/selectors';
 // types
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 
+// components
+import {RideDetails} from '@/modules/ride/components';
+
 type GlobalStore = {
   firsTime: boolean;
   loggedIn: boolean;
+  navigator: any;
 
   // Modal
   isModalOpen: boolean;
@@ -18,21 +22,25 @@ type GlobalStore = {
   closeModalCallback: (() => void) | null;
 
   // bottom sheet
-  BottomSheetComponent: React.FC | null;
-  bottomSheetRef: RefObject<BottomSheetMethods | null> | null;
-  closeBottomSheetCallback: (() => void) | null;
+  GlobalBottomSheetComponent: React.FC | null;
+  globalBottomSheetRef: RefObject<BottomSheetMethods | null> | null;
+  closeGlobalBottomSheetCallback: (() => void) | null;
+  globalBottomSheetSnapPoints: any[];
 };
 
 type GlobalActions = {
+  setNavigator: (nav: any) => void;
+
   // modal actions
   openModal: (Component: React.FC, onClose?: () => void) => void;
   closeModal: () => void;
 
   // bottom sheet actions
-  setBottomSheetRef: (ref: RefObject<BottomSheetMethods | null>) => void;
-  setBottomSheetComponent: (Component: React.FC) => void;
+  setGlobalBottomSheetRef: (ref: RefObject<BottomSheetMethods | null>) => void;
+  setGlobalBottomSheetComponent: (Component: React.FC) => void;
   openBottomSheet: () => void;
   closeBottomSheet: () => void;
+  setGlobalBottomSheetSnapPoints: (snapPoints: any) => void;
 
   // reset store
   resetGlobalStore: () => void;
@@ -41,6 +49,7 @@ type GlobalActions = {
 const globalInitialState: GlobalStore = {
   firsTime: true,
   loggedIn: false,
+  navigator: null,
 
   // Modal
   isModalOpen: false,
@@ -48,13 +57,19 @@ const globalInitialState: GlobalStore = {
   closeModalCallback: null,
 
   // bottom sheet
-  BottomSheetComponent: null,
-  bottomSheetRef: null,
-  closeBottomSheetCallback: null,
+  GlobalBottomSheetComponent: RideDetails,
+  globalBottomSheetRef: null,
+  closeGlobalBottomSheetCallback: null,
+  globalBottomSheetSnapPoints: [200, 400],
 };
 
 const globalStore = create<GlobalStore & GlobalActions>(set => ({
   ...globalInitialState,
+
+  setNavigator: nav =>
+    set({
+      navigator: nav,
+    }),
 
   // modal actions
   openModal: (Component, onClose) =>
@@ -77,33 +92,38 @@ const globalStore = create<GlobalStore & GlobalActions>(set => ({
     }),
 
   // bottom sheet actions
-  setBottomSheetComponent: Component =>
+  setGlobalBottomSheetComponent: Component =>
     set({
-      BottomSheetComponent: Component,
+      GlobalBottomSheetComponent: Component,
     }),
 
   openBottomSheet: () =>
     set(state => {
-      if (state.bottomSheetRef?.current) {
-        state.bottomSheetRef.current.expand();
+      if (state.globalBottomSheetRef?.current) {
+        state.globalBottomSheetRef.current.expand();
       }
       return {};
     }),
 
-  setBottomSheetRef: ref =>
+  setGlobalBottomSheetRef: ref =>
     set({
-      bottomSheetRef: ref,
+      globalBottomSheetRef: ref,
     }),
 
   closeBottomSheet: () =>
     set(state => {
-      if (state.closeBottomSheetCallback) {
-        state.closeBottomSheetCallback();
+      if (state.closeGlobalBottomSheetCallback) {
+        state.closeGlobalBottomSheetCallback();
       }
-      if (state.bottomSheetRef && state.bottomSheetRef?.current) {
-        state.bottomSheetRef.current.close();
+      if (state.globalBottomSheetRef && state.globalBottomSheetRef?.current) {
+        state.globalBottomSheetRef.current.close();
       }
       return {};
+    }),
+
+  setGlobalBottomSheetSnapPoints: snapPoints =>
+    set({
+      globalBottomSheetSnapPoints: snapPoints,
     }),
 
   resetGlobalStore: () => set(globalInitialState),

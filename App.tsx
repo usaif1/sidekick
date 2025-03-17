@@ -4,9 +4,6 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {StatusBar} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
-// components
-import {ModalProvider} from '@/components/Modal/ModalProvider';
-
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
 import SplashNavigation from '@/modules/splash/navigation/splash.navigation';
@@ -15,7 +12,6 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 // misc
 import './ReactotronConfig';
 import {useAuthStore, useGlobalStore} from './globalStore';
-import GlobalModal from './components/GlobalModal';
 
 function App(): React.JSX.Element {
   const {firsTime, loggedIn} = useGlobalStore();
@@ -26,27 +22,54 @@ function App(): React.JSX.Element {
     authBottomSheetSnapPoints,
   } = useAuthStore();
 
+  const {
+    setGlobalBottomSheetRef,
+    GlobalBottomSheetComponent,
+    globalBottomSheetSnapPoints,
+  } = useGlobalStore();
+
   const authBottomSheetRef = useRef<BottomSheet>(null);
+  const globalBottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
     setAuthBottomSheetRef(authBottomSheetRef);
+    setGlobalBottomSheetRef(globalBottomSheetRef);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <GestureHandlerRootView style={{flex: 1}}>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={'transparent'}
+          translucent
+        />
         {firsTime ? (
           <SplashNavigation />
         ) : loggedIn ? (
-          <ModalProvider>
+          <>
             <ProtectedNavigation />
-          </ModalProvider>
+
+            <BottomSheet
+              key="protectedBottomSheet"
+              ref={globalBottomSheetRef}
+              handleComponent={() => null}
+              backgroundStyle={{backgroundColor: 'transparent'}}
+              enablePanDownToClose={false}
+              enableDynamicSizing={false}
+              index={-1}
+              snapPoints={globalBottomSheetSnapPoints}>
+              <BottomSheetView>
+                {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
+              </BottomSheetView>
+            </BottomSheet>
+          </>
         ) : (
           <>
             <AuthNavigation />
             <BottomSheet
+              key="authBottomSheet"
               ref={authBottomSheetRef}
               enablePanDownToClose={false}
               enableOverDrag={false}
@@ -55,7 +78,7 @@ function App(): React.JSX.Element {
               style={{flex: 1}}
               keyboardBehavior="interactive"
               enableContentPanningGesture={false}
-              android_keyboardInputMode="adjustPan"
+              android_keyboardInputMode="adjustResize"
               keyboardBlurBehavior="restore"
               index={1}
               snapPoints={authBottomSheetSnapPoints}>
@@ -65,7 +88,6 @@ function App(): React.JSX.Element {
             </BottomSheet>
           </>
         )}
-        <GlobalModal />
       </GestureHandlerRootView>
     </>
   );

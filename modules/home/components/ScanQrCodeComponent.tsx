@@ -1,22 +1,61 @@
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import H2 from "@/components/Typography/H2";
-import P2 from "@/components/Typography/P2";
-import Divider from "@/components/Divider";
-import { useThemeStore } from "@/globalStore";
-import LinearGradientSVG from "../assets/linearGradient.svg";
+import React from 'react';
+import {View, Text, TextInput} from 'react-native';
+import H2 from '@/components/Typography/H2';
+import P2 from '@/components/Typography/P2';
+import Divider from '@/components/Divider';
+import {useGlobalStore, useThemeStore} from '@/globalStore';
+import LinearGradientSVG from '../assets/linearGradient.svg';
+import {
+  Camera,
+  CameraDevice,
+  useCameraDevice,
+  useCodeScanner,
+} from 'react-native-vision-camera';
+import {ButtonTextSm} from '@/components';
+import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
-const { colors } = useThemeStore.getState().theme;
+const {colors} = useThemeStore.getState().theme;
 
 const ScanQrCodeComponent = () => {
+  const {navigator, closeModal} = useGlobalStore();
+
+  const device = useCameraDevice('back');
+
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: codes => {
+      console.log(`Scanned ${codes.length} codes!`);
+    },
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.secondaryContainer}>
-        <H2 customStyles={styles.centerText}>Scan QR Code</H2>
-        <Divider height={5} />
-        <P2 textColor="textSecondary" customStyles={styles.centerText}>
-          Please scan the QR Code in the middle of the Scooter’s handle
+        <H2>Scan QR Code</H2>
+        <Divider height={6} />
+        <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
+          Please scan the QR Code in the
         </P2>
+        <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
+          middle of the Scooter’s handle
+        </P2>
+        <Divider height={12} />
+        {device ? (
+          <View
+            style={{
+              height: 200,
+              width: 200,
+              borderRadius: 20,
+              borderWidth: 2,
+              borderColor: colors.highlight,
+            }}>
+            <Camera
+              device={device as CameraDevice}
+              isActive
+              codeScanner={codeScanner}
+            />
+          </View>
+        ) : null}
       </View>
 
       <Divider height={12} />
@@ -27,35 +66,49 @@ const ScanQrCodeComponent = () => {
       </View>
       <Divider height={12} />
 
-      <View style={styles.secondaryContainer}>
-        <H2 customStyles={styles.centerText}>Enter Scooter Number</H2>
+      <View>
+        <H2 customStyles={{textAlign: 'center'}}>Enter Scooter Number</H2>
         <Divider height={5} />
-        <P2 textColor="textSecondary" customStyles={styles.centerText}>
+        <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
           Please enter the number you see
         </P2>
+        <Divider height={14} />
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="XXXX"
+            placeholderTextColor={colors.textSecondary}
+            style={styles.input}
+          />
+          <View style={{width: 100}}>
+            <ButtonTextSm
+              customStyles={{height: '100%'}}
+              onPress={() => {
+                closeModal();
+                navigator.navigate('rideNavigator');
+              }}
+              variant="highlight">
+              Continue
+            </ButtonTextSm>
+          </View>
+        </View>
       </View>
-      <Divider height={12} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
+    paddingTop: '19@ms',
+    alignItems: 'center',
   },
   secondaryContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 40,
-  },
-  centerText: {
-    textAlign: "center",
+    paddingTop: '19@ms',
+    alignItems: 'center',
   },
   separatorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   gradientLeft: {
     width: 47,
@@ -66,12 +119,33 @@ const styles = StyleSheet.create({
     width: 47,
     height: 4,
     marginLeft: 10,
-    transform: [{ rotate: "180deg" }],
+    transform: [{rotate: '180deg'}],
   },
   orText: {
-    fontWeight: "600",
+    fontWeight: '600',
     fontSize: 14,
     color: colors.textPrimary,
+  },
+
+  input: {
+    textAlign: 'center',
+    height: '100%',
+    fontSize: moderateScale(13.5),
+    fontFamily: 'PlusJakartaSans-Medium',
+    fontWeight: '600',
+    flex: 1,
+    borderWidth: 1,
+    borderColor: colors.textSecondary,
+    backgroundColor: colors.lightGray,
+    borderRadius: 12,
+  },
+
+  inputContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    columnGap: 8,
+    alignItems: 'center',
+    maxHeight: 40,
   },
 });
 

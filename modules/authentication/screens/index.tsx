@@ -1,5 +1,5 @@
 // dependencies
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ImageBackground, Dimensions, View, Pressable} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 
@@ -15,7 +15,7 @@ import {authUtils} from '../utils';
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const AuthScreen: React.FC = () => {
-  const {currentView} = useAuthStore();
+  const {currentView, openAuthBottomSheet} = useAuthStore();
   const {setBottomSheetView} = authUtils;
 
   const onPressBackButton = () => {
@@ -39,6 +39,11 @@ const AuthScreen: React.FC = () => {
         return;
     }
   };
+
+  useEffect(() => {
+    openAuthBottomSheet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View style={{flex: 1}}>

@@ -1,6 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import {View, StyleSheet} from 'react-native';
 import {useThemeStore} from '@/globalStore';
 import ButtonText from '@/components/ButtonText';
 import CommonModal from '@/components/Modal/CommonModal';
@@ -45,7 +44,7 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({
   onContinueToRide,
   onCheckWallet,
 }) => {
-  const {colors, typography} = useThemeStore(state => state.theme);
+  const {colors} = useThemeStore(state => state.theme);
 
   // Handle continue to ride
   const handleContinueToRide = () => {

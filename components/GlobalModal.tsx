@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import globalStore from '@/globalStore/globalStore';
 import Close from '@/assets/cross.svg';
 
@@ -12,6 +12,10 @@ const GlobalModal: React.FC = () => {
   return (
     <Modal
       isVisible={isModalOpen}
+      coverScreen={true}
+      statusBarTranslucent
+      deviceHeight={Dimensions.get('screen').height}
+      style={{zIndex: 9999, flex: 1}}
       backdropTransitionOutTiming={0}
       backdropTransitionInTiming={1000}
       backdropOpacity={0.5}
@@ -40,6 +44,8 @@ const styles = StyleSheet.create({
     borderColor: '#86A0CA',
     borderStyle: 'solid',
     position: 'relative',
+    zIndex: 99,
+    elevation: 24, // Android
   },
   closeButton: {
     position: 'absolute',
