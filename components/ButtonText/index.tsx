@@ -18,22 +18,18 @@ type ContainerStyles = {
   highlight: ViewStyle;
 };
 
-const {typography, colors, spacing} = useThemeStore.getState().theme;
+const {typography, colors} = useThemeStore.getState().theme;
 
 const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
   const containerStyles: ContainerStyles = {
     primary: {
       backgroundColor: colors.primary,
-      padding: spacing.md,
     },
     secondary: {
       backgroundColor: colors.lightGray,
-      padding: spacing.md,
     },
     highlight: {
       backgroundColor: colors.highlight,
-      padding: spacing.sm,
-      borderRadius: 14,
     },
   };
 
@@ -77,6 +73,6 @@ const styles = ScaledSheet.create({
     color: colors.textPrimary,
   },
   highlight: {
-    color: colors.highlight,
+    color: colors.white,
   },
 });

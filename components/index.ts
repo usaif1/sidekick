@@ -1,7 +1,10 @@
 export {default as LabelPrimary} from './LabelPrimary';
 export {default as Divider} from './Divider';
-export {default as CommonTextInput} from './CommonTextInput';
 export {default as Switch} from './Switch';
+
+// form elements
+export {default as CommonTextInput} from './CommonTextInput';
+export {default as BottomSheetStyledInput} from './BottomSheetStyledInput';
 
 // Typography
 export {default as H1} from './Typography/H1';
