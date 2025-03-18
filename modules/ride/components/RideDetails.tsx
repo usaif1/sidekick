@@ -17,10 +17,11 @@ const {
 const RideDetails: React.FC = () => {
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
-  const {openModal} = useGlobalStore();
+  const {setModalComponent, openModal} = useGlobalStore();
 
   const endRide = () => {
-    openModal(EndRide);
+    setModalComponent(EndRide);
+    openModal();
   };
 
   return (

@@ -1,7 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 // components
 import WalletCard from '../components/WalletCard';
@@ -54,8 +53,7 @@ const WalletScreen: React.FC = () => {
   );
 
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: colors.lightGray}]}>
+    <View style={[styles.container, {backgroundColor: colors.white}]}>
       <View style={styles.content}>
         {/* Wallet balance card */}
         <WalletCard
@@ -85,7 +83,7 @@ const WalletScreen: React.FC = () => {
 
       {/* Add funds button */}
       <AddFundsButton onPress={handleAddFunds} testID="add-funds-button" />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -94,10 +92,10 @@ const styles = ScaledSheet.create({
     flex: 1,
     paddingHorizontal: '23@ms',
     justifyContent: 'center',
+    paddingTop: '27.6@ms',
   },
   content: {
     flex: 1,
-    paddingTop: 16,
   },
   transactionsContainer: {
     flex: 1,

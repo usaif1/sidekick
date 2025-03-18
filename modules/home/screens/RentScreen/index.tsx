@@ -7,7 +7,9 @@ import {useCameraPermission} from 'react-native-vision-camera';
 
 // store
 import useLocationStore from '../../store/locationStore';
-import globalStore from '@/globalStore/globalStore';
+import {useGlobalStore} from '@/globalStore';
+
+// utils
 import {scooterHubs} from '../../data/scooterHubs';
 import {mapStyles} from '../../utilis/mapStyle';
 import NearestHubMarker from '../../components/NearestHubMarker';
@@ -18,7 +20,6 @@ import {updatePolylineAndFitMap} from '../../utilis/updatePolylineAndFitMap';
 import UserLocationMarker from '../../components/UserLocationMarker';
 import ActionButtons from './components';
 import {useNavigation} from '@react-navigation/native';
-import {useGlobalStore} from '@/globalStore';
 import GlobalModal from '@/components/GlobalModal';
 
 const RentScreen: React.FC = () => {
@@ -32,15 +33,16 @@ const RentScreen: React.FC = () => {
   const longitude = useLocationStore(state => state.longitude);
   const setLocation = useLocationStore(state => state.setLocation);
 
-  const openModal = globalStore.use.openModal();
+  const {openModal, setModalComponent} = useGlobalStore();
   const [selectedHub, setSelectedHub] = useState<HubLocation>(null);
   const mapRef = useRef<MapView>(null);
   const [polylineCoords, setPolylineCoords] = useState<PolylineCoordinates>([]);
   const [heading, setHeading] = useState<number>(0);
 
   const handleOpenModal = () => {
-    // showModal(<ScanQrCodeComponent />);
-    openModal(ScanQrCodeComponent);
+    console.log('asd');
+    setModalComponent(ScanQrCodeComponent);
+    openModal();
   };
 
   useEffect(() => {
@@ -179,6 +181,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: 'center',
+    zIndex: 9999,
   },
 });
 

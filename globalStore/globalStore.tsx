@@ -10,6 +10,7 @@ import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 
 // components
 import {RideDetails} from '@/modules/ride/components';
+import {ModalCloseButton} from '@/components';
 
 type GlobalStore = {
   firsTime: boolean;
@@ -19,6 +20,7 @@ type GlobalStore = {
   // Modal
   isModalOpen: boolean;
   ModalComponent: React.FC | null;
+  ModalCloseButton: React.FC | null;
   closeModalCallback: (() => void) | null;
 
   // bottom sheet
@@ -32,7 +34,10 @@ type GlobalActions = {
   setNavigator: (nav: any) => void;
 
   // modal actions
-  openModal: (Component: React.FC, onClose?: () => void) => void;
+  setModalComponent: (component: React.FC | null) => void;
+  setModalCloseButton: (component: React.FC | null) => void;
+  setCloseModalCallBack: (callback: any) => void;
+  openModal: () => void;
   closeModal: () => void;
 
   // bottom sheet actions
@@ -54,6 +59,7 @@ const globalInitialState: GlobalStore = {
   // Modal
   isModalOpen: false,
   ModalComponent: null,
+  ModalCloseButton: ModalCloseButton,
   closeModalCallback: null,
 
   // bottom sheet
@@ -72,11 +78,24 @@ const globalStore = create<GlobalStore & GlobalActions>(set => ({
     }),
 
   // modal actions
-  openModal: (Component, onClose) =>
+  setModalComponent: (component: React.FC | null) =>
+    set({
+      ModalComponent: component,
+    }),
+
+  setModalCloseButton: (component: React.FC | null) =>
+    set({
+      ModalCloseButton: component,
+    }),
+
+  setCloseModalCallBack: callback =>
+    set({
+      closeModalCallback: callback,
+    }),
+
+  openModal: () =>
     set({
       isModalOpen: true,
-      ModalComponent: Component,
-      closeModalCallback: onClose || null,
     }),
 
   closeModal: () =>
@@ -88,6 +107,7 @@ const globalStore = create<GlobalStore & GlobalActions>(set => ({
         isModalOpen: false,
         ModalComponent: null,
         closeModalCallback: null,
+        ModalCloseButton: ModalCloseButton,
       };
     }),
 

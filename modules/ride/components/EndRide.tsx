@@ -82,12 +82,10 @@ const NearestHubCard: React.FC<NearestHubCardProps> = ({
 const EndRide: React.FC = () => {
   const [selectedHub, setSelectedHub] = useState<string>('car_parking');
 
-  const {openModal, closeModal} = useGlobalStore();
-
-  const {} = useGlobalStore();
+  const {closeModal, setModalComponent} = useGlobalStore();
 
   const onEndRide = () => {
-    openModal(ReachedHub);
+    setModalComponent(ReachedHub);
   };
 
   return (

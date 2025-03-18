@@ -1,7 +1,10 @@
 export {default as LabelPrimary} from './LabelPrimary';
 export {default as Divider} from './Divider';
 export {default as Switch} from './Switch';
+
+// modal
 export {default as GlobalModal} from './GlobalModal';
+export {default as ModalCloseButton} from './ModalCloseButton';
 
 // form elements
 export {default as CommonTextInput} from './CommonTextInput';
