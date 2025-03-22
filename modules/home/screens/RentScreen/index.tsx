@@ -135,14 +135,14 @@ const RentScreen: React.FC = () => {
           />
         ))}
 
-        {selectedHub && latitude && longitude ? (
+        {selectedHub && selectedHub.latitude && selectedHub.longitude && latitude && longitude &&  (
           <DirectionsComponent
             origin={{latitude, longitude}}
             destination={selectedHub}
             mapRef={mapRef as React.RefObject<MapView>}
             onHeadingChange={setHeading}
           />
-        ) : null}
+        )}
       </MapView>
 
       {/* rent action buttons */}
