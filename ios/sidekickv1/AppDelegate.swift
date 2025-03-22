@@ -10,7 +10,7 @@ class AppDelegate: RCTAppDelegate {
   override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     self.moduleName = "sidekick"
     self.dependencyProvider = RCTAppDependencyProvider()
-    GMSServices.provideAPIKey("AIzaSyCfIkG3UgZi8Yqs6bJX1inU7YX40ugzNQg")
+    GMSServices.provideAPIKey("AIzaSyA4_-URnAPZCngJLIbQ9mhMuy-Lq1-iz-Y")
     FirebaseApp.configure()
     
     
