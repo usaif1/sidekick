@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import {View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 // components
 import WalletCard from '../components/WalletCard';
@@ -12,7 +12,7 @@ import AddFundsButton from '../components/AddFundsButton';
 import {mockWalletData} from '../constants/mockData';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useGlobalStore, useThemeStore} from '@/globalStore';
 import {ScaledSheet} from 'react-native-size-matters';
 import {Divider, H3} from '@/components';
 
@@ -20,6 +20,8 @@ const {colors} = useThemeStore.getState().theme;
 
 const WalletScreen: React.FC = () => {
   const navigation = useNavigation();
+
+  const {closeBottomSheet} = useGlobalStore();
 
   // Use mock data
   const [walletData, setWalletData] = useState(mockWalletData);
@@ -50,6 +52,13 @@ const WalletScreen: React.FC = () => {
       </>
     ),
     [],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      closeBottomSheet();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
   );
 
   return (

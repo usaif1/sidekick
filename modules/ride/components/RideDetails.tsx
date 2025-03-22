@@ -7,7 +7,15 @@ import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {useGlobalStore, useThemeStore} from '@/globalStore';
 
 // components
-import {ButtonText, Divider, H1, H2, H3, P1} from '@/components';
+import {
+  ButtonText,
+  ButtonTextBottomSheet,
+  Divider,
+  H1,
+  H2,
+  H3,
+  P1,
+} from '@/components';
 import {EndRide} from '../components';
 
 const {
@@ -59,30 +67,30 @@ const RideDetails: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-            <ButtonText
-              variant="error"
+            <ButtonTextBottomSheet
+              variant="alert"
               onPress={endRide}
-              customStyle={{width: '48%'}}>
+              customStyle={{width: 170}}>
               End Ride
-            </ButtonText>
+            </ButtonTextBottomSheet>
             {isPaused ? (
-              <ButtonText
+              <ButtonTextBottomSheet
                 variant="primary"
                 onPress={() => {
                   setIsPaused(false);
                 }}
-                customStyle={{width: '48%'}}>
+                customStyle={{width: 170}}>
                 Resume Ride
-              </ButtonText>
+              </ButtonTextBottomSheet>
             ) : (
-              <ButtonText
+              <ButtonTextBottomSheet
                 variant="primary"
                 onPress={() => {
                   setIsPaused(true);
                 }}
-                customStyle={{width: '48%'}}>
+                customStyle={{width: 170}}>
                 Pause Ride
-              </ButtonText>
+              </ButtonTextBottomSheet>
             )}
           </View>
         </View>

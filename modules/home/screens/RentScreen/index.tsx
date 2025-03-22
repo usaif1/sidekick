@@ -1,5 +1,5 @@
 // dependencies
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import MapView, {Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -19,13 +19,13 @@ import {HubLocation, PolylineCoordinates} from '../../types/mapTypes';
 import {updatePolylineAndFitMap} from '../../utilis/updatePolylineAndFitMap';
 import UserLocationMarker from '../../components/UserLocationMarker';
 import ActionButtons from './components';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
 
 const RentScreen: React.FC = () => {
   const navigation = useNavigation();
 
-  const {setNavigator} = useGlobalStore();
+  const {setNavigator, closeBottomSheet} = useGlobalStore();
 
   const {hasPermission, requestPermission} = useCameraPermission();
 
@@ -103,6 +103,13 @@ const RentScreen: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      closeBottomSheet();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
