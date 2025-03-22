@@ -118,7 +118,10 @@ const SplashScreenCarousel: React.FC = () => {
             paddingHorizontal: 0,
             marginTop: 10,
           }}>
-          <Pressable onPress={handleCompleteOnboarding}>
+          <Pressable
+            onPress={() => {
+              navigation.replace('screen3');
+            }}>
             <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
               Skip
             </Text>
