@@ -1,7 +1,7 @@
 // dependencies
 import {View, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // components
@@ -20,7 +20,7 @@ const {colors} = useThemeStore.getState().theme;
 const UserDetails: React.FC = () => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const {openModal, setModalComponent} = useGlobalStore();
+  const {openModal, setModalComponent, closeBottomSheet} = useGlobalStore();
 
   // User data
   const userData = {
@@ -63,6 +63,13 @@ const UserDetails: React.FC = () => {
       testID: 'help-button',
     },
   ];
+
+  useFocusEffect(
+    useCallback(() => {
+      closeBottomSheet();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>

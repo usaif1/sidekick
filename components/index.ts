@@ -26,3 +26,4 @@ export {default as BackArrowButton} from './BackArrowButton';
 export {default as ButtonText} from './ButtonText';
 export {default as ButtonTextSm} from './ButtonTextSm';
 export {default as ButtonWithIcon} from './ButtonWithIcon';
+export {default as ButtonTextBottomSheet} from './ButtonTextBottomSheet';

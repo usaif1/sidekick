@@ -4,7 +4,7 @@ import {useThemeStore} from '@/globalStore';
 import ButtonText from '@/components/ButtonText';
 import CommonModal from '@/components/Modal/CommonModal';
 import {Divider, H2, P2} from '@/components';
-import TickMark from '@/assets/tick-mark.svg';
+import TickMark from '@/assets/tick-mark-curly.svg';
 
 interface PaymentSuccessModalProps {
   /**
