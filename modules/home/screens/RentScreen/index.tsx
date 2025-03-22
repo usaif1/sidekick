@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import MapView, {Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import {useCameraPermission} from 'react-native-vision-camera';
 
 // store
 import useLocationStore from '../../store/locationStore';
@@ -27,8 +26,6 @@ const RentScreen: React.FC = () => {
 
   const {setNavigator} = useGlobalStore();
 
-  const {hasPermission, requestPermission} = useCameraPermission();
-
   const latitude = useLocationStore(state => state.latitude);
   const longitude = useLocationStore(state => state.longitude);
   const setLocation = useLocationStore(state => state.setLocation);
@@ -40,7 +37,6 @@ const RentScreen: React.FC = () => {
   const [heading, setHeading] = useState<number>(0);
 
   const handleOpenModal = () => {
-    console.log('asd');
     setModalComponent(ScanQrCodeComponent);
     openModal();
   };
@@ -95,14 +91,6 @@ const RentScreen: React.FC = () => {
     setPolylineCoords(polylineCoords);
     setHeading(heading);
   }, [selectedHub, latitude, longitude]);
-
-  useEffect(() => {
-    console.log('hasPermission', hasPermission);
-    if (!hasPermission) {
-      requestPermission();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <View style={styles.container}>

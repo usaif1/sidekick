@@ -71,8 +71,12 @@ const SplashScreenCarousel: React.FC = () => {
 
   const handleCompleteOnboarding = () => {
     onboardingStorage.set('onboarding_complete', 'true');
-    // @ts-ignore
-    navigation.navigate('screen3'); // Replace with your main screen name
+    const timer = setTimeout(() => {
+      // @ts-ignore
+      navigation.replace('screen3');
+    }, 1000);
+
+    return () => clearTimeout(timer);
   };
 
   return (
@@ -106,41 +110,33 @@ const SplashScreenCarousel: React.FC = () => {
 
       {/* Navigation Controls */}
       <View style={styles.buttonContainer}>
-        {activeIndex === 0 ? (
-          <ButtonText
-            onPress={() => carouselRef.current?.snapToNext()}
-            variant="secondary">
-            Got It
-          </ButtonText>
-        ) : (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 0,
-              marginTop: 10,
-            }}>
-            <Pressable onPress={() => carouselRef.current?.snapToPrev()}>
-              <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
-                Back
-              </Text>
-            </Pressable>
-            <View style={{width: 160}}>
-              <ButtonText
-                onPress={() => {
-                  if (activeIndex === data.length - 1) {
-                    handleCompleteOnboarding();
-                  } else {
-                    carouselRef.current?.snapToNext();
-                  }
-                }}
-                variant="secondary">
-                Got it
-              </ButtonText>
-            </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 0,
+            marginTop: 10,
+          }}>
+          <Pressable onPress={handleCompleteOnboarding}>
+            <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
+              Skip
+            </Text>
+          </Pressable>
+          <View style={{width: 160}}>
+            <ButtonText
+              onPress={() => {
+                if (activeIndex === data.length - 1) {
+                  handleCompleteOnboarding();
+                } else {
+                  carouselRef.current?.snapToNext();
+                }
+              }}
+              variant="secondary">
+              Got it
+            </ButtonText>
           </View>
-        )}
+        </View>
       </View>
     </View>
   );
