@@ -1,8 +1,5 @@
 // dependencies
-import auth, {
-  FirebaseAuthTypes,
-  signInWithPhoneNumber,
-} from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 
 export const sendOTP = async (phoneNumber: string, forceResend: boolean) => {
   console.log('sent OTP fired');

@@ -1,5 +1,5 @@
 // dependencies
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import MapView, {Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -18,13 +18,13 @@ import {HubLocation, PolylineCoordinates} from '../../types/mapTypes';
 import {updatePolylineAndFitMap} from '../../utilis/updatePolylineAndFitMap';
 import UserLocationMarker from '../../components/UserLocationMarker';
 import ActionButtons from './components';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
 
 const RentScreen: React.FC = () => {
   const navigation = useNavigation();
 
-  const {setNavigator, closeBottomSheet} = useGlobalStore();
+  const {setNavigator} = useGlobalStore();
 
   const latitude = useLocationStore(state => state.latitude);
   const longitude = useLocationStore(state => state.longitude);
@@ -91,13 +91,6 @@ const RentScreen: React.FC = () => {
     setPolylineCoords(polylineCoords);
     setHeading(heading);
   }, [selectedHub, latitude, longitude]);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     closeBottomSheet();
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, []),
-  // );
 
   return (
     <View style={styles.container}>
