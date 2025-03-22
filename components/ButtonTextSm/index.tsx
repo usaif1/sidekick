@@ -1,6 +1,6 @@
 // src/components/PrimaryButton.tsx
 import React, {ReactNode} from 'react';
-import {Text, Pressable} from 'react-native';
+import {Text, Pressable, ViewStyle} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
@@ -10,15 +10,21 @@ type Props = {
   children: ReactNode;
   onPress: () => void;
   variant: 'primary' | 'secondary' | 'highlight';
+  customStyles?: ViewStyle;
 };
 
 const {typography, colors} = useThemeStore.getState().theme;
 
-const ButtonTextSm: React.FC<Props> = ({children, onPress, variant}) => {
+const ButtonTextSm: React.FC<Props> = ({
+  children,
+  onPress,
+  variant,
+  customStyles,
+}) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.pressableContainer, styles[variant]]}>
+      style={[styles.pressableContainer, styles[variant], {...customStyles}]}>
       <ChildText variant={variant}>{children}</ChildText>
     </Pressable>
   );

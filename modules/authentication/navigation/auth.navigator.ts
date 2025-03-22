@@ -4,24 +4,20 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import type {StaticParamList} from '@react-navigation/native';
 
 // screens
-import {Login, OTP, Signup} from '../screens';
+import AuthScreen from '../screens';
 
 export type AuthStackNavigatorParams = {
-  login: undefined;
-  signup: undefined;
-  otp: undefined;
+  welcome: undefined;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
-  initialRouteName: 'login',
+  initialRouteName: 'welcome',
   screenOptions: {
     headerShown: false,
     presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
   },
   screens: {
-    login: Login,
-    signup: Signup,
-    otp: OTP,
+    welcome: AuthScreen,
   },
 });
 

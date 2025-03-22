@@ -23,7 +23,12 @@ const WalletNavigator = createNativeStackNavigator({
     WalletScreen: {
       screen: WalletScreen,
       options: {
-        title: 'Wallet',
+        title: '',
+        headerLeft: () => <BackArrowButton title="Wallet" />,
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: '#FFFFFF',
+        },
       },
     },
     AddFundsScreen: {

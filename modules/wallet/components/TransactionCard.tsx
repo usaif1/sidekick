@@ -21,7 +21,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
   transaction,
   testID = `transaction-card-${transaction.id}`,
 }) => {
-  const {colors, spacing, typography} = useThemeStore(state => state.theme);
+  const {colors, typography} = useThemeStore(state => state.theme);
 
   const isCredit = transaction.type === 'credit';
 

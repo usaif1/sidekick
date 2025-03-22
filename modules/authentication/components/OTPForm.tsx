@@ -1,33 +1,29 @@
-import {CommonTextInput, Divider} from '@/components';
-import ButtonText from '@/components/ButtonText';
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+// dependencies
+import {Text, View} from 'react-native';
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  Dimensions,
-} from 'react-native';
+import {BottomSheetView} from '@gorhom/bottom-sheet';
+import {ScaledSheet} from 'react-native-size-matters';
 
-const {width, height} = Dimensions.get('window'); // Get screen dimensions
+// components
+import {BottomSheetStyledInput, ButtonText, Divider} from '@/components';
 
-const Login = () => {
+// store
+import {useGlobalStore, useThemeStore} from '@/globalStore';
+
+const OTPForm: React.FC = () => {
   const {theme} = useThemeStore();
 
   return (
-    <ImageBackground
-      source={require('../assets/Map.png')} // Path to your background image
-      style={[styles.background, {width, height}]} // Set width and height dynamically
-    >
+    <BottomSheetView>
       <View style={styles.contentContainer}>
         <View style={{width: '100%'}}>
           <Text style={styles.label}>Please Enter the OTP Received</Text>
           <Divider height={10} />
-          <CommonTextInput
+          <BottomSheetStyledInput
             placeholder="XXXX"
             customStyle={{
               textAlign: 'center',
+              paddingLeft: 0,
             }}
           />
         </View>
@@ -66,24 +62,23 @@ const Login = () => {
           </ButtonText>
         </View>
       </View>
-    </ImageBackground>
+    </BottomSheetView>
   );
 };
 
-const styles = StyleSheet.create({
+export default OTPForm;
+
+const styles = ScaledSheet.create({
   background: {
     flex: 1,
   },
   contentContainer: {
-    position: 'absolute',
-    bottom: 0,
+    rowGap: 16,
     width: '100%',
     backgroundColor: 'white', // Optional: Adds a dark overlay for text readability
     borderRadius: 20,
-    alignItems: 'center',
     paddingTop: 32,
     paddingHorizontal: 24,
-    height: Dimensions.get('window').height * 0.35,
   },
   title: {
     fontSize: 30,
@@ -99,5 +94,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export default Login;

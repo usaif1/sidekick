@@ -1,7 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import {View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 // components
 import WalletCard from '../components/WalletCard';
@@ -13,7 +12,7 @@ import AddFundsButton from '../components/AddFundsButton';
 import {mockWalletData} from '../constants/mockData';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useGlobalStore, useThemeStore} from '@/globalStore';
 import {ScaledSheet} from 'react-native-size-matters';
 import {Divider, H3} from '@/components';
 
@@ -21,6 +20,8 @@ const {colors} = useThemeStore.getState().theme;
 
 const WalletScreen: React.FC = () => {
   const navigation = useNavigation();
+
+  const {closeBottomSheet} = useGlobalStore();
 
   // Use mock data
   const [walletData, setWalletData] = useState(mockWalletData);
@@ -53,9 +54,15 @@ const WalletScreen: React.FC = () => {
     [],
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      closeBottomSheet();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: colors.lightGray}]}>
+    <View style={[styles.container, {backgroundColor: colors.white}]}>
       <View style={styles.content}>
         {/* Wallet balance card */}
         <WalletCard
@@ -85,7 +92,7 @@ const WalletScreen: React.FC = () => {
 
       {/* Add funds button */}
       <AddFundsButton onPress={handleAddFunds} testID="add-funds-button" />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -94,10 +101,10 @@ const styles = ScaledSheet.create({
     flex: 1,
     paddingHorizontal: '23@ms',
     justifyContent: 'center',
+    paddingTop: '27.6@ms',
   },
   content: {
     flex: 1,
-    paddingTop: 16,
   },
   transactionsContainer: {
     flex: 1,

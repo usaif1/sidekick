@@ -11,7 +11,7 @@ export const lightColors: ColorPalette = {
   textPrimary: '#2C2E49', //black
   textSecondary: '#86A0CA', //dark gray
   blueFade: '#FFFFFF',
-  redFade: '#FFFFFF',
+  redFade: '#FCF0F0',
   white: '#FFFFFF',
 
   //app base color

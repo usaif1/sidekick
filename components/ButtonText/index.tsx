@@ -9,38 +9,48 @@ import {useThemeStore} from '@/globalStore';
 type Props = {
   children: ReactNode;
   onPress: () => void;
-  variant: 'primary' | 'secondary' | 'highlight';
+  variant: 'primary' | 'secondary' | 'highlight' | 'error';
+  customStyle?: ViewStyle;
 };
 
 type ContainerStyles = {
   primary: ViewStyle;
   secondary: ViewStyle;
   highlight: ViewStyle;
+  error: ViewStyle;
 };
 
-const {typography, colors, spacing} = useThemeStore.getState().theme;
+const {typography, colors} = useThemeStore.getState().theme;
 
-const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
+const ButtonText: React.FC<Props> = ({
+  children,
+  onPress,
+  variant,
+  customStyle,
+}) => {
   const containerStyles: ContainerStyles = {
     primary: {
       backgroundColor: colors.primary,
-      padding: spacing.md,
     },
     secondary: {
       backgroundColor: colors.lightGray,
-      padding: spacing.md,
     },
     highlight: {
       backgroundColor: colors.highlight,
-      padding: spacing.sm,
-      borderRadius: 14,
+    },
+    error: {
+      backgroundColor: colors.alert,
     },
   };
 
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.pressableContainer, containerStyles[variant]]}>
+      style={[
+        styles.pressableContainer,
+        containerStyles[variant],
+        {...customStyle},
+      ]}>
       <ChildText variant={variant}>{children}</ChildText>
     </Pressable>
   );
@@ -48,7 +58,7 @@ const ButtonText: React.FC<Props> = ({children, onPress, variant}) => {
 
 type ChildTextProps = {
   children: ReactNode;
-  variant: 'primary' | 'secondary' | 'highlight';
+  variant: 'primary' | 'secondary' | 'highlight' | 'error';
 };
 
 const ChildText: React.FC<ChildTextProps> = ({children, variant}) => {
@@ -77,6 +87,9 @@ const styles = ScaledSheet.create({
     color: colors.textPrimary,
   },
   highlight: {
-    color: colors.highlight,
+    color: colors.white,
+  },
+  error: {
+    color: colors.error,
   },
 });

@@ -1,12 +1,8 @@
 // dependencies
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-// import {SafeAreaProvider} from 'react-native-safe-area-context';
-// import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
-
-// components
-import {ModalProvider} from '@/components/Modal/ModalProvider';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -15,41 +11,83 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 
 // misc
 import './ReactotronConfig';
-import {useGlobalStore} from './globalStore';
-import GlobalModal from './components/GlobalModal';
-import requestLocationPermission from './components/LocationPermission';
-import Geolocation from '@react-native-community/geolocation';
+import {useAuthStore, useGlobalStore} from './globalStore';
 
 function App(): React.JSX.Element {
   const {firsTime, loggedIn} = useGlobalStore();
 
+  const {
+    setAuthBottomSheetRef,
+    AuthBottomSheetComponent,
+    authBottomSheetSnapPoints,
+  } = useAuthStore();
+
+  const {
+    setGlobalBottomSheetRef,
+    GlobalBottomSheetComponent,
+    globalBottomSheetSnapPoints,
+  } = useGlobalStore();
+
+  const authBottomSheetRef = useRef<BottomSheet>(null);
+  const globalBottomSheetRef = useRef<BottomSheet>(null);
+
   useEffect(() => {
-    requestLocationPermission();
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('Location:', position);
-      },
-      error => {
-        console.log('Error getting location:', error);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
+    setAuthBottomSheetRef(authBottomSheetRef);
+    setGlobalBottomSheetRef(globalBottomSheetRef);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <GestureHandlerRootView style={{flex: 1}}>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={'transparent'}
+          translucent
+        />
         {firsTime ? (
           <SplashNavigation />
         ) : loggedIn ? (
-          <ModalProvider>
+          <>
             <ProtectedNavigation />
-          </ModalProvider>
+
+            <BottomSheet
+              key="protectedBottomSheet"
+              ref={globalBottomSheetRef}
+              handleComponent={() => null}
+              backgroundStyle={{backgroundColor: 'transparent'}}
+              enablePanDownToClose={false}
+              enableDynamicSizing={false}
+              index={-1}
+              snapPoints={globalBottomSheetSnapPoints}>
+              <BottomSheetView>
+                {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
+              </BottomSheetView>
+            </BottomSheet>
+          </>
         ) : (
-          <AuthNavigation />
+          <>
+            <AuthNavigation />
+            <BottomSheet
+              key="authBottomSheet"
+              ref={authBottomSheetRef}
+              enablePanDownToClose={false}
+              enableOverDrag={false}
+              enableHandlePanningGesture={false}
+              handleComponent={() => null}
+              style={{flex: 1}}
+              keyboardBehavior="interactive"
+              enableContentPanningGesture={false}
+              android_keyboardInputMode="adjustResize"
+              keyboardBlurBehavior="restore"
+              index={1}
+              snapPoints={authBottomSheetSnapPoints}>
+              <BottomSheetView>
+                {AuthBottomSheetComponent && <AuthBottomSheetComponent />}
+              </BottomSheetView>
+            </BottomSheet>
+          </>
         )}
-        <GlobalModal />
       </GestureHandlerRootView>
     </>
   );

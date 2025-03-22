@@ -1,30 +1,35 @@
-import React from "react";
-import Modal from "react-native-modal";
-import { View,  Button, StyleSheet, TouchableOpacity } from "react-native";
-import globalStore from "@/globalStore/globalStore";
-import Close from "@/assets/cross.svg"; 
+import React from 'react';
+import Modal from 'react-native-modal';
+import {View, StyleSheet, Dimensions} from 'react-native';
+
+// store
+import {useGlobalStore} from '@/globalStore';
 
 const GlobalModal: React.FC = () => {
-    const isModalOpen = globalStore.use.isModalOpen();
-    const ModalComponent = globalStore.use.ModalComponent();
-    const closeModal = globalStore.use.closeModal();
+  const {isModalOpen, ModalComponent, ModalCloseButton} = useGlobalStore();
 
   return (
     <Modal
       isVisible={isModalOpen}
-      backdropTransitionOutTiming={0}
-      backdropTransitionInTiming={1000}
+      coverScreen={true}
+      statusBarTranslucent
+      deviceHeight={Dimensions.get('screen').height}
+      style={{zIndex: 9999, flex: 1}}
       backdropOpacity={0.5}
+      useNativeDriver // Add this
+      hideModalContentWhileAnimating // Add this
+      avoidKeyboard // Helps with Android keyboard
+      renderToHardwareTextureAndroid
       animationIn="slideInUp"
+      animationInTiming={350}
+      animationOutTiming={100}
+      backdropTransitionOutTiming={100}
+      backdropTransitionInTiming={300}
       animationOut="slideOutDown"
-      onBackdropPress={closeModal}
-    >
+      onBackdropPress={() => null}>
       <View style={styles.modalContainer}>
-      <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-          <Close width={24} height={24} />
-        </TouchableOpacity>
-        {ModalComponent && <ModalComponent />} 
-        <Button title="Close" onPress={closeModal} />
+        {ModalCloseButton && <ModalCloseButton />}
+        {ModalComponent && <ModalComponent />}
       </View>
     </Modal>
   );
@@ -32,22 +37,18 @@ const GlobalModal: React.FC = () => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 20,
     borderRadius: 16,
-    maxHeight: '60%',
-    justifyContent: "center",
-    alignItems: "center",
+    maxHeight: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "#86A0CA",
-    borderStyle: "solid",
-    position: "relative",
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    padding: 4,
+    borderColor: '#86A0CA',
+    borderStyle: 'solid',
+    position: 'relative',
+    zIndex: 99,
+    elevation: 24, // Android
   },
 });
 

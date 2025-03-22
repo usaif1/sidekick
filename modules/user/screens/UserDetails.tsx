@@ -1,26 +1,26 @@
 // dependencies
 import {View, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // components
 import ProfileCard from '@/modules/user/components/ProfileCard';
 import Menu from '@/modules/user/components/Menu';
-import SupportModal from '@/modules/user/components/SupportModal';
-import {useModal} from '@/components/Modal/ModalProvider';
 import Divider from '@/components/Divider';
 import Profile from '../assets/profile.svg';
 import Notification from '../assets/notification.svg';
 import Help from '../assets/help.svg';
-import {useThemeStore} from '@/globalStore';
+import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {GlobalModal} from '@/components';
+import NeedHelp from '@/modules/user/components/NeedHelp';
 
 const {colors} = useThemeStore.getState().theme;
 
 const UserDetails: React.FC = () => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const {showModal, hideModal} = useModal();
+  const {openModal, setModalComponent, closeBottomSheet} = useGlobalStore();
 
   // User data
   const userData = {
@@ -56,18 +56,20 @@ const UserDetails: React.FC = () => {
       icon: Help,
       label: 'Need Help?',
       controlType: 'none' as const,
-      onPress: () =>
-        showModal(
-          <SupportModal
-            visible={true}
-            onClose={hideModal}
-            supportEmail="help@sidekick.com"
-            emailSubject="Support Request from Sidekick App"
-          />,
-        ),
+      onPress: () => {
+        setModalComponent(NeedHelp);
+        openModal();
+      },
       testID: 'help-button',
     },
   ];
+
+  useFocusEffect(
+    useCallback(() => {
+      closeBottomSheet();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -85,6 +87,7 @@ const UserDetails: React.FC = () => {
 
         <Menu items={menuItems} style={styles.menu} testID="user-menu" />
       </View>
+      <GlobalModal />
     </SafeAreaView>
   );
 };

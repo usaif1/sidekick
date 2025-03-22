@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, {createContext, useState, useContext, ReactNode} from 'react';
+import {View, StyleSheet} from 'react-native';
 
 // Define the context type
 interface ModalContextType {
@@ -23,7 +23,7 @@ interface ModalProviderProps {
 /**
  * Provider component that allows showing modals from anywhere in the app
  */
-export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
+export const ModalProvider: React.FC<ModalProviderProps> = ({children}) => {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -41,13 +41,11 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   };
 
   return (
-    <ModalContext.Provider value={{ showModal, hideModal }}>
+    <ModalContext.Provider value={{showModal, hideModal}}>
       {children}
       {isVisible && modalContent && (
-        <View style={StyleSheet.absoluteFill}>
-          {modalContent}
-        </View>
+        <View style={StyleSheet.absoluteFill}>{modalContent}</View>
       )}
     </ModalContext.Provider>
   );
-}; 
+};
