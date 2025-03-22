@@ -71,8 +71,12 @@ const SplashScreenCarousel: React.FC = () => {
 
   const handleCompleteOnboarding = () => {
     onboardingStorage.set('onboarding_complete', 'true');
-    // @ts-ignore
-    navigation.replace('screen3');
+    const timer = setTimeout(() => {
+      // @ts-ignore
+      navigation.replace('screen3');
+    }, 1000);
+
+    return () => clearTimeout(timer);
   };
 
   return (
