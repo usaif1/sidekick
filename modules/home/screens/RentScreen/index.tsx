@@ -1,7 +1,7 @@
 // dependencies
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
-import MapView, {Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 
 // store
@@ -14,12 +14,12 @@ import {mapStyles} from '../../utilis/mapStyle';
 import NearestHubMarker from '../../components/NearestHubMarker';
 
 import ScanQrCodeComponent from '../../components/ScanQrCodeComponent';
-import {HubLocation, PolylineCoordinates} from '../../types/mapTypes';
-import {updatePolylineAndFitMap} from '../../utilis/updatePolylineAndFitMap';
+import {HubLocation} from '../../types/mapTypes';
 import UserLocationMarker from '../../components/UserLocationMarker';
 import ActionButtons from './components';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
+import DirectionsComponent from './components/DirectionsComponent';
 
 const RentScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -33,7 +33,6 @@ const RentScreen: React.FC = () => {
   const {openModal, setModalComponent} = useGlobalStore();
   const [selectedHub, setSelectedHub] = useState<HubLocation>(null);
   const mapRef = useRef<MapView>(null);
-  const [polylineCoords, setPolylineCoords] = useState<PolylineCoordinates>([]);
   const [heading, setHeading] = useState<number>(0);
 
   const handleOpenModal = () => {
@@ -81,16 +80,16 @@ const RentScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setLocation]);
 
-  useEffect(() => {
-    const {polylineCoords, heading} = updatePolylineAndFitMap(
-      selectedHub,
-      latitude,
-      longitude,
-      mapRef,
-    );
-    setPolylineCoords(polylineCoords);
-    setHeading(heading);
-  }, [selectedHub, latitude, longitude]);
+  // useEffect(async () => {
+  //   const {polylineCoords: newPolylineCoords, heading: newHeading} = await updatePolylineAndFitMap(
+  //     selectedHub,
+  //     latitude,
+  //     longitude,
+  //     mapRef,
+  //   );
+  //   setPolylineCoords(newPolylineCoords);
+  //   setHeading(newHeading);
+  // }, [selectedHub, latitude, longitude]);
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -143,13 +142,14 @@ const RentScreen: React.FC = () => {
           />
         ))}
 
-        {polylineCoords.length > 0 && (
-          <Polyline
-            coordinates={polylineCoords}
-            strokeWidth={4}
-            strokeColor="#296AEB"
+        {selectedHub && latitude && longitude ? (
+          <DirectionsComponent
+            origin={{ latitude, longitude }}
+            destination={selectedHub}
+            mapRef={mapRef as React.RefObject<MapView>}
+            onHeadingChange={setHeading}
           />
-        )}
+        ) : null}
       </MapView>
 
       {/* rent action buttons */}

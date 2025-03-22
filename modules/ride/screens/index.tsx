@@ -1,17 +1,15 @@
 // dependencies
 import {View, StyleSheet} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import MapView, {Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import useLocationStore from '@/modules/home/store/locationStore';
-import {HubLocation, PolylineCoordinates} from '@/modules/home/types/mapTypes';
+import {HubLocation} from '@/modules/home/types/mapTypes';
 import Geolocation from '@react-native-community/geolocation';
-import {updatePolylineAndFitMap} from '@/modules/home/utilis/updatePolylineAndFitMap';
 import {mapStyles} from '@/modules/home/utilis/mapStyle';
 import {scooterHubs} from '@/modules/home/data/scooterHubs';
 
 // components
 import requestLocationPermission from '@/components/LocationPermission';
-import UserLocationMarker from '@/modules/home/components/UserLocationMarker';
 import NearestHubMarker from '@/modules/home/components/NearestHubMarker';
 import {RideDetails} from '../components';
 import {useGlobalStore} from '@/globalStore';
@@ -24,8 +22,8 @@ const RideScreen: React.FC = () => {
 
   const [selectedHub, setSelectedHub] = useState<HubLocation>(null);
   const mapRef = useRef<MapView>(null);
-  const [polylineCoords, setPolylineCoords] = useState<PolylineCoordinates>([]);
-  const [heading, setHeading] = useState<number>(0);
+  // const [polylineCoords, setPolylineCoords] = useState<PolylineCoordinates>([]);
+  // const [heading, setHeading] = useState<number>(0);
 
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
@@ -53,16 +51,16 @@ const RideScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const {polylineCoords, heading} = updatePolylineAndFitMap(
-      selectedHub,
-      latitude,
-      longitude,
-      mapRef,
-    );
-    setPolylineCoords(polylineCoords);
-    setHeading(heading);
-  }, [selectedHub, latitude, longitude]);
+  // useEffect(() => {
+  //   const {polylineCoords, heading} = updatePolylineAndFitMap(
+  //     selectedHub,
+  //     latitude,
+  //     longitude,
+  //     mapRef,
+  //   );
+  //   setPolylineCoords(polylineCoords);
+  //   setHeading(heading);
+  // }, [selectedHub, latitude, longitude]);
 
   const {setGlobalBottomSheetComponent, openGlobalBottomSheet} =
     useGlobalStore();
@@ -91,13 +89,13 @@ const RideScreen: React.FC = () => {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}>
-        {latitude && longitude && (
+        {/* {latitude && longitude && (
           <UserLocationMarker
             latitude={latitude}
             longitude={longitude}
             heading={heading}
           />
-        )}
+        )} */}
         {scooterHubs.map(hub => (
           <NearestHubMarker
             key={hub.id}
@@ -120,13 +118,13 @@ const RideScreen: React.FC = () => {
           />
         ))}
 
-        {polylineCoords.length > 0 && (
+        {/* {polylineCoords.length > 0 && (
           <Polyline
             coordinates={polylineCoords}
             strokeWidth={4}
             strokeColor="#296AEB"
           />
-        )}
+        )} */}
       </MapView>
 
       <GlobalModal />
