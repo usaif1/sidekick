@@ -18,7 +18,7 @@ export type ViewType =
 export const AuthBottomSheetSnapPoints = {
   welcome: [height * 0.45],
   new: [height * 0.55],
-  existing: [height * 0.55],
+  existing: [height * 0.30],   
   employee: [height * 0.55],
   otpNew: [height * 0.35],
   otpExisting: [height * 0.35],
