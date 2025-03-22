@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {  useRef } from 'react';
 import { Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -24,49 +24,45 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
     onHeadingChange
 }) => {
     const { width, height } = Dimensions.get('window');
-
-    useEffect(() => {
-        if (origin && destination) {
-            const from = turf.point([origin.longitude, origin.latitude]);
-            const to = turf.point([destination.longitude, destination.latitude]);
-            const bearing = turf.bearing(from, to);
-            if (onHeadingChange) {
-                onHeadingChange(bearing);
-            }
-        }
-    }, [origin, destination, onHeadingChange]);
+    const lastCoordinates = useRef<LatLng[]>([]);
 
     if (!origin || !destination) {
         return null;
     }
 
+    const calculateHeading = (currentPos: LatLng, nextPos: LatLng) => {
+        const start = turf.point([currentPos.longitude, currentPos.latitude]);
+        const end = turf.point([nextPos.longitude, nextPos.latitude]);
+        return turf.bearing(start, end);
+    };
+
     return (
         <MapViewDirections
-            origin={origin}
-            destination={destination}
+            origin={{
+                latitude: Number(origin.latitude),
+                longitude: Number(origin.longitude)
+            }}
+            destination={{
+                latitude: Number(destination.latitude),
+                longitude: Number(destination.longitude)
+            }}
             apikey={GOOGLE_MAPS_API_KEY}
             strokeWidth={4}
             strokeColor="#296AEB"
-            mode="BICYCLING"
+            mode="DRIVING"
             optimizeWaypoints={true}
-            onStart={(params) => {
-                if (params.origin && params.destination) {
-                    console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-                }
-            }}
+            precision="high"
+            resetOnChange={false}
             onReady={(result: MapViewDirectionsResult) => {
                 const coordinates = result.coordinates;
                 if (coordinates && coordinates.length >= 2) {
                     console.log(`Distance: ${result.distance} km`);
                     console.log(`Duration: ${result.duration} min.`);
-
-                    const [first, second] = coordinates;
-                    if (first && second) {
-                        const start = turf.point([first.longitude, first.latitude]);
-                        const next = turf.point([second.longitude, second.latitude]);
-                        const bearing = turf.bearing(start, next);
-                        onHeadingChange?.(bearing);
-                    }
+                    lastCoordinates.current = coordinates;        
+                    const currentPosition = origin;
+                    const nextRoutePoint = coordinates[1]; 
+                    const heading = calculateHeading(currentPosition, nextRoutePoint);
+                    onHeadingChange?.(heading);
 
                     mapRef.current?.fitToCoordinates(coordinates, {
                         edgePadding: {
@@ -74,7 +70,8 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
                             bottom: (height / 20),
                             left: (width / 20),
                             top: (height / 20),
-                        }
+                        },
+                        animated: true
                     });
                 }
             }}
