@@ -17,12 +17,27 @@ import {
   LabelPrimary,
 } from '@/components';
 
+// services
+import {sendOTP} from '../services/auth.service.ts';
+
 // store
 import {useThemeStore} from '@/globalStore';
 import {authUtils} from '../utils';
 
 const SignupForm: React.FC = () => {
   const {theme} = useThemeStore();
+
+  const continueHandler = async () => {
+    try {
+      const response = await sendOTP('+919643740726', false);
+      console.log('response', response);
+      if (response) {
+        authUtils.setBottomSheetView('otpNew');
+      }
+    } catch (err) {
+      console.log('Error sending otp', err);
+    }
+  };
 
   return (
     <BottomSheetView style={styles.contentContainer}>
@@ -97,11 +112,7 @@ const SignupForm: React.FC = () => {
           width: 220,
           alignSelf: 'center',
         }}>
-        <ButtonText
-          variant="primary"
-          onPress={() => {
-            authUtils.setBottomSheetView('otpNew');
-          }}>
+        <ButtonText variant="primary" onPress={continueHandler}>
           Continue
         </ButtonText>
       </View>

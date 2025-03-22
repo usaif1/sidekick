@@ -120,6 +120,7 @@ const SplashScreenCarousel: React.FC = () => {
           }}>
           <Pressable
             onPress={() => {
+              // @ts-ignore
               navigation.replace('screen3');
             }}>
             <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
