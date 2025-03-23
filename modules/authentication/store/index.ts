@@ -106,6 +106,7 @@ const authStore = create<AuthStore & GlobalActions>(set => ({
       confirmationResult: confirmationResult,
     }),
 
+
   setAuthToken: token =>
     set({
       authToken: token,
