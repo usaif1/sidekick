@@ -26,6 +26,8 @@ const OTPForm: React.FC = () => {
         otp,
         () => {},
       );
+      const userIdToken = response?.getIdToken();
+      const userIdTokenResult = response?.getIdTokenResult();
       setUser(response);
       return response;
     } catch (err) {}

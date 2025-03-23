@@ -43,7 +43,6 @@ const RentScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('authToken', authToken);
     authUtils.setBottomSheetView('welcome');
     setNavigator(navigation);
 
