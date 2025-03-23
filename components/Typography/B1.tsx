@@ -1,6 +1,6 @@
 import {Text, TextStyle} from 'react-native';
 import React, {ReactNode} from 'react';
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 import {ColorSelector} from '@/theme/colors';
 
 type Props = {

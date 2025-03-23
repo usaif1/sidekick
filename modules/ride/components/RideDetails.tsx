@@ -4,18 +4,11 @@ import React, {useState} from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useGlobalStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 // components
-import {
-  ButtonText,
-  ButtonTextBottomSheet,
-  Divider,
-  H1,
-  H2,
-  H3,
-  P1,
-} from '@/components';
+import {ButtonTextBottomSheet, Divider, H1, H2, H3, P1} from '@/components';
 import {EndRide} from '../components';
 
 const {

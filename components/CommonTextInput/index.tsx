@@ -4,7 +4,7 @@ import React from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 interface CommonTextInputProps extends TextInputProps {
   placeholder: string; // Customizable placeholder

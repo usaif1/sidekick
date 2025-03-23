@@ -11,7 +11,8 @@ import SwipeBtn from '@/assets/swipe-btn-img.svg';
 import RideEnded from '../components/RideEnded';
 
 // store
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useGlobalStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 const {
   theme: {colors},

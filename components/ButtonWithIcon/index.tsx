@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {ViewStyle, TextStyle} from 'react-native';
 import {Button} from 'react-native-paper';
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 type Props = {
   children: ReactNode;

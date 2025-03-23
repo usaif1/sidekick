@@ -8,7 +8,8 @@ import {ReachedHub} from '../components';
 import {ButtonText, Divider, H2, H3, P2} from '@/components';
 
 // store
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useGlobalStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 const {
   theme: {colors},

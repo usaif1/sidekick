@@ -1,8 +1,8 @@
 // src/components/Icons/CrossIcon.tsx
 import React from 'react';
-import { TouchableOpacity, ViewStyle, StyleSheet } from 'react-native';
+import {TouchableOpacity, ViewStyle, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { useThemeStore } from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 interface CrossIconProps {
   /**
@@ -48,27 +48,27 @@ const CrossIcon: React.FC<CrossIconProps> = ({
   accessibilityLabel = 'Close',
 }) => {
   // Access theme values
-  const { colors, spacing } = useThemeStore(state => state.theme);
-  
+  const {colors, spacing} = useThemeStore(state => state.theme);
+
   // Default color from theme
   const iconColor = color || colors.neutral[900];
-  
+
   // Size mapping for named sizes
   const sizeMap = {
     small: 12,
     medium: 16, // Default size as mentioned in requirements
     large: 24,
   };
-  
+
   // Resolve the size value
   const iconSize = typeof size === 'number' ? size : sizeMap[size];
-  
+
   // Calculate appropriate touch target size (ensuring minimum 44x44 for accessibility)
   const touchTargetSize = Math.max(44, iconSize * 1.5);
-  
+
   // Determine padding to center the icon in the touch target
   const containerPadding = (touchTargetSize - iconSize) / 2;
-  
+
   return (
     <TouchableOpacity
       onPress={onClick}
@@ -87,13 +87,8 @@ const CrossIcon: React.FC<CrossIconProps> = ({
         },
         style,
       ]}
-      activeOpacity={0.7}
-    >
-      <Icon
-        name="x"
-        size={iconSize}
-        color={iconColor}
-      />
+      activeOpacity={0.7}>
+      <Icon name="x" size={iconSize} color={iconColor} />
     </TouchableOpacity>
   );
 };

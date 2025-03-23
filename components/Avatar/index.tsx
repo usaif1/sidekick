@@ -7,11 +7,10 @@ import {
   Image,
   ImageSourcePropType,
 } from 'react-native';
-import {TouchableOpacity, Text, View} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'; // Assuming you're using Feather icons
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
-// Define strong TypeScript interfaces
 interface AvatarProps {
   /**
    * The full name to extract initials from
@@ -123,19 +122,19 @@ const Avatar: React.FC<AvatarProps> = ({
     small: {
       width: spacing.xl,
       height: spacing.xl,
-      fontSize: typography.skP1.fontSize,
+      fontSize: typography.skP1.fontSize as number,
       iconSize: 16,
     },
     medium: {
-      width: spacing.xxl,
-      height: spacing.xxl,
-      fontSize: typography.skP2.fontSize,
+      width: spacing.xl,
+      height: spacing.xl,
+      fontSize: typography.skP2.fontSize as number,
       iconSize: 24,
     },
     large: {
-      width: spacing.xxxl,
-      height: spacing.xxxl,
-      fontSize: typography.skP3.fontSize,
+      width: spacing.xl,
+      height: spacing.xl,
+      fontSize: typography.skP3.fontSize as number,
       iconSize: 32,
     },
   };

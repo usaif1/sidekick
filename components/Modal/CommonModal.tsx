@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
 } from 'react-native';
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 import Cross from '@/assets/cross.svg';
 
 interface CommonModalProps {
