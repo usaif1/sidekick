@@ -14,9 +14,10 @@ import {useAuthStore} from '@/globalStore';
 
 // services
 import {AuthService} from '@/globalService';
+import {initializeClient} from '@/utils/client';
 
 const SplashScreen1: React.FC = () => {
-  const {stopLoading, setUser} = useAuthStore();
+  const {stopLoading, setUser, setAuthToken, setGraphQLClient} = useAuthStore();
 
   useEffect(() => {
     auth().onAuthStateChanged(async user => {
@@ -24,13 +25,13 @@ const SplashScreen1: React.FC = () => {
         setTimeout(() => {
           stopLoading('loading-user');
         }, 50);
-        // setGraphqlClient(null);
+        setGraphQLClient(null);
         setUser(null);
+        setAuthToken('');
         return;
       }
 
       const tokenResult = await user?.getIdTokenResult();
-
       const hasuraIdExists = AuthService.checkHasuraId(
         tokenResult as FirebaseAuthTypes.IdTokenResult,
       );
@@ -50,22 +51,17 @@ const SplashScreen1: React.FC = () => {
          */
 
         // setXHasuraId(hasuraIdExists?.hasuraId);
-        // const token = await user?.getIdToken();
+        const token = await user?.getIdToken();
 
         // initializing the graphql client with the new token and putting it in authStore
-        // const graphqlClient = initializeClient();
-        // setGraphqlClient(graphqlClient);
-
-        // setAuthToken(token as string);
+        const graphqlClient = initializeClient();
+        setGraphQLClient(graphqlClient);
+        setAuthToken(token as string);
         setUser(user);
         setTimeout(() => {
           stopLoading('loading-user');
         }, 1000);
       }
-
-      setTimeout(() => {
-        stopLoading('loading-user');
-      }, 50);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

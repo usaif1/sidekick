@@ -40,7 +40,7 @@ const ScanQrCodeComponent = () => {
   const handleCodeScanned = (codes:any) => {
     const scannedValue = codes[0]?.value;
     if (scannedValue) {
-      console.log(`Scanned ${codes.length} codes!`);
+      
     }
   };
 

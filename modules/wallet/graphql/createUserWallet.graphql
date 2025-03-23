@@ -1,0 +1,7 @@
+mutation createUserWallet($user_id: uuid = "") {
+  insert_wallets_one(object: {user_id: $user_id, wallet_type: "USER"}) {
+    id
+    created_at
+    balance
+  }
+}

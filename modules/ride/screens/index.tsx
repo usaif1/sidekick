@@ -40,7 +40,9 @@ const RideScreen: React.FC = () => {
           });
         }
       },
-      error => console.log('Error getting current location:', error),
+      error => {
+        console.log('err', error);
+      },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   };

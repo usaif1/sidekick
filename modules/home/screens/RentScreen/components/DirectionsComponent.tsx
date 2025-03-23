@@ -51,11 +51,11 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
             region="IN"
             waypoints={[]}
             onStart={(params) => {
-                console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                
               }}
             onReady={(result: MapViewDirectionsResult) => {
-                console.log(`Distance: ${result.distance} km`)
-                console.log(`Duration: ${result.duration} min.`)
+                
+                
                 const coordinates = result.coordinates;
                 mapRef.current?.fitToCoordinates(coordinates, {
                     edgePadding: {

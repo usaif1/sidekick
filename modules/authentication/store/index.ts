@@ -5,6 +5,7 @@ import {Dimensions} from 'react-native';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import {RefObject} from 'react';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {Client} from 'urql';
 
 // components
 import WelcomeForm from '../components/WelcomeForm';
@@ -25,6 +26,10 @@ type LoaderType =
 type AuthStore = {
   user: FirebaseAuthTypes.User | null | undefined;
   confirmationResult: FirebaseAuthTypes.ConfirmationResult | null;
+  authToken: string;
+
+  // graphql
+  graphQLClient: Client | null;
 
   // bottom sheet
   AuthBottomSheetComponent: React.FC | null;
@@ -42,6 +47,10 @@ type GlobalActions = {
   setConfirmationResult: (
     confirmationResult: FirebaseAuthTypes.ConfirmationResult | null,
   ) => void;
+  setAuthToken: (token: string) => void;
+
+  // graphql
+  setGraphQLClient: (client: Client | null) => void;
 
   // bottom sheet actions
   setAuthBottomSheetRef: (ref: RefObject<BottomSheetMethods | null>) => void;
@@ -62,6 +71,10 @@ const globalInitialState: AuthStore = {
   // otp flow
   user: null,
   confirmationResult: null,
+  authToken: '',
+
+  // graphql
+  graphQLClient: null,
 
   // bottom sheet
   currentView: 'welcome',
@@ -93,7 +106,17 @@ const authStore = create<AuthStore & GlobalActions>(set => ({
       confirmationResult: confirmationResult,
     }),
 
-  //   actions
+
+  setAuthToken: token =>
+    set({
+      authToken: token,
+    }),
+
+  //  graphql
+  setGraphQLClient: client =>
+    set({
+      graphQLClient: client,
+    }),
 
   // bottom sheet actions
   setAuthBottomSheetComponent: Component =>

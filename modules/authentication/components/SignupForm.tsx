@@ -30,12 +30,11 @@ const SignupForm: React.FC = () => {
   const continueHandler = async () => {
     try {
       const response = await AuthService.sendOTP('+919898989898', false);
-      console.log('response', response);
       if (response) {
         authUtils.setBottomSheetView('otpNew');
       }
     } catch (err) {
-      console.log('Error sending otp', err);
+      
     }
   };
 

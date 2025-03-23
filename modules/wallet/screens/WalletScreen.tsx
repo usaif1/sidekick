@@ -29,13 +29,13 @@ const WalletScreen: React.FC = () => {
 
   // Handle withdraw button press
   const handleWithdraw = () => {
-    console.log('Withdraw pressed');
+    
     // Implement withdraw logic or navigation
   };
 
   // Handle add funds button press
   const handleAddFunds = () => {
-    console.log('pressed');
+    
     // @ts-ignore
     navigation.navigate('wallet', {screen: 'WalletScreen'});
   };

@@ -1,5 +1,5 @@
-import { Platform } from 'react-native';
-import { PERMISSIONS, request } from 'react-native-permissions';
+import {Platform} from 'react-native';
+import {PERMISSIONS, request} from 'react-native-permissions';
 
 const requestLocationPermission = async () => {
   try {
@@ -13,9 +13,7 @@ const requestLocationPermission = async () => {
     if (permission) {
       const status = await request(permission);
       if (status === 'granted') {
-        console.log('Location permission granted');
       } else {
-        console.log('Location permission denied');
       }
     }
   } catch (err) {
@@ -23,4 +21,4 @@ const requestLocationPermission = async () => {
   }
 };
 
-export default requestLocationPermission; 
+export default requestLocationPermission;
