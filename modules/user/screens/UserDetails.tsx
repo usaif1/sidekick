@@ -4,6 +4,12 @@ import React, {useCallback, useState} from 'react';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+// service
+import {AuthService} from '@/globalService';
+
+// store
+import {useGlobalStore, useThemeStore} from '@/globalStore';
+
 // components
 import ProfileCard from '@/modules/user/components/ProfileCard';
 import Menu from '@/modules/user/components/Menu';
@@ -11,8 +17,7 @@ import Divider from '@/components/Divider';
 import Profile from '../assets/profile.svg';
 import Notification from '../assets/notification.svg';
 import Help from '../assets/help.svg';
-import {useGlobalStore, useThemeStore} from '@/globalStore';
-import {GlobalModal} from '@/components';
+import {ButtonText, GlobalModal} from '@/components';
 import NeedHelp from '@/modules/user/components/NeedHelp';
 
 const {colors} = useThemeStore.getState().theme;
@@ -87,6 +92,15 @@ const UserDetails: React.FC = () => {
 
         <Menu items={menuItems} style={styles.menu} testID="user-menu" />
       </View>
+
+      <ButtonText
+        variant="primary"
+        onPress={() => {
+          AuthService.signOut();
+        }}>
+        Logout
+      </ButtonText>
+
       <GlobalModal />
     </SafeAreaView>
   );

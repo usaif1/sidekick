@@ -11,9 +11,10 @@ import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 // components
 import {RideDetails} from '@/modules/ride/components';
 import {ModalCloseButton} from '@/components';
+import {splashStorage} from '@/globalStorage';
 
 type GlobalStore = {
-  firsTime: boolean;
+  onboarded: boolean | undefined;
   loggedIn: boolean;
   navigator: any;
 
@@ -32,6 +33,7 @@ type GlobalStore = {
 
 type GlobalActions = {
   setNavigator: (nav: any) => void;
+  setOnboarded: (state: boolean) => void;
 
   // modal actions
   setModalComponent: (component: React.FC | null) => void;
@@ -52,7 +54,7 @@ type GlobalActions = {
 };
 
 const globalInitialState: GlobalStore = {
-  firsTime: true,
+  onboarded: splashStorage.getBoolean('onboarded'),
   loggedIn: false,
   navigator: null,
 
@@ -75,6 +77,11 @@ const globalStore = create<GlobalStore & GlobalActions>(set => ({
   setNavigator: nav =>
     set({
       navigator: nav,
+    }),
+
+  setOnboarded: state =>
+    set({
+      onboarded: state,
     }),
 
   // modal actions
@@ -146,7 +153,11 @@ const globalStore = create<GlobalStore & GlobalActions>(set => ({
       globalBottomSheetSnapPoints: snapPoints,
     }),
 
-  resetGlobalStore: () => set(globalInitialState),
+  resetGlobalStore: () =>
+    set({
+      ...globalInitialState,
+      onboarded: true,
+    }),
 }));
 
 export default createSelectors(globalStore);

@@ -113,7 +113,9 @@ const Switch: React.FC<SwitchProps> = ({
 
   // Handle toggle action
   const handleToggle = () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
 
     // Calculate new toggled state
     const newValue = !isToggled;

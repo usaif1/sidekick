@@ -6,7 +6,6 @@ import {useNavigation} from '@react-navigation/native';
 
 // store
 import {useThemeStore} from '@/globalStore';
-import splashStorage from '../storage';
 
 // components
 import {H1, P1, Divider, ButtonText} from '@/components';
@@ -64,7 +63,6 @@ const SplashScreenCarousel: React.FC = () => {
   };
 
   const handleCompleteOnboarding = () => {
-    splashStorage.set('onboarding_complete', true);
     const timer = setTimeout(() => {
       // @ts-ignore
       navigation.replace('screen3');
