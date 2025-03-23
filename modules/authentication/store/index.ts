@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // dependencies
 import {create} from 'zustand';
 import {Dimensions} from 'react-native';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import {RefObject} from 'react';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 // components
 import WelcomeForm from '../components/WelcomeForm';
@@ -15,7 +17,8 @@ const {height} = Dimensions.get('window');
 
 type AuthStore = {
   authNavigation: any;
-  user: any;
+  user: FirebaseAuthTypes.User | null | undefined;
+  confirmationResult: FirebaseAuthTypes.ConfirmationResult | null;
 
   // bottom sheet
   AuthBottomSheetComponent: React.FC | null;
@@ -27,6 +30,12 @@ type AuthStore = {
 type GlobalActions = {
   setAuthNavigation: (nav: any) => void;
   navigate: (screen: string) => void;
+
+  // otp flow
+  setUser: (user: FirebaseAuthTypes.User | null | undefined) => void;
+  setConfirmationResult: (
+    confirmationResult: FirebaseAuthTypes.ConfirmationResult | null,
+  ) => void;
 
   // bottom sheet actions
   setAuthBottomSheetRef: (ref: RefObject<BottomSheetMethods | null>) => void;
@@ -40,11 +49,14 @@ type GlobalActions = {
 };
 
 const globalInitialState: AuthStore = {
-  user: null,
   authNavigation: null,
-  currentView: 'welcome',
+
+  // otp flow
+  user: null,
+  confirmationResult: null,
 
   // bottom sheet
+  currentView: 'welcome',
   AuthBottomSheetComponent: WelcomeForm,
   authBottomSheetRef: null,
   authBottomSheetSnapPoints: [height * 0.45],
@@ -52,6 +64,17 @@ const globalInitialState: AuthStore = {
 
 const authStore = create<AuthStore & GlobalActions>(set => ({
   ...globalInitialState,
+
+  // otp flow
+  setUser: user =>
+    set({
+      user: user,
+    }),
+
+  setConfirmationResult: confirmationResult =>
+    set({
+      confirmationResult: confirmationResult,
+    }),
 
   //   actions
   setAuthNavigation: nav =>

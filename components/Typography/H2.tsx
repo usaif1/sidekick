@@ -4,7 +4,7 @@ import React, {ReactNode} from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 // types
 import {ColorSelector} from '@/theme/colors';

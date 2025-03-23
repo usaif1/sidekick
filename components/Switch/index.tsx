@@ -8,7 +8,7 @@ import {
   Easing,
   AccessibilityState,
 } from 'react-native';
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 interface SwitchProps {
   /**

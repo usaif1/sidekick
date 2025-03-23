@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet, TextStyle} from 'react-native';
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 interface TypographyProps {
   /**

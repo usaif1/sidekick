@@ -13,8 +13,13 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 import './ReactotronConfig';
 import {useAuthStore, useGlobalStore} from './globalStore';
 
+// storage
+import {splashStorage} from '@/globalStorage';
+
 function App(): React.JSX.Element {
-  const {firsTime, loggedIn} = useGlobalStore();
+  const {loggedIn} = useGlobalStore();
+
+  const onboarded = splashStorage.getBoolean('onboarding_complete');
 
   const {
     setAuthBottomSheetRef,
@@ -45,48 +50,50 @@ function App(): React.JSX.Element {
           backgroundColor={'transparent'}
           translucent
         />
-        {firsTime ? (
-          <SplashNavigation />
-        ) : loggedIn ? (
-          <>
-            <ProtectedNavigation />
+        {onboarded ? (
+          loggedIn ? (
+            <>
+              <ProtectedNavigation />
 
-            <BottomSheet
-              key="protectedBottomSheet"
-              ref={globalBottomSheetRef}
-              handleComponent={() => null}
-              backgroundStyle={{backgroundColor: 'transparent'}}
-              enablePanDownToClose={false}
-              enableDynamicSizing={false}
-              index={-1}
-              snapPoints={globalBottomSheetSnapPoints}>
-              <BottomSheetView>
-                {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
-              </BottomSheetView>
-            </BottomSheet>
-          </>
+              <BottomSheet
+                key="protectedBottomSheet"
+                ref={globalBottomSheetRef}
+                handleComponent={() => null}
+                backgroundStyle={{backgroundColor: 'transparent'}}
+                enablePanDownToClose={false}
+                enableDynamicSizing={false}
+                index={-1}
+                snapPoints={globalBottomSheetSnapPoints}>
+                <BottomSheetView>
+                  {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
+                </BottomSheetView>
+              </BottomSheet>
+            </>
+          ) : (
+            <>
+              <AuthNavigation />
+              <BottomSheet
+                key="authBottomSheet"
+                ref={authBottomSheetRef}
+                enablePanDownToClose={false}
+                enableOverDrag={false}
+                enableHandlePanningGesture={false}
+                handleComponent={() => null}
+                style={{flex: 1}}
+                keyboardBehavior="interactive"
+                enableContentPanningGesture={false}
+                android_keyboardInputMode="adjustResize"
+                keyboardBlurBehavior="restore"
+                index={1}
+                snapPoints={authBottomSheetSnapPoints}>
+                <BottomSheetView>
+                  {AuthBottomSheetComponent && <AuthBottomSheetComponent />}
+                </BottomSheetView>
+              </BottomSheet>
+            </>
+          )
         ) : (
-          <>
-            <AuthNavigation />
-            <BottomSheet
-              key="authBottomSheet"
-              ref={authBottomSheetRef}
-              enablePanDownToClose={false}
-              enableOverDrag={false}
-              enableHandlePanningGesture={false}
-              handleComponent={() => null}
-              style={{flex: 1}}
-              keyboardBehavior="interactive"
-              enableContentPanningGesture={false}
-              android_keyboardInputMode="adjustResize"
-              keyboardBlurBehavior="restore"
-              index={1}
-              snapPoints={authBottomSheetSnapPoints}>
-              <BottomSheetView>
-                {AuthBottomSheetComponent && <AuthBottomSheetComponent />}
-              </BottomSheetView>
-            </BottomSheet>
-          </>
+          <SplashNavigation />
         )}
       </GestureHandlerRootView>
     </>

@@ -31,7 +31,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
   testID = 'transaction-list',
 }) => {
-  const {colors, typography} = useThemeStore(state => state.theme);
+  const {colors} = useThemeStore(state => state.theme);
 
   // Optimized render function
   const renderItem = useCallback(({item}: ListRenderItemInfo<Transaction>) => {
@@ -73,6 +73,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
 const styles = StyleSheet.create({
   listContent: {
     flexGrow: 1,
+    paddingBottom: 60,
   },
   headerContainer: {
     paddingVertical: 12,

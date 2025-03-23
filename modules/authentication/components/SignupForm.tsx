@@ -18,7 +18,7 @@ import {
 } from '@/components';
 
 // services
-import {sendOTP} from '../services/auth.service.ts';
+import AuthService from '../services/auth.service.ts';
 
 // store
 import {useThemeStore} from '@/globalStore';
@@ -29,7 +29,7 @@ const SignupForm: React.FC = () => {
 
   const continueHandler = async () => {
     try {
-      const response = await sendOTP('+919643740726', false);
+      const response = await AuthService.sendOTP('+919999999999', false);
       console.log('response', response);
       if (response) {
         authUtils.setBottomSheetView('otpNew');

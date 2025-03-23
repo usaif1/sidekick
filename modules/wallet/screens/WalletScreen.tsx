@@ -1,3 +1,4 @@
+// dependencies
 import React, {useState, useCallback} from 'react';
 import {View} from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';

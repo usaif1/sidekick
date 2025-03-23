@@ -4,7 +4,7 @@ import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 // types
 import {TextInputProps, TextStyle} from 'react-native';

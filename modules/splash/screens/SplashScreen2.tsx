@@ -2,23 +2,17 @@
 import React, {useRef, useState} from 'react';
 import {Dimensions, View, Text, StyleSheet, Pressable} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import {MMKV} from 'react-native-mmkv';
 import {useNavigation} from '@react-navigation/native';
 
 // store
 import {useThemeStore} from '@/globalStore';
+import splashStorage from '../storage';
 
 // components
 import {H1, P1, Divider, ButtonText} from '@/components';
 import SideKickSplash1 from '../assets/sidekick_splash_1.svg';
 import SideKickSplash2 from '../assets/sidekick_splash_2.svg';
 import SideKickSplash3 from '../assets/sidekick_splash_3.svg';
-
-// Initialize MMKV
-const onboardingStorage = new MMKV({
-  id: 'onboarding-storage',
-  encryptionKey: 'your-secure-key',
-});
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -70,7 +64,7 @@ const SplashScreenCarousel: React.FC = () => {
   };
 
   const handleCompleteOnboarding = () => {
-    onboardingStorage.set('onboarding_complete', 'true');
+    splashStorage.set('onboarding_complete', true);
     const timer = setTimeout(() => {
       // @ts-ignore
       navigation.replace('screen3');
