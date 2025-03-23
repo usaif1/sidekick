@@ -48,10 +48,10 @@ const CrossIcon: React.FC<CrossIconProps> = ({
   accessibilityLabel = 'Close',
 }) => {
   // Access theme values
-  const {colors, spacing} = useThemeStore(state => state.theme);
+  const {colors} = useThemeStore(state => state.theme);
 
   // Default color from theme
-  const iconColor = color || colors.neutral[900];
+  const iconColor = color || colors.textSecondary;
 
   // Size mapping for named sizes
   const sizeMap = {

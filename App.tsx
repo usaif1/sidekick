@@ -9,28 +9,27 @@ import ProtectedNavigation from './navigation/ProtectedNavigation';
 import SplashNavigation from '@/modules/splash/navigation/splash.navigation';
 import AuthNavigation from '@/modules/authentication/navigation/auth.navigation';
 
+// components
+import {SplashPrimary} from './modules/splash/screens';
+
 // misc
 import './ReactotronConfig';
 import {useAuthStore, useGlobalStore} from './globalStore';
 
-// storage
-import {splashStorage} from '@/globalStorage';
-
 function App(): React.JSX.Element {
-  const {loggedIn} = useGlobalStore();
-
-  const onboarded = splashStorage.getBoolean('onboarding_complete');
-
   const {
     setAuthBottomSheetRef,
     AuthBottomSheetComponent,
     authBottomSheetSnapPoints,
+    authLoaders,
+    user,
   } = useAuthStore();
 
   const {
     setGlobalBottomSheetRef,
     GlobalBottomSheetComponent,
     globalBottomSheetSnapPoints,
+    onboarded,
   } = useGlobalStore();
 
   const authBottomSheetRef = useRef<BottomSheet>(null);
@@ -42,6 +41,14 @@ function App(): React.JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!onboarded) {
+    return <SplashNavigation />;
+  }
+
+  if (authLoaders['loading-user']) {
+    return <SplashPrimary />;
+  }
+
   return (
     <>
       <GestureHandlerRootView style={{flex: 1}}>
@@ -50,50 +57,45 @@ function App(): React.JSX.Element {
           backgroundColor={'transparent'}
           translucent
         />
-        {onboarded ? (
-          loggedIn ? (
-            <>
-              <ProtectedNavigation />
-
-              <BottomSheet
-                key="protectedBottomSheet"
-                ref={globalBottomSheetRef}
-                handleComponent={() => null}
-                backgroundStyle={{backgroundColor: 'transparent'}}
-                enablePanDownToClose={false}
-                enableDynamicSizing={false}
-                index={-1}
-                snapPoints={globalBottomSheetSnapPoints}>
-                <BottomSheetView>
-                  {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
-                </BottomSheetView>
-              </BottomSheet>
-            </>
-          ) : (
-            <>
-              <AuthNavigation />
-              <BottomSheet
-                key="authBottomSheet"
-                ref={authBottomSheetRef}
-                enablePanDownToClose={false}
-                enableOverDrag={false}
-                enableHandlePanningGesture={false}
-                handleComponent={() => null}
-                style={{flex: 1}}
-                keyboardBehavior="interactive"
-                enableContentPanningGesture={false}
-                android_keyboardInputMode="adjustResize"
-                keyboardBlurBehavior="restore"
-                index={1}
-                snapPoints={authBottomSheetSnapPoints}>
-                <BottomSheetView>
-                  {AuthBottomSheetComponent && <AuthBottomSheetComponent />}
-                </BottomSheetView>
-              </BottomSheet>
-            </>
-          )
+        {user ? (
+          <>
+            <ProtectedNavigation />
+            <BottomSheet
+              key="protectedBottomSheet"
+              ref={globalBottomSheetRef}
+              handleComponent={() => null}
+              backgroundStyle={{backgroundColor: 'transparent'}}
+              enablePanDownToClose={false}
+              enableDynamicSizing={false}
+              index={-1}
+              snapPoints={globalBottomSheetSnapPoints}>
+              <BottomSheetView>
+                {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
+              </BottomSheetView>
+            </BottomSheet>
+          </>
         ) : (
-          <SplashNavigation />
+          <>
+            <AuthNavigation />
+            <BottomSheet
+              key="authBottomSheet"
+              ref={authBottomSheetRef}
+              enablePanDownToClose={false}
+              enableOverDrag={false}
+              enableHandlePanningGesture={false}
+              handleComponent={() => null}
+              style={{flex: 1}}
+              keyboardBehavior="interactive"
+              enableContentPanningGesture={false}
+              android_keyboardInputMode="adjustResize"
+              keyboardBlurBehavior="restore"
+              index={1}
+              snapPoints={authBottomSheetSnapPoints}>
+              <BottomSheetView>
+                {AuthBottomSheetComponent && <AuthBottomSheetComponent />}
+              </BottomSheetView>
+            </BottomSheet>
+          </>
         )}
       </GestureHandlerRootView>
     </>

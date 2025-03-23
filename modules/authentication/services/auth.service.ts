@@ -5,10 +5,11 @@ import axios from 'axios';
 // store
 import useAuthStore from '../store';
 
-const {setConfirmationResult} = useAuthStore.getState();
+const {setConfirmationResult, resetAuthStore, stopLoading, setUser} =
+  useAuthStore.getState();
 
 const AuthService = {
-  sendOTP: async (phoneNumber: string, forceResend: boolean) => {
+  sendOTP: async function (phoneNumber: string, forceResend: boolean) {
     try {
       const confirmation = await auth().signInWithPhoneNumber(
         phoneNumber,
@@ -22,11 +23,11 @@ const AuthService = {
     }
   },
 
-  verifyOTP: async (
+  verifyOTP: async function (
     confirmation: FirebaseAuthTypes.ConfirmationResult | null,
     code: string,
     errorCallback: () => void,
-  ) => {
+  ) {
     try {
       const userCredential = await confirmation?.confirm(code);
       return userCredential?.user;
@@ -36,7 +37,21 @@ const AuthService = {
     }
   },
 
-  checkHasuraId: (token: FirebaseAuthTypes.IdTokenResult) => {
+  signOut: async function () {
+    try {
+      await auth().signOut();
+      resetAuthStore();
+    } catch (error) {
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Error signing out',
+      //   text2: `${error}`,
+      // });
+      throw new Error('Failed to sign out');
+    }
+  },
+
+  checkHasuraId: function (token: FirebaseAuthTypes.IdTokenResult) {
     const hasuraClaim = token?.claims['https://hasura.io/jwt/claims'];
 
     if (!hasuraClaim) {
@@ -44,17 +59,16 @@ const AuthService = {
     } else {
       return {
         hasuraId: hasuraClaim['x-hasura-user-id'],
-        role: hasuraClaim['x-hasura-default-role'],
       };
     }
   },
 
-  addHasuraClaimsViaRefreshToken: (
+  addHasuraClaimsViaRefreshToken: function (
     timeout: number,
     uid: string,
     role: string,
     errorCallback: () => void,
-  ) => {
+  ) {
     const endpoint = 'http://localhost:3000';
 
     return new Promise(resolve => {
@@ -78,6 +92,51 @@ const AuthService = {
         }
       }, timeout);
     });
+  },
+
+  fireRefreshToken: async function (user: FirebaseAuthTypes.User | null) {
+    //  * * this function waits for 3 seconds for the user to be added to firebase before calling refresh token
+    //  * @argumnent - timeout in milliseconds, user id, callback function
+    //  */
+    await this.addHasuraClaimsViaRefreshToken(
+      3000,
+      user?.uid as string,
+      'user',
+      () => {
+        this.signOut();
+        stopLoading('loading-user');
+      },
+    );
+
+    //    * * function to fetch new token
+    //    * * the new token will have the hasura id in the claims
+    //    * * the new token will be used to make authenticated requests to the server
+    //    * * if no hasura id, call function again recursively
+    //    */
+    setTimeout(async () => {
+      // const updatedToken = await user?.getIdToken(true);
+      const updatedTokenResult = await user?.getIdTokenResult(true);
+
+      const hasuraIdExists = this.checkHasuraId(
+        updatedTokenResult as FirebaseAuthTypes.IdTokenResult,
+      );
+
+      if (!hasuraIdExists?.hasuraId) {
+        await this.fireRefreshToken(user);
+      } else {
+        // setIsNewUser(isNew);
+        // initializing the graphql client with the new token and putting it in authStore
+        // const graphqlClient = initializeClient();
+        // setGraphqlClient(graphqlClient);
+        // setXHasuraId(hasuraIdExists?.hasuraId);
+        // setAuthToken(updatedToken as string);
+        setUser(user);
+
+        setTimeout(() => {
+          stopLoading('loading-user');
+        }, 1000);
+      }
+    }, 500);
   },
 };
 

@@ -7,13 +7,17 @@ import {scale} from 'react-native-size-matters';
 import ButtonText from '@/components/ButtonText';
 import SideKickLogo from '../assets/splash_finish.svg';
 
-// assets
-import {useGlobalStore} from '@/globalStore';
-
 // styles
 import {splashStyles} from '../splashStyles';
 
+// store
+import {useGlobalStore, useAuthStore} from '@/globalStore';
+import {splashStorage} from '@/globalStorage';
+
 const SplashScreen3: React.FC = () => {
+  const {setOnboarded} = useGlobalStore();
+  const {stopLoading} = useAuthStore();
+
   return (
     <View style={splashStyles.layoutBackground}>
       <SideKickLogo />
@@ -21,10 +25,9 @@ const SplashScreen3: React.FC = () => {
         <View style={{width: scale(179)}}>
           <ButtonText
             onPress={() => {
-              useGlobalStore.setState(prevState => ({
-                ...prevState,
-                firsTime: false,
-              }));
+              stopLoading('loading-user');
+              splashStorage.set('onboarded', true);
+              setOnboarded(true);
             }}
             variant="secondary">
             Continue to ride

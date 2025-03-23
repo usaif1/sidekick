@@ -15,8 +15,14 @@ import {ViewType} from '../types';
 
 const {height} = Dimensions.get('window');
 
+type LoaderType =
+  | 'loading-user'
+  | 'phone-verification'
+  | 'user-login'
+  | 'profile-update'
+  | 'auth-confirmation';
+
 type AuthStore = {
-  authNavigation: any;
   user: FirebaseAuthTypes.User | null | undefined;
   confirmationResult: FirebaseAuthTypes.ConfirmationResult | null;
 
@@ -25,12 +31,12 @@ type AuthStore = {
   authBottomSheetRef: RefObject<BottomSheetMethods | null> | null;
   authBottomSheetSnapPoints: any;
   currentView: ViewType;
+
+  // loaders
+  authLoaders: Record<LoaderType, boolean>;
 };
 
 type GlobalActions = {
-  setAuthNavigation: (nav: any) => void;
-  navigate: (screen: string) => void;
-
   // otp flow
   setUser: (user: FirebaseAuthTypes.User | null | undefined) => void;
   setConfirmationResult: (
@@ -44,13 +50,15 @@ type GlobalActions = {
   openAuthBottomSheet: () => void;
   setCurrentView: (view: ViewType) => void;
 
+  // loader actions
+  startLoading: (loader: LoaderType) => void;
+  stopLoading: (loader: LoaderType) => void;
+
   // reset store
   resetAuthStore: () => void;
 };
 
 const globalInitialState: AuthStore = {
-  authNavigation: null,
-
   // otp flow
   user: null,
   confirmationResult: null,
@@ -60,6 +68,15 @@ const globalInitialState: AuthStore = {
   AuthBottomSheetComponent: WelcomeForm,
   authBottomSheetRef: null,
   authBottomSheetSnapPoints: [height * 0.45],
+
+  // loaders
+  authLoaders: {
+    'loading-user': true,
+    'phone-verification': false,
+    'user-login': false,
+    'profile-update': false,
+    'auth-confirmation': false,
+  },
 };
 
 const authStore = create<AuthStore & GlobalActions>(set => ({
@@ -77,19 +94,6 @@ const authStore = create<AuthStore & GlobalActions>(set => ({
     }),
 
   //   actions
-  setAuthNavigation: nav =>
-    set({
-      authNavigation: nav,
-    }),
-
-  navigate: screen =>
-    set(state => {
-      if (state.authNavigation) {
-        state.authNavigation.navigate(screen);
-      }
-
-      return {};
-    }),
 
   // bottom sheet actions
   setAuthBottomSheetComponent: Component =>
@@ -120,7 +124,25 @@ const authStore = create<AuthStore & GlobalActions>(set => ({
       currentView: view,
     }),
 
-  resetAuthStore: () => set(globalInitialState),
+  // Loader actions
+  startLoading: (loader: LoaderType) =>
+    set(state => ({
+      authLoaders: {...state.authLoaders, [loader]: true},
+    })),
+
+  stopLoading: (loader: LoaderType) =>
+    set(state => ({
+      authLoaders: {...state.authLoaders, [loader]: false},
+    })),
+
+  resetAuthStore: () =>
+    set(prevState => ({
+      ...globalInitialState,
+      authLoaders: {
+        ...prevState.authLoaders,
+        'loading-user': false,
+      },
+    })),
 }));
 
 export default createSelectors(authStore);

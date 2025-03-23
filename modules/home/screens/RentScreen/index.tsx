@@ -20,6 +20,7 @@ import ActionButtons from './components';
 import {useNavigation} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
 import DirectionsComponent from './components/DirectionsComponent';
+import {authUtils} from '@/modules/authentication/utils';
 
 const RentScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -41,6 +42,7 @@ const RentScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    authUtils.setBottomSheetView('welcome');
     setNavigator(navigation);
 
     const requestLocationPermission = async () => {
@@ -135,14 +137,18 @@ const RentScreen: React.FC = () => {
           />
         ))}
 
-        {selectedHub && selectedHub.latitude && selectedHub.longitude && latitude && longitude &&  (
-          <DirectionsComponent
-            origin={{latitude, longitude}}
-            destination={selectedHub}
-            mapRef={mapRef as React.RefObject<MapView>}
-            onHeadingChange={setHeading}
-          />
-        )}
+        {selectedHub &&
+          selectedHub.latitude &&
+          selectedHub.longitude &&
+          latitude &&
+          longitude && (
+            <DirectionsComponent
+              origin={{latitude, longitude}}
+              destination={selectedHub}
+              mapRef={mapRef as React.RefObject<MapView>}
+              onHeadingChange={setHeading}
+            />
+          )}
       </MapView>
 
       {/* rent action buttons */}
