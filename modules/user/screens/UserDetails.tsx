@@ -1,11 +1,11 @@
 // dependencies
 import {View, StyleSheet} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // service
-import {AuthService} from '@/globalService';
+import {AuthService, UserService} from '@/globalService';
 
 // store
 import {useGlobalStore, useThemeStore} from '@/globalStore';
@@ -52,7 +52,6 @@ const UserDetails: React.FC = () => {
       // @ts-ignore
       onToggle: value => {
         setNotificationsEnabled(value);
-        console.log('Notifications toggled:', value);
       },
       onPress: () => {}, // No-op since the switch handles the interaction
       testID: 'notifications-button',
@@ -75,6 +74,10 @@ const UserDetails: React.FC = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
+
+  useEffect(() => {
+    UserService.fetchUserDetails();
+  });
 
   return (
     <SafeAreaView style={styles.safeArea}>

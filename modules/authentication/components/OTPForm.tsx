@@ -24,20 +24,11 @@ const OTPForm: React.FC = () => {
       const response = await AuthService.verifyOTP(
         confirmationResult,
         otp,
-        () => {
-          console.log('error verifying otp');
-        },
+        () => {},
       );
-      const userIdToken = response?.getIdToken();
-      const userIdTokenResult = response?.getIdTokenResult();
-
-      console.log('user token', userIdToken);
-      console.log('user token result', userIdTokenResult);
       setUser(response);
       return response;
-    } catch (err) {
-      console.log('Error', err);
-    }
+    } catch (err) {}
   };
 
   return (

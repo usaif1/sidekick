@@ -6,7 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 
 // store
 import useLocationStore from '../../store/locationStore';
-import {useGlobalStore} from '@/globalStore';
+import {useAuthStore, useGlobalStore} from '@/globalStore';
 
 // utils
 import {scooterHubs} from '../../data/scooterHubs';
@@ -24,6 +24,7 @@ import {authUtils} from '@/modules/authentication/utils';
 
 const RentScreen: React.FC = () => {
   const navigation = useNavigation();
+  const {authToken} = useAuthStore();
 
   const {setNavigator} = useGlobalStore();
 
@@ -42,6 +43,7 @@ const RentScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log('authToken', authToken);
     authUtils.setBottomSheetView('welcome');
     setNavigator(navigation);
 

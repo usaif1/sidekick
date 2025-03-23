@@ -19,7 +19,7 @@ const AuthScreen: React.FC = () => {
   const {setBottomSheetView} = authUtils;
 
   const onPressBackButton = () => {
-    console.log('currentView', currentView);
+    
 
     switch (currentView) {
       case 'otpNew':

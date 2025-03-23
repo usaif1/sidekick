@@ -3,6 +3,7 @@ import React, {useEffect, useRef} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {StatusBar} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import {Provider, Client} from 'urql';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -22,7 +23,7 @@ function App(): React.JSX.Element {
     AuthBottomSheetComponent,
     authBottomSheetSnapPoints,
     authLoaders,
-    user,
+    graphQLClient,
   } = useAuthStore();
 
   const {
@@ -57,8 +58,8 @@ function App(): React.JSX.Element {
           backgroundColor={'transparent'}
           translucent
         />
-        {user ? (
-          <>
+        {graphQLClient ? (
+          <Provider value={graphQLClient as Client}>
             <ProtectedNavigation />
             <BottomSheet
               key="protectedBottomSheet"
@@ -73,7 +74,7 @@ function App(): React.JSX.Element {
                 {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
               </BottomSheetView>
             </BottomSheet>
-          </>
+          </Provider>
         ) : (
           <>
             <AuthNavigation />

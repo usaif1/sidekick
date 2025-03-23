@@ -1,0 +1,13 @@
+query fetchCurrentUser {
+  users {
+    first_name
+    last_name
+    middle_name
+    user_organizations {
+      organization {
+        name
+      }
+    }
+    phone_number
+  }
+}

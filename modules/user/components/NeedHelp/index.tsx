@@ -19,7 +19,7 @@ const NeedHelp: React.FC = () => {
       if (supported) {
         await Linking.openURL(emailUrl);
       } else {
-        console.log('Cannot open email client');
+        
       }
     } catch (error) {
       console.error('Error opening email client:', error);

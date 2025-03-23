@@ -70,7 +70,7 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
 
     if (isValid) {
       // Save changes and navigate back
-      console.log('Saving profile changes:', {name, email, phone});
+      
       navigation.goBack();
     }
   };
