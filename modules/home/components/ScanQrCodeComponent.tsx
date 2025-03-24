@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Platform, Alert } from 'react-native';
-import { Camera} from 'react-native-vision-camera';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TextInput, Platform, Alert} from 'react-native';
+import {Camera} from 'react-native-vision-camera';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import H2 from '@/components/Typography/H2';
 import P2 from '@/components/Typography/P2';
 import Divider from '@/components/Divider';
@@ -16,12 +16,12 @@ const ScanQrCodeComponent = () => {
   const {navigator, closeModal} = useGlobalStore();
   const [hasPermission, setHasPermission] = useState(false);
   const devices = Camera.getAvailableCameraDevices();
-  const device = devices.find((d) => d.position === "back");
+  const device = devices.find(d => d.position === 'back');
 
   useEffect(() => {
     const checkPermissions = async () => {
       let permission;
-      if (Platform.OS === "ios") {
+      if (Platform.OS === 'ios') {
         permission = await request(PERMISSIONS.IOS.CAMERA);
       } else {
         permission = await request(PERMISSIONS.ANDROID.CAMERA);
@@ -30,17 +30,19 @@ const ScanQrCodeComponent = () => {
       setHasPermission(permission === RESULTS.GRANTED);
 
       if (permission !== RESULTS.GRANTED) {
-        Alert.alert("Permission Denied", "Camera access is required to scan QR codes.");
+        Alert.alert(
+          'Permission Denied',
+          'Camera access is required to scan QR codes.',
+        );
       }
     };
 
     checkPermissions();
   }, []);
 
-  const handleCodeScanned = (codes:any) => {
+  const handleCodeScanned = (codes: any) => {
     const scannedValue = codes[0]?.value;
     if (scannedValue) {
-      
     }
   };
 
@@ -64,17 +66,16 @@ const ScanQrCodeComponent = () => {
               borderRadius: 20,
               borderWidth: 2,
               borderColor: colors.highlight,
-              overflow: "hidden",
+              overflow: 'hidden',
             }}>
-            <Camera 
+            <Camera
               style={{flex: 1}}
-              device={device} 
-              isActive={true} 
-              codeScanner={{ 
-                codeTypes: ["qr"], 
-                onCodeScanned: handleCodeScanned 
-              }} 
-              
+              device={device}
+              isActive={true}
+              codeScanner={{
+                codeTypes: ['qr'],
+                onCodeScanned: handleCodeScanned,
+              }}
             />
           </View>
         ) : (
@@ -86,7 +87,7 @@ const ScanQrCodeComponent = () => {
               borderWidth: 2,
               borderColor: colors.highlight,
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
             }}>
             <Text>No camera available</Text>
           </View>
@@ -173,6 +174,7 @@ const styles = ScaledSheet.create({
     borderColor: colors.textSecondary,
     backgroundColor: colors.lightGray,
     borderRadius: 12,
+    color: colors.textSecondary,
   },
 
   inputContainer: {

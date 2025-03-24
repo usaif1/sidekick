@@ -98,9 +98,11 @@ const EmployeeForm: React.FC = () => {
             <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
           </View>
           <BottomSheetTextInput
+            keyboardType="numeric"
             placeholder="XXXXXXXXXX"
             placeholderTextColor={theme.colors.textSecondary}
             style={{
+              color: theme.colors.textSecondary,
               fontWeight: '600',
               paddingVertical: 0,
               fontSize: moderateScale(15.2),

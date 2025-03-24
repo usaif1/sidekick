@@ -77,19 +77,7 @@ const AuthService = {
     errorCallback: () => void,
   ) {
     const {newUserFormData} = useAuthStore.getState();
-    const endpoint = 'http://localhost:3000/set-claims';
-
-    console.log(
-      'payload -',
-
-      {
-        uid: `${uid}`,
-        role: role,
-        full_name: newUserFormData.fullName,
-        phone_number: `+91${newUserFormData.phoneNumber}`,
-        email: newUserFormData.email,
-      },
-    );
+    const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
 
     return new Promise(resolve => {
       setTimeout(async () => {
