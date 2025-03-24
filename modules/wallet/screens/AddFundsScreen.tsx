@@ -171,15 +171,16 @@ const AddFundsScreen = () => {
       </ScrollView>
 
       {/* Pay button */}
-
-      <View style={styles.buttonContainer}>
-        <ButtonText variant="primary" onPress={handlePay}>
-          Pay ₹{' '}
-          {securityDeposit
-            ? rechargeAmount
-            : parseFloat(rechargeAmount) + securityDeposit}
-        </ButtonText>
-      </View>
+      {rechargeAmount && rechargeAmount !== '0' ? (
+        <View style={styles.buttonContainer}>
+          <ButtonText variant="primary" onPress={handlePay}>
+            Pay ₹{' '}
+            {!securityDeposit
+              ? rechargeAmount
+              : parseFloat(rechargeAmount) + securityDeposit}
+          </ButtonText>
+        </View>
+      ) : null}
 
       <GlobalModal />
     </SafeAreaView>
