@@ -46,7 +46,16 @@ function App(): React.JSX.Element {
   }, []);
 
   if (!onboarded) {
-    return <SplashNavigation />;
+    return (
+      <>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={'transparent'}
+          translucent
+        />
+        <SplashNavigation />;
+      </>
+    );
   }
 
   if (authLoaders['loading-user']) {

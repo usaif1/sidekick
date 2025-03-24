@@ -1,6 +1,6 @@
 // dependencies
 import React, {useEffect} from 'react';
-import {View} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 // assets
@@ -70,6 +70,11 @@ const SplashScreen1: React.FC = () => {
 
   return (
     <View style={splashStyles.layoutBackground}>
+      <StatusBar
+        barStyle={'dark-content'}
+        backgroundColor={'transparent'}
+        translucent
+      />
       <SideKickLogo />
     </View>
   );
