@@ -3079,9 +3079,10 @@ export type User_Organizations_Updates = {
 export type Users = {
   __typename?: 'users';
   created_at: Scalars['timestamp']['output'];
+  email: Scalars['String']['output'];
   firebase_id: Scalars['String']['output'];
   first_name?: Maybe<Scalars['String']['output']>;
-  hashed_pwd: Scalars['String']['output'];
+  full_name: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
   last_name?: Maybe<Scalars['String']['output']>;
   middle_name?: Maybe<Scalars['String']['output']>;
@@ -3189,9 +3190,10 @@ export type Users_Bool_Exp = {
   _not?: InputMaybe<Users_Bool_Exp>;
   _or?: InputMaybe<Array<Users_Bool_Exp>>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
   firebase_id?: InputMaybe<String_Comparison_Exp>;
   first_name?: InputMaybe<String_Comparison_Exp>;
-  hashed_pwd?: InputMaybe<String_Comparison_Exp>;
+  full_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   last_name?: InputMaybe<String_Comparison_Exp>;
   middle_name?: InputMaybe<String_Comparison_Exp>;
@@ -3207,6 +3209,8 @@ export type Users_Bool_Exp = {
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
+  /** unique or primary key constraint on columns "email" */
+  UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint on columns "firebase_id" */
   UsersFirebaseIdKey = 'users_firebase_id_key',
   /** unique or primary key constraint on columns "phone_number" */
@@ -3218,9 +3222,10 @@ export enum Users_Constraint {
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   firebase_id?: InputMaybe<Scalars['String']['input']>;
   first_name?: InputMaybe<Scalars['String']['input']>;
-  hashed_pwd?: InputMaybe<Scalars['String']['input']>;
+  full_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   last_name?: InputMaybe<Scalars['String']['input']>;
   middle_name?: InputMaybe<Scalars['String']['input']>;
@@ -3235,9 +3240,10 @@ export type Users_Insert_Input = {
 export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   firebase_id?: Maybe<Scalars['String']['output']>;
   first_name?: Maybe<Scalars['String']['output']>;
-  hashed_pwd?: Maybe<Scalars['String']['output']>;
+  full_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   last_name?: Maybe<Scalars['String']['output']>;
   middle_name?: Maybe<Scalars['String']['output']>;
@@ -3249,9 +3255,10 @@ export type Users_Max_Fields = {
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   firebase_id?: Maybe<Scalars['String']['output']>;
   first_name?: Maybe<Scalars['String']['output']>;
-  hashed_pwd?: Maybe<Scalars['String']['output']>;
+  full_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   last_name?: Maybe<Scalars['String']['output']>;
   middle_name?: Maybe<Scalars['String']['output']>;
@@ -3285,9 +3292,10 @@ export type Users_On_Conflict = {
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
   firebase_id?: InputMaybe<Order_By>;
   first_name?: InputMaybe<Order_By>;
-  hashed_pwd?: InputMaybe<Order_By>;
+  full_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   last_name?: InputMaybe<Order_By>;
   middle_name?: InputMaybe<Order_By>;
@@ -3308,11 +3316,13 @@ export enum Users_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Email = 'email',
+  /** column name */
   FirebaseId = 'firebase_id',
   /** column name */
   FirstName = 'first_name',
   /** column name */
-  HashedPwd = 'hashed_pwd',
+  FullName = 'full_name',
   /** column name */
   Id = 'id',
   /** column name */
@@ -3328,9 +3338,10 @@ export enum Users_Select_Column {
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   firebase_id?: InputMaybe<Scalars['String']['input']>;
   first_name?: InputMaybe<Scalars['String']['input']>;
-  hashed_pwd?: InputMaybe<Scalars['String']['input']>;
+  full_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   last_name?: InputMaybe<Scalars['String']['input']>;
   middle_name?: InputMaybe<Scalars['String']['input']>;
@@ -3349,9 +3360,10 @@ export type Users_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Users_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   firebase_id?: InputMaybe<Scalars['String']['input']>;
   first_name?: InputMaybe<Scalars['String']['input']>;
-  hashed_pwd?: InputMaybe<Scalars['String']['input']>;
+  full_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   last_name?: InputMaybe<Scalars['String']['input']>;
   middle_name?: InputMaybe<Scalars['String']['input']>;
@@ -3364,11 +3376,13 @@ export enum Users_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Email = 'email',
+  /** column name */
   FirebaseId = 'firebase_id',
   /** column name */
   FirstName = 'first_name',
   /** column name */
-  HashedPwd = 'hashed_pwd',
+  FullName = 'full_name',
   /** column name */
   Id = 'id',
   /** column name */
@@ -3860,7 +3874,30 @@ export type Wallets_Variance_Order_By = {
 export type FetchCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', first_name?: string | null, last_name?: string | null, middle_name?: string | null, phone_number: string, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', name: string } }> }> };
+export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', email: string, id: any, full_name: string, phone_number: string, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', name: string } }> }> };
+
+export type UpdateUserMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  _set?: InputMaybe<Users_Set_Input>;
+}>;
 
 
-export const FetchCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"first_name"}},{"kind":"Field","name":{"kind":"Name","value":"last_name"}},{"kind":"Field","name":{"kind":"Name","value":"middle_name"}},{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}}]}}]}}]} as unknown as DocumentNode<FetchCurrentUserQuery, FetchCurrentUserQueryVariables>;
+export type UpdateUserMutation = { __typename?: 'mutation_root', update_users_by_pk?: { __typename?: 'users', id: any } | null };
+
+export type CreateWalletMutationVariables = Exact<{
+  object?: InputMaybe<Wallets_Insert_Input>;
+}>;
+
+
+export type CreateWalletMutation = { __typename?: 'mutation_root', insert_wallets_one?: { __typename?: 'wallets', balance: any, created_at: any, id: any } | null };
+
+export type FetchUserWalletQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FetchUserWalletQuery = { __typename?: 'query_root', wallets: Array<{ __typename?: 'wallets', balance: any, id: any, security_deposit: any, transactions: Array<{ __typename?: 'transactions', ride_id?: any | null, amount: any, ride?: { __typename?: 'rides', end_time?: any | null, start_time: any, total_cost?: any | null, hub?: { __typename?: 'hubs', id: any, name?: string | null } | null } | null }> }> };
+
+
+export const FetchCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"full_name"}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}},{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}}]}}]}}]} as unknown as DocumentNode<FetchCurrentUserQuery, FetchCurrentUserQueryVariables>;
+export const UpdateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"_set"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"users_set_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_users_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"_set"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
+export const CreateWalletDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createWallet"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"wallets_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_wallets_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateWalletMutation, CreateWalletMutationVariables>;
+export const FetchUserWalletDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchUserWallet"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"wallets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"security_deposit"}},{"kind":"Field","name":{"kind":"Name","value":"transactions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ride_id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"ride"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"start_time"}},{"kind":"Field","name":{"kind":"Name","value":"total_cost"}},{"kind":"Field","name":{"kind":"Name","value":"hub"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<FetchUserWalletQuery, FetchUserWalletQueryVariables>;

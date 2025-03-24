@@ -21,20 +21,29 @@ import {
 import AuthService from '../services/auth.service.ts';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useAuthStore, useThemeStore} from '@/globalStore';
 import {authUtils} from '../utils';
 
 const SignupForm: React.FC = () => {
   const {theme} = useThemeStore();
 
+  const {newUserFormData, setNewUserFormData} = useAuthStore();
+
+  const onChangeText = (fieldName: string, text: string) => {
+    setNewUserFormData(fieldName, text);
+  };
+
   const continueHandler = async () => {
     try {
-      const response = await AuthService.sendOTP('+919898989898', false);
+      const response = await AuthService.sendOTP(
+        `+91${newUserFormData.phoneNumber}`,
+        false,
+      );
       if (response) {
         authUtils.setBottomSheetView('otpNew');
       }
     } catch (err) {
-      
+      console.log('Error sending otp', err);
     }
   };
 
@@ -45,7 +54,14 @@ const SignupForm: React.FC = () => {
           Enter your Full Name
         </LabelPrimary>
         <Divider height={10} />
-        <BottomSheetStyledInput placeholder="XXXXXXXXXX" />
+        <BottomSheetStyledInput
+          placeholder="XXXXXXXXXX"
+          numberOfLines={1}
+          value={newUserFormData.fullName}
+          onChangeText={text => {
+            onChangeText('fullName', text);
+          }}
+        />
       </View>
       <View style={{width: '100%'}}>
         <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
@@ -58,7 +74,15 @@ const SignupForm: React.FC = () => {
           </LabelPrimary>
         </LabelPrimary>
         <Divider height={10} />
-        <BottomSheetStyledInput placeholder="XXXXXXXXXX" />
+        <BottomSheetStyledInput
+          placeholder="XXXXXXXXXX"
+          value={newUserFormData.email}
+          autoCapitalize="none"
+          onChangeText={text => {
+            onChangeText('email', text);
+          }}
+          keyboardType="email-address"
+        />
       </View>
 
       <View style={{width: '100%'}}>
@@ -67,17 +91,10 @@ const SignupForm: React.FC = () => {
         </LabelPrimary>
         <Divider height={10} />
         <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderWidth: 2,
-            width: '100%',
-            height: verticalScale(48),
-            borderColor: theme.colors.textSecondary,
-            borderRadius: 20,
-            paddingLeft: scale(18),
-            columnGap: 10,
-          }}>
+          style={[
+            styles.containerStyles,
+            {borderColor: theme.colors.textSecondary},
+          ]}>
           <View
             style={{
               flexDirection: 'row',
@@ -97,6 +114,10 @@ const SignupForm: React.FC = () => {
           <BottomSheetTextInput
             placeholder="XXXXXXXXXX"
             placeholderTextColor={theme.colors.textSecondary}
+            value={newUserFormData.phoneNumber}
+            onChangeText={text => {
+              onChangeText('phoneNumber', text);
+            }}
             style={{
               fontWeight: '600',
               paddingVertical: 0,
@@ -125,9 +146,20 @@ const styles = ScaledSheet.create({
   contentContainer: {
     rowGap: 16,
     width: '100%',
-    backgroundColor: 'white', // Optional: Adds a dark overlay for text readability
+    backgroundColor: 'white',
     borderRadius: 20,
     paddingTop: 32,
     paddingHorizontal: 24,
+  },
+  containerStyles: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 2,
+    width: '100%',
+    height: verticalScale(48),
+
+    borderRadius: 20,
+    paddingLeft: scale(18),
+    columnGap: 10,
   },
 });

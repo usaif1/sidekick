@@ -17,7 +17,8 @@ import {AuthService} from '@/globalService';
 import {initializeClient} from '@/utils/client';
 
 const SplashScreen1: React.FC = () => {
-  const {stopLoading, setUser, setAuthToken, setGraphQLClient} = useAuthStore();
+  const {stopLoading, setAuthUser, setAuthToken, setGraphQLClient} =
+    useAuthStore();
 
   useEffect(() => {
     auth().onAuthStateChanged(async user => {
@@ -26,7 +27,7 @@ const SplashScreen1: React.FC = () => {
           stopLoading('loading-user');
         }, 50);
         setGraphQLClient(null);
-        setUser(null);
+        setAuthUser(null);
         setAuthToken('');
         return;
       }
@@ -57,7 +58,7 @@ const SplashScreen1: React.FC = () => {
         const graphqlClient = initializeClient();
         setGraphQLClient(graphqlClient);
         setAuthToken(token as string);
-        setUser(user);
+        setAuthUser(user);
         setTimeout(() => {
           stopLoading('loading-user');
         }, 1000);
