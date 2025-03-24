@@ -62,7 +62,8 @@
     "rn-swipe-button": "^3.0.1",
     "urql": "^4.2.2",
     "zod": "^3.24.2",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.3",
+    "react-native-easebuzz-kit": "file:react-native-easebuzz-kit.zip"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
