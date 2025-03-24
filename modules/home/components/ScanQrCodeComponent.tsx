@@ -68,14 +68,20 @@ const ScanQrCodeComponent = () => {
               borderColor: colors.highlight,
               overflow: 'hidden',
             }}>
-            <Camera
-              style={{flex: 1}}
-              device={device}
-              isActive={true}
-              codeScanner={{
-                codeTypes: ['qr'],
-                onCodeScanned: handleCodeScanned,
+              <Camera 
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0
               }}
+              device={device} 
+              isActive={true} 
+              codeScanner={{ 
+                codeTypes: ["qr"], 
+                onCodeScanned: handleCodeScanned 
+              }} 
             />
           </View>
         ) : (
@@ -113,7 +119,7 @@ const ScanQrCodeComponent = () => {
           <TextInput
             placeholder="XXXX"
             placeholderTextColor={colors.textSecondary}
-            style={styles.input}
+            style={[styles.input, { color: colors.textPrimary }]}
           />
           <View style={{width: 100}}>
             <ButtonTextSm
