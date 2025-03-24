@@ -113,6 +113,7 @@ const SignupForm: React.FC = () => {
           </View>
           <BottomSheetTextInput
             placeholder="XXXXXXXXXX"
+            maxLength={10}
             placeholderTextColor={theme.colors.textSecondary}
             value={newUserFormData.phoneNumber}
             onChangeText={text => {

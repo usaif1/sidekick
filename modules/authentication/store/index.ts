@@ -23,6 +23,10 @@ type LoaderType =
   | 'profile-update'
   | 'auth-confirmation';
 
+export type ExistingFormData = {
+  phoneNumber: string;
+};
+
 export type NewUserFormData = {
   fullName: string;
   email: string;
@@ -40,6 +44,7 @@ type AuthStore = {
 
   // form data
   newUserFormData: NewUserFormData;
+  existingUserPhoneNumber: string;
 
   // bottom sheet
   AuthBottomSheetComponent: React.FC | null;
@@ -61,6 +66,7 @@ type GlobalActions = {
 
   // formData
   setNewUserFormData: (key: string, value: string) => void;
+  setExistingUserPhoneNumber: (value: string) => void;
 
   // graphql
   setGraphQLClient: (client: Client | null) => void;
@@ -95,6 +101,8 @@ const authInitialState: AuthStore = {
     fullName: '',
     phoneNumber: '',
   },
+
+  existingUserPhoneNumber: '',
 
   // bottom sheet
   currentView: 'welcome',
@@ -139,6 +147,12 @@ const authStore = create<AuthStore & GlobalActions>(set => ({
         [key]: value,
       },
     })),
+
+  setExistingUserPhoneNumber: value =>
+    set({
+      existingUserPhoneNumber: value,
+    }),
+
   //  graphql
   setGraphQLClient: client =>
     set({
