@@ -3,15 +3,11 @@ import {View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore, useWalletStore} from '@/globalStore';
 
 // components
 import {ButtonTextSm, B2} from '@/components';
 interface SecurityDepositBarProps {
-  /**
-   * Security deposit amount
-   */
-  depositAmount: number;
   /**
    * Function to call when withdraw button is pressed
    */
@@ -28,16 +24,17 @@ interface SecurityDepositBarProps {
 const {colors} = useThemeStore.getState().theme;
 
 const SecurityDepositBar: React.FC<SecurityDepositBarProps> = ({
-  depositAmount,
   onWithdraw,
   testID = 'security-deposit-bar',
 }) => {
+  const {userWallet} = useWalletStore();
+
   return (
     <View style={styles.wrapper}>
       <View style={[styles.container]} testID={testID}>
         <View style={styles.depositContainer}>
           <B2>Security Deposit</B2>
-          <B2>₹{depositAmount}</B2>
+          <B2>₹{userWallet?.security_deposit}</B2>
         </View>
       </View>
       <View style={{width: '27%'}}>

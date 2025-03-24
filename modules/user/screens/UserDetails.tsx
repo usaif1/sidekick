@@ -7,9 +7,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 // service
 import {AuthService, UserService} from '@/globalService';
 
-
 // store
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
 
 // components
 import ProfileCard from '@/modules/user/components/ProfileCard';
@@ -24,16 +23,13 @@ import NeedHelp from '@/modules/user/components/NeedHelp';
 const {colors} = useThemeStore.getState().theme;
 
 const UserDetails: React.FC = () => {
+  const {user} = useUserStore();
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const {openModal, setModalComponent, closeBottomSheet} = useGlobalStore();
 
   // User data
-  const userData = {
-    name: 'Christian Miller',
-    email: 'christian.miller@infosys.com',
-    phone: '9876543210',
-  };
+  const userData = user;
 
   // Menu items with the notifications item using a switch
   const menuItems = [
@@ -78,14 +74,18 @@ const UserDetails: React.FC = () => {
 
   useEffect(() => {
     UserService.fetchUserDetails();
-  });
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <ProfileCard
-          fullName={userData.name}
-          company="Infosys"
+          fullName={userData?.full_name as string}
+          company={
+            userData?.user_organizations?.length
+              ? userData?.user_organizations[0].organization?.name
+              : ''
+          }
           totalMinutes={48}
           totalKilometers={2.9}
           // profileImage={profileImage} // Uncomment if you have a profile image
@@ -97,13 +97,15 @@ const UserDetails: React.FC = () => {
         <Menu items={menuItems} style={styles.menu} testID="user-menu" />
       </View>
 
-      <ButtonText
-        variant="primary"
-        onPress={() => {
-          AuthService.signOut();
-        }}>
-        Logout
-      </ButtonText>
+      <View style={{width: 200, alignSelf: 'center'}}>
+        <ButtonText
+          variant="error"
+          onPress={() => {
+            AuthService.signOut();
+          }}>
+          Logout
+        </ButtonText>
+      </View>
 
       <GlobalModal />
     </SafeAreaView>

@@ -3,22 +3,20 @@ import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore, useWalletStore} from '@/globalStore';
 
 // components
 import {H1, P1, Divider} from '@/components';
 
 interface WalletCardProps {
-  balance: number;
   testID?: string;
 }
 
 const {colors} = useThemeStore.getState().theme;
 
-const WalletCard: React.FC<WalletCardProps> = ({
-  balance,
-  testID = 'wallet-card',
-}) => {
+const WalletCard: React.FC<WalletCardProps> = ({testID = 'wallet-card'}) => {
+  const {userWallet} = useWalletStore();
+
   return (
     <View style={[styles.container]} testID={testID}>
       <Image
@@ -27,7 +25,7 @@ const WalletCard: React.FC<WalletCardProps> = ({
       />
       <P1 textColor="textSecondary">Current Balance</P1>
       <Divider height={4} />
-      <H1>₹{balance.toFixed(1)}</H1>
+      <H1>₹{userWallet?.balance.toFixed(1)}</H1>
     </View>
   );
 };

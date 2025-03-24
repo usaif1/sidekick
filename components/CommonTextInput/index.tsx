@@ -41,6 +41,7 @@ const styles = ScaledSheet.create({
     paddingLeft: '18@s',
     fontWeight: '600',
     fontSize: '15.2@ms',
+    color: theme.colors.textSecondary,
   },
 });
 

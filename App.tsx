@@ -4,6 +4,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {StatusBar} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {Provider, Client} from 'urql';
+import axios from 'axios';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -37,6 +38,8 @@ function App(): React.JSX.Element {
   const globalBottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
+    axios.get('https://sidekick-backend-279t.onrender.com');
+
     setAuthBottomSheetRef(authBottomSheetRef);
     setGlobalBottomSheetRef(globalBottomSheetRef);
     // eslint-disable-next-line react-hooks/exhaustive-deps
