@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 // store
 import useLocationStore from '../../store/locationStore';
@@ -37,7 +38,7 @@ const RentScreen: React.FC = () => {
   const [heading, setHeading] = useState<number>(0);
 
   const handleOpenModal = () => {
-    setModalComponent(ScanQrCodeComponent);
+    // setModalComponent(ScanQrCodeComponent);
     openModal();
   };
 
@@ -94,6 +95,7 @@ const RentScreen: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
+      setModalComponent(ScanQrCodeComponent);
       closeBottomSheet();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),

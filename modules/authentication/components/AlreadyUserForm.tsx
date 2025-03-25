@@ -76,11 +76,13 @@ const AlreadyUserForm: React.FC = () => {
           <BottomSheetTextInput
             placeholder="XXXXXXXXXX"
             placeholderTextColor={theme.colors.textSecondary}
+            keyboardType="numeric"
             maxLength={10}
             onChangeText={text => {
               setExistingUserPhoneNumber(text);
             }}
             style={{
+              color: theme.colors.textPrimary,
               fontWeight: '600',
               paddingVertical: 0,
               fontSize: moderateScale(15.2),
