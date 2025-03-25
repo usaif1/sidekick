@@ -23,13 +23,28 @@ type LoaderType =
   | 'profile-update'
   | 'auth-confirmation';
 
+export type ExistingFormData = {
+  phoneNumber: string;
+};
+
+export type NewUserFormData = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+};
+
 type AuthStore = {
-  user: FirebaseAuthTypes.User | null | undefined;
+  // firebase credentials
+  authUser: FirebaseAuthTypes.User | null | undefined;
   confirmationResult: FirebaseAuthTypes.ConfirmationResult | null;
   authToken: string;
 
   // graphql
   graphQLClient: Client | null;
+
+  // form data
+  newUserFormData: NewUserFormData;
+  existingUserPhoneNumber: string;
 
   // bottom sheet
   AuthBottomSheetComponent: React.FC | null;
@@ -42,12 +57,16 @@ type AuthStore = {
 };
 
 type GlobalActions = {
-  // otp flow
-  setUser: (user: FirebaseAuthTypes.User | null | undefined) => void;
+  // firebase credentials
+  setAuthUser: (user: FirebaseAuthTypes.User | null | undefined) => void;
   setConfirmationResult: (
     confirmationResult: FirebaseAuthTypes.ConfirmationResult | null,
   ) => void;
   setAuthToken: (token: string) => void;
+
+  // formData
+  setNewUserFormData: (key: string, value: string) => void;
+  setExistingUserPhoneNumber: (value: string) => void;
 
   // graphql
   setGraphQLClient: (client: Client | null) => void;
@@ -67,14 +86,23 @@ type GlobalActions = {
   resetAuthStore: () => void;
 };
 
-const globalInitialState: AuthStore = {
+const authInitialState: AuthStore = {
   // otp flow
-  user: null,
+  authUser: null,
   confirmationResult: null,
   authToken: '',
 
   // graphql
   graphQLClient: null,
+
+  // form data
+  newUserFormData: {
+    email: '',
+    fullName: '',
+    phoneNumber: '',
+  },
+
+  existingUserPhoneNumber: '',
 
   // bottom sheet
   currentView: 'welcome',
@@ -93,12 +121,12 @@ const globalInitialState: AuthStore = {
 };
 
 const authStore = create<AuthStore & GlobalActions>(set => ({
-  ...globalInitialState,
+  ...authInitialState,
 
   // otp flow
-  setUser: user =>
+  setAuthUser: user =>
     set({
-      user: user,
+      authUser: user,
     }),
 
   setConfirmationResult: confirmationResult =>
@@ -106,10 +134,23 @@ const authStore = create<AuthStore & GlobalActions>(set => ({
       confirmationResult: confirmationResult,
     }),
 
-
   setAuthToken: token =>
     set({
       authToken: token,
+    }),
+
+  // form data
+  setNewUserFormData: (key, value) =>
+    set(prevState => ({
+      newUserFormData: {
+        ...prevState.newUserFormData,
+        [key]: value,
+      },
+    })),
+
+  setExistingUserPhoneNumber: value =>
+    set({
+      existingUserPhoneNumber: value,
     }),
 
   //  graphql
@@ -160,7 +201,7 @@ const authStore = create<AuthStore & GlobalActions>(set => ({
 
   resetAuthStore: () =>
     set(prevState => ({
-      ...globalInitialState,
+      ...authInitialState,
       authLoaders: {
         ...prevState.authLoaders,
         'loading-user': false,

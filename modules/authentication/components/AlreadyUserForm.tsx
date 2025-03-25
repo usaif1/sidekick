@@ -13,11 +13,30 @@ import {BottomSheetTextInput, BottomSheetView} from '@gorhom/bottom-sheet';
 import {ButtonText, Divider, LabelPrimary} from '@/components';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useAuthStore, useThemeStore} from '@/globalStore';
+
+// services
+import {AuthService} from '@/globalService';
 import {authUtils} from '../utils';
 
 const AlreadyUserForm: React.FC = () => {
   const {theme} = useThemeStore();
+
+  const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
+
+  const continueHandler = async () => {
+    try {
+      const response = await AuthService.sendOTP(
+        `+91${existingUserPhoneNumber}`,
+        false,
+      );
+      if (response) {
+        authUtils.setBottomSheetView('otpExisting');
+      }
+    } catch (err) {
+      console.log('Error sending otp', err);
+    }
+  };
 
   return (
     <BottomSheetView style={styles.contentContainer}>
@@ -57,6 +76,10 @@ const AlreadyUserForm: React.FC = () => {
           <BottomSheetTextInput
             placeholder="XXXXXXXXXX"
             placeholderTextColor={theme.colors.textSecondary}
+            maxLength={10}
+            onChangeText={text => {
+              setExistingUserPhoneNumber(text);
+            }}
             style={{
               fontWeight: '600',
               paddingVertical: 0,
@@ -71,11 +94,7 @@ const AlreadyUserForm: React.FC = () => {
           width: 220,
           alignSelf: 'center',
         }}>
-        <ButtonText
-          variant="primary"
-          onPress={() => {
-            authUtils.setBottomSheetView('otpExisting');
-          }}>
+        <ButtonText variant="primary" onPress={continueHandler}>
           Continue
         </ButtonText>
       </View>

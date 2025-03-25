@@ -4,9 +4,16 @@ import axios from 'axios';
 
 // store
 import useAuthStore from '../store';
+import {initializeClient} from '@/utils/client';
 
-const {setConfirmationResult, resetAuthStore, stopLoading, setUser} =
-  useAuthStore.getState();
+const {
+  setConfirmationResult,
+  resetAuthStore,
+  stopLoading,
+  setAuthUser,
+  setGraphQLClient,
+  setAuthToken,
+} = useAuthStore.getState();
 
 const AuthService = {
   sendOTP: async function (phoneNumber: string, forceResend: boolean) {
@@ -69,19 +76,21 @@ const AuthService = {
     role: string,
     errorCallback: () => void,
   ) {
-    const endpoint = 'http://localhost:3000';
+    const {newUserFormData} = useAuthStore.getState();
+    const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
 
     return new Promise(resolve => {
       setTimeout(async () => {
         try {
-          const result = await axios.get(
+          const result = await axios.post(
             // todo: this url is different for different environments and should be moved to a config file
             endpoint,
             {
-              params: {
-                uid: `${uid}`,
-                role: role,
-              },
+              uid: `${uid}`,
+              role: role,
+              full_name: newUserFormData.fullName,
+              phone_number: `+91${newUserFormData.phoneNumber}`,
+              email: newUserFormData.email,
             },
           );
 
@@ -114,7 +123,7 @@ const AuthService = {
     //    * * if no hasura id, call function again recursively
     //    */
     setTimeout(async () => {
-      // const updatedToken = await user?.getIdToken(true);
+      const updatedToken = await user?.getIdToken(true);
       const updatedTokenResult = await user?.getIdTokenResult(true);
 
       const hasuraIdExists = this.checkHasuraId(
@@ -126,11 +135,11 @@ const AuthService = {
       } else {
         // setIsNewUser(isNew);
         // initializing the graphql client with the new token and putting it in authStore
-        // const graphqlClient = initializeClient();
-        // setGraphqlClient(graphqlClient);
+        const graphqlClient = initializeClient();
+        setGraphQLClient(graphqlClient);
         // setXHasuraId(hasuraIdExists?.hasuraId);
-        // setAuthToken(updatedToken as string);
-        setUser(user);
+        setAuthToken(updatedToken as string);
+        setAuthUser(user);
 
         setTimeout(() => {
           stopLoading('loading-user');

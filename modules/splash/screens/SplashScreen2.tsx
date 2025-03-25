@@ -66,7 +66,7 @@ const SplashScreenCarousel: React.FC = () => {
     const timer = setTimeout(() => {
       // @ts-ignore
       navigation.replace('screen3');
-    }, 1000);
+    }, 300);
 
     return () => clearTimeout(timer);
   };
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     columnGap: 20,
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 120,
+    bottom: 110,
     width: '100%',
   },
   dot: {

@@ -15,7 +15,7 @@ import AuthService from '../services/auth.service';
 
 const OTPForm: React.FC = () => {
   const {theme} = useThemeStore();
-  const {confirmationResult, setUser} = useAuthStore();
+  const {confirmationResult, setAuthUser} = useAuthStore();
 
   const [otp, setOTP] = useState<string>('');
 
@@ -26,9 +26,7 @@ const OTPForm: React.FC = () => {
         otp,
         () => {},
       );
-      const userIdToken = response?.getIdToken();
-      const userIdTokenResult = response?.getIdTokenResult();
-      setUser(response);
+      setAuthUser(response);
       return response;
     } catch (err) {}
   };
