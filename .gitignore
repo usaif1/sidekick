@@ -78,3 +78,4 @@ yarn-error.log
 .env
 .env.*
 modules/home/config/mapConfig.ts
+react-native-easebuzz-kit
