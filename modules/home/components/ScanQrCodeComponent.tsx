@@ -83,8 +83,9 @@ const ScanQrCodeComponent = () => {
                   position: 'absolute',
                   top: 0,
                   left: 0,
-                  right: 0,
                   bottom: 0,
+                  width: '105%',
+                  height: '105%',
                 }}
                 device={device}
                 isActive={true}

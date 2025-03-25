@@ -102,7 +102,7 @@ const EmployeeForm: React.FC = () => {
             placeholder="XXXXXXXXXX"
             placeholderTextColor={theme.colors.textSecondary}
             style={{
-              color: theme.colors.textSecondary,
+              color: theme.colors.textPrimary,
               fontWeight: '600',
               paddingVertical: 0,
               fontSize: moderateScale(15.2),
