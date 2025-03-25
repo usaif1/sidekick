@@ -6,7 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 
 // store
 import useLocationStore from '../../store/locationStore';
-import {useGlobalStore, useRideStore} from '@/globalStore';
+import {useGlobalStore} from '@/globalStore';
 
 // servcies
 import {RideService} from '@/globalService';
@@ -19,19 +19,13 @@ import NearestHubMarker from '../../components/NearestHubMarker';
 import ScanQrCodeComponent from '../../components/ScanQrCodeComponent';
 import UserLocationMarker from '../../components/UserLocationMarker';
 import ActionButtons from './components';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
 import DirectionsComponent from './components/DirectionsComponent';
 import {HubLocation} from '../../types/mapTypes';
 
 const RentScreen: React.FC = () => {
-
-  const {hubs} = useRideStore();
-  const navigation = useNavigation();
-
-  const {setNavigator, closeBottomSheet} = useGlobalStore();
-
-  const {hasPermission, requestPermission} = useCameraPermission();
+  const {closeBottomSheet} = useGlobalStore();
 
   const latitude = useLocationStore(state => state.latitude);
   const longitude = useLocationStore(state => state.longitude);

@@ -44,7 +44,6 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
       mode="DRIVING"
       region="IN"
       waypoints={[]}
-      // onStart={params => {}}
       onReady={(result: MapViewDirectionsResult) => {
         const coordinates = result.coordinates;
         mapRef.current?.fitToCoordinates(coordinates, {
