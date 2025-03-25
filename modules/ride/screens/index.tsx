@@ -12,7 +12,7 @@ import {scooterHubs} from '@/modules/home/data/scooterHubs';
 import requestLocationPermission from '@/components/LocationPermission';
 import NearestHubMarker from '@/modules/home/components/NearestHubMarker';
 import {RideDetails} from '../components';
-import {useGlobalStore} from '@/globalStore';
+import {useGlobalStore, useRideStore} from '@/globalStore';
 import {GlobalModal} from '@/components';
 
 const RideScreen: React.FC = () => {
@@ -22,8 +22,17 @@ const RideScreen: React.FC = () => {
 
   const [selectedHub, setSelectedHub] = useState<HubLocation>(null);
   const mapRef = useRef<MapView>(null);
-  // const [polylineCoords, setPolylineCoords] = useState<PolylineCoordinates>([]);
-  // const [heading, setHeading] = useState<number>(0);
+  const {
+    setTimerInterval,
+    interval,
+
+    setTotalCost,
+    isPaused,
+    perMinuteRate,
+    secondsElapsed,
+    setIsPaused,
+    setSecondsElapsed,
+  } = useRideStore();
 
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
@@ -53,17 +62,6 @@ const RideScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   const {polylineCoords, heading} = updatePolylineAndFitMap(
-  //     selectedHub,
-  //     latitude,
-  //     longitude,
-  //     mapRef,
-  //   );
-  //   setPolylineCoords(polylineCoords);
-  //   setHeading(heading);
-  // }, [selectedHub, latitude, longitude]);
-
   const {setGlobalBottomSheetComponent, openGlobalBottomSheet} =
     useGlobalStore();
 
@@ -74,6 +72,41 @@ const RideScreen: React.FC = () => {
       openGlobalBottomSheet();
     }, 300);
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!isPaused) {
+      const newInterval = setInterval(() => {
+        setSecondsElapsed(prev => prev + 1); // ✅ correctly using prev value
+      }, 1000);
+
+      setTimerInterval(newInterval);
+    } else if (interval) {
+      clearInterval(interval);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPaused]);
+
+  useEffect(() => {
+    setTotalCost(Math.ceil(secondsElapsed / 60) * perMinuteRate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [secondsElapsed]);
+
+  useEffect(() => {
+    return () => {
+      // Small delay to allow the above to register
+      setTimeout(() => {
+        setIsPaused(false);
+        setSecondsElapsed(0);
+        setTotalCost(0);
+      }, 100); // 👈 allows re-triggering RideDetails timer
+    };
   }, []);
 
   return (

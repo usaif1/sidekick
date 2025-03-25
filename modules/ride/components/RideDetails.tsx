@@ -1,10 +1,10 @@
 // dependencies
 import {Dimensions, View} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useGlobalStore} from '@/globalStore';
+import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
 
 // components
@@ -17,9 +17,25 @@ const {
 } = useThemeStore.getState();
 
 const RideDetails: React.FC = () => {
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-
   const {setModalComponent, openModal} = useGlobalStore();
+  const {
+    totalCost,
+    isPaused,
+    setIsPaused,
+    secondsElapsed,
+    perMinuteRate,
+    selectedHub,
+  } = useRideStore();
+
+  // Convert seconds into mm:ss format
+  const formatTime = (totalSeconds: number) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+      2,
+      '0',
+    )}`;
+  };
 
   const endRide = () => {
     setModalComponent(EndRide);
@@ -30,8 +46,8 @@ const RideDetails: React.FC = () => {
     <View style={{height: '100%'}}>
       <View style={styles.targetHubWrapper}>
         <View style={styles.targetHubContainer}>
-          <H2 textColor="highlight">Car Parking</H2>
-          <H2 textColor="highlight">250m</H2>
+          <H2 textColor="highlight">{selectedHub.label}</H2>
+          <H2 textColor="highlight">{selectedHub.distance}</H2>
         </View>
       </View>
       <Divider height={9} />
@@ -39,19 +55,19 @@ const RideDetails: React.FC = () => {
         <View style={styles.handle} />
         <Divider height={16} />
         <View style={{alignItems: 'center'}}>
-          <H1>00:35</H1>
+          <H1>{formatTime(secondsElapsed)}</H1>
           <P1>250m</P1>
         </View>
         <Divider height={16} />
         <View style={{paddingHorizontal: moderateScale(18)}}>
           <View style={styles.ridingMetricsFlexContainer}>
             <H3 textColor="textSecondary">Riding Cost</H3>
-            <H3 textColor="textSecondary">XX/Minute</H3>
+            <H3 textColor="textSecondary">₹ {perMinuteRate}/Minute</H3>
           </View>
           <Divider height={4} />
           <View style={styles.ridingMetricsFlexContainer}>
             <H3 textColor="textSecondary">Total</H3>
-            <H3 textColor="textSecondary">XX</H3>
+            <H3 textColor="textSecondary">₹ {totalCost}</H3>
           </View>
 
           <Divider height={16} />
