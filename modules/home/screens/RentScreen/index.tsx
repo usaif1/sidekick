@@ -6,27 +6,25 @@ import Geolocation from '@react-native-community/geolocation';
 
 // store
 import useLocationStore from '../../store/locationStore';
-import {useAuthStore, useGlobalStore} from '@/globalStore';
+import {useGlobalStore, useRideStore} from '@/globalStore';
 
-// utils
+// servcies
+import {RideService} from '@/globalService';
 import {scooterHubs} from '../../data/scooterHubs';
 import {mapStyles} from '../../utilis/mapStyle';
-import NearestHubMarker from '../../components/NearestHubMarker';
-
-import ScanQrCodeComponent from '../../components/ScanQrCodeComponent';
-import {HubLocation} from '../../types/mapTypes';
-import UserLocationMarker from '../../components/UserLocationMarker';
-import ActionButtons from './components';
-import {useNavigation} from '@react-navigation/native';
-import GlobalModal from '@/components/GlobalModal';
-import DirectionsComponent from './components/DirectionsComponent';
 import {authUtils} from '@/modules/authentication/utils';
 
-const RentScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const {authToken} = useAuthStore();
+// components
+import NearestHubMarker from '../../components/NearestHubMarker';
+import ScanQrCodeComponent from '../../components/ScanQrCodeComponent';
+import UserLocationMarker from '../../components/UserLocationMarker';
+import ActionButtons from './components';
+import GlobalModal from '@/components/GlobalModal';
+import DirectionsComponent from './components/DirectionsComponent';
+import {HubLocation} from '../../types/mapTypes';
 
-  const {setNavigator} = useGlobalStore();
+const RentScreen: React.FC = () => {
+  const {hubs} = useRideStore();
 
   const latitude = useLocationStore(state => state.latitude);
   const longitude = useLocationStore(state => state.longitude);
@@ -44,8 +42,7 @@ const RentScreen: React.FC = () => {
 
   useEffect(() => {
     authUtils.setBottomSheetView('welcome');
-    setNavigator(navigation);
-
+    RideService.fetchAllHubs();
     const requestLocationPermission = async () => {
       if (Platform.OS === 'android') {
         const granted = await PermissionsAndroid.request(

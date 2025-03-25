@@ -8,15 +8,35 @@ import {
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {ms, ScaledSheet} from 'react-native-size-matters';
+import {
+  Platform,
+  Button,
+  NativeModules,
+  NativeEventEmitter,
+} from 'react-native';
+
+// @ts-ignore
+import EasebuzzCheckout from 'react-native-easebuzz-kit';
 
 // store
-import {useGlobalStore, useThemeStore, useWalletStore} from '@/globalStore';
+import {
+  useGlobalStore,
+  useThemeStore,
+  useUserStore,
+  useWalletStore,
+} from '@/globalStore';
 
 // components
 import {B1, B2, Divider, GlobalModal} from '@/components';
 import ButtonText from '@/components/ButtonText';
-import {WalletService} from '@/globalService';
+import {WalletService, UserService} from '@/globalService';
 import PaymentSuccess from '../components/PaymentSuccess';
+import axios from 'axios';
+
+type ClientSecret = {
+  status: number;
+  data: string;
+};
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -26,6 +46,7 @@ const QUICK_AMOUNTS = [100, 200, 500, 1000];
 const AddFundsScreen = () => {
   const {openModal, setModalComponent} = useGlobalStore();
   const {userWallet, rechargeAmount, setRechargeAmount} = useWalletStore();
+  const {user} = useUserStore();
 
   // State for amount and payment method
 
@@ -37,30 +58,62 @@ const AddFundsScreen = () => {
   };
 
   // Handle pay button press
-  const handlePay = () => {
+  const handlePay = async () => {
     // Validate amount
-    if (!rechargeAmount || parseFloat(rechargeAmount) <= 0) {
-      // Show error
-      return;
-    }
+    const clientSecret: ClientSecret = await axios.post(
+      'https://sidekick-backend-279t.onrender.com/txnkey',
+      // 'http://localhost:3000/txnkey',
+      {
+        amount: parseFloat(rechargeAmount) + securityDeposit,
+        email: user?.email || 'default@mail.com',
+        phone: parseFloat(
+          user?.phone_number?.replace(/^(\+91)/, '') || '9999999999',
+        ),
+        firstname: user?.full_name || 'default',
+      },
+    );
 
-    if (securityDeposit) {
-      WalletService.updateWalletSecurityDeposit({
-        id: userWallet?.id,
-        security_deposit: securityDeposit,
+    const options = {
+      access_key: clientSecret.data,
+      pay_mode: 'test',
+    };
+
+    console.log('options', options);
+
+    EasebuzzCheckout.open(options)
+      .then((data: any) => {
+        //handle the payment success & failed response here
+        console.log('Payment Response:', data);
+      })
+      .catch((error: any) => {
+        //handle sdk failure issue here
+        console.log('SDK Error:', error);
       });
-    }
-
-    WalletService.updateWalletBalance({
-      id: userWallet?.id,
-      balance: parseFloat(rechargeAmount),
-    }).then(() => {
-      WalletService.fetchUserWallet();
-      openModal();
-    });
   };
 
+  // if (!rechargeAmount || parseFloat(rechargeAmount) <= 0) {
+  //   // Show error
+  //   return;
+  // }
+
+  // if (securityDeposit) {
+  //   WalletService.updateWalletSecurityDeposit({
+  //     id: userWallet?.id,
+  //     security_deposit: securityDeposit,
+  //   });
+  // }
+
+  // WalletService.updateWalletBalance({
+  //   id: userWallet?.id,
+  //   balance: parseFloat(rechargeAmount),
+  // }).then(() => {
+  //   WalletService.fetchUserWallet();
+  //   openModal();
+  // });
+  // };
+
   useEffect(() => {
+    UserService.fetchUserDetails();
     setModalComponent(PaymentSuccess);
 
     if (!userWallet?.security_deposit) {
