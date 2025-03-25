@@ -1,5 +1,5 @@
 // dependencies
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -19,12 +19,19 @@ import NearestHubMarker from '../../components/NearestHubMarker';
 import ScanQrCodeComponent from '../../components/ScanQrCodeComponent';
 import UserLocationMarker from '../../components/UserLocationMarker';
 import ActionButtons from './components';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
 import DirectionsComponent from './components/DirectionsComponent';
 import {HubLocation} from '../../types/mapTypes';
 
 const RentScreen: React.FC = () => {
+
   const {hubs} = useRideStore();
+  const navigation = useNavigation();
+
+  const {setNavigator, closeBottomSheet} = useGlobalStore();
+
+  const {hasPermission, requestPermission} = useCameraPermission();
 
   const latitude = useLocationStore(state => state.latitude);
   const longitude = useLocationStore(state => state.longitude);
@@ -90,6 +97,13 @@ const RentScreen: React.FC = () => {
   //   setPolylineCoords(newPolylineCoords);
   //   setHeading(newHeading);
   // }, [selectedHub, latitude, longitude]);
+
+  useFocusEffect(
+    useCallback(() => {
+      closeBottomSheet();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   return (
     <View style={styles.container}>

@@ -9,6 +9,7 @@ import {useThemeStore} from '@/theme/store';
 
 // components
 import {ButtonTextBottomSheet, Divider, H1, H2, H3, P1} from '@/components';
+
 import {EndRide} from '../components';
 
 const {
