@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 // store
 import useLocationStore from '../../store/locationStore';

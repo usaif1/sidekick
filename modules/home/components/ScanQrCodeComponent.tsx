@@ -25,6 +25,8 @@ const ScanQrCodeComponent = () => {
   const devices = Camera.getAvailableCameraDevices();
   const device = devices.find(d => d.position === 'back');
 
+  const [isKeyboardFocused, setIsKeyboardFocused] = useState<boolean>(false);
+
   useEffect(() => {
     const checkPermissions = async () => {
       let permission;
@@ -65,46 +67,48 @@ const ScanQrCodeComponent = () => {
           middle of the Scooter’s handle
         </P2>
         <Divider height={12} />
-        {device && hasPermission ? (
-          <View
-            style={{
-              height: 200,
-              width: 200,
-              borderRadius: 20,
-              borderWidth: 2,
-              borderColor: colors.highlight,
-              overflow: 'hidden',
-            }}>
-            <Camera
+        {!isKeyboardFocused ? (
+          device && hasPermission ? (
+            <View
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-              }}
-              device={device}
-              isActive={true}
-              codeScanner={{
-                codeTypes: ['qr'],
-                onCodeScanned: handleCodeScanned,
-              }}
-            />
-          </View>
-        ) : (
-          <View
-            style={{
-              height: 200,
-              width: 200,
-              borderRadius: 20,
-              borderWidth: 2,
-              borderColor: colors.highlight,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text>No camera available</Text>
-          </View>
-        )}
+                height: 200,
+                width: 200,
+                borderRadius: 20,
+                borderWidth: 2,
+                borderColor: colors.highlight,
+                overflow: 'hidden',
+              }}>
+              <Camera
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                }}
+                device={device}
+                isActive={true}
+                codeScanner={{
+                  codeTypes: ['qr'],
+                  onCodeScanned: handleCodeScanned,
+                }}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                height: 200,
+                width: 200,
+                borderRadius: 20,
+                borderWidth: 2,
+                borderColor: colors.highlight,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text>No camera available</Text>
+            </View>
+          )
+        ) : null}
       </View>
 
       <Divider height={12} />
@@ -124,6 +128,8 @@ const ScanQrCodeComponent = () => {
         <Divider height={14} />
         <View style={styles.inputContainer}>
           <TextInput
+            onFocus={() => setIsKeyboardFocused(true)}
+            onBlur={() => setIsKeyboardFocused(false)}
             placeholder="XXXX"
             placeholderTextColor={colors.textSecondary}
             style={[styles.input, {color: colors.textPrimary}]}
