@@ -11,7 +11,7 @@ import SwipeBtn from '@/assets/swipe-btn-img.svg';
 import RideEnded from '../components/RideEnded';
 
 // store
-import {useGlobalStore} from '@/globalStore';
+import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
 
 const {
@@ -20,8 +20,21 @@ const {
 
 const ReachedHub: React.FC = () => {
   const {setModalComponent, setModalCloseButton} = useGlobalStore();
+  const {
+    interval,
+    setTimerInterval,
+    setIsPaused,
+    setSecondsElapsed,
+    setTotalCost,
+  } = useRideStore();
 
   const onSwipeSuccess = () => {
+    setIsPaused(true);
+    if (interval) {
+      clearInterval(interval);
+      setTimerInterval(null);
+    }
+
     setModalComponent(RideEnded);
     setModalCloseButton(null);
   };

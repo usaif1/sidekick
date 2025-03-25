@@ -1,6 +1,6 @@
 // dependencies
 import {Dimensions, FlatList, Pressable, View} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // components
@@ -8,8 +8,9 @@ import {ReachedHub} from '../components';
 import {ButtonText, Divider, H2, H3, P2} from '@/components';
 
 // store
-import {useGlobalStore} from '@/globalStore';
+import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
+import {SelectedHub} from '../store';
 
 const {
   theme: {colors},
@@ -49,13 +50,9 @@ const nearestHubs = [
 ];
 
 type NearestHubCardProps = {
-  hub: {
-    id: string;
-    label: string;
-    distance: string;
-  };
-  selectedHub: string;
-  setSelectedHub: React.Dispatch<React.SetStateAction<string>>;
+  hub: SelectedHub;
+  selectedHub: SelectedHub;
+  setSelectedHub: (hub: SelectedHub) => void;
 };
 
 const NearestHubCard: React.FC<NearestHubCardProps> = ({
@@ -66,12 +63,12 @@ const NearestHubCard: React.FC<NearestHubCardProps> = ({
   return (
     <Pressable
       onPress={() => {
-        setSelectedHub(hub.id);
+        setSelectedHub(hub);
       }}
       style={[
         styles.nearestCardContainer,
         {
-          borderWidth: selectedHub === hub.id ? 2 : 0,
+          borderWidth: selectedHub.id === hub.id ? 2 : 0,
         },
       ]}>
       <H3>{hub.label}</H3>
@@ -81,7 +78,7 @@ const NearestHubCard: React.FC<NearestHubCardProps> = ({
 };
 
 const EndRide: React.FC = () => {
-  const [selectedHub, setSelectedHub] = useState<string>('car_parking');
+  const {selectedHub, setSelectedHub} = useRideStore();
 
   const {closeModal, setModalComponent} = useGlobalStore();
 

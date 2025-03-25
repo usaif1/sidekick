@@ -2,18 +2,25 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Platform, Alert} from 'react-native';
 import {Camera} from 'react-native-vision-camera';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {useNavigation} from '@react-navigation/native';
+import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+
+// components
 import H2 from '@/components/Typography/H2';
 import P2 from '@/components/Typography/P2';
 import Divider from '@/components/Divider';
+
+// store
 import {useGlobalStore, useThemeStore} from '@/globalStore';
 import LinearGradientSVG from '../assets/linearGradient.svg';
 import {ButtonTextSm} from '@/components';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
 const {colors} = useThemeStore.getState().theme;
 
 const ScanQrCodeComponent = () => {
-  const {navigator, closeModal} = useGlobalStore();
+  const navigator = useNavigation();
+
+  const {closeModal} = useGlobalStore();
   const [hasPermission, setHasPermission] = useState(false);
   const devices = Camera.getAvailableCameraDevices();
   const device = devices.find(d => d.position === 'back');
@@ -68,20 +75,20 @@ const ScanQrCodeComponent = () => {
               borderColor: colors.highlight,
               overflow: 'hidden',
             }}>
-              <Camera 
+            <Camera
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
-                bottom: 0
+                bottom: 0,
               }}
-              device={device} 
-              isActive={true} 
-              codeScanner={{ 
-                codeTypes: ["qr"], 
-                onCodeScanned: handleCodeScanned 
-              }} 
+              device={device}
+              isActive={true}
+              codeScanner={{
+                codeTypes: ['qr'],
+                onCodeScanned: handleCodeScanned,
+              }}
             />
           </View>
         ) : (
@@ -119,13 +126,14 @@ const ScanQrCodeComponent = () => {
           <TextInput
             placeholder="XXXX"
             placeholderTextColor={colors.textSecondary}
-            style={[styles.input, { color: colors.textPrimary }]}
+            style={[styles.input, {color: colors.textPrimary}]}
           />
           <View style={{width: 100}}>
             <ButtonTextSm
               customStyles={{height: '100%'}}
               onPress={() => {
                 closeModal();
+                // @ts-ignore
                 navigator.navigate('rideNavigator');
               }}
               variant="highlight">
