@@ -1,16 +1,12 @@
-import React from 'react';
-import {View, Text, TextInput} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TextInput, Platform, Alert} from 'react-native';
+import {Camera} from 'react-native-vision-camera';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import H2 from '@/components/Typography/H2';
 import P2 from '@/components/Typography/P2';
 import Divider from '@/components/Divider';
 import {useGlobalStore, useThemeStore} from '@/globalStore';
 import LinearGradientSVG from '../assets/linearGradient.svg';
-import {
-  Camera,
-  CameraDevice,
-  useCameraDevice,
-  useCodeScanner,
-} from 'react-native-vision-camera';
 import {ButtonTextSm} from '@/components';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
@@ -18,15 +14,37 @@ const {colors} = useThemeStore.getState().theme;
 
 const ScanQrCodeComponent = () => {
   const {navigator, closeModal} = useGlobalStore();
+  const [hasPermission, setHasPermission] = useState(false);
+  const devices = Camera.getAvailableCameraDevices();
+  const device = devices.find(d => d.position === 'back');
 
-  const device = useCameraDevice('back');
+  useEffect(() => {
+    const checkPermissions = async () => {
+      let permission;
+      if (Platform.OS === 'ios') {
+        permission = await request(PERMISSIONS.IOS.CAMERA);
+      } else {
+        permission = await request(PERMISSIONS.ANDROID.CAMERA);
+      }
 
-  const codeScanner = useCodeScanner({
-    codeTypes: ['qr', 'ean-13'],
-    onCodeScanned: codes => {
-      console.log(`Scanned ${codes.length} codes!`);
-    },
-  });
+      setHasPermission(permission === RESULTS.GRANTED);
+
+      if (permission !== RESULTS.GRANTED) {
+        Alert.alert(
+          'Permission Denied',
+          'Camera access is required to scan QR codes.',
+        );
+      }
+    };
+
+    checkPermissions();
+  }, []);
+
+  const handleCodeScanned = (codes: any) => {
+    const scannedValue = codes[0]?.value;
+    if (scannedValue) {
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -40,7 +58,7 @@ const ScanQrCodeComponent = () => {
           middle of the Scooter’s handle
         </P2>
         <Divider height={12} />
-        {device ? (
+        {device && hasPermission ? (
           <View
             style={{
               height: 200,
@@ -48,14 +66,38 @@ const ScanQrCodeComponent = () => {
               borderRadius: 20,
               borderWidth: 2,
               borderColor: colors.highlight,
+              overflow: 'hidden',
             }}>
-            <Camera
-              device={device as CameraDevice}
-              isActive
-              codeScanner={codeScanner}
+              <Camera 
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0
+              }}
+              device={device} 
+              isActive={true} 
+              codeScanner={{ 
+                codeTypes: ["qr"], 
+                onCodeScanned: handleCodeScanned 
+              }} 
             />
           </View>
-        ) : null}
+        ) : (
+          <View
+            style={{
+              height: 200,
+              width: 200,
+              borderRadius: 20,
+              borderWidth: 2,
+              borderColor: colors.highlight,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text>No camera available</Text>
+          </View>
+        )}
       </View>
 
       <Divider height={12} />
@@ -77,7 +119,7 @@ const ScanQrCodeComponent = () => {
           <TextInput
             placeholder="XXXX"
             placeholderTextColor={colors.textSecondary}
-            style={styles.input}
+            style={[styles.input, { color: colors.textPrimary }]}
           />
           <View style={{width: 100}}>
             <ButtonTextSm
@@ -138,6 +180,7 @@ const styles = ScaledSheet.create({
     borderColor: colors.textSecondary,
     backgroundColor: colors.lightGray,
     borderRadius: 12,
+    color: colors.textSecondary,
   },
 
   inputContainer: {

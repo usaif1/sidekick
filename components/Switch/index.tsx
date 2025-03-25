@@ -8,7 +8,7 @@ import {
   Easing,
   AccessibilityState,
 } from 'react-native';
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 interface SwitchProps {
   /**
@@ -113,7 +113,9 @@ const Switch: React.FC<SwitchProps> = ({
 
   // Handle toggle action
   const handleToggle = () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
 
     // Calculate new toggled state
     const newValue = !isToggled;

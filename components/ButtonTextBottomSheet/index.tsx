@@ -5,7 +5,9 @@ import {ScaledSheet} from 'react-native-size-matters';
 import {TouchableHighlight} from '@gorhom/bottom-sheet';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
+
+
 
 type Props = {
   children: ReactNode;

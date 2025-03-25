@@ -4,7 +4,7 @@ import {Text, Pressable, ViewStyle} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 type Props = {
   children: ReactNode;

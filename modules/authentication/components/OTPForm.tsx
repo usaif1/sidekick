@@ -1,6 +1,6 @@
 // dependencies
-import {Text, View} from 'react-native';
-import React from 'react';
+import {Pressable, Text, View} from 'react-native';
+import React, {useState} from 'react';
 import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 
@@ -8,10 +8,28 @@ import {ScaledSheet} from 'react-native-size-matters';
 import {BottomSheetStyledInput, ButtonText, Divider} from '@/components';
 
 // store
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useThemeStore, useAuthStore} from '@/globalStore';
+
+// services
+import AuthService from '../services/auth.service';
 
 const OTPForm: React.FC = () => {
   const {theme} = useThemeStore();
+  const {confirmationResult, setAuthUser} = useAuthStore();
+
+  const [otp, setOTP] = useState<string>('');
+
+  const verifyOTP = async () => {
+    try {
+      const response = await AuthService.verifyOTP(
+        confirmationResult,
+        otp,
+        () => {},
+      );
+      setAuthUser(response);
+      return response;
+    } catch (err) {}
+  };
 
   return (
     <BottomSheetView>
@@ -21,6 +39,10 @@ const OTPForm: React.FC = () => {
           <Divider height={10} />
           <BottomSheetStyledInput
             placeholder="XXXX"
+            value={otp}
+            onChangeText={text => {
+              setOTP(text);
+            }}
             customStyle={{
               textAlign: 'center',
               paddingLeft: 0,
@@ -28,7 +50,7 @@ const OTPForm: React.FC = () => {
           />
         </View>
 
-        <View
+        <Pressable
           style={{
             alignSelf: 'center',
           }}>
@@ -42,7 +64,7 @@ const OTPForm: React.FC = () => {
             }}>
             Resend OTP
           </Text>
-        </View>
+        </Pressable>
 
         <View
           style={{
@@ -50,14 +72,7 @@ const OTPForm: React.FC = () => {
             width: 220,
             alignSelf: 'center',
           }}>
-          <ButtonText
-            variant="primary"
-            onPress={() => {
-              useGlobalStore.setState(prevState => ({
-                ...prevState,
-                loggedIn: true,
-              }));
-            }}>
+          <ButtonText variant="primary" onPress={verifyOTP}>
             Continue
           </ButtonText>
         </View>

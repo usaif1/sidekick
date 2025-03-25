@@ -2,7 +2,6 @@
 import React, {useRef, useState} from 'react';
 import {Dimensions, View, Text, StyleSheet, Pressable} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import {MMKV} from 'react-native-mmkv';
 import {useNavigation} from '@react-navigation/native';
 
 // store
@@ -13,12 +12,6 @@ import {H1, P1, Divider, ButtonText} from '@/components';
 import SideKickSplash1 from '../assets/sidekick_splash_1.svg';
 import SideKickSplash2 from '../assets/sidekick_splash_2.svg';
 import SideKickSplash3 from '../assets/sidekick_splash_3.svg';
-
-// Initialize MMKV
-const onboardingStorage = new MMKV({
-  id: 'onboarding-storage',
-  encryptionKey: 'your-secure-key',
-});
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -70,9 +63,12 @@ const SplashScreenCarousel: React.FC = () => {
   };
 
   const handleCompleteOnboarding = () => {
-    onboardingStorage.set('onboarding_complete', 'true');
-    // @ts-ignore
-    navigation.navigate('screen3'); // Replace with your main screen name
+    const timer = setTimeout(() => {
+      // @ts-ignore
+      navigation.replace('screen3');
+    }, 300);
+
+    return () => clearTimeout(timer);
   };
 
   return (
@@ -106,41 +102,37 @@ const SplashScreenCarousel: React.FC = () => {
 
       {/* Navigation Controls */}
       <View style={styles.buttonContainer}>
-        {activeIndex === 0 ? (
-          <ButtonText
-            onPress={() => carouselRef.current?.snapToNext()}
-            variant="secondary">
-            Got It
-          </ButtonText>
-        ) : (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 0,
-              marginTop: 10,
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 0,
+            marginTop: 10,
+          }}>
+          <Pressable
+            onPress={() => {
+              // @ts-ignore
+              navigation.replace('screen3');
             }}>
-            <Pressable onPress={() => carouselRef.current?.snapToPrev()}>
-              <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
-                Back
-              </Text>
-            </Pressable>
-            <View style={{width: 160}}>
-              <ButtonText
-                onPress={() => {
-                  if (activeIndex === data.length - 1) {
-                    handleCompleteOnboarding();
-                  } else {
-                    carouselRef.current?.snapToNext();
-                  }
-                }}
-                variant="secondary">
-                Got it
-              </ButtonText>
-            </View>
+            <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
+              Skip
+            </Text>
+          </Pressable>
+          <View style={{width: 160}}>
+            <ButtonText
+              onPress={() => {
+                if (activeIndex === data.length - 1) {
+                  handleCompleteOnboarding();
+                } else {
+                  carouselRef.current?.snapToNext();
+                }
+              }}
+              variant="secondary">
+              Got it
+            </ButtonText>
           </View>
-        )}
+        </View>
       </View>
     </View>
   );
@@ -169,7 +161,7 @@ const styles = StyleSheet.create({
     columnGap: 20,
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 120,
+    bottom: 110,
     width: '100%',
   },
   dot: {

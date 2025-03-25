@@ -14,7 +14,7 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 // Define the variant types our input supports
 type InputVariant = 'default' | 'dropdown' | 'phone' | 'currency';

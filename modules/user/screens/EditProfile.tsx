@@ -4,11 +4,12 @@ import {useNavigation} from '@react-navigation/native';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore, useUserStore} from '@/globalStore';
 
 // components
 import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
+import {UserService} from '@/globalService';
 
 interface EditProfileProps {
   route?: {
@@ -20,14 +21,17 @@ interface EditProfileProps {
   };
 }
 
-const EditProfile: React.FC<EditProfileProps> = ({route}) => {
+const EditProfile: React.FC<EditProfileProps> = () => {
+  const {user} = useUserStore();
   const navigation = useNavigation();
   const {colors} = useThemeStore(state => state.theme);
 
   // Initialize form state with route params or defaults
-  const [name, setName] = useState(route?.params?.initialName || '');
-  const [email, setEmail] = useState(route?.params?.initialEmail || '');
-  const [phone, setPhone] = useState(route?.params?.initialPhone || '');
+  const [name, setName] = useState(user?.full_name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [phone, setPhone] = useState(
+    user?.phone_number.replace(/^\+91/, '') || '',
+  );
 
   // Form validation state
   const [errors, setErrors] = useState({
@@ -70,8 +74,19 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
 
     if (isValid) {
       // Save changes and navigate back
-      console.log('Saving profile changes:', {name, email, phone});
-      navigation.goBack();
+
+      UserService.updateUserDetails({
+        id: user?.id,
+        _set: {
+          full_name: name,
+          email: email,
+        },
+      }).then(response => {
+        if (response) {
+          UserService.fetchUserDetails();
+        }
+        navigation.goBack();
+      });
     }
   };
 
@@ -120,6 +135,7 @@ const EditProfile: React.FC<EditProfileProps> = ({route}) => {
           countryCode="+91"
           inputType="numeric"
           testID="phone-input"
+          editable={false}
           containerStyle={styles.inputContainer}
         />
       </View>

@@ -1,7 +1,8 @@
-import React, {useState, useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {ScaledSheet} from 'react-native-size-matters';
 
 // components
 import WalletCard from '@/modules/wallet/components/WalletCard';
@@ -9,33 +10,32 @@ import SecurityDepositBar from '@/modules/wallet/components/SecurityDepositBar';
 import TransactionList from '@/modules/wallet/components/TransactionList';
 import AddFundsButton from '@/modules/wallet/components/AddFundsButton';
 
-// data
-import {mockWalletData} from '@/modules/wallet/constants/mockData';
-
 // store
 import {useThemeStore} from '@/globalStore';
-import {ScaledSheet} from 'react-native-size-matters';
 import {Divider, H3} from '@/components';
+
+// services
+import {WalletService} from '@/globalService';
 
 const {colors} = useThemeStore.getState().theme;
 
 const WalletScreen: React.FC = () => {
   const navigation = useNavigation();
 
-  // Use mock data
-  const [walletData, setWalletData] = useState(mockWalletData);
-
   // Handle withdraw button press
   const handleWithdraw = () => {
-    console.log('Withdraw pressed');
     // Implement withdraw logic or navigation
   };
 
   // Handle add funds button press
   const handleAddFunds = () => {
-    console.log('pressed');
+    // @ts-ignore
     navigation.navigate('walletNavigator', {screen: 'AddFundsScreen'});
   };
+
+  useEffect(() => {
+    WalletService.fetchUserWallet();
+  }, []);
 
   // List header component
   const ListHeaderComponent = useCallback(
@@ -56,15 +56,11 @@ const WalletScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         {/* Wallet balance card */}
-        <WalletCard
-          balance={walletData.currentBalance}
-          testID="wallet-balance-card"
-        />
+        <WalletCard testID="wallet-balance-card" />
 
         {/* Security deposit bar */}
         <Divider height={9.5} />
         <SecurityDepositBar
-          depositAmount={walletData.securityDeposit}
           onWithdraw={handleWithdraw}
           testID="security-deposit-bar"
         />
@@ -74,10 +70,7 @@ const WalletScreen: React.FC = () => {
           <Divider height={32} />
           <ListHeaderComponent />
           <Divider height={4.5} />
-          <TransactionList
-            transactions={walletData.transactions}
-            testID="transactions-list"
-          />
+          <TransactionList transactions={[]} testID="transactions-list" />
         </View>
       </View>
 

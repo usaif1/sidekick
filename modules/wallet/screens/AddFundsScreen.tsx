@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,14 +6,37 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import ButtonText from '@/components/ButtonText';
-import {useThemeStore} from '@/globalStore';
-import {useModal} from '@/components/Modal/ModalProvider';
-import PaymentSuccessModal from '../components/PaymentSuccessModal';
-import {B1, B2, Divider} from '@/components';
-import {ms, ScaledSheet} from 'react-native-size-matters';
 import {TextInput} from 'react-native-gesture-handler';
+import {ms, ScaledSheet} from 'react-native-size-matters';
+import {
+  Platform,
+  Button,
+  NativeModules,
+  NativeEventEmitter,
+} from 'react-native';
+
+// @ts-ignore
+import EasebuzzCheckout from 'react-native-easebuzz-kit';
+
+// store
+import {
+  useGlobalStore,
+  useThemeStore,
+  useUserStore,
+  useWalletStore,
+} from '@/globalStore';
+
+// components
+import {B1, B2, Divider, GlobalModal} from '@/components';
+import ButtonText from '@/components/ButtonText';
+import {WalletService, UserService} from '@/globalService';
+import PaymentSuccess from '../components/PaymentSuccess';
+import axios from 'axios';
+
+type ClientSecret = {
+  status: number;
+  data: string;
+};
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -21,40 +44,88 @@ const {colors} = useThemeStore.getState().theme;
 const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
 const AddFundsScreen = () => {
-  const navigation = useNavigation();
-  const {showModal, hideModal} = useModal();
+  const {openModal, setModalComponent} = useGlobalStore();
+  const {userWallet, rechargeAmount, setRechargeAmount} = useWalletStore();
+  const {user} = useUserStore();
 
   // State for amount and payment method
-  const [amount, setAmount] = useState('');
+
+  const [securityDeposit, setSecurityDeposit] = useState<number>(0);
 
   // Handle quick amount selection
   const handleQuickAmountSelect = (value: number) => {
-    setAmount(value.toString());
+    setRechargeAmount(value.toString());
   };
 
   // Handle pay button press
-  const handlePay = () => {
+  const handlePay = async () => {
     // Validate amount
-    if (!amount || parseFloat(amount) <= 0) {
-      // Show error
-      return;
+    const clientSecret: ClientSecret = await axios.post(
+      'https://sidekick-backend-279t.onrender.com/txnkey',
+      // 'http://localhost:3000/txnkey',
+      {
+        amount: parseFloat(rechargeAmount) + securityDeposit,
+        email: user?.email || 'default@mail.com',
+        phone: parseFloat(
+          user?.phone_number?.replace(/^(\+91)/, '') || '9999999999',
+        ),
+        firstname: user?.full_name || 'default',
+      },
+    );
+
+    const options = {
+      access_key: clientSecret.data,
+      pay_mode: 'test',
+    };
+
+    console.log('options', options);
+
+    EasebuzzCheckout.open(options)
+      .then((data: any) => {
+        //handle the payment success & failed response here
+        console.log('Payment Response:', data);
+      })
+      .catch((error: any) => {
+        //handle sdk failure issue here
+        console.log('SDK Error:', error);
+      });
+  };
+
+  // if (!rechargeAmount || parseFloat(rechargeAmount) <= 0) {
+  //   // Show error
+  //   return;
+  // }
+
+  // if (securityDeposit) {
+  //   WalletService.updateWalletSecurityDeposit({
+  //     id: userWallet?.id,
+  //     security_deposit: securityDeposit,
+  //   });
+  // }
+
+  // WalletService.updateWalletBalance({
+  //   id: userWallet?.id,
+  //   balance: parseFloat(rechargeAmount),
+  // }).then(() => {
+  //   WalletService.fetchUserWallet();
+  //   openModal();
+  // });
+  // };
+
+  useEffect(() => {
+    UserService.fetchUserDetails();
+    setModalComponent(PaymentSuccess);
+
+    if (!userWallet?.security_deposit) {
+      setSecurityDeposit(200);
     }
 
-    // Show payment success modal with navigation callbacks
-    showModal(
-      <PaymentSuccessModal
-        visible={true}
-        onClose={hideModal}
-        amount={parseFloat(amount)}
-        testID="payment-success-modal"
-        onContinueToRide={() => navigation.navigate('home')}
-        onCheckWallet={() => {
-          // Already in wallet, so no navigation needed
-          // Or you could navigate to a specific wallet tab if needed
-        }}
-      />,
-    );
-  };
+    return () => {
+      setRechargeAmount('0');
+      setSecurityDeposit(0);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -62,7 +133,9 @@ const AddFundsScreen = () => {
         {/* Amount input section */}
         <View style={styles.section}>
           <View>
-            <B2 textColor="highlight">Available Balance: ₹56.0</B2>
+            <B2 textColor="highlight">
+              Available Balance: {userWallet?.balance.toFixed(1) || 0}
+            </B2>
             <Divider height={9.6} />
             <View style={styles.amountInput}>
               <B1 textColor="highlight">₹</B1>
@@ -70,9 +143,9 @@ const AddFundsScreen = () => {
                 numberOfLines={1}
                 keyboardType="numeric"
                 placeholder="00.0"
-                value={amount}
+                value={rechargeAmount}
                 onChangeText={text => {
-                  setAmount(text);
+                  setRechargeAmount(text);
                 }}
                 placeholderTextColor={colors.textPrimary}
                 style={{
@@ -95,11 +168,11 @@ const AddFundsScreen = () => {
                   styles.quickAmountButton,
                   {
                     backgroundColor:
-                      amount === value.toString()
+                      rechargeAmount === value.toString()
                         ? colors.highlight
                         : colors.lightGray,
                     borderColor:
-                      amount === value.toString()
+                      rechargeAmount === value.toString()
                         ? colors.highlight
                         : colors.textSecondary,
                   },
@@ -110,7 +183,7 @@ const AddFundsScreen = () => {
                     styles.quickAmountText,
                     {
                       color:
-                        amount === value.toString()
+                        rechargeAmount === value.toString()
                           ? colors.white
                           : colors.textPrimary,
                     },
@@ -120,17 +193,49 @@ const AddFundsScreen = () => {
               </TouchableOpacity>
             ))}
           </View>
+          <Divider height={16} />
+          <View>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <B2>Amount</B2>
+              <B2>₹ {rechargeAmount}</B2>
+            </View>
+            <Divider height={6} />
+            {!userWallet?.security_deposit ? (
+              <>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <B2>Security Deposit</B2>
+                  <B2>₹ {securityDeposit}</B2>
+                </View>
+                <Divider height={6} />
+              </>
+            ) : null}
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <B2>Total</B2>
+              <B2>₹ {securityDeposit + parseFloat(rechargeAmount)}</B2>
+            </View>
+          </View>
         </View>
       </ScrollView>
 
       {/* Pay button */}
-      {amount && (
+      {rechargeAmount && rechargeAmount !== '0' ? (
         <View style={styles.buttonContainer}>
           <ButtonText variant="primary" onPress={handlePay}>
-            Pay ₹{(parseFloat(amount || '0') + 200).toFixed(2)}
+            Pay ₹{' '}
+            {!securityDeposit
+              ? rechargeAmount
+              : parseFloat(rechargeAmount) + securityDeposit}
           </ButtonText>
         </View>
-      )}
+      ) : null}
+
+      <GlobalModal />
     </SafeAreaView>
   );
 };

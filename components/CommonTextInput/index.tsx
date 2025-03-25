@@ -4,7 +4,7 @@ import React from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useThemeStore} from '@/globalStore';
+import {useThemeStore} from '@/theme/store';
 
 interface CommonTextInputProps extends TextInputProps {
   placeholder: string; // Customizable placeholder
@@ -41,6 +41,7 @@ const styles = ScaledSheet.create({
     paddingLeft: '18@s',
     fontWeight: '600',
     fontSize: '15.2@ms',
+    color: theme.colors.textSecondary,
   },
 });
 

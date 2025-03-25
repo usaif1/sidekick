@@ -26,10 +26,18 @@ const WelcomeForm: React.FC = () => {
             variant="primary">
             New User
           </ButtonText>
-          <ButtonText onPress={() => {}} variant="secondary">
+          <ButtonText 
+            onPress={() => {
+              authUtils.setBottomSheetView('existing');
+            }} 
+            variant="secondary">
             Already a User
           </ButtonText>
-          <ButtonText onPress={() => {}} variant="secondary">
+          <ButtonText 
+            onPress={() => {
+              authUtils.setBottomSheetView('employee');
+            }} 
+            variant="secondary">
             Employee
           </ButtonText>
         </View>
