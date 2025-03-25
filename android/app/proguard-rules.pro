@@ -15,6 +15,3 @@
 -keep class com.google.android.gms.** { *; }
 -keep class com.agontuk.RNFusedLocation.** { *; }
 -dontwarn com.google.android.gms.**
-
--keepclassmembers class com.easebuzz.payment.kit.**{
-*; }

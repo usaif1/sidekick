@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B317EA22D921D9C002DEC4A /* Easebuzz.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B317EA02D921D54002DEC4A /* Easebuzz.xcframework */; };
-		0B317EA32D921D9C002DEC4A /* Easebuzz.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0B317EA02D921D54002DEC4A /* Easebuzz.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0BF407DE2D80729F00F401EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0BF407DD2D80729F00F401EC /* GoogleService-Info.plist */; };
 		0E4120CA52924461BE0345ED /* PlusJakartaSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 442140597E6B4673B77CB700 /* PlusJakartaSans-ExtraLight.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -31,23 +29,8 @@
 		FFB7AEF99C5C4089AF9FC79F /* PlusJakartaSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03581110614F431EB470C84A /* PlusJakartaSans-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		0B317EA42D921D9C002DEC4A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0B317EA32D921D9C002DEC4A /* Easebuzz.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		03581110614F431EB470C84A /* PlusJakartaSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PlusJakartaSans-SemiBold.ttf"; path = "../assets/fonts/PlusJakartaSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		0B317EA02D921D54002DEC4A /* Easebuzz.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Easebuzz.xcframework; sourceTree = "<group>"; };
 		0BF407DD2D80729F00F401EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* sidekickv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sidekickv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = sidekickv1/Images.xcassets; sourceTree = "<group>"; };
@@ -79,7 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B317EA22D921D9C002DEC4A /* Easebuzz.xcframework in Frameworks */,
 				610BEFF43389143AA65489C8 /* Pods_sidekickv1.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,7 +100,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				0B317EA02D921D54002DEC4A /* Easebuzz.xcframework */,
 				0BF407DD2D80729F00F401EC /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* sidekickv1 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -185,7 +166,6 @@
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 				9A92563B9B414D7EA9B555C2 /* [CP-User] [RNFB] Core Configuration */,
-				0B317EA42D921D9C002DEC4A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
