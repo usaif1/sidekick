@@ -1,5 +1,6 @@
 // dependencies
 import {create} from 'zustand';
+import {CameraDevice} from 'react-native-vision-camera';
 
 // utils
 import createSelectors from '@/utils/selectors';
@@ -16,7 +17,6 @@ import {FetchAllHubsQuery} from '@/generated/graphql';
 //   | 'profile-update'
 //   | 'auth-confirmation';
 
-
 type RideStore = {
   hubs: FetchAllHubsQuery['hubs'];
   interval: NodeJS.Timeout | null;
@@ -25,6 +25,9 @@ type RideStore = {
   secondsElapsed: number;
   perMinuteRate: number;
   selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
+
+  // camera
+  device: CameraDevice | null | undefined;
 };
 
 type RideActions = {
@@ -34,6 +37,9 @@ type RideActions = {
   setIsPaused: (pauseState: boolean) => void;
   setSecondsElapsed: (updater: any) => void;
   setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0] | undefined) => void;
+
+  //
+  setDevice: (camera: CameraDevice | null | undefined) => void;
 };
 
 // Separate state from actions
@@ -45,6 +51,9 @@ const rideInitialState: RideStore = {
   secondsElapsed: 0,
   perMinuteRate: 2,
   selectedHub: undefined,
+
+  // camera
+  device: null,
 };
 
 const rideStore = create<RideStore & RideActions>(set => ({
@@ -79,6 +88,12 @@ const rideStore = create<RideStore & RideActions>(set => ({
   setSelectedHub: hub =>
     set({
       selectedHub: hub,
+    }),
+
+  // camera
+  setDevice: camera =>
+    set({
+      device: camera,
     }),
 
   resetRideStore: () => set(rideInitialState),

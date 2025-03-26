@@ -8,12 +8,6 @@ import {
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {ms, ScaledSheet} from 'react-native-size-matters';
-import {
-  Platform,
-  Button,
-  NativeModules,
-  NativeEventEmitter,
-} from 'react-native';
 
 // @ts-ignore
 import EasebuzzCheckout from 'react-native-easebuzz-kit';
@@ -32,11 +26,7 @@ import ButtonText from '@/components/ButtonText';
 import {WalletService, UserService} from '@/globalService';
 import PaymentSuccess from '../components/PaymentSuccess';
 import axios from 'axios';
-
-type ClientSecret = {
-  status: number;
-  data: string;
-};
+import PaymentFailure from '../components/PaymentFailure';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -62,7 +52,6 @@ const AddFundsScreen = () => {
     // Validate amount
     const clientSecret = await axios.post(
       'https://sidekick-backend-279t.onrender.com/initiate-payment',
-      // 'http://localhost:3000/txnkey',
       {
         amount: parseFloat(rechargeAmount) + securityDeposit,
         email: user?.email || 'default@mail.com',
@@ -99,6 +88,9 @@ const AddFundsScreen = () => {
             WalletService.fetchUserWallet();
             openModal();
           });
+        } else {
+          setModalComponent(PaymentFailure);
+          openModal();
         }
       })
       .catch((error: any) => {
@@ -106,27 +98,6 @@ const AddFundsScreen = () => {
         console.log('SDK Error:', error);
       });
   };
-
-  // if (!rechargeAmount || parseFloat(rechargeAmount) <= 0) {
-  //   // Show error
-  //   return;
-  // }
-
-  // if (securityDeposit) {
-  //   WalletService.updateWalletSecurityDeposit({
-  //     id: userWallet?.id,
-  //     security_deposit: securityDeposit,
-  //   });
-  // }
-
-  // WalletService.updateWalletBalance({
-  //   id: userWallet?.id,
-  //   balance: parseFloat(rechargeAmount),
-  // }).then(() => {
-  //   WalletService.fetchUserWallet();
-  //   openModal();
-  // });
-  // };
 
   useEffect(() => {
     UserService.fetchUserDetails();
