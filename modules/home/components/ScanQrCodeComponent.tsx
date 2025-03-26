@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, Platform, Alert} from 'react-native';
-import {Camera} from 'react-native-vision-camera';
-import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {View, Text, TextInput} from 'react-native';
+import {Camera, CameraDevice} from 'react-native-vision-camera';
 import {useNavigation} from '@react-navigation/native';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
@@ -19,40 +18,59 @@ const {colors} = useThemeStore.getState().theme;
 
 const ScanQrCodeComponent = () => {
   const navigator = useNavigation();
-
   const {closeModal} = useGlobalStore();
-  const [hasPermission, setHasPermission] = useState(false);
-  const devices = Camera.getAvailableCameraDevices();
-  const device = devices.find(d => d.position === 'back');
-
+  
   const [isKeyboardFocused, setIsKeyboardFocused] = useState<boolean>(false);
+  const [cameraAvailable, setCameraAvailable] = useState(false);
+  const [device, setDevice] = useState<CameraDevice | null>(null);
 
   useEffect(() => {
-    const checkPermissions = async () => {
-      let permission;
-      if (Platform.OS === 'ios') {
-        permission = await request(PERMISSIONS.IOS.CAMERA);
-      } else {
-        permission = await request(PERMISSIONS.ANDROID.CAMERA);
-      }
+    const fetchCameraDevices = async () => {
+      try {
+        const status = await Camera.requestCameraPermission();
+        setCameraAvailable(status === 'granted');
 
-      setHasPermission(permission === RESULTS.GRANTED);
-
-      if (permission !== RESULTS.GRANTED) {
-        Alert.alert(
-          'Permission Denied',
-          'Camera access is required to scan QR codes.',
-        );
+        if (status === 'granted') {
+          const devices = await Camera.getAvailableCameraDevices();
+          const backCamera = devices.find(d => d.position === 'back');
+          if (backCamera) {
+            setDevice(backCamera);
+          }
+        }
+      } catch (error) {
+        console.error('Camera permission error:', error);
+        setCameraAvailable(false);
       }
     };
-
-    checkPermissions();
+    fetchCameraDevices();
   }, []);
 
   const handleCodeScanned = (codes: any) => {
     const scannedValue = codes[0]?.value;
     if (scannedValue) {
     }
+  };
+
+  const renderCamera = () => {
+    if (!cameraAvailable) {
+      return <Text>Camera permission needed</Text>;
+    }
+    
+    if (!device) {
+      return <Text>Initializing camera...</Text>;
+    }
+
+    return (
+      <Camera
+        style={styles.camera}
+        device={device}
+        isActive={true}
+        codeScanner={{
+          codeTypes: ['qr'],
+          onCodeScanned: handleCodeScanned,
+        }}
+      />
+    );
   };
 
   return (
@@ -67,49 +85,11 @@ const ScanQrCodeComponent = () => {
           middle of the Scooter’s handle
         </P2>
         <Divider height={12} />
-        {!isKeyboardFocused ? (
-          device && hasPermission ? (
-            <View
-              style={{
-                height: 200,
-                width: 200,
-                borderRadius: 20,
-                borderWidth: 2,
-                borderColor: colors.highlight,
-                overflow: 'hidden',
-              }}>
-              <Camera
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  width: '105%',
-                  height: '105%',
-                }}
-                device={device}
-                isActive={true}
-                codeScanner={{
-                  codeTypes: ['qr'],
-                  onCodeScanned: handleCodeScanned,
-                }}
-              />
-            </View>
-          ) : (
-            <View
-              style={{
-                height: 200,
-                width: 200,
-                borderRadius: 20,
-                borderWidth: 2,
-                borderColor: colors.highlight,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text>No camera available</Text>
-            </View>
-          )
-        ) : null}
+        {!isKeyboardFocused && (
+          <View style={styles.cameraContainer}>
+            {renderCamera()}
+          </View>
+        )}
       </View>
 
       <Divider height={12} />
@@ -204,6 +184,24 @@ const styles = ScaledSheet.create({
     columnGap: 8,
     alignItems: 'center',
     maxHeight: 40,
+  },
+  cameraContainer: {
+    height: 200,
+    width: 200,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: colors.highlight,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  camera: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    width: '105%',
+    height: '105%',
   },
 });
 
