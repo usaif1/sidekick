@@ -1,5 +1,6 @@
 // dependencies
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Platform} from 'react-native';
 
 // navigators
 import HomeNavigator from '@/modules/home/navigation/home.navigator';
@@ -11,6 +12,7 @@ const ProtectedNavigator = createNativeStackNavigator({
   initialRouteName: 'home',
   screenOptions: {
     headerShown: false,
+    presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
   },
   screens: {
     home: {

@@ -1,6 +1,6 @@
 // dependencies
 import {Dimensions, FlatList, Pressable, View} from 'react-native';
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // components
@@ -11,15 +11,15 @@ import {ButtonText, Divider, H2, H3, P2} from '@/components';
 import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
 import useLocationStore from '@/modules/home/store/locationStore';
-import { sortHubsByDistance } from '@/modules/home/utilis/distanceUtils';
-import { FetchAllHubsQuery } from '@/generated/graphql';
+import {sortHubsByDistance} from '@/modules/home/utilis/distanceUtils';
+import {FetchAllHubsQuery} from '@/generated/graphql';
 
 const {
   theme: {colors},
 } = useThemeStore.getState();
 
 type NearestHubCardProps = {
-  hub: FetchAllHubsQuery['hubs'][0] & { distance: string };
+  hub: FetchAllHubsQuery['hubs'][0] & {distance: string};
   selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
   setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0]) => void;
 };
@@ -51,7 +51,9 @@ const EndRide: React.FC = () => {
   const {closeModal, setModalComponent} = useGlobalStore();
 
   const sortedHubs = useMemo(() => {
-    if (!latitude || !longitude || !hubs.length) return [];
+    if (!latitude || !longitude || !hubs.length) {
+      return [];
+    }
     return sortHubsByDistance(latitude, longitude, hubs);
   }, [latitude, longitude, hubs]);
 
@@ -87,7 +89,9 @@ const EndRide: React.FC = () => {
         <ButtonText variant="primary" onPress={closeModal}>
           Resume Ride
         </ButtonText>
-        <ButtonText variant="error" onPress={() => setModalComponent(ReachedHub)}>
+        <ButtonText
+          variant="error"
+          onPress={() => setModalComponent(ReachedHub)}>
           End Ride
         </ButtonText>
       </View>
