@@ -2359,6 +2359,7 @@ export type Scooters = {
   hub_id: Scalars['uuid']['output'];
   id: Scalars['uuid']['output'];
   qr_code: Scalars['String']['output'];
+  registration_number?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   rides: Array<Ride_Details>;
   /** An aggregate relationship */
@@ -2444,6 +2445,7 @@ export type Scooters_Bool_Exp = {
   hub_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   qr_code?: InputMaybe<String_Comparison_Exp>;
+  registration_number?: InputMaybe<String_Comparison_Exp>;
   rides?: InputMaybe<Ride_Details_Bool_Exp>;
   rides_aggregate?: InputMaybe<Ride_Details_Aggregate_Bool_Exp>;
   status?: InputMaybe<String_Comparison_Exp>;
@@ -2463,6 +2465,7 @@ export type Scooters_Insert_Input = {
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   qr_code?: InputMaybe<Scalars['String']['input']>;
+  registration_number?: InputMaybe<Scalars['String']['input']>;
   rides?: InputMaybe<Ride_Details_Arr_Rel_Insert_Input>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -2475,6 +2478,7 @@ export type Scooters_Max_Fields = {
   hub_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   qr_code?: Maybe<Scalars['String']['output']>;
+  registration_number?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
 };
@@ -2485,6 +2489,7 @@ export type Scooters_Max_Order_By = {
   hub_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   qr_code?: InputMaybe<Order_By>;
+  registration_number?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -2496,6 +2501,7 @@ export type Scooters_Min_Fields = {
   hub_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   qr_code?: Maybe<Scalars['String']['output']>;
+  registration_number?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
 };
@@ -2506,6 +2512,7 @@ export type Scooters_Min_Order_By = {
   hub_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   qr_code?: InputMaybe<Order_By>;
+  registration_number?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -2540,6 +2547,7 @@ export type Scooters_Order_By = {
   hub_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   qr_code?: InputMaybe<Order_By>;
+  registration_number?: InputMaybe<Order_By>;
   rides_aggregate?: InputMaybe<Ride_Details_Aggregate_Order_By>;
   status?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -2561,6 +2569,8 @@ export enum Scooters_Select_Column {
   /** column name */
   QrCode = 'qr_code',
   /** column name */
+  RegistrationNumber = 'registration_number',
+  /** column name */
   Status = 'status',
   /** column name */
   UpdatedAt = 'updated_at'
@@ -2572,6 +2582,7 @@ export type Scooters_Set_Input = {
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   qr_code?: InputMaybe<Scalars['String']['input']>;
+  registration_number?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -2590,6 +2601,7 @@ export type Scooters_Stream_Cursor_Value_Input = {
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   qr_code?: InputMaybe<Scalars['String']['input']>;
+  registration_number?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -2604,6 +2616,8 @@ export enum Scooters_Update_Column {
   Id = 'id',
   /** column name */
   QrCode = 'qr_code',
+  /** column name */
+  RegistrationNumber = 'registration_number',
   /** column name */
   Status = 'status',
   /** column name */
@@ -3362,6 +3376,7 @@ export type Transactions_Variance_Order_By = {
 export type User_Organizations = {
   __typename?: 'user_organizations';
   created_at: Scalars['timestamp']['output'];
+  employee_id: Scalars['String']['output'];
   /** An object relationship */
   organization: Organizations;
   organization_id: Scalars['uuid']['output'];
@@ -3425,6 +3440,7 @@ export type User_Organizations_Bool_Exp = {
   _not?: InputMaybe<User_Organizations_Bool_Exp>;
   _or?: InputMaybe<Array<User_Organizations_Bool_Exp>>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  employee_id?: InputMaybe<String_Comparison_Exp>;
   organization?: InputMaybe<Organizations_Bool_Exp>;
   organization_id?: InputMaybe<Uuid_Comparison_Exp>;
   role?: InputMaybe<String_Comparison_Exp>;
@@ -3435,6 +3451,8 @@ export type User_Organizations_Bool_Exp = {
 
 /** unique or primary key constraints on table "user_organizations" */
 export enum User_Organizations_Constraint {
+  /** unique or primary key constraint on columns "employee_id" */
+  UniqueEmployeeId = 'unique_employee_id',
   /** unique or primary key constraint on columns "user_id", "organization_id" */
   UserOrganizationsPkey = 'user_organizations_pkey'
 }
@@ -3442,6 +3460,7 @@ export enum User_Organizations_Constraint {
 /** input type for inserting data into table "user_organizations" */
 export type User_Organizations_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  employee_id?: InputMaybe<Scalars['String']['input']>;
   organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
@@ -3454,6 +3473,7 @@ export type User_Organizations_Insert_Input = {
 export type User_Organizations_Max_Fields = {
   __typename?: 'user_organizations_max_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  employee_id?: Maybe<Scalars['String']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
   role?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
@@ -3463,6 +3483,7 @@ export type User_Organizations_Max_Fields = {
 /** order by max() on columns of table "user_organizations" */
 export type User_Organizations_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  employee_id?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -3473,6 +3494,7 @@ export type User_Organizations_Max_Order_By = {
 export type User_Organizations_Min_Fields = {
   __typename?: 'user_organizations_min_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  employee_id?: Maybe<Scalars['String']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
   role?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
@@ -3482,6 +3504,7 @@ export type User_Organizations_Min_Fields = {
 /** order by min() on columns of table "user_organizations" */
 export type User_Organizations_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  employee_id?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -3507,6 +3530,7 @@ export type User_Organizations_On_Conflict = {
 /** Ordering options when selecting data from "user_organizations". */
 export type User_Organizations_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  employee_id?: InputMaybe<Order_By>;
   organization?: InputMaybe<Organizations_Order_By>;
   organization_id?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
@@ -3526,6 +3550,8 @@ export enum User_Organizations_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  EmployeeId = 'employee_id',
+  /** column name */
   OrganizationId = 'organization_id',
   /** column name */
   Role = 'role',
@@ -3538,6 +3564,7 @@ export enum User_Organizations_Select_Column {
 /** input type for updating data in table "user_organizations" */
 export type User_Organizations_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  employee_id?: InputMaybe<Scalars['String']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -3555,6 +3582,7 @@ export type User_Organizations_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type User_Organizations_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  employee_id?: InputMaybe<Scalars['String']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -3565,6 +3593,8 @@ export type User_Organizations_Stream_Cursor_Value_Input = {
 export enum User_Organizations_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  EmployeeId = 'employee_id',
   /** column name */
   OrganizationId = 'organization_id',
   /** column name */
@@ -4390,17 +4420,39 @@ export type Wallets_Variance_Order_By = {
 export type FetchAllOrganisationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchAllOrganisationsQuery = { __typename?: 'query_root', user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', id: any, name: string } }> };
+export type FetchAllOrganisationsQuery = { __typename?: 'query_root', organizations: Array<{ __typename?: 'organizations', id: any, name: string }> };
+
+export type CreateRideMutationVariables = Exact<{
+  object?: InputMaybe<Ride_Details_Insert_Input>;
+}>;
+
+
+export type CreateRideMutation = { __typename?: 'mutation_root', insert_ride_details_one?: { __typename?: 'ride_details', created_at: any, id: any } | null };
 
 export type FetchAllHubsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FetchAllHubsQuery = { __typename?: 'query_root', hubs: Array<{ __typename?: 'hubs', id: any, latitude?: any | null, longitude?: any | null, name?: string | null, organization_id: any, created_at: any }> };
 
+export type FetchScooterByNumberQueryVariables = Exact<{
+  regNo?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type FetchScooterByNumberQuery = { __typename?: 'query_root', scooters: Array<{ __typename?: 'scooters', registration_number?: string | null, id: any }> };
+
+export type CreateRideStepMutationVariables = Exact<{
+  steps?: InputMaybe<Scalars['String']['input']>;
+  ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type CreateRideStepMutation = { __typename?: 'mutation_root', insert_ride_steps_one?: { __typename?: 'ride_steps', id: any, created_at: any } | null };
+
 export type FetchCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', email: string, id: any, full_name: string, phone_number: string, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', name: string } }> }> };
+export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', email: string, id: any, full_name: string, phone_number: string, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', id: any, name: string } }> }> };
 
 export type UpdateUserMutationVariables = Exact<{
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -4439,9 +4491,12 @@ export type UpdateWalletSecurityDepositMutationVariables = Exact<{
 export type UpdateWalletSecurityDepositMutation = { __typename?: 'mutation_root', update_wallets_by_pk?: { __typename?: 'wallets', id: any, security_deposit: any, created_at: any } | null };
 
 
-export const FetchAllOrganisationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllOrganisations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<FetchAllOrganisationsQuery, FetchAllOrganisationsQueryVariables>;
+export const FetchAllOrganisationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllOrganisations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<FetchAllOrganisationsQuery, FetchAllOrganisationsQueryVariables>;
+export const CreateRideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ride_details_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_details_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRideMutation, CreateRideMutationVariables>;
 export const FetchAllHubsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllHubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"organization_id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<FetchAllHubsQuery, FetchAllHubsQueryVariables>;
-export const FetchCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"full_name"}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}},{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}}]}}]}}]} as unknown as DocumentNode<FetchCurrentUserQuery, FetchCurrentUserQueryVariables>;
+export const FetchScooterByNumberDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchScooterByNumber"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"SCOOTER1","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scooters"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"registration_number"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_ilike"},"value":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"registration_number"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<FetchScooterByNumberQuery, FetchScooterByNumberQueryVariables>;
+export const CreateRideStepDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRideStep"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"steps"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_steps_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"Variable","name":{"kind":"Name","value":"steps"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"ride_details_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<CreateRideStepMutation, CreateRideStepMutationVariables>;
+export const FetchCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"full_name"}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}},{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}}]}}]}}]} as unknown as DocumentNode<FetchCurrentUserQuery, FetchCurrentUserQueryVariables>;
 export const UpdateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"_set"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"users_set_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_users_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"_set"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
 export const CreateWalletDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createWallet"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"wallets_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_wallets_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateWalletMutation, CreateWalletMutationVariables>;
 export const FetchUserWalletDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchUserWallet"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"wallets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"security_deposit"}},{"kind":"Field","name":{"kind":"Name","value":"transactions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ride_id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"ride"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"start_time"}},{"kind":"Field","name":{"kind":"Name","value":"total_cost"}},{"kind":"Field","name":{"kind":"Name","value":"hub"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<FetchUserWalletQuery, FetchUserWalletQueryVariables>;

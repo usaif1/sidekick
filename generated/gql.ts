@@ -14,9 +14,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "query fetchAllOrganisations {\n  user_organizations {\n    organization {\n      id\n      name\n    }\n  }\n}": typeof types.FetchAllOrganisationsDocument,
+    "query fetchAllOrganisations {\n  organizations {\n    id\n    name\n  }\n}": typeof types.FetchAllOrganisationsDocument,
+    "mutation createRide($object: ride_details_insert_input = {}) {\n  insert_ride_details_one(object: $object) {\n    created_at\n    id\n  }\n}": typeof types.CreateRideDocument,
     "query fetchAllHubs {\n  hubs {\n    id\n    latitude\n    longitude\n    name\n    organization_id\n    created_at\n  }\n}": typeof types.FetchAllHubsDocument,
-    "query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        name\n      }\n    }\n    phone_number\n  }\n}": typeof types.FetchCurrentUserDocument,
+    "query fetchScooterByNumber($regNo: String = \"SCOOTER1\") {\n  scooters(where: {registration_number: {_ilike: $regNo}}) {\n    registration_number\n    id\n  }\n}": typeof types.FetchScooterByNumberDocument,
+    "mutation createRideStep($steps: String = \"\", $ride_details_id: uuid = \"\") {\n  insert_ride_steps_one(\n    object: {steps: $steps, ride_details_id: $ride_details_id}\n  ) {\n    id\n    created_at\n  }\n}": typeof types.CreateRideStepDocument,
+    "query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        id\n        name\n      }\n    }\n    phone_number\n  }\n}": typeof types.FetchCurrentUserDocument,
     "mutation updateUser($id: uuid = \"\", $_set: users_set_input = {}) {\n  update_users_by_pk(pk_columns: {id: $id}, _set: $_set) {\n    id\n  }\n}": typeof types.UpdateUserDocument,
     "mutation createWallet($object: wallets_insert_input = {}) {\n  insert_wallets_one(object: $object) {\n    balance\n    created_at\n    id\n  }\n}": typeof types.CreateWalletDocument,
     "query fetchUserWallet {\n  wallets {\n    balance\n    id\n    security_deposit\n    transactions {\n      ride_id\n      amount\n      ride {\n        end_time\n        start_time\n        total_cost\n        hub {\n          id\n          name\n        }\n      }\n    }\n  }\n}": typeof types.FetchUserWalletDocument,
@@ -24,9 +27,12 @@ type Documents = {
     "mutation updateWalletSecurityDeposit($security_deposit: numeric = \"\", $id: uuid = \"\") {\n  update_wallets_by_pk(\n    pk_columns: {id: $id}\n    _inc: {security_deposit: $security_deposit}\n  ) {\n    id\n    security_deposit\n    created_at\n  }\n}": typeof types.UpdateWalletSecurityDepositDocument,
 };
 const documents: Documents = {
-    "query fetchAllOrganisations {\n  user_organizations {\n    organization {\n      id\n      name\n    }\n  }\n}": types.FetchAllOrganisationsDocument,
+    "query fetchAllOrganisations {\n  organizations {\n    id\n    name\n  }\n}": types.FetchAllOrganisationsDocument,
+    "mutation createRide($object: ride_details_insert_input = {}) {\n  insert_ride_details_one(object: $object) {\n    created_at\n    id\n  }\n}": types.CreateRideDocument,
     "query fetchAllHubs {\n  hubs {\n    id\n    latitude\n    longitude\n    name\n    organization_id\n    created_at\n  }\n}": types.FetchAllHubsDocument,
-    "query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        name\n      }\n    }\n    phone_number\n  }\n}": types.FetchCurrentUserDocument,
+    "query fetchScooterByNumber($regNo: String = \"SCOOTER1\") {\n  scooters(where: {registration_number: {_ilike: $regNo}}) {\n    registration_number\n    id\n  }\n}": types.FetchScooterByNumberDocument,
+    "mutation createRideStep($steps: String = \"\", $ride_details_id: uuid = \"\") {\n  insert_ride_steps_one(\n    object: {steps: $steps, ride_details_id: $ride_details_id}\n  ) {\n    id\n    created_at\n  }\n}": types.CreateRideStepDocument,
+    "query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        id\n        name\n      }\n    }\n    phone_number\n  }\n}": types.FetchCurrentUserDocument,
     "mutation updateUser($id: uuid = \"\", $_set: users_set_input = {}) {\n  update_users_by_pk(pk_columns: {id: $id}, _set: $_set) {\n    id\n  }\n}": types.UpdateUserDocument,
     "mutation createWallet($object: wallets_insert_input = {}) {\n  insert_wallets_one(object: $object) {\n    balance\n    created_at\n    id\n  }\n}": types.CreateWalletDocument,
     "query fetchUserWallet {\n  wallets {\n    balance\n    id\n    security_deposit\n    transactions {\n      ride_id\n      amount\n      ride {\n        end_time\n        start_time\n        total_cost\n        hub {\n          id\n          name\n        }\n      }\n    }\n  }\n}": types.FetchUserWalletDocument,
@@ -51,7 +57,11 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query fetchAllOrganisations {\n  user_organizations {\n    organization {\n      id\n      name\n    }\n  }\n}"): (typeof documents)["query fetchAllOrganisations {\n  user_organizations {\n    organization {\n      id\n      name\n    }\n  }\n}"];
+export function graphql(source: "query fetchAllOrganisations {\n  organizations {\n    id\n    name\n  }\n}"): (typeof documents)["query fetchAllOrganisations {\n  organizations {\n    id\n    name\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation createRide($object: ride_details_insert_input = {}) {\n  insert_ride_details_one(object: $object) {\n    created_at\n    id\n  }\n}"): (typeof documents)["mutation createRide($object: ride_details_insert_input = {}) {\n  insert_ride_details_one(object: $object) {\n    created_at\n    id\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -59,7 +69,15 @@ export function graphql(source: "query fetchAllHubs {\n  hubs {\n    id\n    lat
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        name\n      }\n    }\n    phone_number\n  }\n}"): (typeof documents)["query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        name\n      }\n    }\n    phone_number\n  }\n}"];
+export function graphql(source: "query fetchScooterByNumber($regNo: String = \"SCOOTER1\") {\n  scooters(where: {registration_number: {_ilike: $regNo}}) {\n    registration_number\n    id\n  }\n}"): (typeof documents)["query fetchScooterByNumber($regNo: String = \"SCOOTER1\") {\n  scooters(where: {registration_number: {_ilike: $regNo}}) {\n    registration_number\n    id\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation createRideStep($steps: String = \"\", $ride_details_id: uuid = \"\") {\n  insert_ride_steps_one(\n    object: {steps: $steps, ride_details_id: $ride_details_id}\n  ) {\n    id\n    created_at\n  }\n}"): (typeof documents)["mutation createRideStep($steps: String = \"\", $ride_details_id: uuid = \"\") {\n  insert_ride_steps_one(\n    object: {steps: $steps, ride_details_id: $ride_details_id}\n  ) {\n    id\n    created_at\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        id\n        name\n      }\n    }\n    phone_number\n  }\n}"): (typeof documents)["query fetchCurrentUser {\n  users {\n    email\n    id\n    full_name\n    phone_number\n    user_organizations {\n      organization {\n        id\n        name\n      }\n    }\n    phone_number\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

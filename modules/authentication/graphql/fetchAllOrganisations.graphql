@@ -1,8 +1,6 @@
 query fetchAllOrganisations {
-  user_organizations {
-    organization {
-      id
-      name
-    }
+  organizations {
+    id
+    name
   }
 }
