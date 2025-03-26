@@ -13,6 +13,7 @@ import WelcomeForm from '../components/WelcomeForm';
 // utils
 import createSelectors from '@/utils/selectors';
 import {ViewType} from '../types';
+import {FetchAllOrganisationsQuery} from '@/generated/graphql';
 
 const {height} = Dimensions.get('window');
 
@@ -34,6 +35,13 @@ export type NewUserFormData = {
 };
 
 type AuthStore = {
+  //organisations
+  selectedOrganisation:
+    | FetchAllOrganisationsQuery['organizations'][0]
+    | null
+    | undefined;
+  organisations: FetchAllOrganisationsQuery['organizations'];
+
   // firebase credentials
   authUser: FirebaseAuthTypes.User | null | undefined;
   confirmationResult: FirebaseAuthTypes.ConfirmationResult | null;
@@ -57,6 +65,12 @@ type AuthStore = {
 };
 
 type GlobalActions = {
+  //organisation
+  setSelectedOrganisation: (
+    org: FetchAllOrganisationsQuery['organizations'][0],
+  ) => void;
+  setOrganisations: (orgs: FetchAllOrganisationsQuery['organizations']) => void;
+
   // firebase credentials
   setAuthUser: (user: FirebaseAuthTypes.User | null | undefined) => void;
   setConfirmationResult: (
@@ -87,6 +101,10 @@ type GlobalActions = {
 };
 
 const authInitialState: AuthStore = {
+  // organisations
+  selectedOrganisation: null,
+  organisations: [],
+
   // otp flow
   authUser: null,
   confirmationResult: null,
@@ -122,6 +140,17 @@ const authInitialState: AuthStore = {
 
 const authStore = create<AuthStore & GlobalActions>(set => ({
   ...authInitialState,
+
+  // organisation
+  setSelectedOrganisation: org =>
+    set({
+      selectedOrganisation: org,
+    }),
+
+  setOrganisations: orgs =>
+    set({
+      organisations: orgs,
+    }),
 
   // otp flow
   setAuthUser: user =>

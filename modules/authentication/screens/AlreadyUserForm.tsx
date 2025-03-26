@@ -186,6 +186,7 @@ const AlreadyUserForm: React.FC = () => {
                     color: theme.colors.textPrimary,
                     fontWeight: '600',
                     paddingVertical: 0,
+                    height: 32,
                     fontSize: moderateScale(15.2),
                   }}
                 />
@@ -205,6 +206,7 @@ const AlreadyUserForm: React.FC = () => {
                     color: theme.colors.textPrimary,
                     fontWeight: '600',
                     paddingVertical: 0,
+                    height: 32,
                     fontSize: moderateScale(15.2),
                   }}
                 />
