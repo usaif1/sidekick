@@ -97,7 +97,7 @@ const UserDetails: React.FC = () => {
         <Menu items={menuItems} style={styles.menu} testID="user-menu" />
       </View>
 
-      <View style={{width: 200, alignSelf: 'center'}}>
+      <View style={{width: 200, alignSelf: 'center',paddingBottom: 16}}>
         <ButtonText
           variant="error"
           onPress={() => {
