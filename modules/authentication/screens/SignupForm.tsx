@@ -19,6 +19,7 @@ import BottomSheet, {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {useHeaderHeight} from '@react-navigation/elements';
+import {useNavigation} from '@react-navigation/native';
 
 // components
 import {
@@ -33,13 +34,14 @@ import AuthService from '../services/auth.service.ts';
 
 // store
 import {useAuthStore, useThemeStore} from '@/globalStore';
-import {authUtils} from '../utils/index.ts';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const SignupForm: React.FC = () => {
   const {theme} = useThemeStore();
   const headerHeight = useHeaderHeight();
+
+  const navigation = useNavigation();
 
   const {newUserFormData, setNewUserFormData} = useAuthStore();
 
@@ -56,7 +58,8 @@ const SignupForm: React.FC = () => {
         false,
       );
       if (response) {
-        authUtils.setBottomSheetView('otpNew');
+        // @ts-ignore
+        navigation.navigate('otp');
       }
     } catch (err) {
       console.log('Error sending otp', err);

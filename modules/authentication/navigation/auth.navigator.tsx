@@ -3,7 +3,13 @@ import {Platform} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // screens
-import {Welcome, AlreadyUserForm, EmployeeForm, SignupForm} from '../screens';
+import {
+  Welcome,
+  AlreadyUserForm,
+  EmployeeForm,
+  SignupForm,
+  OTP,
+} from '../screens';
 
 // components
 import BackArrowButtonSecondary from '@/components/BackArrowButtonSecondary';
@@ -13,6 +19,7 @@ export type AuthStackNavigatorParams = {
   existing: undefined;
   employee: undefined;
   new: undefined;
+  otp: undefined;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
@@ -38,6 +45,7 @@ const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
     existing: AlreadyUserForm,
     employee: EmployeeForm,
     new: SignupForm,
+    otp: OTP,
   },
 });
 

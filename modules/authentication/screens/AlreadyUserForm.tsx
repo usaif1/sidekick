@@ -28,13 +28,15 @@ import {useAuthStore, useThemeStore} from '@/globalStore';
 
 // services
 import {AuthService} from '@/globalService';
-import {authUtils} from '../utils';
+import {useNavigation} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const AlreadyUserForm: React.FC = () => {
   const {theme} = useThemeStore();
   const headerHeight = useHeaderHeight();
+
+  const navigation = useNavigation();
 
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
@@ -57,7 +59,8 @@ const AlreadyUserForm: React.FC = () => {
         false,
       );
       if (response) {
-        authUtils.setBottomSheetView('otpExisting');
+        // @ts-ignore
+        navigation.navigate('otp');
       }
     } catch (err) {
       console.log('Error sending otp', err);
