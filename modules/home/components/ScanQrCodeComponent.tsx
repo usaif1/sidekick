@@ -37,24 +37,49 @@ const ScanQrCodeComponent = () => {
       
       try {
         setIsLoading(true);
-        const status = await Camera.requestCameraPermission();
+        
+        // Check if camera permission is already granted first
+        const currentStatus = await Camera.getCameraPermissionStatus();
+        console.log('Current camera permission status:', currentStatus);
+        
+        let status = currentStatus;
+        // Only request permission if not already granted
+        if (currentStatus !== 'granted') {
+          console.log('Requesting camera permission...');
+          status = await Camera.requestCameraPermission();
+          console.log('New camera permission status:', status);
+        }
         
         if (!isMounted.current) return;
         setCameraAvailable(status === 'granted');
 
         if (status === 'granted') {
-          // Add a small delay to ensure camera is ready
+          // Increase timeout to give more time for camera initialization
           timeoutId = setTimeout(async () => {
             if (!isMounted.current) return;
             
             try {
+              console.log('Getting available camera devices...');
               const devices = await Camera.getAvailableCameraDevices();
+              console.log('Available devices:', devices.length);
               
               if (!isMounted.current) return;
+              
+              if (devices.length === 0) {
+                console.log('No camera devices found');
+                setIsLoading(false);
+                return;
+              }
+              
               const backCamera = devices.find(d => d.position === 'back');
               
               if (backCamera) {
+                console.log('Back camera found:', backCamera.id);
                 setDevice(backCamera);
+              } else {
+                console.log('No back camera found, using first available camera');
+                // Fallback to the first camera if no back camera is found
+                setDevice(devices[0]);
               }
             } catch (error) {
               console.error('Camera device error:', error);
@@ -63,8 +88,9 @@ const ScanQrCodeComponent = () => {
                 setIsLoading(false);
               }
             }
-          }, 500);
+          }, 1000); // Increased from 500ms to 1000ms
         } else {
+          console.log('Camera permission not granted');
           setIsLoading(false);
         }
       } catch (error) {
@@ -79,6 +105,7 @@ const ScanQrCodeComponent = () => {
     fetchCameraDevices();
     
     return () => {
+      console.log('Cleaning up camera resources');
       isMounted.current = false;
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -122,7 +149,22 @@ const ScanQrCodeComponent = () => {
     }
     
     if (!cameraAvailable) {
-      return <Text style={styles.cameraStatusText}>Camera permission needed</Text>;
+      return (
+        <View>
+          <Text style={styles.cameraStatusText}>Camera permission needed</Text>
+          <ButtonTextSm
+            customStyles={{ marginTop: 10 }}
+            onPress={async () => {
+              setIsLoading(true);
+              const status = await Camera.requestCameraPermission();
+              setCameraAvailable(status === 'granted');
+              setIsLoading(false);
+            }}
+            variant="highlight">
+            Grant Permission
+          </ButtonTextSm>
+        </View>
+      );
     }
     
     if (!device) {
