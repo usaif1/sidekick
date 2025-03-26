@@ -23,7 +23,7 @@ const RideScreen: React.FC = () => {
   const longitude = useLocationStore(state => state.longitude);
   const setLocation = useLocationStore(state => state.setLocation);
 
-  const {selectedHub, setSelectedHub, hubs} = useRideStore();  
+  const {selectedHub, setSelectedHub, hubs} = useRideStore();
 
   const mapRef = useRef<MapView>(null);
   const {
@@ -81,7 +81,7 @@ const RideScreen: React.FC = () => {
   useEffect(() => {
     if (!isPaused) {
       const newInterval = setInterval(() => {
-        setSecondsElapsed(prev => prev + 1); // ✅ correctly using prev value
+        setSecondsElapsed((prev: number) => prev + 1); // ✅ correctly using prev value
       }, 1000);
 
       setTimerInterval(newInterval);
@@ -111,13 +111,16 @@ const RideScreen: React.FC = () => {
         setTotalCost(0);
       }, 100); // 👈 allows re-triggering RideDetails timer
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [heading, setHeading] = useState<number>(0);
 
   const handleSelectNearestHub = useCallback(() => {
-    if (!latitude || !longitude || hubs.length === 0) {return;}
-  
+    if (!latitude || !longitude || hubs.length === 0) {
+      return;
+    }
+
     const nearest = findNearestHub(latitude, longitude, hubs);
     if (!nearest) {
       Alert.alert(
@@ -126,7 +129,7 @@ const RideScreen: React.FC = () => {
       );
       return;
     }
-  
+
     setSelectedHub(nearest);
     mapRef.current?.animateToRegion({
       latitude: nearest.latitude,
@@ -134,7 +137,7 @@ const RideScreen: React.FC = () => {
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latitude, longitude, hubs]);
 
   useEffect(() => {

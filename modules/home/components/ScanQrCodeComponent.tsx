@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
-import {Camera, CameraDevice} from 'react-native-vision-camera';
+import {Camera} from 'react-native-vision-camera';
 import {useNavigation} from '@react-navigation/native';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 
@@ -10,7 +10,7 @@ import P2 from '@/components/Typography/P2';
 import Divider from '@/components/Divider';
 
 // store
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useGlobalStore, useRideStore, useThemeStore} from '@/globalStore';
 import LinearGradientSVG from '../assets/linearGradient.svg';
 import {ButtonTextSm} from '@/components';
 
@@ -19,31 +19,33 @@ const {colors} = useThemeStore.getState().theme;
 const ScanQrCodeComponent = () => {
   const navigator = useNavigation();
   const {closeModal} = useGlobalStore();
-  
+
+  const {device} = useRideStore();
+
   const [isKeyboardFocused, setIsKeyboardFocused] = useState<boolean>(false);
-  const [cameraAvailable, setCameraAvailable] = useState(false);
-  const [device, setDevice] = useState<CameraDevice | null>(null);
+  // const [cameraAvailable, setCameraAvailable] = useState(false);
+  // const [device, setDevice] = useState<CameraDevice | null>(null);
 
-  useEffect(() => {
-    const fetchCameraDevices = async () => {
-      try {
-        const status = await Camera.requestCameraPermission();
-        setCameraAvailable(status === 'granted');
+  // useEffect(() => {
+  //   const fetchCameraDevices = async () => {
+  //     try {
+  //       const status = await Camera.requestCameraPermission();
+  //       setCameraAvailable(status === 'granted');
 
-        if (status === 'granted') {
-          const devices = await Camera.getAvailableCameraDevices();
-          const backCamera = devices.find(d => d.position === 'back');
-          if (backCamera) {
-            setDevice(backCamera);
-          }
-        }
-      } catch (error) {
-        console.error('Camera permission error:', error);
-        setCameraAvailable(false);
-      }
-    };
-    fetchCameraDevices();
-  }, []);
+  //       if (status === 'granted') {
+  //         const devices = await Camera.getAvailableCameraDevices();
+  //         const backCamera = devices.find(d => d.position === 'back');
+  //         if (backCamera) {
+  //           setDevice(backCamera);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error('Camera permission error:', error);
+  //       setCameraAvailable(false);
+  //     }
+  //   };
+  //   fetchCameraDevices();
+  // }, []);
 
   const handleCodeScanned = (codes: any) => {
     const scannedValue = codes[0]?.value;
@@ -52,10 +54,10 @@ const ScanQrCodeComponent = () => {
   };
 
   const renderCamera = () => {
-    if (!cameraAvailable) {
-      return <Text>Camera permission needed</Text>;
-    }
-    
+    // if (!cameraAvailable) {
+    //   return <Text>Camera permission needed</Text>;
+    // }
+
     if (!device) {
       return <Text>Initializing camera...</Text>;
     }
@@ -86,9 +88,7 @@ const ScanQrCodeComponent = () => {
         </P2>
         <Divider height={12} />
         {!isKeyboardFocused && (
-          <View style={styles.cameraContainer}>
-            {renderCamera()}
-          </View>
+          <View style={styles.cameraContainer}>{renderCamera()}</View>
         )}
       </View>
 

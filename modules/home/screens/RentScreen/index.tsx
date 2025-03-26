@@ -3,17 +3,18 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, Alert} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import {Camera, CameraDevice} from 'react-native-vision-camera';
 
 // store
 import useLocationStore from '../../store/locationStore';
 import {useGlobalStore} from '@/globalStore';
-import useRideStore from '@/modules/ride/store'; 
+import useRideStore from '@/modules/ride/store';
 
 // services
 import {RideService} from '@/globalService';
 import {mapStyles} from '../../utilis/mapStyle';
 import {authUtils} from '@/modules/authentication/utils';
-import { findNearestHub } from '../../utilis/distanceUtils';
+import {findNearestHub} from '../../utilis/distanceUtils';
 
 // components
 import ScanQrCodeComponent from '../../components/ScanQrCodeComponent';
@@ -22,18 +23,21 @@ import ActionButtons from './components';
 import {useFocusEffect} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
 import DirectionsComponent from './components/DirectionsComponent';
-import { requestPermissions } from '../../utilis/permissionUtils';
+import {requestPermissions} from '../../utilis/permissionUtils';
 import HubMarkers from '../../components/HubMarkers';
 
 const RentScreen: React.FC = () => {
   const {closeBottomSheet} = useGlobalStore();
 
-  const latitude = useLocationStore(state => state.latitude);
-  const longitude = useLocationStore(state => state.longitude);
-  const setLocation = useLocationStore(state => state.setLocation);
+  const {latitude, longitude, setLocation} = useLocationStore();
+
+  const {device, setDevice} = useRideStore();
+
+  // const [cameraAvailable, setCameraAvailable] = useState(false);
+  // const [device, setDevice] = useState<CameraDevice | null>(null);
 
   const {openModal, setModalComponent} = useGlobalStore();
-  const {selectedHub, setSelectedHub, hubs} = useRideStore(); 
+  const {selectedHub, setSelectedHub, hubs} = useRideStore();
   const mapRef = useRef<MapView>(null);
   const [heading, setHeading] = useState<number>(0);
 
@@ -71,16 +75,13 @@ const RentScreen: React.FC = () => {
     };
 
     initializePermissions();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setLocation]); 
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setLocation]);
 
   useEffect(() => {
     authUtils.setBottomSheetView('welcome');
     RideService.fetchAllHubs();
   }, []);
-
- 
 
   useFocusEffect(
     useCallback(() => {
@@ -90,8 +91,10 @@ const RentScreen: React.FC = () => {
   );
 
   const handleSelectNearestHub = useCallback(() => {
-    if (!latitude || !longitude || hubs.length === 0) {return;}
-  
+    if (!latitude || !longitude || hubs.length === 0) {
+      return;
+    }
+
     const nearest = findNearestHub(latitude, longitude, hubs);
     if (!nearest) {
       Alert.alert(
@@ -100,7 +103,7 @@ const RentScreen: React.FC = () => {
       );
       return;
     }
-  
+
     setSelectedHub(nearest);
     mapRef.current?.animateToRegion({
       latitude: nearest.latitude,
@@ -108,9 +111,33 @@ const RentScreen: React.FC = () => {
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latitude, longitude, hubs]);
-  
+
+  const fetchCameraDevices = async () => {
+    try {
+      const status = await Camera.requestCameraPermission();
+      // setCameraAvailable(status === 'granted');
+
+      if (status === 'granted') {
+        const devices = Camera.getAvailableCameraDevices();
+        setDevice(devices.find(d => d.position === 'back'));
+        // const backCamera = devices.find(d => d.position === 'back');
+        // if (backCamera) {
+        //   setDevice(backCamera);
+        // }else{}
+      }
+    } catch (error) {
+      console.error('Camera permission error:', error);
+      // setCameraAvailable(false);
+    }
+  };
+
+  useEffect(() => {
+    // fetchCameraDevices();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View style={styles.container}>
       <MapView
