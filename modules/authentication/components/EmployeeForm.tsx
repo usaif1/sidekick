@@ -1,6 +1,6 @@
 // dependencies
 import {Text, View, Pressable, TouchableWithoutFeedback} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   moderateScale,
   scale,
@@ -25,6 +25,54 @@ import {authUtils} from '../utils';
 const EmployeeForm: React.FC = () => {
   const {theme} = useThemeStore();
   const inputRef = useRef<React.ElementRef<typeof BottomSheetTextInput>>(null);
+  const [institution, setInstitution] = useState('');
+  const [employeeId, setEmployeeId] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [errors, setErrors] = useState<{
+    institution?: string;
+    employeeId?: string;
+    phoneNumber?: string;
+  }>({});
+
+  const validateForm = () => {
+    const newErrors: {
+      institution?: string;
+      employeeId?: string;
+      phoneNumber?: string;
+    } = {};
+    let isValid = true;
+
+    // Validate institution
+    if (!institution || institution.trim() === '') {
+      newErrors.institution = 'Institution is required';
+      isValid = false;
+    }
+
+    // Validate employee ID
+    if (!employeeId || employeeId.trim() === '') {
+      newErrors.employeeId = 'Employee ID is required';
+      isValid = false;
+    }
+
+    // Validate phone number
+    if (!phoneNumber || phoneNumber.trim() === '') {
+      newErrors.phoneNumber = 'Phone number is required';
+      isValid = false;
+    } else if (phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
+      newErrors.phoneNumber = 'Please enter a valid 10-digit phone number';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const continueHandler = () => {
+    if (!validateForm()) {
+      return;
+    }
+    authUtils.setBottomSheetView('otpEmployee');
+  };
 
   return (
     <BottomSheetView style={styles.contentContainer}>
@@ -55,6 +103,11 @@ const EmployeeForm: React.FC = () => {
           </Text>
           <DropdownIcon />
         </Pressable>
+        {errors.institution ? (
+          <Text style={[styles.errorText, {color: theme.colors.error}]}>
+            {errors.institution}
+          </Text>
+        ) : null}
       </View>
 
       <View style={{width: '100%'}}>
@@ -62,7 +115,16 @@ const EmployeeForm: React.FC = () => {
           Enter Employee ID
         </LabelPrimary>
         <Divider height={10} />
-        <BottomSheetStyledInput placeholder="XXXXXXXXXX" />
+        <BottomSheetStyledInput 
+          placeholder="XXXXXXXXXX" 
+          value={employeeId}
+          onChangeText={setEmployeeId}
+        />
+        {errors.employeeId ? (
+          <Text style={[styles.errorText, {color: theme.colors.error}]}>
+            {errors.employeeId}
+          </Text>
+        ) : null}
       </View>
 
       <View style={{width: '100%'}}>
@@ -104,6 +166,9 @@ const EmployeeForm: React.FC = () => {
               keyboardType="numeric"
               placeholder="XXXXXXXXXX"
               placeholderTextColor={theme.colors.textSecondary}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              maxLength={10}
               style={{
                 color: theme.colors.textPrimary,
                 fontWeight: '600',
@@ -113,6 +178,11 @@ const EmployeeForm: React.FC = () => {
             />
           </View>
         </TouchableWithoutFeedback>
+        {errors.phoneNumber ? (
+          <Text style={[styles.errorText, {color: theme.colors.error}]}>
+            {errors.phoneNumber}
+          </Text>
+        ) : null}
       </View>
       <View
         style={{
@@ -122,9 +192,7 @@ const EmployeeForm: React.FC = () => {
         }}>
         <ButtonText
           variant="primary"
-          onPress={() => {
-            authUtils.setBottomSheetView('otpEmployee');
-          }}>
+          onPress={continueHandler}>
           Continue
         </ButtonText>
       </View>
@@ -142,5 +210,10 @@ const styles = ScaledSheet.create({
     borderRadius: 20,
     paddingTop: 32,
     paddingHorizontal: 24,
+  },
+  errorText: {
+    fontSize: '12@ms',
+    marginTop: '4@vs',
+    marginLeft: '18@s',
   },
 });

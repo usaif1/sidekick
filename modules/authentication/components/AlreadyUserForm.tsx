@@ -1,6 +1,6 @@
 // dependencies
 import {Text, View, TouchableWithoutFeedback} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   moderateScale,
   scale,
@@ -22,11 +22,38 @@ import {authUtils} from '../utils';
 const AlreadyUserForm: React.FC = () => {
   const {theme} = useThemeStore();
 
+  const [errors, setErrors] = useState<{
+    phoneNumber?: string;
+  }>({});
+
   const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
 
   const phoneInputRef = useRef<React.ElementRef<typeof BottomSheetTextInput>>(null);
 
+  const validateForm = () => {
+    const newErrors: {
+      phoneNumber?: string;
+    } = {};
+    let isValid = true;
+
+    // Validate phone number
+    if (!existingUserPhoneNumber || existingUserPhoneNumber.trim() === '') {
+      newErrors.phoneNumber = 'Phone number is required';
+      isValid = false;
+    } else if (existingUserPhoneNumber.length !== 10 || !/^\d+$/.test(existingUserPhoneNumber)) {
+      newErrors.phoneNumber = 'Please enter a valid 10-digit phone number';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const continueHandler = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    
     try {
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,
@@ -94,6 +121,11 @@ const AlreadyUserForm: React.FC = () => {
             />
           </View>
         </TouchableWithoutFeedback>
+        {errors.phoneNumber ? (
+          <Text style={[styles.errorText, {color: theme.colors.error}]}>
+            {errors.phoneNumber}
+          </Text>
+        ) : null}
       </View>
       <View
         style={{
@@ -119,5 +151,10 @@ const styles = ScaledSheet.create({
     borderRadius: 20,
     paddingTop: 32,
     paddingHorizontal: 24,
+  },
+  errorText: {
+    fontSize: '12@ms',
+    marginTop: '4@vs',
+    marginLeft: '18@s',
   },
 });

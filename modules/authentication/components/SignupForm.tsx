@@ -1,6 +1,6 @@
 // dependencies
 import {Text, View, TouchableWithoutFeedback} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   moderateScale,
   scale,
@@ -27,13 +27,60 @@ import {authUtils} from '../utils';
 const SignupForm: React.FC = () => {
   const {theme} = useThemeStore();
 
+  const [errors, setErrors] = useState<{
+    fullName?: string;
+    email?: string;
+    phoneNumber?: string;
+  }>({});
+
   const {newUserFormData, setNewUserFormData} = useAuthStore();
 
   const onChangeText = (fieldName: string, text: string) => {
     setNewUserFormData(fieldName, text);
   };
 
+  const validateForm = () => {
+    const newErrors: {
+      fullName?: string;
+      email?: string;
+      phoneNumber?: string;
+    } = {};
+    let isValid = true;
+
+    // Validate full name
+    if (!newUserFormData.fullName || newUserFormData.fullName.trim() === '') {
+      newErrors.fullName = 'Full name is required';
+      isValid = false;
+    }
+
+    // Validate email (optional but must be valid if provided)
+    if (
+      newUserFormData.email &&
+      newUserFormData.email.trim() !== '' &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUserFormData.email)
+    ) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    // Validate phone number
+    if (!newUserFormData.phoneNumber || newUserFormData.phoneNumber.trim() === '') {
+      newErrors.phoneNumber = 'Phone number is required';
+      isValid = false;
+    } else if (newUserFormData.phoneNumber.length !== 10 || !/^\d+$/.test(newUserFormData.phoneNumber)) {
+      newErrors.phoneNumber = 'Please enter a valid 10-digit phone number';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const continueHandler = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       const response = await AuthService.sendOTP(
         `+91${newUserFormData.phoneNumber}`,
@@ -64,6 +111,11 @@ const SignupForm: React.FC = () => {
             onChangeText('fullName', text);
           }}
         />
+        {errors.fullName ? (
+          <Text style={[styles.errorText, {color: theme.colors.error}]}>
+            {errors.fullName}
+          </Text>
+        ) : null}
       </View>
       <View style={{width: '100%'}}>
         <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
@@ -85,6 +137,11 @@ const SignupForm: React.FC = () => {
           }}
           keyboardType="email-address"
         />
+        {errors.email ? (
+          <Text style={[styles.errorText, {color: theme.colors.error}]}>
+            {errors.email}
+          </Text>
+        ) : null}
       </View>
 
       <View style={{width: '100%'}}>
@@ -132,6 +189,11 @@ const SignupForm: React.FC = () => {
             />
           </View>
         </TouchableWithoutFeedback>
+        {errors.phoneNumber ? (
+          <Text style={[styles.errorText, {color: theme.colors.error}]}>
+            {errors.phoneNumber}
+          </Text>
+        ) : null}
       </View>
       <View
         style={{
@@ -168,5 +230,10 @@ const styles = ScaledSheet.create({
     borderRadius: 20,
     paddingLeft: scale(18),
     columnGap: 10,
+  },
+  errorText: {
+    fontSize: '12@ms',
+    marginTop: '4@vs',
+    marginLeft: '18@s',
   },
 });
