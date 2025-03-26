@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import {Camera, CameraDevice} from 'react-native-vision-camera';
 import {useNavigation} from '@react-navigation/native';
@@ -23,41 +23,110 @@ const ScanQrCodeComponent = () => {
   const [isKeyboardFocused, setIsKeyboardFocused] = useState<boolean>(false);
   const [cameraAvailable, setCameraAvailable] = useState(false);
   const [device, setDevice] = useState<CameraDevice | null>(null);
+  const [scooterCode, setScooterCode] = useState<string>('');
+  const [scooterCodeError, setScooterCodeError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isMounted = useRef(true);
 
   useEffect(() => {
+    isMounted.current = true;
+    let timeoutId: NodeJS.Timeout;
+    
     const fetchCameraDevices = async () => {
+      if (!isMounted.current) return;
+      
       try {
+        setIsLoading(true);
         const status = await Camera.requestCameraPermission();
+        
+        if (!isMounted.current) return;
         setCameraAvailable(status === 'granted');
 
         if (status === 'granted') {
-          const devices = await Camera.getAvailableCameraDevices();
-          const backCamera = devices.find(d => d.position === 'back');
-          if (backCamera) {
-            setDevice(backCamera);
-          }
+          // Add a small delay to ensure camera is ready
+          timeoutId = setTimeout(async () => {
+            if (!isMounted.current) return;
+            
+            try {
+              const devices = await Camera.getAvailableCameraDevices();
+              
+              if (!isMounted.current) return;
+              const backCamera = devices.find(d => d.position === 'back');
+              
+              if (backCamera) {
+                setDevice(backCamera);
+              }
+            } catch (error) {
+              console.error('Camera device error:', error);
+            } finally {
+              if (isMounted.current) {
+                setIsLoading(false);
+              }
+            }
+          }, 500);
+        } else {
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Camera permission error:', error);
-        setCameraAvailable(false);
+        if (isMounted.current) {
+          setCameraAvailable(false);
+          setIsLoading(false);
+        }
       }
     };
+    
     fetchCameraDevices();
+    
+    return () => {
+      isMounted.current = false;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
   const handleCodeScanned = (codes: any) => {
     const scannedValue = codes[0]?.value;
     if (scannedValue) {
+      setScooterCode(scannedValue);
+      navigateToRide();
+    }
+  };
+
+  const validateScooterCode = (): boolean => {
+    if (!scooterCode || scooterCode.trim() === '') {
+      setScooterCodeError('Please enter a scooter code');
+      return false;
+    }
+    
+    setScooterCodeError('');
+    return true;
+  };
+
+  const navigateToRide = () => {
+    closeModal();
+    // @ts-ignore
+    navigator.navigate('rideNavigator');
+  };
+
+  const handleContinue = () => {
+    if (validateScooterCode()) {
+      navigateToRide();
     }
   };
 
   const renderCamera = () => {
+    if (isLoading) {
+      return <Text style={styles.cameraStatusText}>Initializing camera...</Text>;
+    }
+    
     if (!cameraAvailable) {
-      return <Text>Camera permission needed</Text>;
+      return <Text style={styles.cameraStatusText}>Camera permission needed</Text>;
     }
     
     if (!device) {
-      return <Text>Initializing camera...</Text>;
+      return <Text style={styles.cameraStatusText}>Camera not available</Text>;
     }
 
     return (
@@ -82,7 +151,7 @@ const ScanQrCodeComponent = () => {
           Please scan the QR Code in the
         </P2>
         <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
-          middle of the Scooter’s handle
+          middle of the Scooter's handle
         </P2>
         <Divider height={12} />
         {!isKeyboardFocused && (
@@ -112,22 +181,32 @@ const ScanQrCodeComponent = () => {
             onFocus={() => setIsKeyboardFocused(true)}
             onBlur={() => setIsKeyboardFocused(false)}
             placeholder="XXXX"
+            value={scooterCode}
+            onChangeText={text => {
+              setScooterCode(text);
+              if (scooterCodeError) {
+                setScooterCodeError('');
+              }
+            }}
             placeholderTextColor={colors.textSecondary}
-            style={[styles.input, {color: colors.textPrimary}]}
+            style={[
+              styles.input, 
+              {color: colors.textPrimary},
+              scooterCodeError ? {borderColor: colors.error} : null
+            ]}
           />
           <View style={{width: 100}}>
             <ButtonTextSm
               customStyles={{height: '100%'}}
-              onPress={() => {
-                closeModal();
-                // @ts-ignore
-                navigator.navigate('rideNavigator');
-              }}
+              onPress={handleContinue}
               variant="highlight">
               Continue
             </ButtonTextSm>
           </View>
         </View>
+        {scooterCodeError ? (
+          <Text style={styles.errorText}>{scooterCodeError}</Text>
+        ) : null}
       </View>
     </View>
   );
@@ -202,6 +281,17 @@ const styles = ScaledSheet.create({
     bottom: 0,
     width: '105%',
     height: '105%',
+  },
+  errorText: {
+    color: colors.error,
+    fontSize: '12@ms',
+    marginTop: '4@vs',
+    textAlign: 'center',
+  },
+  cameraStatusText: {
+    color: colors.textSecondary,
+    fontSize: '14@ms',
+    textAlign: 'center',
   },
 });
 
