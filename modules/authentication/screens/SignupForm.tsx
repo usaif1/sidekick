@@ -52,6 +52,8 @@ const SignupForm: React.FC = () => {
   };
 
   const continueHandler = async () => {
+    Keyboard.dismiss();
+    authBottomSheetRef?.current?.snapToPosition('70%');
     try {
       const response = await AuthService.sendOTP(
         `+91${newUserFormData.phoneNumber}`,
@@ -210,6 +212,7 @@ const SignupForm: React.FC = () => {
                     onChangeText('phoneNumber', text);
                   }}
                   style={{
+                    width: '70%',
                     fontWeight: '600',
                     paddingVertical: 0,
                     fontSize: moderateScale(15.2),
@@ -226,6 +229,7 @@ const SignupForm: React.FC = () => {
                     onChangeText('phoneNumber', text);
                   }}
                   style={{
+                    width: '70%',
                     fontWeight: '600',
                     paddingVertical: 0,
                     fontSize: moderateScale(15.2),

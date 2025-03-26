@@ -33,6 +33,7 @@ const OTPForm: React.FC = () => {
   const [otp, setOTP] = useState<string>('');
 
   const verifyOTP = async () => {
+    Keyboard.dismiss();
     try {
       const response = await AuthService.verifyOTP(
         confirmationResult,
@@ -45,7 +46,7 @@ const OTPForm: React.FC = () => {
   };
 
   const onFocus = () => {
-    authBottomSheetRef?.current?.snapToPosition('100%');
+    authBottomSheetRef?.current?.snapToPosition('70%');
   };
 
   const onSubmitEditing = () => {
@@ -55,7 +56,7 @@ const OTPForm: React.FC = () => {
 
   const getSnapPoints = () => {
     if (Platform.OS === 'android') {
-      return ['40%', '41%', '100%'];
+      return ['40%', '41%', '70%'];
     } else {
       return ['40%'];
     }
@@ -97,6 +98,7 @@ const OTPForm: React.FC = () => {
                   onChangeText={text => {
                     setOTP(text);
                   }}
+                  inputMode="numeric"
                   customStyle={{
                     textAlign: 'center',
                     paddingLeft: 0,
@@ -106,6 +108,7 @@ const OTPForm: React.FC = () => {
                 <BottomSheetStyledInput
                   placeholder="XXXX"
                   value={otp}
+                  inputMode="numeric"
                   onChangeText={text => {
                     setOTP(text);
                   }}

@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   moderateScale,
   scale,
@@ -37,6 +37,9 @@ const AlreadyUserForm: React.FC = () => {
   const headerHeight = useHeaderHeight();
 
   const navigation = useNavigation();
+  const [errors, setErrors] = useState<{
+    phoneNumber?: string;
+  }>({});
 
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
@@ -48,11 +51,16 @@ const AlreadyUserForm: React.FC = () => {
 
   const onSubmitEditing = () => {
     Keyboard.dismiss();
-
-    authBottomSheetRef?.current?.snapToPosition('35%');
+    authBottomSheetRef?.current?.snapToPosition('40%');
   };
 
   const continueHandler = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    Keyboard.dismiss();
+    authBottomSheetRef?.current?.snapToPosition('40%');
     try {
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,
@@ -69,10 +77,35 @@ const AlreadyUserForm: React.FC = () => {
 
   const getSnapPoints = () => {
     if (Platform.OS === 'android') {
-      return ['30%', '35%'];
+      return ['35%', '40%'];
     } else {
-      return ['30%'];
+      return ['35%'];
     }
+  };
+
+  const phoneInputRef =
+    useRef<React.ElementRef<typeof BottomSheetTextInput>>(null);
+
+  const validateForm = () => {
+    const newErrors: {
+      phoneNumber?: string;
+    } = {};
+    let isValid = true;
+
+    // Validate phone number
+    if (!existingUserPhoneNumber || existingUserPhoneNumber.trim() === '') {
+      newErrors.phoneNumber = 'Phone number is required';
+      isValid = false;
+    } else if (
+      existingUserPhoneNumber.length !== 10 ||
+      !/^\d+$/.test(existingUserPhoneNumber)
+    ) {
+      newErrors.phoneNumber = 'Please enter a valid 10-digit phone number';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   return (
@@ -135,6 +168,7 @@ const AlreadyUserForm: React.FC = () => {
               </View>
               {Platform.OS === 'android' ? (
                 <BottomSheetTextInput
+                  ref={phoneInputRef}
                   onFocus={onFocus}
                   onSubmitEditing={
                     Platform.OS === 'android' ? onSubmitEditing : () => {}
@@ -157,6 +191,7 @@ const AlreadyUserForm: React.FC = () => {
                 />
               ) : (
                 <BottomSheetTextInput
+                  ref={phoneInputRef}
                   multiline={false}
                   placeholder="XXXXXXXXXX"
                   placeholderTextColor={theme.colors.textSecondary}
@@ -175,6 +210,11 @@ const AlreadyUserForm: React.FC = () => {
                 />
               )}
             </View>
+            {errors.phoneNumber ? (
+              <Text style={[styles.errorText, {color: theme.colors.error}]}>
+                {errors.phoneNumber}
+              </Text>
+            ) : null}
           </View>
           <View
             style={{
@@ -205,5 +245,10 @@ const styles = ScaledSheet.create({
     borderRadius: 20,
     paddingTop: 32,
     paddingHorizontal: 24,
+  },
+  errorText: {
+    fontSize: '12@ms',
+    marginTop: '4@vs',
+    marginLeft: '18@s',
   },
 });

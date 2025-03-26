@@ -44,6 +44,8 @@ const EmployeeForm: React.FC = () => {
   const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
 
   const continueHandler = async () => {
+    Keyboard.dismiss();
+    authBottomSheetRef?.current?.snapToPosition('60%');
     try {
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,

@@ -43,6 +43,7 @@
     "react-native-device-info": "^14.0.4",
     "react-native-dotenv": "^3.4.11",
     "react-native-easebuzz-kit": "file:react-native-easebuzz-kit-1.0.0.tgz",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "^2.24.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",

@@ -1395,9 +1395,9 @@ export type Query_Root = {
   ride_details_aggregate: Ride_Details_Aggregate;
   /** fetch data from the table: "ride_details" using primary key columns */
   ride_details_by_pk?: Maybe<Ride_Details>;
-  /** fetch data from the table: "ride_steps" */
+  /** An array relationship */
   ride_steps: Array<Ride_Steps>;
-  /** fetch aggregated fields from the table: "ride_steps" */
+  /** An aggregate relationship */
   ride_steps_aggregate: Ride_Steps_Aggregate;
   /** fetch data from the table: "ride_steps" using primary key columns */
   ride_steps_by_pk?: Maybe<Ride_Steps>;
@@ -1653,9 +1653,10 @@ export type Ride_Details = {
   /** An object relationship */
   hubByStartHubId: Hubs;
   id: Scalars['uuid']['output'];
-  /** An object relationship */
-  ride_step?: Maybe<Ride_Steps>;
-  ride_steps_id?: Maybe<Scalars['uuid']['output']>;
+  /** An array relationship */
+  ride_steps: Array<Ride_Steps>;
+  /** An aggregate relationship */
+  ride_steps_aggregate: Ride_Steps_Aggregate;
   /** An object relationship */
   scooter: Scooters;
   scooter_id: Scalars['uuid']['output'];
@@ -1670,6 +1671,26 @@ export type Ride_Details = {
   /** An object relationship */
   user: Users;
   user_id: Scalars['uuid']['output'];
+};
+
+
+/** columns and relationships of "ride_details" */
+export type Ride_DetailsRide_StepsArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Steps_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Steps_Order_By>>;
+  where?: InputMaybe<Ride_Steps_Bool_Exp>;
+};
+
+
+/** columns and relationships of "ride_details" */
+export type Ride_DetailsRide_Steps_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Steps_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Steps_Order_By>>;
+  where?: InputMaybe<Ride_Steps_Bool_Exp>;
 };
 
 
@@ -1778,8 +1799,8 @@ export type Ride_Details_Bool_Exp = {
   hub?: InputMaybe<Hubs_Bool_Exp>;
   hubByStartHubId?: InputMaybe<Hubs_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  ride_step?: InputMaybe<Ride_Steps_Bool_Exp>;
-  ride_steps_id?: InputMaybe<Uuid_Comparison_Exp>;
+  ride_steps?: InputMaybe<Ride_Steps_Bool_Exp>;
+  ride_steps_aggregate?: InputMaybe<Ride_Steps_Aggregate_Bool_Exp>;
   scooter?: InputMaybe<Scooters_Bool_Exp>;
   scooter_id?: InputMaybe<Uuid_Comparison_Exp>;
   start_hub_id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -1794,8 +1815,6 @@ export type Ride_Details_Bool_Exp = {
 
 /** unique or primary key constraints on table "ride_details" */
 export enum Ride_Details_Constraint {
-  /** unique or primary key constraint on columns "ride_steps_id" */
-  RideDetailsRideStepsIdKey = 'ride_details_ride_steps_id_key',
   /** unique or primary key constraint on columns "id" */
   RidesPkey = 'rides_pkey'
 }
@@ -1814,8 +1833,7 @@ export type Ride_Details_Insert_Input = {
   hub?: InputMaybe<Hubs_Obj_Rel_Insert_Input>;
   hubByStartHubId?: InputMaybe<Hubs_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  ride_step?: InputMaybe<Ride_Steps_Obj_Rel_Insert_Input>;
-  ride_steps_id?: InputMaybe<Scalars['uuid']['input']>;
+  ride_steps?: InputMaybe<Ride_Steps_Arr_Rel_Insert_Input>;
   scooter?: InputMaybe<Scooters_Obj_Rel_Insert_Input>;
   scooter_id?: InputMaybe<Scalars['uuid']['input']>;
   start_hub_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1835,7 +1853,6 @@ export type Ride_Details_Max_Fields = {
   end_hub_id?: Maybe<Scalars['uuid']['output']>;
   end_time?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  ride_steps_id?: Maybe<Scalars['uuid']['output']>;
   scooter_id?: Maybe<Scalars['uuid']['output']>;
   start_hub_id?: Maybe<Scalars['uuid']['output']>;
   start_time?: Maybe<Scalars['timestamp']['output']>;
@@ -1851,7 +1868,6 @@ export type Ride_Details_Max_Order_By = {
   end_hub_id?: InputMaybe<Order_By>;
   end_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  ride_steps_id?: InputMaybe<Order_By>;
   scooter_id?: InputMaybe<Order_By>;
   start_hub_id?: InputMaybe<Order_By>;
   start_time?: InputMaybe<Order_By>;
@@ -1868,7 +1884,6 @@ export type Ride_Details_Min_Fields = {
   end_hub_id?: Maybe<Scalars['uuid']['output']>;
   end_time?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  ride_steps_id?: Maybe<Scalars['uuid']['output']>;
   scooter_id?: Maybe<Scalars['uuid']['output']>;
   start_hub_id?: Maybe<Scalars['uuid']['output']>;
   start_time?: Maybe<Scalars['timestamp']['output']>;
@@ -1884,7 +1899,6 @@ export type Ride_Details_Min_Order_By = {
   end_hub_id?: InputMaybe<Order_By>;
   end_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  ride_steps_id?: InputMaybe<Order_By>;
   scooter_id?: InputMaybe<Order_By>;
   start_hub_id?: InputMaybe<Order_By>;
   start_time?: InputMaybe<Order_By>;
@@ -1925,8 +1939,7 @@ export type Ride_Details_Order_By = {
   hub?: InputMaybe<Hubs_Order_By>;
   hubByStartHubId?: InputMaybe<Hubs_Order_By>;
   id?: InputMaybe<Order_By>;
-  ride_step?: InputMaybe<Ride_Steps_Order_By>;
-  ride_steps_id?: InputMaybe<Order_By>;
+  ride_steps_aggregate?: InputMaybe<Ride_Steps_Aggregate_Order_By>;
   scooter?: InputMaybe<Scooters_Order_By>;
   scooter_id?: InputMaybe<Order_By>;
   start_hub_id?: InputMaybe<Order_By>;
@@ -1956,8 +1969,6 @@ export enum Ride_Details_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  RideStepsId = 'ride_steps_id',
-  /** column name */
   ScooterId = 'scooter_id',
   /** column name */
   StartHubId = 'start_hub_id',
@@ -1978,7 +1989,6 @@ export type Ride_Details_Set_Input = {
   end_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   end_time?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  ride_steps_id?: InputMaybe<Scalars['uuid']['input']>;
   scooter_id?: InputMaybe<Scalars['uuid']['input']>;
   start_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   start_time?: InputMaybe<Scalars['timestamp']['input']>;
@@ -2035,7 +2045,6 @@ export type Ride_Details_Stream_Cursor_Value_Input = {
   end_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   end_time?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  ride_steps_id?: InputMaybe<Scalars['uuid']['input']>;
   scooter_id?: InputMaybe<Scalars['uuid']['input']>;
   start_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   start_time?: InputMaybe<Scalars['timestamp']['input']>;
@@ -2067,8 +2076,6 @@ export enum Ride_Details_Update_Column {
   EndTime = 'end_time',
   /** column name */
   Id = 'id',
-  /** column name */
-  RideStepsId = 'ride_steps_id',
   /** column name */
   ScooterId = 'scooter_id',
   /** column name */
@@ -2131,7 +2138,8 @@ export type Ride_Steps = {
   created_at: Scalars['timestamp']['output'];
   id: Scalars['uuid']['output'];
   /** An object relationship */
-  ride_detail?: Maybe<Ride_Details>;
+  ride_detail: Ride_Details;
+  ride_details_id: Scalars['uuid']['output'];
   steps: Scalars['String']['output'];
   updated_at: Scalars['timestamp']['output'];
 };
@@ -2141,6 +2149,17 @@ export type Ride_Steps_Aggregate = {
   __typename?: 'ride_steps_aggregate';
   aggregate?: Maybe<Ride_Steps_Aggregate_Fields>;
   nodes: Array<Ride_Steps>;
+};
+
+export type Ride_Steps_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Ride_Steps_Aggregate_Bool_Exp_Count>;
+};
+
+export type Ride_Steps_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Ride_Steps_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Ride_Steps_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "ride_steps" */
@@ -2158,6 +2177,20 @@ export type Ride_Steps_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "ride_steps" */
+export type Ride_Steps_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Ride_Steps_Max_Order_By>;
+  min?: InputMaybe<Ride_Steps_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "ride_steps" */
+export type Ride_Steps_Arr_Rel_Insert_Input = {
+  data: Array<Ride_Steps_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Ride_Steps_On_Conflict>;
+};
+
 /** Boolean expression to filter rows from the table "ride_steps". All fields are combined with a logical 'AND'. */
 export type Ride_Steps_Bool_Exp = {
   _and?: InputMaybe<Array<Ride_Steps_Bool_Exp>>;
@@ -2166,6 +2199,7 @@ export type Ride_Steps_Bool_Exp = {
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   ride_detail?: InputMaybe<Ride_Details_Bool_Exp>;
+  ride_details_id?: InputMaybe<Uuid_Comparison_Exp>;
   steps?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
 };
@@ -2181,6 +2215,7 @@ export type Ride_Steps_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   ride_detail?: InputMaybe<Ride_Details_Obj_Rel_Insert_Input>;
+  ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
   steps?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -2190,8 +2225,18 @@ export type Ride_Steps_Max_Fields = {
   __typename?: 'ride_steps_max_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  ride_details_id?: Maybe<Scalars['uuid']['output']>;
   steps?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+/** order by max() on columns of table "ride_steps" */
+export type Ride_Steps_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  ride_details_id?: InputMaybe<Order_By>;
+  steps?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -2199,8 +2244,18 @@ export type Ride_Steps_Min_Fields = {
   __typename?: 'ride_steps_min_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  ride_details_id?: Maybe<Scalars['uuid']['output']>;
   steps?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+/** order by min() on columns of table "ride_steps" */
+export type Ride_Steps_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  ride_details_id?: InputMaybe<Order_By>;
+  steps?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "ride_steps" */
@@ -2210,13 +2265,6 @@ export type Ride_Steps_Mutation_Response = {
   affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Ride_Steps>;
-};
-
-/** input type for inserting object relation for remote table "ride_steps" */
-export type Ride_Steps_Obj_Rel_Insert_Input = {
-  data: Ride_Steps_Insert_Input;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Ride_Steps_On_Conflict>;
 };
 
 /** on_conflict condition type for table "ride_steps" */
@@ -2231,6 +2279,7 @@ export type Ride_Steps_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   ride_detail?: InputMaybe<Ride_Details_Order_By>;
+  ride_details_id?: InputMaybe<Order_By>;
   steps?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -2247,6 +2296,8 @@ export enum Ride_Steps_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  RideDetailsId = 'ride_details_id',
+  /** column name */
   Steps = 'steps',
   /** column name */
   UpdatedAt = 'updated_at'
@@ -2256,6 +2307,7 @@ export enum Ride_Steps_Select_Column {
 export type Ride_Steps_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
   steps?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -2272,6 +2324,7 @@ export type Ride_Steps_Stream_Cursor_Input = {
 export type Ride_Steps_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
   steps?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -2282,6 +2335,8 @@ export enum Ride_Steps_Update_Column {
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
+  /** column name */
+  RideDetailsId = 'ride_details_id',
   /** column name */
   Steps = 'steps',
   /** column name */
@@ -2588,9 +2643,9 @@ export type Subscription_Root = {
   ride_details_by_pk?: Maybe<Ride_Details>;
   /** fetch data from the table in a streaming manner: "ride_details" */
   ride_details_stream: Array<Ride_Details>;
-  /** fetch data from the table: "ride_steps" */
+  /** An array relationship */
   ride_steps: Array<Ride_Steps>;
-  /** fetch aggregated fields from the table: "ride_steps" */
+  /** An aggregate relationship */
   ride_steps_aggregate: Ride_Steps_Aggregate;
   /** fetch data from the table: "ride_steps" using primary key columns */
   ride_steps_by_pk?: Maybe<Ride_Steps>;
@@ -4332,6 +4387,11 @@ export type Wallets_Variance_Order_By = {
   security_deposit?: InputMaybe<Order_By>;
 };
 
+export type FetchAllOrganisationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FetchAllOrganisationsQuery = { __typename?: 'query_root', user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', id: any, name: string } }> };
+
 export type FetchAllHubsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4379,6 +4439,7 @@ export type UpdateWalletSecurityDepositMutationVariables = Exact<{
 export type UpdateWalletSecurityDepositMutation = { __typename?: 'mutation_root', update_wallets_by_pk?: { __typename?: 'wallets', id: any, security_deposit: any, created_at: any } | null };
 
 
+export const FetchAllOrganisationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllOrganisations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<FetchAllOrganisationsQuery, FetchAllOrganisationsQueryVariables>;
 export const FetchAllHubsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllHubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"organization_id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<FetchAllHubsQuery, FetchAllHubsQueryVariables>;
 export const FetchCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"full_name"}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}},{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}}]}}]}}]} as unknown as DocumentNode<FetchCurrentUserQuery, FetchCurrentUserQueryVariables>;
 export const UpdateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"_set"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"users_set_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_users_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"_set"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;

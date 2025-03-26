@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from 'react-native';
 import {Camera, CameraDevice} from 'react-native-vision-camera';
 import {useNavigation} from '@react-navigation/native';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -27,6 +34,34 @@ const ScanQrCodeComponent = () => {
   const [scooterCodeError, setScooterCodeError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const isMounted = useRef(true);
+  const inputRef = useRef<TextInput>(null);
+
+  // Add keyboard listeners to detect when keyboard is shown/hidden
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      () => {
+        setIsKeyboardFocused(true);
+      },
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => {
+        setIsKeyboardFocused(false);
+      },
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  // Function to dismiss keyboard
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
 
   useEffect(() => {
     isMounted.current = true;
@@ -211,70 +246,92 @@ const ScanQrCodeComponent = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.secondaryContainer}>
-        <H2>Scan QR Code</H2>
-        <Divider height={6} />
-        <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
-          Please scan the QR Code in the
-        </P2>
-        <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
-          middle of the Scooter's handle
-        </P2>
-        <Divider height={12} />
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <View style={styles.container}>
         {!isKeyboardFocused && (
-          <View style={styles.cameraContainer}>{renderCamera()}</View>
+          <>
+            <View style={styles.secondaryContainer}>
+              <H2>Scan QR Code</H2>
+              <Divider height={6} />
+              <P2
+                customStyles={{textAlign: 'center'}}
+                textColor="textSecondary">
+                Please scan the QR Code in the
+              </P2>
+              <P2
+                customStyles={{textAlign: 'center'}}
+                textColor="textSecondary">
+                middle of the Scooter's handle
+              </P2>
+              <Divider height={12} />
+              <View style={styles.cameraContainer}>{renderCamera()}</View>
+            </View>
+
+            <Divider height={12} />
+            <View style={styles.separatorContainer}>
+              <LinearGradientSVG style={styles.gradientLeft} />
+              <Text style={styles.orText}>or</Text>
+              <LinearGradientSVG style={styles.gradientRight} />
+            </View>
+            <Divider height={12} />
+          </>
         )}
-      </View>
 
-      <Divider height={12} />
-      <View style={styles.separatorContainer}>
-        <LinearGradientSVG style={styles.gradientLeft} />
-        <Text style={styles.orText}>or</Text>
-        <LinearGradientSVG style={styles.gradientRight} />
-      </View>
-      <Divider height={12} />
-
-      <View>
-        <H2 customStyles={{textAlign: 'center'}}>Enter Scooter Number</H2>
-        <Divider height={5} />
-        <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
-          Please enter the number you see
-        </P2>
-        <Divider height={14} />
-        <View style={styles.inputContainer}>
-          <TextInput
-            onFocus={() => setIsKeyboardFocused(true)}
-            onBlur={() => setIsKeyboardFocused(false)}
-            placeholder="XXXX"
-            value={scooterCode}
-            onChangeText={text => {
-              setScooterCode(text);
-              if (scooterCodeError) {
-                setScooterCodeError('');
-              }
-            }}
-            placeholderTextColor={colors.textSecondary}
-            style={[
-              styles.input,
-              {color: colors.textPrimary},
-              scooterCodeError ? {borderColor: colors.error} : null,
-            ]}
-          />
-          <View style={{width: 100}}>
-            <ButtonTextSm
-              customStyles={{height: '100%'}}
-              onPress={handleContinue}
-              variant="highlight">
-              Continue
-            </ButtonTextSm>
-          </View>
+        <View>
+          <H2 customStyles={{textAlign: 'center'}}>Enter Scooter Number</H2>
+          <Divider height={5} />
+          <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
+            Please enter the number you see
+          </P2>
+          <Divider height={14} />
+          <TouchableWithoutFeedback>
+            <View style={styles.inputContainer}>
+              <TextInput
+                ref={inputRef}
+                onFocus={() => setIsKeyboardFocused(true)}
+                onBlur={() => {
+                  // We'll rely on the Keyboard listeners instead
+                  // This is just a backup
+                  setTimeout(() => {
+                    if (!inputRef.current?.isFocused()) {
+                      setIsKeyboardFocused(false);
+                    }
+                  }, 100);
+                }}
+                placeholder="XXXX"
+                value={scooterCode}
+                onChangeText={text => {
+                  setScooterCode(text);
+                  if (scooterCodeError) {
+                    setScooterCodeError('');
+                  }
+                }}
+                placeholderTextColor={colors.textSecondary}
+                style={[
+                  styles.input,
+                  {color: colors.textPrimary},
+                  scooterCodeError ? {borderColor: colors.error} : null,
+                ]}
+              />
+              <View style={{width: 100}}>
+                <ButtonTextSm
+                  customStyles={{height: '100%'}}
+                  onPress={() => {
+                    dismissKeyboard();
+                    handleContinue();
+                  }}
+                  variant="highlight">
+                  Continue
+                </ButtonTextSm>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+          {scooterCodeError ? (
+            <Text style={styles.errorText}>{scooterCodeError}</Text>
+          ) : null}
         </View>
-        {scooterCodeError ? (
-          <Text style={styles.errorText}>{scooterCodeError}</Text>
-        ) : null}
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
