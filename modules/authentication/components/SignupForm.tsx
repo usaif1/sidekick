@@ -1,6 +1,6 @@
 // dependencies
-import {Text, View} from 'react-native';
-import React from 'react';
+import {Text, View, TouchableWithoutFeedback} from 'react-native';
+import React, {useRef} from 'react';
 import {
   moderateScale,
   scale,
@@ -47,6 +47,8 @@ const SignupForm: React.FC = () => {
     }
   };
 
+  const phoneInputRef = useRef<React.ElementRef<typeof BottomSheetTextInput>>(null);
+
   return (
     <BottomSheetView style={styles.contentContainer}>
       <View style={{width: '100%'}}>
@@ -90,43 +92,46 @@ const SignupForm: React.FC = () => {
           Enter Your Phone Number
         </LabelPrimary>
         <Divider height={10} />
-        <View
-          style={[
-            styles.containerStyles,
-            {borderColor: theme.colors.textSecondary},
-          ]}>
+        <TouchableWithoutFeedback onPress={() => phoneInputRef.current?.focus()}>
           <View
-            style={{
-              flexDirection: 'row',
-              columnGap: 10,
-              alignItems: 'center',
-            }}>
-            <Text
+            style={[
+              styles.containerStyles,
+              {borderColor: theme.colors.textSecondary},
+            ]}>
+            <View
               style={{
-                color: theme.colors.highlight,
-                fontSize: 16,
-                fontFamily: 'PlusJakartaSans-Bold',
+                flexDirection: 'row',
+                columnGap: 10,
+                alignItems: 'center',
               }}>
-              +91{' '}
-            </Text>
-            <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
+              <Text
+                style={{
+                  color: theme.colors.highlight,
+                  fontSize: 16,
+                  fontFamily: 'PlusJakartaSans-Bold',
+                }}>
+                +91{' '}
+              </Text>
+              <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
+            </View>
+            <BottomSheetTextInput
+              ref={phoneInputRef}
+              placeholder="XXXXXXXXXX"
+              keyboardType="numeric"
+              maxLength={10}
+              placeholderTextColor={theme.colors.textSecondary}
+              value={newUserFormData.phoneNumber}
+              onChangeText={text => {
+                onChangeText('phoneNumber', text);
+              }}
+              style={{
+                fontWeight: '600',
+                paddingVertical: 0,
+                fontSize: moderateScale(15.2),
+              }}
+            />
           </View>
-          <BottomSheetTextInput
-            placeholder="XXXXXXXXXX"
-            keyboardType="numeric"
-            maxLength={10}
-            placeholderTextColor={theme.colors.textSecondary}
-            value={newUserFormData.phoneNumber}
-            onChangeText={text => {
-              onChangeText('phoneNumber', text);
-            }}
-            style={{
-              fontWeight: '600',
-              paddingVertical: 0,
-              fontSize: moderateScale(15.2),
-            }}
-          />
-        </View>
+        </TouchableWithoutFeedback>
       </View>
       <View
         style={{

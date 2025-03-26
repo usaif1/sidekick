@@ -1,6 +1,6 @@
 // dependencies
-import {Text, View} from 'react-native';
-import React from 'react';
+import {Text, View, TouchableWithoutFeedback} from 'react-native';
+import React, {useRef} from 'react';
 import {
   moderateScale,
   scale,
@@ -24,6 +24,8 @@ const AlreadyUserForm: React.FC = () => {
 
   const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
 
+  const phoneInputRef = useRef<React.ElementRef<typeof BottomSheetTextInput>>(null);
+
   const continueHandler = async () => {
     try {
       const response = await AuthService.sendOTP(
@@ -45,50 +47,53 @@ const AlreadyUserForm: React.FC = () => {
           Enter Your Phone Number
         </LabelPrimary>
         <Divider height={10} />
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderWidth: 2,
-            width: '100%',
-            height: verticalScale(48),
-            borderColor: theme.colors.textSecondary,
-            borderRadius: 20,
-            paddingLeft: scale(18),
-            columnGap: 10,
-          }}>
+        <TouchableWithoutFeedback onPress={() => phoneInputRef.current?.focus()}>
           <View
             style={{
               flexDirection: 'row',
-              columnGap: 10,
               alignItems: 'center',
+              borderWidth: 2,
+              width: '100%',
+              height: verticalScale(48),
+              borderColor: theme.colors.textSecondary,
+              borderRadius: 20,
+              paddingLeft: scale(18),
+              columnGap: 10,
             }}>
-            <Text
+            <View
               style={{
-                color: theme.colors.highlight,
-                fontSize: 16,
-                fontFamily: 'PlusJakartaSans-Bold',
+                flexDirection: 'row',
+                columnGap: 10,
+                alignItems: 'center',
               }}>
-              +91{' '}
-            </Text>
-            <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
+              <Text
+                style={{
+                  color: theme.colors.highlight,
+                  fontSize: 16,
+                  fontFamily: 'PlusJakartaSans-Bold',
+                }}>
+                +91{' '}
+              </Text>
+              <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
+            </View>
+            <BottomSheetTextInput
+              ref={phoneInputRef}
+              placeholder="XXXXXXXXXX"
+              placeholderTextColor={theme.colors.textSecondary}
+              keyboardType="numeric"
+              maxLength={10}
+              onChangeText={text => {
+                setExistingUserPhoneNumber(text);
+              }}
+              style={{
+                color: theme.colors.textPrimary,
+                fontWeight: '600',
+                paddingVertical: 0,
+                fontSize: moderateScale(15.2),
+              }}
+            />
           </View>
-          <BottomSheetTextInput
-            placeholder="XXXXXXXXXX"
-            placeholderTextColor={theme.colors.textSecondary}
-            keyboardType="numeric"
-            maxLength={10}
-            onChangeText={text => {
-              setExistingUserPhoneNumber(text);
-            }}
-            style={{
-              color: theme.colors.textPrimary,
-              fontWeight: '600',
-              paddingVertical: 0,
-              fontSize: moderateScale(15.2),
-            }}
-          />
-        </View>
+        </TouchableWithoutFeedback>
       </View>
       <View
         style={{

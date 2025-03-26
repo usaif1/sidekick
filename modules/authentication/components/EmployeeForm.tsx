@@ -1,6 +1,6 @@
 // dependencies
-import {Text, View, Pressable} from 'react-native';
-import React from 'react';
+import {Text, View, Pressable, TouchableWithoutFeedback} from 'react-native';
+import React, {useRef} from 'react';
 import {
   moderateScale,
   scale,
@@ -24,6 +24,7 @@ import {authUtils} from '../utils';
 
 const EmployeeForm: React.FC = () => {
   const {theme} = useThemeStore();
+  const inputRef = useRef<React.ElementRef<typeof BottomSheetTextInput>>(null);
 
   return (
     <BottomSheetView style={styles.contentContainer}>
@@ -69,46 +70,49 @@ const EmployeeForm: React.FC = () => {
           Enter Your Phone Number
         </LabelPrimary>
         <Divider height={10} />
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderWidth: 2,
-            width: '100%',
-            height: verticalScale(48),
-            borderColor: theme.colors.textSecondary,
-            borderRadius: 20,
-            paddingLeft: scale(18),
-            columnGap: 10,
-          }}>
+        <TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
           <View
             style={{
               flexDirection: 'row',
-              columnGap: 10,
               alignItems: 'center',
+              borderWidth: 2,
+              width: '100%',
+              height: verticalScale(48),
+              borderColor: theme.colors.textSecondary,
+              borderRadius: 20,
+              paddingLeft: scale(18),
+              columnGap: 10,
             }}>
-            <Text
+            <View
               style={{
-                color: theme.colors.highlight,
-                fontSize: 16,
-                fontFamily: 'PlusJakartaSans-Bold',
+                flexDirection: 'row',
+                columnGap: 10,
+                alignItems: 'center',
               }}>
-              +91{' '}
-            </Text>
-            <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
+              <Text
+                style={{
+                  color: theme.colors.highlight,
+                  fontSize: 16,
+                  fontFamily: 'PlusJakartaSans-Bold',
+                }}>
+                +91{' '}
+              </Text>
+              <View style={{width: 1, height: 20, backgroundColor: 'black'}} />
+            </View>
+            <BottomSheetTextInput
+              ref={inputRef}
+              keyboardType="numeric"
+              placeholder="XXXXXXXXXX"
+              placeholderTextColor={theme.colors.textSecondary}
+              style={{
+                color: theme.colors.textPrimary,
+                fontWeight: '600',
+                paddingVertical: 0,
+                fontSize: moderateScale(15.2),
+              }}
+            />
           </View>
-          <BottomSheetTextInput
-            keyboardType="numeric"
-            placeholder="XXXXXXXXXX"
-            placeholderTextColor={theme.colors.textSecondary}
-            style={{
-              color: theme.colors.textPrimary,
-              fontWeight: '600',
-              paddingVertical: 0,
-              fontSize: moderateScale(15.2),
-            }}
-          />
-        </View>
+        </TouchableWithoutFeedback>
       </View>
       <View
         style={{
