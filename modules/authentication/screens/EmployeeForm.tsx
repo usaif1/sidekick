@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   moderateScale,
   scale,
@@ -17,14 +17,13 @@ import {
 import BottomSheet, {
   BottomSheetTextInput,
   BottomSheetView,
-  TouchableHighlight,
 } from '@gorhom/bottom-sheet';
 import {useHeaderHeight} from '@react-navigation/elements';
 import {useNavigation} from '@react-navigation/native';
+import {Dropdown} from 'react-native-element-dropdown';
 
 // components
 import {ButtonText, Divider, LabelPrimary} from '@/components';
-import DropdownIcon from '@/modules/home/assets/dropdownIcon.svg';
 
 // store
 import {useAuthStore, useThemeStore} from '@/globalStore';
@@ -41,7 +40,13 @@ const EmployeeForm: React.FC = () => {
   const {theme} = useThemeStore();
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
-  const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
+  const {
+    existingUserPhoneNumber,
+    setExistingUserPhoneNumber,
+    organisations,
+    setSelectedOrganisation,
+    selectedOrganisation,
+  } = useAuthStore();
 
   const continueHandler = async () => {
     Keyboard.dismiss();
@@ -79,6 +84,10 @@ const EmployeeForm: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    AuthService.fetchAllOrganistions();
+  }, []);
+
   return (
     <>
       <View style={{flex: 1}}>
@@ -107,33 +116,42 @@ const EmployeeForm: React.FC = () => {
               Select Institution
             </LabelPrimary>
             <Divider height={10} />
-            <TouchableHighlight
+            <Dropdown
               style={{
-                justifyContent: 'center',
                 borderWidth: 2,
                 width: '100%',
                 height: verticalScale(48),
                 borderColor: theme.colors.textSecondary,
                 borderRadius: 20,
-                paddingHorizontal: scale(18),
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Text
-                  style={{
-                    color: theme.colors.textSecondary,
-                    fontSize: moderateScale(15.2),
-                    fontWeight: '600',
-                  }}>
-                  XXXXXXXXXX
-                </Text>
-                <DropdownIcon />
-              </View>
-            </TouchableHighlight>
+                paddingLeft: scale(18),
+              }}
+              searchPlaceholderTextColor={theme.colors.textSecondary}
+              mode="modal"
+              placeholder="XXXXXXXXXX"
+              placeholderStyle={{color: theme.colors.textSecondary}}
+              iconStyle={{
+                right: 10,
+              }}
+              data={organisations.map(org => {
+                return {
+                  label: org.name,
+                  value: org.id,
+                };
+              })}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              searchPlaceholder="Search..."
+              value={selectedOrganisation?.id}
+              onChange={item => {
+                console.log(item);
+                setSelectedOrganisation({
+                  id: item.value,
+                  name: item.label,
+                });
+              }}
+            />
           </View>
 
           <View style={{width: '100%'}}>
@@ -227,6 +245,7 @@ const EmployeeForm: React.FC = () => {
                     fontWeight: '600',
                     paddingVertical: 0,
                     fontSize: moderateScale(15.2),
+                    height: 32,
                   }}
                 />
               ) : (
@@ -241,6 +260,7 @@ const EmployeeForm: React.FC = () => {
                     fontWeight: '600',
                     paddingVertical: 0,
                     fontSize: moderateScale(15.2),
+                    height: 32,
                   }}
                 />
               )}
@@ -277,5 +297,13 @@ const styles = ScaledSheet.create({
     paddingTop: 32,
     paddingHorizontal: 24,
     zIndex: 99,
+  },
+
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
   },
 });

@@ -3,7 +3,6 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, Alert} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import {Camera, CameraDevice} from 'react-native-vision-camera';
 
 // store
 import useLocationStore from '../../store/locationStore';
@@ -30,11 +29,6 @@ const RentScreen: React.FC = () => {
   const {closeBottomSheet} = useGlobalStore();
 
   const {latitude, longitude, setLocation} = useLocationStore();
-
-  const {device, setDevice} = useRideStore();
-
-  // const [cameraAvailable, setCameraAvailable] = useState(false);
-  // const [device, setDevice] = useState<CameraDevice | null>(null);
 
   const {openModal, setModalComponent} = useGlobalStore();
   const {selectedHub, setSelectedHub, hubs} = useRideStore();
@@ -113,25 +107,6 @@ const RentScreen: React.FC = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latitude, longitude, hubs]);
-
-  const fetchCameraDevices = async () => {
-    try {
-      const status = await Camera.requestCameraPermission();
-      // setCameraAvailable(status === 'granted');
-
-      if (status === 'granted') {
-        const devices = Camera.getAvailableCameraDevices();
-        setDevice(devices.find(d => d.position === 'back'));
-        // const backCamera = devices.find(d => d.position === 'back');
-        // if (backCamera) {
-        //   setDevice(backCamera);
-        // }else{}
-      }
-    } catch (error) {
-      console.error('Camera permission error:', error);
-      // setCameraAvailable(false);
-    }
-  };
 
   useEffect(() => {
     // fetchCameraDevices();

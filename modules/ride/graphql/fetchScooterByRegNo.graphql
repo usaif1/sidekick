@@ -1,0 +1,6 @@
+query fetchScooterByNumber($regNo: String = "SCOOTER1") {
+  scooters(where: {registration_number: {_ilike: $regNo}}) {
+    registration_number
+    id
+  }
+}

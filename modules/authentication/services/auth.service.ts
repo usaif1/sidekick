@@ -13,6 +13,7 @@ const {
   setAuthUser,
   setGraphQLClient,
   setAuthToken,
+  setOrganisations,
 } = useAuthStore.getState();
 
 const AuthService = {
@@ -146,6 +147,18 @@ const AuthService = {
         }, 1000);
       }
     }, 500);
+  },
+
+  fetchAllOrganistions: async function () {
+    try {
+      const response = await axios.get(
+        'https://supreme-mustang-86.hasura.app/api/rest/fetchallorganisations',
+      );
+      console.log('orgs', response.data);
+      setOrganisations(response.data.organizations);
+    } catch (error) {
+      console.log('error fetching orgs');
+    }
   },
 };
 
