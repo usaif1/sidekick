@@ -112,7 +112,6 @@ const globalStore = create<GlobalStore & GlobalActions>(set => ({
       }
       return {
         isModalOpen: false,
-        ModalComponent: null,
         closeModalCallback: null,
         ModalCloseButton: ModalCloseButton,
       };

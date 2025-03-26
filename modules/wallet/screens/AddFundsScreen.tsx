@@ -60,8 +60,8 @@ const AddFundsScreen = () => {
   // Handle pay button press
   const handlePay = async () => {
     // Validate amount
-    const clientSecret: ClientSecret = await axios.post(
-      'https://sidekick-backend-279t.onrender.com/txnkey',
+    const clientSecret = await axios.post(
+      'https://sidekick-backend-279t.onrender.com/initiate-payment',
       // 'http://localhost:3000/txnkey',
       {
         amount: parseFloat(rechargeAmount) + securityDeposit,
@@ -74,7 +74,7 @@ const AddFundsScreen = () => {
     );
 
     const options = {
-      access_key: clientSecret.data,
+      access_key: clientSecret.data?.data,
       pay_mode: 'test',
     };
 
@@ -84,6 +84,22 @@ const AddFundsScreen = () => {
       .then((data: any) => {
         //handle the payment success & failed response here
         console.log('Payment Response:', data);
+        if (securityDeposit) {
+          WalletService.updateWalletSecurityDeposit({
+            id: userWallet?.id,
+            security_deposit: securityDeposit,
+          });
+        }
+
+        if (data.result === 'payment_successfull') {
+          WalletService.updateWalletBalance({
+            id: userWallet?.id,
+            balance: parseFloat(rechargeAmount),
+          }).then(() => {
+            WalletService.fetchUserWallet();
+            openModal();
+          });
+        }
       })
       .catch((error: any) => {
         //handle sdk failure issue here
