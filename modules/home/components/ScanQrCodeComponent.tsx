@@ -20,6 +20,7 @@ import Divider from '@/components/Divider';
 import {useGlobalStore, useThemeStore} from '@/globalStore';
 import LinearGradientSVG from '../assets/linearGradient.svg';
 import {ButtonTextSm} from '@/components';
+import {RideService} from '@/globalService';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -70,7 +71,9 @@ const ScanQrCodeComponent = () => {
     const MAX_RETRIES = 3;
 
     const fetchCameraDevices = async () => {
-      if (!isMounted.current) return;
+      if (!isMounted.current) {
+        return;
+      }
 
       try {
         setIsLoading(true);
@@ -173,10 +176,12 @@ const ScanQrCodeComponent = () => {
   }, []);
 
   const handleCodeScanned = (codes: any) => {
+    console.log('fire');
     const scannedValue = codes[0]?.value;
+    console.log('scanned value', scannedValue);
     if (scannedValue) {
-      setScooterCode(scannedValue);
-      navigateToRide();
+      // setScooterCode(scannedValue);
+      // navigateToRide();
     }
   };
 
@@ -197,9 +202,26 @@ const ScanQrCodeComponent = () => {
   };
 
   const handleContinue = () => {
-    if (validateScooterCode()) {
-      navigateToRide();
-    }
+    RideService.fetchScooterByRegNo({
+      regNo: scooterCode,
+    })
+      .then(response => {
+        if (!response) {
+          return console.log('Please check reg no');
+        } else {
+          RideService.startRide({
+            object: {},
+          }).then(() => {
+            if (validateScooterCode()) {
+              navigateToRide();
+            }
+          });
+        }
+      })
+
+      .catch(err => {
+        console.log('Error starting ride', err?.message);
+      });
   };
 
   const renderCamera = () => {
