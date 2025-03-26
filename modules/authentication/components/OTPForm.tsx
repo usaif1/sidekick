@@ -1,6 +1,6 @@
 // dependencies
 import {Pressable, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 
@@ -18,8 +18,80 @@ const OTPForm: React.FC = () => {
   const {confirmationResult, setAuthUser} = useAuthStore();
 
   const [otp, setOTP] = useState<string>('');
+  const [otpError, setOtpError] = useState<string>('');
+  const [countdown, setCountdown] = useState<number>(120); // 2 minutes in seconds
+  const [isResendDisabled, setIsResendDisabled] = useState<boolean>(true);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Start countdown timer on component mount
+    startCountdown();
+
+    // Clear timer on component unmount
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
+
+  const startCountdown = () => {
+    setIsResendDisabled(true);
+    setCountdown(120); // Reset to 2 minutes
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    timerRef.current = setInterval(() => {
+      setCountdown(prevCount => {
+        if (prevCount <= 1) {
+          // When countdown reaches 0, clear interval and enable resend button
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+          }
+          setIsResendDisabled(false);
+          return 0;
+        }
+        return prevCount - 1;
+      });
+    }, 1000);
+  };
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  const handleResendOTP = () => {
+    // Reset the countdown and disable resend button
+    startCountdown();
+    // In a real implementation, you would call the API here
+    // For now, we're just showing a UI feedback
+    console.log('Resending OTP...');
+  };
+
+  const validateOTP = (): boolean => {
+    if (!otp || otp.trim() === '') {
+      setOtpError('OTP is required');
+      return false;
+    }
+
+    if (otp.length !== 6 || !/^\d+$/.test(otp)) {
+      setOtpError('Please enter a valid 6-digit OTP');
+      return false;
+    }
+
+    setOtpError('');
+    return true;
+  };
 
   const verifyOTP = async () => {
+    if (!validateOTP()) {
+      return;
+    }
+
     try {
       const response = await AuthService.verifyOTP(
         confirmationResult,
@@ -28,7 +100,10 @@ const OTPForm: React.FC = () => {
       );
       setAuthUser(response);
       return response;
-    } catch (err) {}
+    } catch (err) {
+      setOtpError('Invalid OTP. Please try again.');
+      console.error('Error verifying OTP:', err);
+    }
   };
 
   return (
@@ -38,33 +113,49 @@ const OTPForm: React.FC = () => {
           <Text style={styles.label}>Please Enter the OTP Received</Text>
           <Divider height={10} />
           <BottomSheetStyledInput
-            placeholder="XXXX"
+            placeholder="XXXXXX"
             value={otp}
             onChangeText={text => {
               setOTP(text);
             }}
+            keyboardType="numeric"
+            maxLength={6}
             customStyle={{
               textAlign: 'center',
               paddingLeft: 0,
             }}
           />
+          {otpError ? (
+            <Text style={[styles.errorText, {color: theme.colors.error}]}>
+              {otpError}
+            </Text>
+          ) : null}
         </View>
 
-        <Pressable
-          style={{
-            alignSelf: 'center',
-          }}>
-          <Text
+        <View style={styles.resendContainer}>
+          <Pressable
             style={{
-              color: theme.colors.highlight,
-              fontSize: 10,
-              fontWeight: '600',
-              textDecorationLine: 'underline',
-              marginTop: 12,
-            }}>
-            Resend OTP
-          </Text>
-        </Pressable>
+              alignSelf: 'center',
+              opacity: isResendDisabled ? 0.5 : 1,
+            }}
+            onPress={isResendDisabled ? undefined : handleResendOTP}
+            disabled={isResendDisabled}>
+            <Text
+              style={{
+                color: theme.colors.highlight,
+                fontSize: 12,
+                fontWeight: '600',
+                textDecorationLine: 'underline',
+              }}>
+              Resend OTP
+            </Text>
+          </Pressable>
+          {isResendDisabled && (
+            <Text style={styles.countdownText}>
+              {formatTime(countdown)}
+            </Text>
+          )}
+        </View>
 
         <View
           style={{
@@ -107,5 +198,21 @@ const styles = ScaledSheet.create({
     fontSize: 14,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  errorText: {
+    fontSize: '12@ms',
+    marginTop: '4@vs',
+    textAlign: 'center',
+  },
+  resendContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '8@vs',
+    columnGap: '8@s',
+  },
+  countdownText: {
+    fontSize: '12@ms',
+    fontWeight: '500',
   },
 });
