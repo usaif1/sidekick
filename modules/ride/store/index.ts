@@ -16,11 +16,6 @@ import {FetchAllHubsQuery} from '@/generated/graphql';
 //   | 'profile-update'
 //   | 'auth-confirmation';
 
-export type SelectedHub = {
-  id: string;
-  label: string;
-  distance: string;
-};
 
 type RideStore = {
   hubs: FetchAllHubsQuery['hubs'];
@@ -29,19 +24,19 @@ type RideStore = {
   isPaused: boolean;
   secondsElapsed: number;
   perMinuteRate: number;
-  selectedHub: SelectedHub;
+  selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
 };
 
-type WalletActions = {
+type RideActions = {
   setHubs: (allHubs: FetchAllHubsQuery['hubs']) => void;
   setTimerInterval: (timeoutInterval: NodeJS.Timeout | null) => void;
   setTotalCost: (cost: number) => void;
   setIsPaused: (pauseState: boolean) => void;
   setSecondsElapsed: (updater: any) => void;
-
-  setSelectedHub: (hub: SelectedHub) => void;
+  setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0] | undefined) => void;
 };
 
+// Separate state from actions
 const rideInitialState: RideStore = {
   hubs: [],
   interval: null,
@@ -49,15 +44,10 @@ const rideInitialState: RideStore = {
   isPaused: false,
   secondsElapsed: 0,
   perMinuteRate: 2,
-
-  selectedHub: {
-    id: 'car_parking',
-    label: 'Car Parking',
-    distance: '23m',
-  },
+  selectedHub: undefined,
 };
 
-const rideStore = create<RideStore & WalletActions>(set => ({
+const rideStore = create<RideStore & RideActions>(set => ({
   ...rideInitialState,
 
   setHubs: allHubs =>
