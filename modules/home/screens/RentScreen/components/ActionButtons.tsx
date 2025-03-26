@@ -32,7 +32,7 @@ const ActionButtons: React.FC<Props> = ({
         <NearestHubIcon />
         <ButtonSmall textColor="highlight">Nearest Hub</ButtonSmall>
       </Pressable>
-      <Divider height={3.2} />
+      <Divider height={10} />
       <ButtonWithIcon
         variant="primary"
         onPress={handleOpenModal}
