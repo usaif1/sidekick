@@ -31,6 +31,8 @@ const ScanQrCodeComponent = () => {
   useEffect(() => {
     isMounted.current = true;
     let timeoutId: NodeJS.Timeout;
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
     
     const fetchCameraDevices = async () => {
       if (!isMounted.current) return;
@@ -55,11 +57,11 @@ const ScanQrCodeComponent = () => {
 
         if (status === 'granted') {
           // Increase timeout to give more time for camera initialization
-          timeoutId = setTimeout(async () => {
+          const attemptGetDevices = async () => {
             if (!isMounted.current) return;
             
             try {
-              console.log('Getting available camera devices...');
+              console.log(`Getting available camera devices (attempt ${retryCount + 1})...`);
               const devices = await Camera.getAvailableCameraDevices();
               console.log('Available devices:', devices.length);
               
@@ -67,8 +69,18 @@ const ScanQrCodeComponent = () => {
               
               if (devices.length === 0) {
                 console.log('No camera devices found');
-                setIsLoading(false);
-                return;
+                
+                // If we haven't exceeded max retries, try again after a delay
+                if (retryCount < MAX_RETRIES) {
+                  retryCount++;
+                  console.log(`Retrying in 1 second (attempt ${retryCount}/${MAX_RETRIES})...`);
+                  timeoutId = setTimeout(attemptGetDevices, 1000);
+                  return;
+                } else {
+                  console.log('Max retries exceeded, giving up');
+                  setIsLoading(false);
+                  return;
+                }
               }
               
               const backCamera = devices.find(d => d.position === 'back');
@@ -81,14 +93,18 @@ const ScanQrCodeComponent = () => {
                 // Fallback to the first camera if no back camera is found
                 setDevice(devices[0]);
               }
+              
+              setIsLoading(false);
             } catch (error) {
               console.error('Camera device error:', error);
-            } finally {
               if (isMounted.current) {
                 setIsLoading(false);
               }
             }
-          }, 1000); // Increased from 500ms to 1000ms
+          };
+          
+          // Start the first attempt after a short delay
+          timeoutId = setTimeout(attemptGetDevices, 500);
         } else {
           console.log('Camera permission not granted');
           setIsLoading(false);
