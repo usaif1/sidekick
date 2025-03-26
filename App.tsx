@@ -5,6 +5,7 @@ import {StatusBar} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {Provider, Client} from 'urql';
 import axios from 'axios';
+import { ToastProvider } from './components/ToastMessage';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -72,7 +73,9 @@ function App(): React.JSX.Element {
         />
         {graphQLClient ? (
           <Provider value={graphQLClient as Client}>
-            <ProtectedNavigation />
+            <ToastProvider>
+              <ProtectedNavigation />
+            </ToastProvider>
             <BottomSheet
               key="protectedBottomSheet"
               ref={globalBottomSheetRef}

@@ -3,7 +3,8 @@ import {View, StyleSheet} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
+import { useToast } from '@/components/ToastMessage';
+import { showToast } from '@/components/ToastMessage';
 // service
 import {AuthService, UserService} from '@/globalService';
 
@@ -27,7 +28,8 @@ const UserDetails: React.FC = () => {
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const {openModal, setModalComponent, closeBottomSheet} = useGlobalStore();
-
+  const toast = useToast();
+  
   // User data
   const userData = user;
 
@@ -48,6 +50,7 @@ const UserDetails: React.FC = () => {
       isToggled: notificationsEnabled,
       // @ts-ignore
       onToggle: value => {
+        showToast(toast, value ? 'Notifications enabled' : 'Notifications disabled', value ? 'success' : 'error');
         setNotificationsEnabled(value);
       },
       onPress: () => {}, // No-op since the switch handles the interaction
@@ -102,6 +105,7 @@ const UserDetails: React.FC = () => {
           variant="error"
           onPress={() => {
             AuthService.signOut();
+            toast.show('Logout successful', 'success');
           }}>
           Logout
         </ButtonText>
