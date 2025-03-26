@@ -52,7 +52,7 @@ const ButtonText: React.FC<Props> = ({
 
   return (
     <TouchableHighlight
-      underlayColor={colors[variant]}
+      underlayColor={containerStyles[variant].backgroundColor}
       onPress={onPress}
       style={[
         styles.pressableContainer,

@@ -19,13 +19,7 @@ import './ReactotronConfig';
 import {useAuthStore, useGlobalStore} from './globalStore';
 
 function App(): React.JSX.Element {
-  const {
-    setAuthBottomSheetRef,
-    AuthBottomSheetComponent,
-    authBottomSheetSnapPoints,
-    authLoaders,
-    graphQLClient,
-  } = useAuthStore();
+  const {setAuthBottomSheetRef, authLoaders, graphQLClient} = useAuthStore();
 
   const {
     setGlobalBottomSheetRef,
@@ -90,24 +84,6 @@ function App(): React.JSX.Element {
         ) : (
           <>
             <AuthNavigation />
-            <BottomSheet
-              key="authBottomSheet"
-              ref={authBottomSheetRef}
-              enablePanDownToClose={false}
-              enableOverDrag={false}
-              enableHandlePanningGesture={false}
-              handleComponent={() => null}
-              style={{flex: 1}}
-              keyboardBehavior="interactive"
-              enableContentPanningGesture={false}
-              android_keyboardInputMode="adjustResize"
-              keyboardBlurBehavior="restore"
-              index={1}
-              snapPoints={authBottomSheetSnapPoints}>
-              <BottomSheetView>
-                {AuthBottomSheetComponent && <AuthBottomSheetComponent />}
-              </BottomSheetView>
-            </BottomSheet>
           </>
         )}
       </GestureHandlerRootView>
