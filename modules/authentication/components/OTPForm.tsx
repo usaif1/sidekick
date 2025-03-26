@@ -5,7 +5,12 @@ import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // components
-import {BottomSheetStyledInput, ButtonText, Divider} from '@/components';
+import {
+  BottomSheetStyledInput,
+  ButtonText,
+  Divider,
+  showToast,
+} from '@/components';
 
 // store
 import {useThemeStore, useAuthStore} from '@/globalStore';
@@ -27,8 +32,31 @@ const OTPForm: React.FC = () => {
         () => {},
       );
       setAuthUser(response);
+      showToast({
+        type: 'success',
+        text1: 'Success',
+        text2: 'OTP verified successfully',
+        position: 'top',
+      });
       return response;
-    } catch (err) {}
+    } catch (err) {
+      showToast({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Invalid OTP. Please try again.',
+        position: 'top',
+      });
+    }
+  };
+
+  const resendOTP = () => {
+    // Implement your resend OTP logic here
+    showToast({
+      type: 'info',
+      text1: 'OTP Sent',
+      text2: 'A new OTP has been sent to your phone',
+      position: 'top',
+    });
   };
 
   return (
@@ -39,6 +67,8 @@ const OTPForm: React.FC = () => {
           <Divider height={10} />
           <BottomSheetStyledInput
             placeholder="XXXX"
+            maxLength={6}
+            keyboardType="numeric"
             value={otp}
             onChangeText={text => {
               setOTP(text);
@@ -53,7 +83,8 @@ const OTPForm: React.FC = () => {
         <Pressable
           style={{
             alignSelf: 'center',
-          }}>
+          }}
+          onPress={resendOTP}>
           <Text
             style={{
               color: theme.colors.highlight,

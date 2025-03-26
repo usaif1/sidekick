@@ -14,7 +14,12 @@ import {ScaledSheet} from 'react-native-size-matters';
 import {useHeaderHeight} from '@react-navigation/elements';
 
 // components
-import {BottomSheetStyledInput, ButtonText, Divider} from '@/components';
+import {
+  BottomSheetStyledInput,
+  ButtonText,
+  Divider,
+  showToast,
+} from '@/components';
 
 // store
 import {useThemeStore, useAuthStore} from '@/globalStore';
@@ -33,6 +38,16 @@ const OTPForm: React.FC = () => {
   const [otp, setOTP] = useState<string>('');
 
   const verifyOTP = async () => {
+    if (otp.length !== 6) {
+      showToast({
+        type: 'error',
+        text1: 'Invalid OTP',
+        text2: 'Please enter a valid otp.',
+        position: 'top',
+      });
+      return;
+    }
+
     Keyboard.dismiss();
     try {
       const response = await AuthService.verifyOTP(
@@ -40,9 +55,18 @@ const OTPForm: React.FC = () => {
         otp,
         () => {},
       );
+
       setAuthUser(response);
+
       return response;
-    } catch (err) {}
+    } catch (err) {
+      showToast({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Incorrect OTP. Please try again.',
+        position: 'top',
+      });
+    }
   };
 
   const onFocus = () => {
@@ -92,6 +116,7 @@ const OTPForm: React.FC = () => {
               {Platform.OS === 'android' ? (
                 <BottomSheetStyledInput
                   placeholder="XXXX"
+                  maxLength={6}
                   onFocus={onFocus}
                   onSubmitEditing={onSubmitEditing}
                   value={otp}

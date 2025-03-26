@@ -10,6 +10,7 @@ import {useThemeStore, useUserStore} from '@/globalStore';
 import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
 import {UserService} from '@/globalService';
+import {showToast} from '@/components';
 
 interface EditProfileProps {
   route?: {
@@ -48,15 +49,15 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       email: '',
       phone: '',
     };
-
+  
     // Validate form
     let isValid = true;
-
+  
     if (!name.trim()) {
       newErrors.name = 'Name is required';
       isValid = false;
     }
-
+  
     if (!email.trim()) {
       newErrors.email = 'Email is required';
       isValid = false;
@@ -64,28 +65,57 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       newErrors.email = 'Email is invalid';
       isValid = false;
     }
-
+  
     if (!phone.trim()) {
       newErrors.phone = 'Phone number is required';
       isValid = false;
     }
-
+  
     setErrors(newErrors);
-
+  
     if (isValid) {
       // Save changes and navigate back
-
       UserService.updateUserDetails({
         id: user?.id,
         _set: {
           full_name: name,
           email: email,
         },
-      }).then(response => {
-        if (response) {
-          UserService.fetchUserDetails();
-        }
-        navigation.goBack();
+      })
+        .then(response => {
+          if (response) {
+            UserService.fetchUserDetails();
+            showToast({
+              type: 'success',
+              text1: 'Profile Updated',
+              text2: 'Your profile has been successfully updated',
+              position: 'top',
+            });
+            navigation.goBack();
+          } else {
+            showToast({
+              type: 'error',
+              text1: 'Update Failed',
+              text2: 'Failed to update profile. Please try again.',
+              position: 'top',
+            });
+          }
+        })
+        .catch(error => {
+          showToast({
+            type: 'error',
+            text1: 'Update Failed',
+            text2: 'An error occurred while updating your profile',
+            position: 'top',
+          });
+          console.error('Profile update error:', error);
+        });
+    } else {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fix the errors in the form',
+        position: 'top',
       });
     }
   };
