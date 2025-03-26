@@ -17,7 +17,8 @@
     "find-unused": "npx unimported",
     "sign-config": "cd android && ./gradlew signingReport && cd ..",
     "postinstall": "patch-package",
-    "install-easebuzz": "npm install $(npm pack ./react-native-easebuzz-kit | tail -1) --legacy-peer-deps"
+    "install-easebuzz": "npm install $(npm pack ./react-native-easebuzz-kit | tail -1) --legacy-peer-deps",
+    "i-modules": "npm install --legacy-peer-deps"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.1.1",
