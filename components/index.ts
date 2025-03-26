@@ -28,3 +28,7 @@ export {default as ButtonText} from './ButtonText';
 export {default as ButtonTextSm} from './ButtonTextSm';
 export {default as ButtonWithIcon} from './ButtonWithIcon';
 export {default as ButtonTextBottomSheet} from './ButtonTextBottomSheet';
+
+//Toast
+export {default as ToastMessage} from './ToastMessage';
+export {showToast, hideToast} from './ToastMessage';

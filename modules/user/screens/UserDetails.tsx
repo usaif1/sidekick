@@ -17,7 +17,7 @@ import Divider from '@/components/Divider';
 import Profile from '../assets/profile.svg';
 import Notification from '../assets/notification.svg';
 import Help from '../assets/help.svg';
-import {ButtonText, GlobalModal} from '@/components';
+import {ButtonText, GlobalModal,showToast} from '@/components';
 import NeedHelp from '@/modules/user/components/NeedHelp';
 
 const {colors} = useThemeStore.getState().theme;
@@ -48,6 +48,11 @@ const UserDetails: React.FC = () => {
       isToggled: notificationsEnabled,
       // @ts-ignore
       onToggle: value => {
+        showToast({
+          type: 'success',
+          text1: 'Notifications ' + (value ? 'enabled' : 'disabled'),
+          position: 'top',
+        });
         setNotificationsEnabled(value);
       },
       onPress: () => {}, // No-op since the switch handles the interaction

@@ -13,6 +13,7 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 
 // components
 import {SplashPrimary} from './modules/splash/screens';
+import {ToastMessage} from '@/components';
 
 // misc
 import './ReactotronConfig';
@@ -47,13 +48,19 @@ function App(): React.JSX.Element {
           backgroundColor={'transparent'}
           translucent
         />
-        <SplashNavigation />;
+        <SplashNavigation />
+        <ToastMessage />
       </>
     );
   }
 
   if (authLoaders['loading-user']) {
-    return <SplashPrimary />;
+    return (
+      <>
+        <SplashPrimary />
+        <ToastMessage />
+      </>
+    );
   }
 
   return (
@@ -80,10 +87,12 @@ function App(): React.JSX.Element {
                 {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
               </BottomSheetView>
             </BottomSheet>
+            <ToastMessage />
           </Provider>
         ) : (
           <>
             <AuthNavigation />
+            <ToastMessage />
           </>
         )}
       </GestureHandlerRootView>
