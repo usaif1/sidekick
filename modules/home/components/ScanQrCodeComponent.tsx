@@ -40,7 +40,6 @@ const ScanQrCodeComponent = () => {
   const isMounted = useRef(true);
   const inputRef = useRef<TextInput>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isScanning, setIsScanning] = useState(false);
 
   // Add keyboard listeners to detect when keyboard is shown/hidden
   useEffect(() => {
@@ -180,63 +179,24 @@ const ScanQrCodeComponent = () => {
     };
   }, []);
 
-  const debouncedHandleCodeScanned = 
-    async (scannedValue: string) => {
-      if (isProcessing || isScanning) {
-        return;
-      }
-      
+  const handleCodeScanned = async (codes: any) => {
+    const scannedValue = codes[0]?.value;
+    if (scannedValue && !isProcessing) {
       try {
         setIsProcessing(true);
-        setIsScanning(true);
-
-        const response = await axios.get(scannedValue).catch(error => {
-          console.log('Network error:', error?.message);
-          return { data: null };
-        });
-
+        const response = await axios.get(scannedValue);
         if (response.data) {
-          console.log("Scanned data:", response.data);
           navigateToRide();
-        } else {
-          Alert.alert(
-            'Invalid QR Code',
-            "Make sure you are scanning correct QR code in the middle of scooter's handle",
-            [{
-              text: 'OK',
-
-              onPress: () => {
-                setTimeout(() => {
-                  setIsScanning(false);
-                  setIsProcessing(false);
-                }, 500);
-              }
-            }]
-          );
         }
       } catch (error) {
         console.log('Error scanning:', error);
         Alert.alert(
           'Invalid QR Code',
-          "Make sure you are scanning correct QR code in the middle of scooter's handle",
-          [{
-            text: 'OK',
-            onPress: () => {
-              setTimeout(() => {
-                setIsScanning(false);
-                setIsProcessing(false);
-              }, 500);
-            }
-          }]
+          "Make sure you are scanning correct QR code in the middle of scooter's handle"
         );
+      } finally {
+        setIsProcessing(false);
       }
-    }
-
-  const handleCodeScanned = (codes: any) => {
-    const scannedValue = codes[0]?.value;
-    console.log('scanned value', scannedValue);
-    if (scannedValue && !isProcessing && !isScanning) {
-      debouncedHandleCodeScanned(scannedValue);
     }
   };
 
@@ -289,7 +249,7 @@ const ScanQrCodeComponent = () => {
       );
     }
 
-    if (isScanning || isProcessing) {
+    if (isProcessing) {
       return (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.highlight} />
@@ -325,7 +285,7 @@ const ScanQrCodeComponent = () => {
       <Camera
         style={styles.camera}
         device={device}
-        isActive={!isProcessing && !isScanning}
+        isActive={!isProcessing}
         codeScanner={{
           codeTypes: ['qr'],
           onCodeScanned: handleCodeScanned,
