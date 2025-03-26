@@ -42,17 +42,6 @@ const EmployeeForm: React.FC = () => {
 
   const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
 
-  const onFocus = () => {
-    authBottomSheetRef?.current?.snapToPosition('100%');
-  };
-
-  const onSubmitEditing = () => {
-    Keyboard.dismiss();
-    if (Platform.OS === 'android') {
-      authBottomSheetRef?.current?.snapToPosition('60%');
-    }
-  };
-
   const continueHandler = async () => {
     try {
       const response = await AuthService.sendOTP(
@@ -64,6 +53,17 @@ const EmployeeForm: React.FC = () => {
       }
     } catch (err) {
       console.log('Error sending otp', err);
+    }
+  };
+
+  const onFocus = () => {
+    authBottomSheetRef?.current?.snapToPosition('100%');
+  };
+
+  const onSubmitEditing = () => {
+    Keyboard.dismiss();
+    if (Platform.OS === 'android') {
+      authBottomSheetRef?.current?.snapToPosition('60%');
     }
   };
 

@@ -1,5 +1,12 @@
 // dependencies
-import {Dimensions, ImageBackground, Platform, Text, View} from 'react-native';
+import {
+  Dimensions,
+  ImageBackground,
+  Keyboard,
+  Platform,
+  Text,
+  View,
+} from 'react-native';
 import React, {useRef} from 'react';
 import {
   moderateScale,
@@ -11,6 +18,7 @@ import BottomSheet, {
   BottomSheetTextInput,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import {useHeaderHeight} from '@react-navigation/elements';
 
 // components
 import {
@@ -31,6 +39,7 @@ const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const SignupForm: React.FC = () => {
   const {theme} = useThemeStore();
+  const headerHeight = useHeaderHeight();
 
   const {newUserFormData, setNewUserFormData} = useAuthStore();
 
@@ -54,6 +63,23 @@ const SignupForm: React.FC = () => {
     }
   };
 
+  const onFocus = () => {
+    authBottomSheetRef?.current?.snapToPosition('100%');
+  };
+
+  const onSubmitEditing = () => {
+    Keyboard.dismiss();
+    authBottomSheetRef?.current?.snapToPosition('61%');
+  };
+
+  const getSnapPoints = () => {
+    if (Platform.OS === 'android') {
+      return ['60%', '61%', '100%'];
+    } else {
+      return ['60%'];
+    }
+  };
+
   return (
     <>
       <View style={{flex: 1}}>
@@ -65,31 +91,44 @@ const SignupForm: React.FC = () => {
       <BottomSheet
         key="authBottomSheet"
         ref={authBottomSheetRef}
+        topInset={headerHeight}
         enablePanDownToClose={false}
         enableOverDrag={false}
         enableHandlePanningGesture={false}
         handleComponent={() => null}
-        style={{flex: 1}}
         keyboardBehavior="interactive"
         enableContentPanningGesture={false}
         android_keyboardInputMode="adjustResize"
         keyboardBlurBehavior="restore"
         index={1}
-        snapPoints={['55%']}>
+        snapPoints={getSnapPoints()}>
         <BottomSheetView style={styles.contentContainer}>
           <View style={{width: '100%'}}>
             <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
               Enter your Full Name
             </LabelPrimary>
             <Divider height={10} />
-            <BottomSheetStyledInput
-              placeholder="XXXXXXXXXX"
-              numberOfLines={1}
-              value={newUserFormData.fullName}
-              onChangeText={text => {
-                onChangeText('fullName', text);
-              }}
-            />
+            {Platform.OS === 'android' ? (
+              <BottomSheetStyledInput
+                onFocus={onFocus}
+                onSubmitEditing={onSubmitEditing}
+                placeholder="XXXXXXXXXX"
+                numberOfLines={1}
+                value={newUserFormData.fullName}
+                onChangeText={text => {
+                  onChangeText('fullName', text);
+                }}
+              />
+            ) : (
+              <BottomSheetStyledInput
+                placeholder="XXXXXXXXXX"
+                numberOfLines={1}
+                value={newUserFormData.fullName}
+                onChangeText={text => {
+                  onChangeText('fullName', text);
+                }}
+              />
+            )}
           </View>
           <View style={{width: '100%'}}>
             <LabelPrimary customStyles={{paddingLeft: scale(18)}}>
@@ -102,15 +141,29 @@ const SignupForm: React.FC = () => {
               </LabelPrimary>
             </LabelPrimary>
             <Divider height={10} />
-            <BottomSheetStyledInput
-              placeholder="XXXXXXXXXX"
-              value={newUserFormData.email}
-              autoCapitalize="none"
-              onChangeText={text => {
-                onChangeText('email', text);
-              }}
-              keyboardType="email-address"
-            />
+            {Platform.OS === 'android' ? (
+              <BottomSheetStyledInput
+                onFocus={onFocus}
+                onSubmitEditing={onSubmitEditing}
+                placeholder="XXXXXXXXXX"
+                value={newUserFormData.email}
+                autoCapitalize="none"
+                onChangeText={text => {
+                  onChangeText('email', text);
+                }}
+                keyboardType="email-address"
+              />
+            ) : (
+              <BottomSheetStyledInput
+                placeholder="XXXXXXXXXX"
+                value={newUserFormData.email}
+                autoCapitalize="none"
+                onChangeText={text => {
+                  onChangeText('email', text);
+                }}
+                keyboardType="email-address"
+              />
+            )}
           </View>
 
           <View style={{width: '100%'}}>
@@ -141,21 +194,41 @@ const SignupForm: React.FC = () => {
                   style={{width: 1, height: 20, backgroundColor: 'black'}}
                 />
               </View>
-              <BottomSheetTextInput
-                placeholder="XXXXXXXXXX"
-                keyboardType="numeric"
-                maxLength={10}
-                placeholderTextColor={theme.colors.textSecondary}
-                value={newUserFormData.phoneNumber}
-                onChangeText={text => {
-                  onChangeText('phoneNumber', text);
-                }}
-                style={{
-                  fontWeight: '600',
-                  paddingVertical: 0,
-                  fontSize: moderateScale(15.2),
-                }}
-              />
+              {Platform.OS === 'android' ? (
+                <BottomSheetTextInput
+                  onFocus={onFocus}
+                  onSubmitEditing={onSubmitEditing}
+                  placeholder="XXXXXXXXXX"
+                  keyboardType="numeric"
+                  maxLength={10}
+                  placeholderTextColor={theme.colors.textSecondary}
+                  value={newUserFormData.phoneNumber}
+                  onChangeText={text => {
+                    onChangeText('phoneNumber', text);
+                  }}
+                  style={{
+                    fontWeight: '600',
+                    paddingVertical: 0,
+                    fontSize: moderateScale(15.2),
+                  }}
+                />
+              ) : (
+                <BottomSheetTextInput
+                  placeholder="XXXXXXXXXX"
+                  keyboardType="numeric"
+                  maxLength={10}
+                  placeholderTextColor={theme.colors.textSecondary}
+                  value={newUserFormData.phoneNumber}
+                  onChangeText={text => {
+                    onChangeText('phoneNumber', text);
+                  }}
+                  style={{
+                    fontWeight: '600',
+                    paddingVertical: 0,
+                    fontSize: moderateScale(15.2),
+                  }}
+                />
+              )}
             </View>
           </View>
           <View
