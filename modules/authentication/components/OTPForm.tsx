@@ -5,7 +5,12 @@ import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // components
-import {BottomSheetStyledInput, ButtonText, Divider, showToast} from '@/components';
+import {
+  BottomSheetStyledInput,
+  ButtonText,
+  Divider,
+  showToast,
+} from '@/components';
 
 // store
 import {useThemeStore, useAuthStore} from '@/globalStore';
@@ -62,6 +67,8 @@ const OTPForm: React.FC = () => {
           <Divider height={10} />
           <BottomSheetStyledInput
             placeholder="XXXX"
+            maxLength={6}
+            keyboardType="numeric"
             value={otp}
             onChangeText={text => {
               setOTP(text);

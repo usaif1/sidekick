@@ -5,6 +5,7 @@ import {StatusBar} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {Provider, Client} from 'urql';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
@@ -13,7 +14,7 @@ import AuthNavigation from '@/modules/authentication/navigation/auth.navigation'
 
 // components
 import {SplashPrimary} from './modules/splash/screens';
-import {ToastMessage} from '@/components';
+// import {Toast} from '@/components';
 
 // misc
 import './ReactotronConfig';
@@ -49,7 +50,7 @@ function App(): React.JSX.Element {
           translucent
         />
         <SplashNavigation />
-        <ToastMessage />
+        <Toast />
       </>
     );
   }
@@ -58,7 +59,7 @@ function App(): React.JSX.Element {
     return (
       <>
         <SplashPrimary />
-        <ToastMessage />
+        <Toast />
       </>
     );
   }
@@ -87,12 +88,12 @@ function App(): React.JSX.Element {
                 {GlobalBottomSheetComponent && <GlobalBottomSheetComponent />}
               </BottomSheetView>
             </BottomSheet>
-            <ToastMessage />
+            <Toast />
           </Provider>
         ) : (
           <>
             <AuthNavigation />
-            <ToastMessage />
+            <Toast />
           </>
         )}
       </GestureHandlerRootView>
