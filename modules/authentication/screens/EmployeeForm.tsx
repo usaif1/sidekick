@@ -20,6 +20,7 @@ import BottomSheet, {
   TouchableHighlight,
 } from '@gorhom/bottom-sheet';
 import {useHeaderHeight} from '@react-navigation/elements';
+import {useNavigation} from '@react-navigation/native';
 
 // components
 import {ButtonText, Divider, LabelPrimary} from '@/components';
@@ -30,12 +31,12 @@ import {useAuthStore, useThemeStore} from '@/globalStore';
 
 // services
 import {AuthService} from '@/globalService';
-import {authUtils} from '../utils';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const EmployeeForm: React.FC = () => {
   const headerHeight = useHeaderHeight();
+  const navigation = useNavigation();
 
   const {theme} = useThemeStore();
   const authBottomSheetRef = useRef<BottomSheet>(null);
@@ -43,13 +44,16 @@ const EmployeeForm: React.FC = () => {
   const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
 
   const continueHandler = async () => {
+    Keyboard.dismiss();
+    authBottomSheetRef?.current?.snapToPosition('60%');
     try {
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,
         false,
       );
       if (response) {
-        authUtils.setBottomSheetView('otpExisting');
+        // @ts-ignore
+        navigation.navigate('otp');
       }
     } catch (err) {
       console.log('Error sending otp', err);

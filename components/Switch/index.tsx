@@ -180,7 +180,6 @@ const Switch: React.FC<SwitchProps> = ({
         ]}>
         <Animated.View
           style={[
-            styles.toggle,
             {
               backgroundColor: isToggled
                 ? colors.highlight
@@ -200,17 +199,7 @@ const Switch: React.FC<SwitchProps> = ({
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    // Additional styling is applied dynamically based on size
-    // The dark outline shown in the image
     borderColor: '#333333',
-  },
-  toggle: {
-    // backgroundColor: colors.highlight,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-    elevation: 2,
   },
 });
 
