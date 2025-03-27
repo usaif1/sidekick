@@ -17,7 +17,7 @@ import Divider from '@/components/Divider';
 import Profile from '../assets/profile.svg';
 import Notification from '../assets/notification.svg';
 import Help from '../assets/help.svg';
-import {ButtonText, GlobalModal,showToast} from '@/components';
+import {ButtonText, GlobalModal, showToast} from '@/components';
 import NeedHelp from '@/modules/user/components/NeedHelp';
 
 const {colors} = useThemeStore.getState().theme;
@@ -91,8 +91,8 @@ const UserDetails: React.FC = () => {
               ? userData?.user_organizations[0].organization?.name
               : ''
           }
-          totalMinutes={48}
-          totalKilometers={2.9}
+          totalMinutes={3}
+          totalKilometers={0}
           // profileImage={profileImage} // Uncomment if you have a profile image
           style={styles.profileCard}
         />

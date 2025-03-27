@@ -1,5 +1,11 @@
 // dependencies
 import {
+  DeductBalanceFromSecurityDocument,
+  DeductBalanceFromSecurityMutation,
+  DeductBalanceFromSecurityMutationVariables,
+  DeductBalanceFromWalletDocument,
+  DeductBalanceFromWalletMutation,
+  DeductBalanceFromWalletMutationVariables,
   FetchUserWalletDocument,
   FetchUserWalletQuery,
 
@@ -54,6 +60,28 @@ const WalletService = {
     });
 
     return response.update_wallets_by_pk?.id;
+  },
+
+  deductBalanceFromWallet: async function (
+    args: DeductBalanceFromWalletMutationVariables,
+  ) {
+    const response: DeductBalanceFromWalletMutation = await callMutation({
+      queryDocument: DeductBalanceFromWalletDocument,
+      variables: args,
+    });
+
+    return response.update_wallets_by_pk;
+  },
+
+  deductBalanceFromSecurity: async function (
+    args: DeductBalanceFromSecurityMutationVariables,
+  ) {
+    const response: DeductBalanceFromSecurityMutation = await callMutation({
+      queryDocument: DeductBalanceFromSecurityDocument,
+      variables: args,
+    });
+
+    return response.update_wallets_by_pk;
   },
 };
 

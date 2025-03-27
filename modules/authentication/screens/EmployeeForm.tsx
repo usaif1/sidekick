@@ -46,12 +46,16 @@ const EmployeeForm: React.FC = () => {
     organisations,
     setSelectedOrganisation,
     selectedOrganisation,
+    startLoading,
+    stopLoading,
+    authLoaders,
   } = useAuthStore();
 
   const continueHandler = async () => {
     Keyboard.dismiss();
-    authBottomSheetRef?.current?.snapToPosition('60%');
     try {
+      startLoading('auth-confirmation');
+      authBottomSheetRef?.current?.snapToPosition('60%');
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,
         false,
@@ -61,6 +65,7 @@ const EmployeeForm: React.FC = () => {
         navigation.navigate('otp');
       }
     } catch (err) {
+      stopLoading('auth-confirmation');
       console.log('Error sending otp', err);
     }
   };
@@ -272,7 +277,10 @@ const EmployeeForm: React.FC = () => {
               width: 220,
               alignSelf: 'center',
             }}>
-            <ButtonText variant="primary" onPress={continueHandler}>
+            <ButtonText
+              variant="primary"
+              onPress={continueHandler}
+              loading={authLoaders['auth-confirmation']}>
               Continue
             </ButtonText>
           </View>

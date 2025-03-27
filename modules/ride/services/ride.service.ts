@@ -18,9 +18,18 @@ import {
   CreateRideDocument,
   CreateRideMutation,
   CreateRideMutationVariables,
+  CreateRideStepDocument,
+  CreateRideStepMutationVariables,
+  CreateRideStepMutation,
+  UpdateRideEndTimeDocument,
+  UpdateRideEndTimeMutation,
+  UpdateRideEndTimeMutationVariables,
+  FetchCompletedRidesQueryVariables,
+  FetchCompletedRidesQuery,
+  FetchCompletedRidesDocument,
 } from '@/generated/graphql';
 
-const {setHubs} = useRideStore.getState();
+const {setHubs, setRideHistory} = useRideStore.getState();
 
 const WalletService = {
   fetchAllHubs: async function () {
@@ -52,7 +61,47 @@ const WalletService = {
       variables: args,
     });
 
-    return response.insert_ride_details_one?.id;
+    return response.insert_ride_details_one;
+  },
+
+  createRideStep: async function (args: CreateRideStepMutationVariables) {
+    const response: CreateRideStepMutation = await callMutation({
+      queryDocument: CreateRideStepDocument,
+      variables: args,
+    });
+
+    return response.insert_ride_steps_one;
+  },
+
+  updateRideEndTime: async function (args: UpdateRideEndTimeMutationVariables) {
+    const response: UpdateRideEndTimeMutation = await callMutation({
+      queryDocument: UpdateRideEndTimeDocument,
+      variables: args,
+    });
+
+    return response.update_ride_details_by_pk;
+  },
+
+  fetchCompletedRides: async function (
+    args: FetchCompletedRidesQueryVariables,
+  ) {
+    const response: FetchCompletedRidesQuery = await callQuery({
+      queryDocument: FetchCompletedRidesDocument,
+      variables: args,
+    });
+
+    setRideHistory(response.ride_details);
+
+    return response;
+  },
+
+  endRide: async function (args: UpdateRideEndTimeMutationVariables) {
+    const response: UpdateRideEndTimeMutation = await callMutation({
+      queryDocument: UpdateRideEndTimeDocument,
+      variables: args,
+    });
+
+    return response.update_ride_details_by_pk;
   },
 };
 

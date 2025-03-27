@@ -43,7 +43,13 @@ const AlreadyUserForm: React.FC = () => {
 
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
-  const {existingUserPhoneNumber, setExistingUserPhoneNumber} = useAuthStore();
+  const {
+    existingUserPhoneNumber,
+    setExistingUserPhoneNumber,
+    authLoaders,
+    startLoading,
+    stopLoading,
+  } = useAuthStore();
 
   const onFocus = () => {
     authBottomSheetRef?.current?.snapToPosition('70%');
@@ -60,8 +66,9 @@ const AlreadyUserForm: React.FC = () => {
     }
 
     Keyboard.dismiss();
-    authBottomSheetRef?.current?.snapToPosition('40%');
     try {
+      startLoading('auth-confirmation');
+      authBottomSheetRef?.current?.snapToPosition('40%');
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,
         false,
@@ -71,6 +78,7 @@ const AlreadyUserForm: React.FC = () => {
         navigation.navigate('otp');
       }
     } catch (err) {
+      stopLoading('auth-confirmation');
       console.log('Error sending otp', err);
     }
   };
@@ -224,7 +232,10 @@ const AlreadyUserForm: React.FC = () => {
               width: 220,
               alignSelf: 'center',
             }}>
-            <ButtonText variant="primary" onPress={continueHandler}>
+            <ButtonText
+              variant="primary"
+              onPress={continueHandler}
+              loading={authLoaders['auth-confirmation']}>
               Continue
             </ButtonText>
           </View>

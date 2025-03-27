@@ -6,7 +6,7 @@ import {CameraDevice} from 'react-native-vision-camera';
 import createSelectors from '@/utils/selectors';
 
 // types
-import {FetchAllHubsQuery} from '@/generated/graphql';
+import {FetchAllHubsQuery, FetchCompletedRidesQuery} from '@/generated/graphql';
 
 // const {height} = Dimensions.get('window');
 
@@ -28,6 +28,9 @@ type RideStore = {
 
   // camera
   device: CameraDevice | null | undefined;
+
+  // ride history
+  rideHistory: FetchCompletedRidesQuery['ride_details'];
 };
 
 type RideActions = {
@@ -40,6 +43,9 @@ type RideActions = {
 
   //
   setDevice: (camera: CameraDevice | null | undefined) => void;
+
+  // ride history
+  setRideHistory: (rides: FetchCompletedRidesQuery['ride_details']) => void;
 };
 
 // Separate state from actions
@@ -54,6 +60,9 @@ const rideInitialState: RideStore = {
 
   // camera
   device: null,
+
+  // ride history
+  rideHistory: [],
 };
 
 const rideStore = create<RideStore & RideActions>(set => ({
@@ -94,6 +103,12 @@ const rideStore = create<RideStore & RideActions>(set => ({
   setDevice: camera =>
     set({
       device: camera,
+    }),
+
+  // ride history
+  setRideHistory: rides =>
+    set({
+      rideHistory: rides,
     }),
 
   resetRideStore: () => set(rideInitialState),

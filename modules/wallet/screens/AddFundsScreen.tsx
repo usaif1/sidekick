@@ -21,7 +21,7 @@ import {
 } from '@/globalStore';
 
 // components
-import {B1, B2, Divider, GlobalModal} from '@/components';
+import {B1, B2, Divider, GlobalModal, showToast} from '@/components';
 import ButtonText from '@/components/ButtonText';
 import {WalletService, UserService} from '@/globalService';
 import PaymentSuccess from '../components/PaymentSuccess';
@@ -35,7 +35,14 @@ const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
 const AddFundsScreen = () => {
   const {openModal, setModalComponent} = useGlobalStore();
-  const {userWallet, rechargeAmount, setRechargeAmount} = useWalletStore();
+  const {
+    userWallet,
+    rechargeAmount,
+    setRechargeAmount,
+    startLoading,
+    stopLoading,
+    walletLoaders,
+  } = useWalletStore();
   const {user} = useUserStore();
 
   // State for amount and payment method
@@ -49,54 +56,66 @@ const AddFundsScreen = () => {
 
   // Handle pay button press
   const handlePay = async () => {
+    startLoading('add-funds');
     // Validate amount
-    const clientSecret = await axios.post(
-      'https://sidekick-backend-279t.onrender.com/initiate-payment',
-      {
-        amount: parseFloat(rechargeAmount) + securityDeposit,
-        email: user?.email || 'default@mail.com',
-        phone: parseFloat(
-          user?.phone_number?.replace(/^(\+91)/, '') || '9999999999',
-        ),
-        firstname: user?.full_name || 'default',
-      },
-    );
+    try {
+      const clientSecret = await axios.post(
+        'https://sidekick-backend-279t.onrender.com/initiate-payment',
+        {
+          amount: parseFloat(rechargeAmount) + securityDeposit,
+          email: user?.email || 'default@mail.com',
+          phone: parseFloat(
+            user?.phone_number?.replace(/^(\+91)/, '') || '9999999999',
+          ),
+          firstname: user?.full_name || 'default',
+        },
+      );
+      const options = {
+        access_key: clientSecret.data?.data,
+        pay_mode: 'test',
+      };
 
-    const options = {
-      access_key: clientSecret.data?.data,
-      pay_mode: 'test',
-    };
+      console.log('options', options);
 
-    console.log('options', options);
+      EasebuzzCheckout.open(options)
+        .then((data: any) => {
+          //handle the payment success & failed response here
+          console.log('Payment Response:', data);
+          if (securityDeposit) {
+            WalletService.updateWalletSecurityDeposit({
+              id: userWallet?.id,
+              security_deposit: securityDeposit,
+            });
+          }
 
-    EasebuzzCheckout.open(options)
-      .then((data: any) => {
-        //handle the payment success & failed response here
-        console.log('Payment Response:', data);
-        if (securityDeposit) {
-          WalletService.updateWalletSecurityDeposit({
-            id: userWallet?.id,
-            security_deposit: securityDeposit,
-          });
-        }
-
-        if (data.result === 'payment_successfull') {
-          WalletService.updateWalletBalance({
-            id: userWallet?.id,
-            balance: parseFloat(rechargeAmount),
-          }).then(() => {
-            WalletService.fetchUserWallet();
+          if (data.result === 'payment_successfull') {
+            WalletService.updateWalletBalance({
+              id: userWallet?.id,
+              balance: parseFloat(rechargeAmount),
+            }).then(() => {
+              WalletService.fetchUserWallet();
+              openModal();
+            });
+          } else {
+            setModalComponent(PaymentFailure);
             openModal();
-          });
-        } else {
-          setModalComponent(PaymentFailure);
-          openModal();
-        }
-      })
-      .catch((error: any) => {
-        //handle sdk failure issue here
-        console.log('SDK Error:', error);
+          }
+        })
+        .catch((error: any) => {
+          //handle sdk failure issue here
+          console.log('SDK Error:', error);
+        })
+        .finally(() => {
+          stopLoading('add-funds');
+        });
+    } catch (error) {
+      stopLoading('add-funds');
+      showToast({
+        type: 'error',
+        text1: 'Error adding funds to the wallet',
+        text2: 'Please try again',
       });
+    }
   };
 
   useEffect(() => {
@@ -213,7 +232,10 @@ const AddFundsScreen = () => {
       {/* Pay button */}
       {rechargeAmount && rechargeAmount !== '0' ? (
         <View style={styles.buttonContainer}>
-          <ButtonText variant="primary" onPress={handlePay}>
+          <ButtonText
+            variant="primary"
+            onPress={handlePay}
+            loading={walletLoaders['add-funds']}>
             Pay ₹{' '}
             {!securityDeposit
               ? rechargeAmount

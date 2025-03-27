@@ -5,6 +5,7 @@ import axios from 'axios';
 // store
 import useAuthStore from '../store';
 import {initializeClient} from '@/utils/client';
+import {showToast} from '@/components';
 
 const {
   setConfirmationResult,
@@ -26,6 +27,11 @@ const AuthService = {
       setConfirmationResult(confirmation);
       return confirmation;
     } catch (error) {
+      const errorMessage = this.handleFirebaseAuthError(error);
+      showToast({
+        type: 'error',
+        text1: errorMessage,
+      });
       console.error('error sending OTP', error);
       throw new Error('Failed to send OTP');
     }
@@ -158,6 +164,25 @@ const AuthService = {
       setOrganisations(response.data.organizations);
     } catch (error) {
       console.log('error fetching orgs');
+    }
+  },
+
+  handleFirebaseAuthError: function (error: any) {
+    switch (error.code) {
+      case 'auth/invalid-phone-number':
+        return 'Invalid phone number format.';
+
+      case 'auth/too-many-requests':
+        return 'Too many attempts. Try again later.';
+
+      case 'auth/quota-exceeded':
+        return 'SMS quota exceeded. Try again later.';
+
+      case 'auth/captcha-check-failed':
+        return 'reCAPTCHA verification failed. Refresh and try again.';
+
+      default:
+        return error.message;
     }
   },
 };

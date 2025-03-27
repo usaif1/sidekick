@@ -1,0 +1,27 @@
+query fetchCompletedRides($id: uuid = "") {
+  ride_details(
+    where: {
+      ride_steps: {ride_step: {ride_steps: {steps: {_eq: RIDE_ENDED}}}}
+      user_id: {_eq: $id}
+    }
+  ) {
+    created_at
+    end_time
+    end_hub_id
+    id
+    scooter_id
+    start_hub_id
+    start_time
+    total_cost
+    ride_steps {
+      id
+      steps
+    }
+    hubByStartHubId {
+      latitude
+      longitude
+      name
+      id
+    }
+  }
+}

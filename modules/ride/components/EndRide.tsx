@@ -46,9 +46,9 @@ const NearestHubCard: React.FC<NearestHubCardProps> = ({
 
 const EndRide: React.FC = () => {
   const {selectedHub, setSelectedHub, hubs} = useRideStore();
-  const latitude = useLocationStore(state => state.latitude);
-  const longitude = useLocationStore(state => state.longitude);
+  const {latitude, longitude} = useLocationStore();
   const {closeModal, setModalComponent} = useGlobalStore();
+  const {setIsPaused} = useRideStore();
 
   const sortedHubs = useMemo(() => {
     if (!latitude || !longitude || !hubs.length) {
@@ -86,7 +86,12 @@ const EndRide: React.FC = () => {
       </View>
       <Divider height={16} />
       <View style={styles.actionButtonContainer}>
-        <ButtonText variant="primary" onPress={closeModal}>
+        <ButtonText
+          variant="primary"
+          onPress={() => {
+            setIsPaused(false);
+            closeModal();
+          }}>
           Resume Ride
         </ButtonText>
         <ButtonText

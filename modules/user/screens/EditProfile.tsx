@@ -23,7 +23,7 @@ interface EditProfileProps {
 }
 
 const EditProfile: React.FC<EditProfileProps> = () => {
-  const {user} = useUserStore();
+  const {user, startLoading, stopLoading, userLoaders} = useUserStore();
   const navigation = useNavigation();
   const {colors} = useThemeStore(state => state.theme);
 
@@ -49,15 +49,15 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       email: '',
       phone: '',
     };
-  
+
     // Validate form
     let isValid = true;
-  
+
     if (!name.trim()) {
       newErrors.name = 'Name is required';
       isValid = false;
     }
-  
+
     if (!email.trim()) {
       newErrors.email = 'Email is required';
       isValid = false;
@@ -65,15 +65,16 @@ const EditProfile: React.FC<EditProfileProps> = () => {
       newErrors.email = 'Email is invalid';
       isValid = false;
     }
-  
+
     if (!phone.trim()) {
       newErrors.phone = 'Phone number is required';
       isValid = false;
     }
-  
+
     setErrors(newErrors);
-  
+
     if (isValid) {
+      startLoading('update-user');
       // Save changes and navigate back
       UserService.updateUserDetails({
         id: user?.id,
@@ -91,6 +92,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
               text2: 'Your profile has been successfully updated',
               position: 'top',
             });
+            stopLoading('update-user');
             navigation.goBack();
           } else {
             showToast({
@@ -102,15 +104,17 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           }
         })
         .catch(error => {
+          stopLoading('update-user');
           showToast({
             type: 'error',
-            text1: 'Update Failed',
+            text1: 'Failed to update profile',
             text2: 'An error occurred while updating your profile',
             position: 'top',
           });
           console.error('Profile update error:', error);
         });
     } else {
+      stopLoading('update-user');
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -135,6 +139,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           required
           inputType="text"
           testID="name-input"
+          // @ts-ignore
           containerStyle={styles.inputContainer}
         />
 
@@ -149,6 +154,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           required
           inputType="email"
           testID="email-input"
+          // @ts-ignore
           containerStyle={styles.inputContainer}
         />
 
@@ -166,13 +172,17 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           inputType="numeric"
           testID="phone-input"
           editable={false}
+          // @ts-ignore
           containerStyle={styles.inputContainer}
         />
       </View>
 
       {/* Save Changes button */}
       <View style={styles.buttonContainer}>
-        <ButtonText variant="primary" onPress={handleSaveChanges}>
+        <ButtonText
+          variant="primary"
+          onPress={handleSaveChanges}
+          loading={userLoaders['update-user']}>
           Save Changes
         </ButtonText>
       </View>
