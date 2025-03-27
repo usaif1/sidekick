@@ -19,6 +19,19 @@ export type Scalars = {
   uuid: { input: any; output: any; }
 };
 
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
@@ -991,6 +1004,7 @@ export type Mutation_RootUpdate_Ride_Steps_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_ScootersArgs = {
+  _inc?: InputMaybe<Scooters_Inc_Input>;
   _set?: InputMaybe<Scooters_Set_Input>;
   where: Scooters_Bool_Exp;
 };
@@ -998,6 +1012,7 @@ export type Mutation_RootUpdate_ScootersArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Scooters_By_PkArgs = {
+  _inc?: InputMaybe<Scooters_Inc_Input>;
   _set?: InputMaybe<Scooters_Set_Input>;
   pk_columns: Scooters_Pk_Columns_Input;
 };
@@ -2358,6 +2373,9 @@ export type Scooters = {
   hub: Hubs;
   hub_id: Scalars['uuid']['output'];
   id: Scalars['uuid']['output'];
+  is_active: Scalars['Boolean']['output'];
+  latitude?: Maybe<Scalars['numeric']['output']>;
+  longitude?: Maybe<Scalars['numeric']['output']>;
   qr_code: Scalars['String']['output'];
   registration_number?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
@@ -2396,7 +2414,23 @@ export type Scooters_Aggregate = {
 };
 
 export type Scooters_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Scooters_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Scooters_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Scooters_Aggregate_Bool_Exp_Count>;
+};
+
+export type Scooters_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Scooters_Select_Column_Scooters_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Scooters_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Scooters_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Scooters_Select_Column_Scooters_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Scooters_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Scooters_Aggregate_Bool_Exp_Count = {
@@ -2409,9 +2443,17 @@ export type Scooters_Aggregate_Bool_Exp_Count = {
 /** aggregate fields of "scooters" */
 export type Scooters_Aggregate_Fields = {
   __typename?: 'scooters_aggregate_fields';
+  avg?: Maybe<Scooters_Avg_Fields>;
   count: Scalars['Int']['output'];
   max?: Maybe<Scooters_Max_Fields>;
   min?: Maybe<Scooters_Min_Fields>;
+  stddev?: Maybe<Scooters_Stddev_Fields>;
+  stddev_pop?: Maybe<Scooters_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Scooters_Stddev_Samp_Fields>;
+  sum?: Maybe<Scooters_Sum_Fields>;
+  var_pop?: Maybe<Scooters_Var_Pop_Fields>;
+  var_samp?: Maybe<Scooters_Var_Samp_Fields>;
+  variance?: Maybe<Scooters_Variance_Fields>;
 };
 
 
@@ -2423,9 +2465,17 @@ export type Scooters_Aggregate_FieldsCountArgs = {
 
 /** order by aggregate values of table "scooters" */
 export type Scooters_Aggregate_Order_By = {
+  avg?: InputMaybe<Scooters_Avg_Order_By>;
   count?: InputMaybe<Order_By>;
   max?: InputMaybe<Scooters_Max_Order_By>;
   min?: InputMaybe<Scooters_Min_Order_By>;
+  stddev?: InputMaybe<Scooters_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Scooters_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Scooters_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Scooters_Sum_Order_By>;
+  var_pop?: InputMaybe<Scooters_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Scooters_Var_Samp_Order_By>;
+  variance?: InputMaybe<Scooters_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "scooters" */
@@ -2433,6 +2483,19 @@ export type Scooters_Arr_Rel_Insert_Input = {
   data: Array<Scooters_Insert_Input>;
   /** upsert condition */
   on_conflict?: InputMaybe<Scooters_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Scooters_Avg_Fields = {
+  __typename?: 'scooters_avg_fields';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "scooters" */
+export type Scooters_Avg_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "scooters". All fields are combined with a logical 'AND'. */
@@ -2444,6 +2507,9 @@ export type Scooters_Bool_Exp = {
   hub?: InputMaybe<Hubs_Bool_Exp>;
   hub_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_active?: InputMaybe<Boolean_Comparison_Exp>;
+  latitude?: InputMaybe<Numeric_Comparison_Exp>;
+  longitude?: InputMaybe<Numeric_Comparison_Exp>;
   qr_code?: InputMaybe<String_Comparison_Exp>;
   registration_number?: InputMaybe<String_Comparison_Exp>;
   rides?: InputMaybe<Ride_Details_Bool_Exp>;
@@ -2458,12 +2524,21 @@ export enum Scooters_Constraint {
   ScootersPkey = 'scooters_pkey'
 }
 
+/** input type for incrementing numeric columns in table "scooters" */
+export type Scooters_Inc_Input = {
+  latitude?: InputMaybe<Scalars['numeric']['input']>;
+  longitude?: InputMaybe<Scalars['numeric']['input']>;
+};
+
 /** input type for inserting data into table "scooters" */
 export type Scooters_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   hub?: InputMaybe<Hubs_Obj_Rel_Insert_Input>;
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  latitude?: InputMaybe<Scalars['numeric']['input']>;
+  longitude?: InputMaybe<Scalars['numeric']['input']>;
   qr_code?: InputMaybe<Scalars['String']['input']>;
   registration_number?: InputMaybe<Scalars['String']['input']>;
   rides?: InputMaybe<Ride_Details_Arr_Rel_Insert_Input>;
@@ -2477,6 +2552,8 @@ export type Scooters_Max_Fields = {
   created_at?: Maybe<Scalars['timestamp']['output']>;
   hub_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  latitude?: Maybe<Scalars['numeric']['output']>;
+  longitude?: Maybe<Scalars['numeric']['output']>;
   qr_code?: Maybe<Scalars['String']['output']>;
   registration_number?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
@@ -2488,6 +2565,8 @@ export type Scooters_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   hub_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
   qr_code?: InputMaybe<Order_By>;
   registration_number?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
@@ -2500,6 +2579,8 @@ export type Scooters_Min_Fields = {
   created_at?: Maybe<Scalars['timestamp']['output']>;
   hub_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  latitude?: Maybe<Scalars['numeric']['output']>;
+  longitude?: Maybe<Scalars['numeric']['output']>;
   qr_code?: Maybe<Scalars['String']['output']>;
   registration_number?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
@@ -2511,6 +2592,8 @@ export type Scooters_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   hub_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
   qr_code?: InputMaybe<Order_By>;
   registration_number?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
@@ -2546,6 +2629,9 @@ export type Scooters_Order_By = {
   hub?: InputMaybe<Hubs_Order_By>;
   hub_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_active?: InputMaybe<Order_By>;
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
   qr_code?: InputMaybe<Order_By>;
   registration_number?: InputMaybe<Order_By>;
   rides_aggregate?: InputMaybe<Ride_Details_Aggregate_Order_By>;
@@ -2567,6 +2653,12 @@ export enum Scooters_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  Latitude = 'latitude',
+  /** column name */
+  Longitude = 'longitude',
+  /** column name */
   QrCode = 'qr_code',
   /** column name */
   RegistrationNumber = 'registration_number',
@@ -2576,15 +2668,69 @@ export enum Scooters_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** select "scooters_aggregate_bool_exp_bool_and_arguments_columns" columns of table "scooters" */
+export enum Scooters_Select_Column_Scooters_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsActive = 'is_active'
+}
+
+/** select "scooters_aggregate_bool_exp_bool_or_arguments_columns" columns of table "scooters" */
+export enum Scooters_Select_Column_Scooters_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsActive = 'is_active'
+}
+
 /** input type for updating data in table "scooters" */
 export type Scooters_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  latitude?: InputMaybe<Scalars['numeric']['input']>;
+  longitude?: InputMaybe<Scalars['numeric']['input']>;
   qr_code?: InputMaybe<Scalars['String']['input']>;
   registration_number?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Scooters_Stddev_Fields = {
+  __typename?: 'scooters_stddev_fields';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "scooters" */
+export type Scooters_Stddev_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Scooters_Stddev_Pop_Fields = {
+  __typename?: 'scooters_stddev_pop_fields';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "scooters" */
+export type Scooters_Stddev_Pop_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Scooters_Stddev_Samp_Fields = {
+  __typename?: 'scooters_stddev_samp_fields';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "scooters" */
+export type Scooters_Stddev_Samp_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "scooters" */
@@ -2600,10 +2746,26 @@ export type Scooters_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  latitude?: InputMaybe<Scalars['numeric']['input']>;
+  longitude?: InputMaybe<Scalars['numeric']['input']>;
   qr_code?: InputMaybe<Scalars['String']['input']>;
   registration_number?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Scooters_Sum_Fields = {
+  __typename?: 'scooters_sum_fields';
+  latitude?: Maybe<Scalars['numeric']['output']>;
+  longitude?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** order by sum() on columns of table "scooters" */
+export type Scooters_Sum_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "scooters" */
@@ -2615,6 +2777,12 @@ export enum Scooters_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  Latitude = 'latitude',
+  /** column name */
+  Longitude = 'longitude',
+  /** column name */
   QrCode = 'qr_code',
   /** column name */
   RegistrationNumber = 'registration_number',
@@ -2625,10 +2793,51 @@ export enum Scooters_Update_Column {
 }
 
 export type Scooters_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Scooters_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Scooters_Set_Input>;
   /** filter the rows which have to be updated */
   where: Scooters_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Scooters_Var_Pop_Fields = {
+  __typename?: 'scooters_var_pop_fields';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "scooters" */
+export type Scooters_Var_Pop_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Scooters_Var_Samp_Fields = {
+  __typename?: 'scooters_var_samp_fields';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "scooters" */
+export type Scooters_Var_Samp_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Scooters_Variance_Fields = {
+  __typename?: 'scooters_variance_fields';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "scooters" */
+export type Scooters_Variance_Order_By = {
+  latitude?: InputMaybe<Order_By>;
+  longitude?: InputMaybe<Order_By>;
 };
 
 export type Subscription_Root = {
@@ -4439,7 +4648,7 @@ export type FetchScooterByNumberQueryVariables = Exact<{
 }>;
 
 
-export type FetchScooterByNumberQuery = { __typename?: 'query_root', scooters: Array<{ __typename?: 'scooters', registration_number?: string | null, id: any }> };
+export type FetchScooterByNumberQuery = { __typename?: 'query_root', scooters: Array<{ __typename?: 'scooters', id: any, is_active: boolean, latitude?: any | null, longitude?: any | null, registration_number?: string | null, status: string, hub_id: any }> };
 
 export type CreateRideStepMutationVariables = Exact<{
   steps?: InputMaybe<Scalars['String']['input']>;
@@ -4494,7 +4703,7 @@ export type UpdateWalletSecurityDepositMutation = { __typename?: 'mutation_root'
 export const FetchAllOrganisationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllOrganisations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<FetchAllOrganisationsQuery, FetchAllOrganisationsQueryVariables>;
 export const CreateRideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ride_details_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_details_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRideMutation, CreateRideMutationVariables>;
 export const FetchAllHubsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllHubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"organization_id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<FetchAllHubsQuery, FetchAllHubsQueryVariables>;
-export const FetchScooterByNumberDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchScooterByNumber"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"SCOOTER1","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scooters"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"registration_number"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_ilike"},"value":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"registration_number"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<FetchScooterByNumberQuery, FetchScooterByNumberQueryVariables>;
+export const FetchScooterByNumberDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchScooterByNumber"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"SCOOTER1","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scooters"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"registration_number"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_ilike"},"value":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"is_active"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"registration_number"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"hub_id"}}]}}]}}]} as unknown as DocumentNode<FetchScooterByNumberQuery, FetchScooterByNumberQueryVariables>;
 export const CreateRideStepDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRideStep"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"steps"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_steps_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"Variable","name":{"kind":"Name","value":"steps"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"ride_details_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<CreateRideStepMutation, CreateRideStepMutationVariables>;
 export const FetchCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"full_name"}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}},{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}}]}}]}}]} as unknown as DocumentNode<FetchCurrentUserQuery, FetchCurrentUserQueryVariables>;
 export const UpdateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"_set"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"users_set_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_users_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"_set"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;

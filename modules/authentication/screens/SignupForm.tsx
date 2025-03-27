@@ -27,6 +27,7 @@ import {
   ButtonText,
   Divider,
   LabelPrimary,
+  showToast,
 } from '@/components';
 
 // services
@@ -43,7 +44,13 @@ const SignupForm: React.FC = () => {
 
   const navigation = useNavigation();
 
-  const {newUserFormData, setNewUserFormData} = useAuthStore();
+  const {
+    newUserFormData,
+    setNewUserFormData,
+    startLoading,
+    stopLoading,
+    authLoaders,
+  } = useAuthStore();
 
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
@@ -52,9 +59,17 @@ const SignupForm: React.FC = () => {
   };
 
   const continueHandler = async () => {
+    if (newUserFormData.phoneNumber.length !== 10) {
+      return showToast({
+        type: 'error',
+        text1: 'Invalid phone number',
+      });
+    }
+
     Keyboard.dismiss();
-    authBottomSheetRef?.current?.snapToPosition('70%');
     try {
+      startLoading('auth-confirmation');
+      authBottomSheetRef?.current?.snapToPosition('61%');
       const response = await AuthService.sendOTP(
         `+91${newUserFormData.phoneNumber}`,
         false,
@@ -64,7 +79,7 @@ const SignupForm: React.FC = () => {
         navigation.navigate('otp');
       }
     } catch (err) {
-      console.log('Error sending otp', err);
+      stopLoading('auth-confirmation');
     }
   };
 
@@ -244,7 +259,10 @@ const SignupForm: React.FC = () => {
               width: 220,
               alignSelf: 'center',
             }}>
-            <ButtonText variant="primary" onPress={continueHandler}>
+            <ButtonText
+              variant="primary"
+              onPress={continueHandler}
+              loading={authLoaders['auth-confirmation']}>
               Continue
             </ButtonText>
           </View>

@@ -7,20 +7,16 @@ import createSelectors from '@/utils/selectors';
 // types
 import {FetchUserWalletQuery} from '@/generated/graphql';
 
-// const {height} = Dimensions.get('window');
-
-// type LoaderType =
-//   | 'loading-user'
-//   | 'phone-verification'
-//   | 'user-login'
-//   | 'profile-update'
-//   | 'auth-confirmation';
+type LoaderType = 'add-funds';
 
 type WalletStore = {
   userWallet: FetchUserWalletQuery['wallets'][0] | null | undefined;
 
   //add amount
   rechargeAmount: string;
+
+  // loaders
+  walletLoaders: Record<LoaderType, boolean>;
 };
 
 type WalletActions = {
@@ -30,6 +26,10 @@ type WalletActions = {
 
   setRechargeAmount: (amt: string) => void;
 
+  // loader actions
+  startLoading: (loader: LoaderType) => void;
+  stopLoading: (loader: LoaderType) => void;
+
   // reset store
   resetWalletStore: () => void;
 };
@@ -37,6 +37,11 @@ type WalletActions = {
 const walletInitialState: WalletStore = {
   userWallet: null,
   rechargeAmount: '0',
+
+  // loaders
+  walletLoaders: {
+    'add-funds': false,
+  },
 };
 
 const walletStore = create<WalletStore & WalletActions>(set => ({
@@ -49,6 +54,17 @@ const walletStore = create<WalletStore & WalletActions>(set => ({
     }),
 
   setRechargeAmount: amt => set({rechargeAmount: amt}),
+
+  // Loader actions
+  startLoading: (loader: LoaderType) =>
+    set(state => ({
+      walletLoaders: {...state.walletLoaders, [loader]: true},
+    })),
+
+  stopLoading: (loader: LoaderType) =>
+    set(state => ({
+      walletLoaders: {...state.walletLoaders, [loader]: false},
+    })),
 
   resetWalletStore: () => set(walletInitialState),
 }));

@@ -13,6 +13,7 @@ import {Camera, CameraDevice} from 'react-native-vision-camera';
 import {useNavigation} from '@react-navigation/native';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import axios from 'axios';
+import {DateTime} from 'luxon';
 
 // components
 import H2 from '@/components/Typography/H2';
@@ -20,16 +21,20 @@ import P2 from '@/components/Typography/P2';
 import Divider from '@/components/Divider';
 
 // store
-import {useGlobalStore, useThemeStore} from '@/globalStore';
+import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
 import LinearGradientSVG from '../assets/linearGradient.svg';
 import {ButtonTextSm} from '@/components';
 import {RideService} from '@/globalService';
+import {getQueryParam} from '../utilis/getQueryParams';
 
 const {colors} = useThemeStore.getState().theme;
 
 const ScanQrCodeComponent = () => {
   const navigator = useNavigation();
   const {closeModal} = useGlobalStore();
+
+  const [url, setURL] = useState<any>();
+  const {user} = useUserStore();
 
   const [isKeyboardFocused, setIsKeyboardFocused] = useState<boolean>(false);
   const [cameraAvailable, setCameraAvailable] = useState(false);
@@ -94,13 +99,17 @@ const ScanQrCodeComponent = () => {
           console.log('New camera permission status:', status);
         }
 
-        if (!isMounted.current) return;
+        if (!isMounted.current) {
+          return;
+        }
         setCameraAvailable(status === 'granted');
 
         if (status === 'granted') {
           // Increase timeout to give more time for camera initialization
           const attemptGetDevices = async () => {
-            if (!isMounted.current) return;
+            if (!isMounted.current) {
+              return;
+            }
 
             try {
               console.log(
@@ -111,7 +120,9 @@ const ScanQrCodeComponent = () => {
               const devices = await Camera.getAvailableCameraDevices();
               console.log('Available devices:', devices.length);
 
-              if (!isMounted.current) return;
+              if (!isMounted.current) {
+                return;
+              }
 
               if (devices.length === 0) {
                 console.log('No camera devices found');
@@ -181,18 +192,59 @@ const ScanQrCodeComponent = () => {
 
   const handleCodeScanned = async (codes: any) => {
     const scannedValue = codes[0]?.value;
+    setURL(scannedValue);
+
     if (scannedValue && !isProcessing) {
+      console.log('scanned value', scannedValue);
+      const registrationNo = getQueryParam(scannedValue, 'regno');
+      console.log('registrationNo', registrationNo);
       try {
-        setIsProcessing(true);
-        const response = await axios.get(scannedValue);
-        if (response.data) {
-          navigateToRide();
+        if (registrationNo) {
+          setIsProcessing(true);
+          const scooterExists = await axios.get(scannedValue);
+          if (!scooterExists.data) {
+            //
+            Alert.alert(
+              'Invalid QR Code',
+              "Make sure you are scanning correct QR code in the middle of scooter's handle",
+            );
+            return;
+          }
+
+          RideService.fetchScooterByRegNo({
+            regNo: registrationNo,
+          })
+            .then(async response => {
+              if (!response) {
+                return console.log('Please check reg no');
+              } else {
+                const scooterDetails = await RideService.fetchScooterByRegNo({
+                  regNo: registrationNo,
+                });
+                console.log('scooterDetails', scooterDetails);
+
+                RideService.startRide({
+                  object: {
+                    user_id: user?.id,
+                    scooter_id: scooterDetails.id,
+                    start_hub_id: scooterDetails.hub_id,
+                    start_time: DateTime.now(),
+                  },
+                }).then(() => {
+                  navigateToRide();
+                });
+              }
+            })
+
+            .catch(err => {
+              console.log('Error starting ride', err?.message);
+            });
         }
       } catch (error) {
         console.log('Error scanning:', error);
         Alert.alert(
           'Invalid QR Code',
-          "Make sure you are scanning correct QR code in the middle of scooter's handle"
+          "Make sure you are scanning correct QR code in the middle of scooter's handle",
         );
       } finally {
         setIsProcessing(false);
@@ -217,19 +269,31 @@ const ScanQrCodeComponent = () => {
   };
 
   const handleContinue = () => {
+    if (!validateScooterCode()) {
+      return null;
+    }
+
     RideService.fetchScooterByRegNo({
       regNo: scooterCode,
     })
-      .then(response => {
+      .then(async response => {
         if (!response) {
           return console.log('Please check reg no');
         } else {
+          const scooterDetails = await RideService.fetchScooterByRegNo({
+            regNo: scooterCode,
+          });
+          console.log('scooterDetails', scooterDetails);
+
           RideService.startRide({
-            object: {},
+            object: {
+              user_id: user?.id,
+              scooter_id: scooterDetails.id,
+              start_hub_id: scooterDetails.hub_id,
+              start_time: DateTime.now(),
+            },
           }).then(() => {
-            if (validateScooterCode()) {
-              navigateToRide();
-            }
+            navigateToRide();
           });
         }
       })
@@ -332,6 +396,7 @@ const ScanQrCodeComponent = () => {
           <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
             Please enter the number you see
           </P2>
+          {url ? <Text>{url}</Text> : null}
           <Divider height={14} />
           <TouchableWithoutFeedback>
             <View style={styles.inputContainer}>

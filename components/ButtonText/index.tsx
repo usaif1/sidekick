@@ -5,12 +5,14 @@ import {ScaledSheet} from 'react-native-size-matters';
 
 // store
 import {useThemeStore} from '@/theme/store';
+import {ActivityIndicator} from 'react-native-paper';
 
 type Props = {
   children: ReactNode;
   onPress: () => void;
   variant: 'primary' | 'secondary' | 'highlight' | 'error';
   customStyle?: ViewStyle;
+  loading?: boolean;
 };
 
 type ContainerStyles = {
@@ -27,6 +29,7 @@ const ButtonText: React.FC<Props> = ({
   onPress,
   variant,
   customStyle,
+  loading = false,
 }) => {
   const containerStyles: ContainerStyles = {
     primary: {
@@ -43,9 +46,19 @@ const ButtonText: React.FC<Props> = ({
     },
   };
 
-  return (
+  return loading ? (
+    <Pressable
+      style={[
+        styles.pressableContainer,
+        containerStyles[variant],
+        {...customStyle},
+      ]}>
+      <ActivityIndicator color={colors.textPrimary} />
+    </Pressable>
+  ) : (
     <Pressable
       onPress={onPress}
+      disabled={loading}
       style={[
         styles.pressableContainer,
         containerStyles[variant],

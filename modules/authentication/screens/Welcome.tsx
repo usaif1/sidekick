@@ -1,12 +1,13 @@
 // dependencies
 import {Dimensions, ImageBackground, View} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useCallback, useRef} from 'react';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 // components
 import {ButtonTextBottomSheet, Divider, H1, P1} from '@/components';
+import {useAuthStore} from '@/globalStore';
 
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
@@ -14,10 +15,20 @@ const WelcomeScreen: React.FC = () => {
   const navigation = useNavigation();
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
+  const {stopLoading} = useAuthStore();
+
   const onPressHandler = (route: string) => {
     // @ts-ignore
     navigation.navigate(route);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      stopLoading('auth-confirmation');
+      stopLoading('otp-verification');
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   return (
     <>

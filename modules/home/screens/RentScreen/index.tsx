@@ -6,11 +6,11 @@ import Geolocation from '@react-native-community/geolocation';
 
 // store
 import useLocationStore from '../../store/locationStore';
-import {useGlobalStore} from '@/globalStore';
+import {useAuthStore, useGlobalStore} from '@/globalStore';
 import useRideStore from '@/modules/ride/store';
 
 // services
-import {RideService} from '@/globalService';
+import {RideService, UserService} from '@/globalService';
 import {mapStyles} from '../../utilis/mapStyle';
 import {authUtils} from '@/modules/authentication/utils';
 import {findNearestHub} from '../../utilis/distanceUtils';
@@ -29,7 +29,7 @@ const RentScreen: React.FC = () => {
   const {closeBottomSheet} = useGlobalStore();
 
   const {latitude, longitude, setLocation} = useLocationStore();
-
+  const {stopLoading} = useAuthStore();
   const {openModal, setModalComponent} = useGlobalStore();
   const {selectedHub, setSelectedHub, hubs} = useRideStore();
   const mapRef = useRef<MapView>(null);
@@ -75,6 +75,9 @@ const RentScreen: React.FC = () => {
   useEffect(() => {
     authUtils.setBottomSheetView('welcome');
     RideService.fetchAllHubs();
+    UserService.fetchUserDetails();
+    stopLoading('otp-verification');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useFocusEffect(

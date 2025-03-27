@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 import {useHeaderHeight} from '@react-navigation/elements';
@@ -32,7 +32,13 @@ const {width, height} = Dimensions.get('window'); // Get screen dimensions
 const OTPForm: React.FC = () => {
   const {theme} = useThemeStore();
   const headerHeight = useHeaderHeight();
-  const {confirmationResult, setAuthUser} = useAuthStore();
+  const {
+    confirmationResult,
+    setAuthUser,
+    startLoading,
+    stopLoading,
+    authLoaders,
+  } = useAuthStore();
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
   const [otp, setOTP] = useState<string>('');
@@ -47,9 +53,10 @@ const OTPForm: React.FC = () => {
       });
       return;
     }
-
     Keyboard.dismiss();
     try {
+      startLoading('otp-verification');
+      authBottomSheetRef?.current?.snapToPosition('41%');
       const response = await AuthService.verifyOTP(
         confirmationResult,
         otp,
@@ -60,6 +67,7 @@ const OTPForm: React.FC = () => {
 
       return response;
     } catch (err) {
+      stopLoading('otp-verification');
       showToast({
         type: 'error',
         text1: 'Error',
@@ -85,6 +93,11 @@ const OTPForm: React.FC = () => {
       return ['40%'];
     }
   };
+
+  useEffect(() => {
+    stopLoading('auth-confirmation');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -167,7 +180,10 @@ const OTPForm: React.FC = () => {
                 width: 220,
                 alignSelf: 'center',
               }}>
-              <ButtonText variant="primary" onPress={verifyOTP}>
+              <ButtonText
+                variant="primary"
+                onPress={verifyOTP}
+                loading={authLoaders['otp-verification']}>
                 Continue
               </ButtonText>
             </View>

@@ -22,7 +22,8 @@ type LoaderType =
   | 'phone-verification'
   | 'user-login'
   | 'profile-update'
-  | 'auth-confirmation';
+  | 'auth-confirmation'
+  | 'otp-verification';
 
 export type ExistingFormData = {
   phoneNumber: string;
@@ -135,6 +136,7 @@ const authInitialState: AuthStore = {
     'user-login': false,
     'profile-update': false,
     'auth-confirmation': false,
+    'otp-verification': false,
   },
 };
 
