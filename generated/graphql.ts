@@ -566,6 +566,10 @@ export type Mutation_Root = {
   delete_ride_details?: Maybe<Ride_Details_Mutation_Response>;
   /** delete single row from the table: "ride_details" */
   delete_ride_details_by_pk?: Maybe<Ride_Details>;
+  /** delete data from the table: "ride_step" */
+  delete_ride_step?: Maybe<Ride_Step_Mutation_Response>;
+  /** delete single row from the table: "ride_step" */
+  delete_ride_step_by_pk?: Maybe<Ride_Step>;
   /** delete data from the table: "ride_steps" */
   delete_ride_steps?: Maybe<Ride_Steps_Mutation_Response>;
   /** delete single row from the table: "ride_steps" */
@@ -586,6 +590,14 @@ export type Mutation_Root = {
   delete_users?: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
   delete_users_by_pk?: Maybe<Users>;
+  /** delete data from the table: "wallet_state" */
+  delete_wallet_state?: Maybe<Wallet_State_Mutation_Response>;
+  /** delete single row from the table: "wallet_state" */
+  delete_wallet_state_by_pk?: Maybe<Wallet_State>;
+  /** delete data from the table: "wallet_transactions" */
+  delete_wallet_transactions?: Maybe<Wallet_Transactions_Mutation_Response>;
+  /** delete single row from the table: "wallet_transactions" */
+  delete_wallet_transactions_by_pk?: Maybe<Wallet_Transactions>;
   /** delete data from the table: "wallets" */
   delete_wallets?: Maybe<Wallets_Mutation_Response>;
   /** delete single row from the table: "wallets" */
@@ -602,6 +614,10 @@ export type Mutation_Root = {
   insert_ride_details?: Maybe<Ride_Details_Mutation_Response>;
   /** insert a single row into the table: "ride_details" */
   insert_ride_details_one?: Maybe<Ride_Details>;
+  /** insert data into the table: "ride_step" */
+  insert_ride_step?: Maybe<Ride_Step_Mutation_Response>;
+  /** insert a single row into the table: "ride_step" */
+  insert_ride_step_one?: Maybe<Ride_Step>;
   /** insert data into the table: "ride_steps" */
   insert_ride_steps?: Maybe<Ride_Steps_Mutation_Response>;
   /** insert a single row into the table: "ride_steps" */
@@ -622,6 +638,14 @@ export type Mutation_Root = {
   insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one?: Maybe<Users>;
+  /** insert data into the table: "wallet_state" */
+  insert_wallet_state?: Maybe<Wallet_State_Mutation_Response>;
+  /** insert a single row into the table: "wallet_state" */
+  insert_wallet_state_one?: Maybe<Wallet_State>;
+  /** insert data into the table: "wallet_transactions" */
+  insert_wallet_transactions?: Maybe<Wallet_Transactions_Mutation_Response>;
+  /** insert a single row into the table: "wallet_transactions" */
+  insert_wallet_transactions_one?: Maybe<Wallet_Transactions>;
   /** insert data into the table: "wallets" */
   insert_wallets?: Maybe<Wallets_Mutation_Response>;
   /** insert a single row into the table: "wallets" */
@@ -644,6 +668,12 @@ export type Mutation_Root = {
   update_ride_details_by_pk?: Maybe<Ride_Details>;
   /** update multiples rows of table: "ride_details" */
   update_ride_details_many?: Maybe<Array<Maybe<Ride_Details_Mutation_Response>>>;
+  /** update data of the table: "ride_step" */
+  update_ride_step?: Maybe<Ride_Step_Mutation_Response>;
+  /** update single row of the table: "ride_step" */
+  update_ride_step_by_pk?: Maybe<Ride_Step>;
+  /** update multiples rows of table: "ride_step" */
+  update_ride_step_many?: Maybe<Array<Maybe<Ride_Step_Mutation_Response>>>;
   /** update data of the table: "ride_steps" */
   update_ride_steps?: Maybe<Ride_Steps_Mutation_Response>;
   /** update single row of the table: "ride_steps" */
@@ -674,6 +704,18 @@ export type Mutation_Root = {
   update_users_by_pk?: Maybe<Users>;
   /** update multiples rows of table: "users" */
   update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
+  /** update data of the table: "wallet_state" */
+  update_wallet_state?: Maybe<Wallet_State_Mutation_Response>;
+  /** update single row of the table: "wallet_state" */
+  update_wallet_state_by_pk?: Maybe<Wallet_State>;
+  /** update multiples rows of table: "wallet_state" */
+  update_wallet_state_many?: Maybe<Array<Maybe<Wallet_State_Mutation_Response>>>;
+  /** update data of the table: "wallet_transactions" */
+  update_wallet_transactions?: Maybe<Wallet_Transactions_Mutation_Response>;
+  /** update single row of the table: "wallet_transactions" */
+  update_wallet_transactions_by_pk?: Maybe<Wallet_Transactions>;
+  /** update multiples rows of table: "wallet_transactions" */
+  update_wallet_transactions_many?: Maybe<Array<Maybe<Wallet_Transactions_Mutation_Response>>>;
   /** update data of the table: "wallets" */
   update_wallets?: Maybe<Wallets_Mutation_Response>;
   /** update single row of the table: "wallets" */
@@ -716,6 +758,18 @@ export type Mutation_RootDelete_Ride_DetailsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Ride_Details_By_PkArgs = {
   id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Ride_StepArgs = {
+  where: Ride_Step_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Ride_Step_By_PkArgs = {
+  value: Scalars['String']['input'];
 };
 
 
@@ -781,6 +835,30 @@ export type Mutation_RootDelete_Users_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Wallet_StateArgs = {
+  where: Wallet_State_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Wallet_State_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Wallet_TransactionsArgs = {
+  where: Wallet_Transactions_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Wallet_Transactions_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_WalletsArgs = {
   where: Wallets_Bool_Exp;
 };
@@ -831,6 +909,20 @@ export type Mutation_RootInsert_Ride_DetailsArgs = {
 export type Mutation_RootInsert_Ride_Details_OneArgs = {
   object: Ride_Details_Insert_Input;
   on_conflict?: InputMaybe<Ride_Details_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Ride_StepArgs = {
+  objects: Array<Ride_Step_Insert_Input>;
+  on_conflict?: InputMaybe<Ride_Step_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Ride_Step_OneArgs = {
+  object: Ride_Step_Insert_Input;
+  on_conflict?: InputMaybe<Ride_Step_On_Conflict>;
 };
 
 
@@ -901,6 +993,34 @@ export type Mutation_RootInsert_UsersArgs = {
 export type Mutation_RootInsert_Users_OneArgs = {
   object: Users_Insert_Input;
   on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Wallet_StateArgs = {
+  objects: Array<Wallet_State_Insert_Input>;
+  on_conflict?: InputMaybe<Wallet_State_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Wallet_State_OneArgs = {
+  object: Wallet_State_Insert_Input;
+  on_conflict?: InputMaybe<Wallet_State_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Wallet_TransactionsArgs = {
+  objects: Array<Wallet_Transactions_Insert_Input>;
+  on_conflict?: InputMaybe<Wallet_Transactions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Wallet_Transactions_OneArgs = {
+  object: Wallet_Transactions_Insert_Input;
+  on_conflict?: InputMaybe<Wallet_Transactions_On_Conflict>;
 };
 
 
@@ -979,6 +1099,26 @@ export type Mutation_RootUpdate_Ride_Details_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Ride_Details_ManyArgs = {
   updates: Array<Ride_Details_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Ride_StepArgs = {
+  _set?: InputMaybe<Ride_Step_Set_Input>;
+  where: Ride_Step_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Ride_Step_By_PkArgs = {
+  _set?: InputMaybe<Ride_Step_Set_Input>;
+  pk_columns: Ride_Step_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Ride_Step_ManyArgs = {
+  updates: Array<Ride_Step_Updates>;
 };
 
 
@@ -1083,6 +1223,48 @@ export type Mutation_RootUpdate_Users_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Users_ManyArgs = {
   updates: Array<Users_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Wallet_StateArgs = {
+  _set?: InputMaybe<Wallet_State_Set_Input>;
+  where: Wallet_State_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Wallet_State_By_PkArgs = {
+  _set?: InputMaybe<Wallet_State_Set_Input>;
+  pk_columns: Wallet_State_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Wallet_State_ManyArgs = {
+  updates: Array<Wallet_State_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Wallet_TransactionsArgs = {
+  _inc?: InputMaybe<Wallet_Transactions_Inc_Input>;
+  _set?: InputMaybe<Wallet_Transactions_Set_Input>;
+  where: Wallet_Transactions_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Wallet_Transactions_By_PkArgs = {
+  _inc?: InputMaybe<Wallet_Transactions_Inc_Input>;
+  _set?: InputMaybe<Wallet_Transactions_Set_Input>;
+  pk_columns: Wallet_Transactions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Wallet_Transactions_ManyArgs = {
+  updates: Array<Wallet_Transactions_Updates>;
 };
 
 
@@ -1410,6 +1592,12 @@ export type Query_Root = {
   ride_details_aggregate: Ride_Details_Aggregate;
   /** fetch data from the table: "ride_details" using primary key columns */
   ride_details_by_pk?: Maybe<Ride_Details>;
+  /** fetch data from the table: "ride_step" */
+  ride_step: Array<Ride_Step>;
+  /** fetch aggregated fields from the table: "ride_step" */
+  ride_step_aggregate: Ride_Step_Aggregate;
+  /** fetch data from the table: "ride_step" using primary key columns */
+  ride_step_by_pk?: Maybe<Ride_Step>;
   /** An array relationship */
   ride_steps: Array<Ride_Steps>;
   /** An aggregate relationship */
@@ -1440,6 +1628,18 @@ export type Query_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
+  /** fetch data from the table: "wallet_state" */
+  wallet_state: Array<Wallet_State>;
+  /** fetch aggregated fields from the table: "wallet_state" */
+  wallet_state_aggregate: Wallet_State_Aggregate;
+  /** fetch data from the table: "wallet_state" using primary key columns */
+  wallet_state_by_pk?: Maybe<Wallet_State>;
+  /** An array relationship */
+  wallet_transactions: Array<Wallet_Transactions>;
+  /** An aggregate relationship */
+  wallet_transactions_aggregate: Wallet_Transactions_Aggregate;
+  /** fetch data from the table: "wallet_transactions" using primary key columns */
+  wallet_transactions_by_pk?: Maybe<Wallet_Transactions>;
   /** An array relationship */
   wallets: Array<Wallets>;
   /** An aggregate relationship */
@@ -1515,6 +1715,29 @@ export type Query_RootRide_Details_AggregateArgs = {
 
 export type Query_RootRide_Details_By_PkArgs = {
   id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootRide_StepArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Step_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Step_Order_By>>;
+  where?: InputMaybe<Ride_Step_Bool_Exp>;
+};
+
+
+export type Query_RootRide_Step_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Step_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Step_Order_By>>;
+  where?: InputMaybe<Ride_Step_Bool_Exp>;
+};
+
+
+export type Query_RootRide_Step_By_PkArgs = {
+  value: Scalars['String']['input'];
 };
 
 
@@ -1634,6 +1857,52 @@ export type Query_RootUsers_By_PkArgs = {
 };
 
 
+export type Query_RootWallet_StateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_State_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_State_Order_By>>;
+  where?: InputMaybe<Wallet_State_Bool_Exp>;
+};
+
+
+export type Query_RootWallet_State_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_State_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_State_Order_By>>;
+  where?: InputMaybe<Wallet_State_Bool_Exp>;
+};
+
+
+export type Query_RootWallet_State_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Query_RootWallet_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+
+export type Query_RootWallet_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+
+export type Query_RootWallet_Transactions_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootWalletsArgs = {
   distinct_on?: InputMaybe<Array<Wallets_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1668,6 +1937,7 @@ export type Ride_Details = {
   /** An object relationship */
   hubByStartHubId: Hubs;
   id: Scalars['uuid']['output'];
+  ride_distance: Scalars['numeric']['output'];
   /** An array relationship */
   ride_steps: Array<Ride_Steps>;
   /** An aggregate relationship */
@@ -1794,11 +2064,13 @@ export type Ride_Details_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Ride_Details_Avg_Fields = {
   __typename?: 'ride_details_avg_fields';
+  ride_distance?: Maybe<Scalars['Float']['output']>;
   total_cost?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "ride_details" */
 export type Ride_Details_Avg_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
 };
 
@@ -1814,6 +2086,7 @@ export type Ride_Details_Bool_Exp = {
   hub?: InputMaybe<Hubs_Bool_Exp>;
   hubByStartHubId?: InputMaybe<Hubs_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  ride_distance?: InputMaybe<Numeric_Comparison_Exp>;
   ride_steps?: InputMaybe<Ride_Steps_Bool_Exp>;
   ride_steps_aggregate?: InputMaybe<Ride_Steps_Aggregate_Bool_Exp>;
   scooter?: InputMaybe<Scooters_Bool_Exp>;
@@ -1836,6 +2109,7 @@ export enum Ride_Details_Constraint {
 
 /** input type for incrementing numeric columns in table "ride_details" */
 export type Ride_Details_Inc_Input = {
+  ride_distance?: InputMaybe<Scalars['numeric']['input']>;
   total_cost?: InputMaybe<Scalars['numeric']['input']>;
 };
 
@@ -1848,6 +2122,7 @@ export type Ride_Details_Insert_Input = {
   hub?: InputMaybe<Hubs_Obj_Rel_Insert_Input>;
   hubByStartHubId?: InputMaybe<Hubs_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  ride_distance?: InputMaybe<Scalars['numeric']['input']>;
   ride_steps?: InputMaybe<Ride_Steps_Arr_Rel_Insert_Input>;
   scooter?: InputMaybe<Scooters_Obj_Rel_Insert_Input>;
   scooter_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1868,6 +2143,7 @@ export type Ride_Details_Max_Fields = {
   end_hub_id?: Maybe<Scalars['uuid']['output']>;
   end_time?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  ride_distance?: Maybe<Scalars['numeric']['output']>;
   scooter_id?: Maybe<Scalars['uuid']['output']>;
   start_hub_id?: Maybe<Scalars['uuid']['output']>;
   start_time?: Maybe<Scalars['timestamp']['output']>;
@@ -1883,6 +2159,7 @@ export type Ride_Details_Max_Order_By = {
   end_hub_id?: InputMaybe<Order_By>;
   end_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  ride_distance?: InputMaybe<Order_By>;
   scooter_id?: InputMaybe<Order_By>;
   start_hub_id?: InputMaybe<Order_By>;
   start_time?: InputMaybe<Order_By>;
@@ -1899,6 +2176,7 @@ export type Ride_Details_Min_Fields = {
   end_hub_id?: Maybe<Scalars['uuid']['output']>;
   end_time?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  ride_distance?: Maybe<Scalars['numeric']['output']>;
   scooter_id?: Maybe<Scalars['uuid']['output']>;
   start_hub_id?: Maybe<Scalars['uuid']['output']>;
   start_time?: Maybe<Scalars['timestamp']['output']>;
@@ -1914,6 +2192,7 @@ export type Ride_Details_Min_Order_By = {
   end_hub_id?: InputMaybe<Order_By>;
   end_time?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  ride_distance?: InputMaybe<Order_By>;
   scooter_id?: InputMaybe<Order_By>;
   start_hub_id?: InputMaybe<Order_By>;
   start_time?: InputMaybe<Order_By>;
@@ -1954,6 +2233,7 @@ export type Ride_Details_Order_By = {
   hub?: InputMaybe<Hubs_Order_By>;
   hubByStartHubId?: InputMaybe<Hubs_Order_By>;
   id?: InputMaybe<Order_By>;
+  ride_distance?: InputMaybe<Order_By>;
   ride_steps_aggregate?: InputMaybe<Ride_Steps_Aggregate_Order_By>;
   scooter?: InputMaybe<Scooters_Order_By>;
   scooter_id?: InputMaybe<Order_By>;
@@ -1984,6 +2264,8 @@ export enum Ride_Details_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  RideDistance = 'ride_distance',
+  /** column name */
   ScooterId = 'scooter_id',
   /** column name */
   StartHubId = 'start_hub_id',
@@ -2004,6 +2286,7 @@ export type Ride_Details_Set_Input = {
   end_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   end_time?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  ride_distance?: InputMaybe<Scalars['numeric']['input']>;
   scooter_id?: InputMaybe<Scalars['uuid']['input']>;
   start_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   start_time?: InputMaybe<Scalars['timestamp']['input']>;
@@ -2015,33 +2298,39 @@ export type Ride_Details_Set_Input = {
 /** aggregate stddev on columns */
 export type Ride_Details_Stddev_Fields = {
   __typename?: 'ride_details_stddev_fields';
+  ride_distance?: Maybe<Scalars['Float']['output']>;
   total_cost?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "ride_details" */
 export type Ride_Details_Stddev_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Ride_Details_Stddev_Pop_Fields = {
   __typename?: 'ride_details_stddev_pop_fields';
+  ride_distance?: Maybe<Scalars['Float']['output']>;
   total_cost?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "ride_details" */
 export type Ride_Details_Stddev_Pop_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Ride_Details_Stddev_Samp_Fields = {
   __typename?: 'ride_details_stddev_samp_fields';
+  ride_distance?: Maybe<Scalars['Float']['output']>;
   total_cost?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "ride_details" */
 export type Ride_Details_Stddev_Samp_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
 };
 
@@ -2060,6 +2349,7 @@ export type Ride_Details_Stream_Cursor_Value_Input = {
   end_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   end_time?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  ride_distance?: InputMaybe<Scalars['numeric']['input']>;
   scooter_id?: InputMaybe<Scalars['uuid']['input']>;
   start_hub_id?: InputMaybe<Scalars['uuid']['input']>;
   start_time?: InputMaybe<Scalars['timestamp']['input']>;
@@ -2071,11 +2361,13 @@ export type Ride_Details_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Ride_Details_Sum_Fields = {
   __typename?: 'ride_details_sum_fields';
+  ride_distance?: Maybe<Scalars['numeric']['output']>;
   total_cost?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** order by sum() on columns of table "ride_details" */
 export type Ride_Details_Sum_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
 };
 
@@ -2091,6 +2383,8 @@ export enum Ride_Details_Update_Column {
   EndTime = 'end_time',
   /** column name */
   Id = 'id',
+  /** column name */
+  RideDistance = 'ride_distance',
   /** column name */
   ScooterId = 'scooter_id',
   /** column name */
@@ -2117,34 +2411,225 @@ export type Ride_Details_Updates = {
 /** aggregate var_pop on columns */
 export type Ride_Details_Var_Pop_Fields = {
   __typename?: 'ride_details_var_pop_fields';
+  ride_distance?: Maybe<Scalars['Float']['output']>;
   total_cost?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "ride_details" */
 export type Ride_Details_Var_Pop_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Ride_Details_Var_Samp_Fields = {
   __typename?: 'ride_details_var_samp_fields';
+  ride_distance?: Maybe<Scalars['Float']['output']>;
   total_cost?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "ride_details" */
 export type Ride_Details_Var_Samp_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Ride_Details_Variance_Fields = {
   __typename?: 'ride_details_variance_fields';
+  ride_distance?: Maybe<Scalars['Float']['output']>;
   total_cost?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "ride_details" */
 export type Ride_Details_Variance_Order_By = {
+  ride_distance?: InputMaybe<Order_By>;
   total_cost?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "ride_step" */
+export type Ride_Step = {
+  __typename?: 'ride_step';
+  comment?: Maybe<Scalars['String']['output']>;
+  /** An array relationship */
+  ride_steps: Array<Ride_Steps>;
+  /** An aggregate relationship */
+  ride_steps_aggregate: Ride_Steps_Aggregate;
+  value: Scalars['String']['output'];
+};
+
+
+/** columns and relationships of "ride_step" */
+export type Ride_StepRide_StepsArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Steps_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Steps_Order_By>>;
+  where?: InputMaybe<Ride_Steps_Bool_Exp>;
+};
+
+
+/** columns and relationships of "ride_step" */
+export type Ride_StepRide_Steps_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Steps_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Steps_Order_By>>;
+  where?: InputMaybe<Ride_Steps_Bool_Exp>;
+};
+
+/** aggregated selection of "ride_step" */
+export type Ride_Step_Aggregate = {
+  __typename?: 'ride_step_aggregate';
+  aggregate?: Maybe<Ride_Step_Aggregate_Fields>;
+  nodes: Array<Ride_Step>;
+};
+
+/** aggregate fields of "ride_step" */
+export type Ride_Step_Aggregate_Fields = {
+  __typename?: 'ride_step_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Ride_Step_Max_Fields>;
+  min?: Maybe<Ride_Step_Min_Fields>;
+};
+
+
+/** aggregate fields of "ride_step" */
+export type Ride_Step_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Ride_Step_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "ride_step". All fields are combined with a logical 'AND'. */
+export type Ride_Step_Bool_Exp = {
+  _and?: InputMaybe<Array<Ride_Step_Bool_Exp>>;
+  _not?: InputMaybe<Ride_Step_Bool_Exp>;
+  _or?: InputMaybe<Array<Ride_Step_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  ride_steps?: InputMaybe<Ride_Steps_Bool_Exp>;
+  ride_steps_aggregate?: InputMaybe<Ride_Steps_Aggregate_Bool_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "ride_step" */
+export enum Ride_Step_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  RideStepPkey = 'ride_step_pkey'
+}
+
+export enum Ride_Step_Enum {
+  RideEnded = 'RIDE_ENDED',
+  RidePaused = 'RIDE_PAUSED',
+  RideResumed = 'RIDE_RESUMED',
+  RideStarted = 'RIDE_STARTED'
+}
+
+/** Boolean expression to compare columns of type "ride_step_enum". All fields are combined with logical 'AND'. */
+export type Ride_Step_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Ride_Step_Enum>;
+  _in?: InputMaybe<Array<Ride_Step_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Ride_Step_Enum>;
+  _nin?: InputMaybe<Array<Ride_Step_Enum>>;
+};
+
+/** input type for inserting data into table "ride_step" */
+export type Ride_Step_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  ride_steps?: InputMaybe<Ride_Steps_Arr_Rel_Insert_Input>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type Ride_Step_Max_Fields = {
+  __typename?: 'ride_step_max_fields';
+  comment?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type Ride_Step_Min_Fields = {
+  __typename?: 'ride_step_min_fields';
+  comment?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "ride_step" */
+export type Ride_Step_Mutation_Response = {
+  __typename?: 'ride_step_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Ride_Step>;
+};
+
+/** input type for inserting object relation for remote table "ride_step" */
+export type Ride_Step_Obj_Rel_Insert_Input = {
+  data: Ride_Step_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Ride_Step_On_Conflict>;
+};
+
+/** on_conflict condition type for table "ride_step" */
+export type Ride_Step_On_Conflict = {
+  constraint: Ride_Step_Constraint;
+  update_columns?: Array<Ride_Step_Update_Column>;
+  where?: InputMaybe<Ride_Step_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "ride_step". */
+export type Ride_Step_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  ride_steps_aggregate?: InputMaybe<Ride_Steps_Aggregate_Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: ride_step */
+export type Ride_Step_Pk_Columns_Input = {
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "ride_step" */
+export enum Ride_Step_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "ride_step" */
+export type Ride_Step_Set_Input = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "ride_step" */
+export type Ride_Step_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Ride_Step_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Ride_Step_Stream_Cursor_Value_Input = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "ride_step" */
+export enum Ride_Step_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+export type Ride_Step_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Ride_Step_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Ride_Step_Bool_Exp;
 };
 
 /** columns and relationships of "ride_steps" */
@@ -2155,7 +2640,9 @@ export type Ride_Steps = {
   /** An object relationship */
   ride_detail: Ride_Details;
   ride_details_id: Scalars['uuid']['output'];
-  steps: Scalars['String']['output'];
+  /** An object relationship */
+  ride_step: Ride_Step;
+  steps: Ride_Step_Enum;
   updated_at: Scalars['timestamp']['output'];
 };
 
@@ -2215,7 +2702,8 @@ export type Ride_Steps_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   ride_detail?: InputMaybe<Ride_Details_Bool_Exp>;
   ride_details_id?: InputMaybe<Uuid_Comparison_Exp>;
-  steps?: InputMaybe<String_Comparison_Exp>;
+  ride_step?: InputMaybe<Ride_Step_Bool_Exp>;
+  steps?: InputMaybe<Ride_Step_Enum_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
 };
 
@@ -2231,7 +2719,8 @@ export type Ride_Steps_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   ride_detail?: InputMaybe<Ride_Details_Obj_Rel_Insert_Input>;
   ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
-  steps?: InputMaybe<Scalars['String']['input']>;
+  ride_step?: InputMaybe<Ride_Step_Obj_Rel_Insert_Input>;
+  steps?: InputMaybe<Ride_Step_Enum>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
 
@@ -2241,7 +2730,6 @@ export type Ride_Steps_Max_Fields = {
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   ride_details_id?: Maybe<Scalars['uuid']['output']>;
-  steps?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
 };
 
@@ -2250,7 +2738,6 @@ export type Ride_Steps_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   ride_details_id?: InputMaybe<Order_By>;
-  steps?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -2260,7 +2747,6 @@ export type Ride_Steps_Min_Fields = {
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   ride_details_id?: Maybe<Scalars['uuid']['output']>;
-  steps?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
 };
 
@@ -2269,7 +2755,6 @@ export type Ride_Steps_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   ride_details_id?: InputMaybe<Order_By>;
-  steps?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -2295,6 +2780,7 @@ export type Ride_Steps_Order_By = {
   id?: InputMaybe<Order_By>;
   ride_detail?: InputMaybe<Ride_Details_Order_By>;
   ride_details_id?: InputMaybe<Order_By>;
+  ride_step?: InputMaybe<Ride_Step_Order_By>;
   steps?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -2323,7 +2809,7 @@ export type Ride_Steps_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
-  steps?: InputMaybe<Scalars['String']['input']>;
+  steps?: InputMaybe<Ride_Step_Enum>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
 
@@ -2340,7 +2826,7 @@ export type Ride_Steps_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
-  steps?: InputMaybe<Scalars['String']['input']>;
+  steps?: InputMaybe<Ride_Step_Enum>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
 
@@ -2866,6 +3352,14 @@ export type Subscription_Root = {
   ride_details_by_pk?: Maybe<Ride_Details>;
   /** fetch data from the table in a streaming manner: "ride_details" */
   ride_details_stream: Array<Ride_Details>;
+  /** fetch data from the table: "ride_step" */
+  ride_step: Array<Ride_Step>;
+  /** fetch aggregated fields from the table: "ride_step" */
+  ride_step_aggregate: Ride_Step_Aggregate;
+  /** fetch data from the table: "ride_step" using primary key columns */
+  ride_step_by_pk?: Maybe<Ride_Step>;
+  /** fetch data from the table in a streaming manner: "ride_step" */
+  ride_step_stream: Array<Ride_Step>;
   /** An array relationship */
   ride_steps: Array<Ride_Steps>;
   /** An aggregate relationship */
@@ -2906,6 +3400,22 @@ export type Subscription_Root = {
   users_by_pk?: Maybe<Users>;
   /** fetch data from the table in a streaming manner: "users" */
   users_stream: Array<Users>;
+  /** fetch data from the table: "wallet_state" */
+  wallet_state: Array<Wallet_State>;
+  /** fetch aggregated fields from the table: "wallet_state" */
+  wallet_state_aggregate: Wallet_State_Aggregate;
+  /** fetch data from the table: "wallet_state" using primary key columns */
+  wallet_state_by_pk?: Maybe<Wallet_State>;
+  /** fetch data from the table in a streaming manner: "wallet_state" */
+  wallet_state_stream: Array<Wallet_State>;
+  /** An array relationship */
+  wallet_transactions: Array<Wallet_Transactions>;
+  /** An aggregate relationship */
+  wallet_transactions_aggregate: Wallet_Transactions_Aggregate;
+  /** fetch data from the table: "wallet_transactions" using primary key columns */
+  wallet_transactions_by_pk?: Maybe<Wallet_Transactions>;
+  /** fetch data from the table in a streaming manner: "wallet_transactions" */
+  wallet_transactions_stream: Array<Wallet_Transactions>;
   /** An array relationship */
   wallets: Array<Wallets>;
   /** An aggregate relationship */
@@ -3004,6 +3514,36 @@ export type Subscription_RootRide_Details_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Ride_Details_Stream_Cursor_Input>>;
   where?: InputMaybe<Ride_Details_Bool_Exp>;
+};
+
+
+export type Subscription_RootRide_StepArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Step_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Step_Order_By>>;
+  where?: InputMaybe<Ride_Step_Bool_Exp>;
+};
+
+
+export type Subscription_RootRide_Step_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Ride_Step_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ride_Step_Order_By>>;
+  where?: InputMaybe<Ride_Step_Bool_Exp>;
+};
+
+
+export type Subscription_RootRide_Step_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootRide_Step_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Ride_Step_Stream_Cursor_Input>>;
+  where?: InputMaybe<Ride_Step_Bool_Exp>;
 };
 
 
@@ -3155,6 +3695,66 @@ export type Subscription_RootUsers_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>;
   where?: InputMaybe<Users_Bool_Exp>;
+};
+
+
+export type Subscription_RootWallet_StateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_State_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_State_Order_By>>;
+  where?: InputMaybe<Wallet_State_Bool_Exp>;
+};
+
+
+export type Subscription_RootWallet_State_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_State_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_State_Order_By>>;
+  where?: InputMaybe<Wallet_State_Bool_Exp>;
+};
+
+
+export type Subscription_RootWallet_State_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootWallet_State_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Wallet_State_Stream_Cursor_Input>>;
+  where?: InputMaybe<Wallet_State_Bool_Exp>;
+};
+
+
+export type Subscription_RootWallet_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+
+export type Subscription_RootWallet_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+
+export type Subscription_RootWallet_Transactions_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootWallet_Transactions_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Wallet_Transactions_Stream_Cursor_Input>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
 };
 
 
@@ -3586,6 +4186,7 @@ export type User_Organizations = {
   __typename?: 'user_organizations';
   created_at: Scalars['timestamp']['output'];
   employee_id: Scalars['String']['output'];
+  id: Scalars['uuid']['output'];
   /** An object relationship */
   organization: Organizations;
   organization_id: Scalars['uuid']['output'];
@@ -3594,6 +4195,30 @@ export type User_Organizations = {
   /** An object relationship */
   user: Users;
   user_id: Scalars['uuid']['output'];
+  /** An array relationship */
+  wallet_transactions: Array<Wallet_Transactions>;
+  /** An aggregate relationship */
+  wallet_transactions_aggregate: Wallet_Transactions_Aggregate;
+};
+
+
+/** columns and relationships of "user_organizations" */
+export type User_OrganizationsWallet_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+
+/** columns and relationships of "user_organizations" */
+export type User_OrganizationsWallet_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
 };
 
 /** aggregated selection of "user_organizations" */
@@ -3650,18 +4275,23 @@ export type User_Organizations_Bool_Exp = {
   _or?: InputMaybe<Array<User_Organizations_Bool_Exp>>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
   employee_id?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
   organization?: InputMaybe<Organizations_Bool_Exp>;
   organization_id?: InputMaybe<Uuid_Comparison_Exp>;
   role?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
+  wallet_transactions?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+  wallet_transactions_aggregate?: InputMaybe<Wallet_Transactions_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "user_organizations" */
 export enum User_Organizations_Constraint {
   /** unique or primary key constraint on columns "employee_id" */
   UniqueEmployeeId = 'unique_employee_id',
+  /** unique or primary key constraint on columns "id" */
+  UserOrganizationsIdKey = 'user_organizations_id_key',
   /** unique or primary key constraint on columns "user_id", "organization_id" */
   UserOrganizationsPkey = 'user_organizations_pkey'
 }
@@ -3670,12 +4300,14 @@ export enum User_Organizations_Constraint {
 export type User_Organizations_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
+  wallet_transactions?: InputMaybe<Wallet_Transactions_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -3683,6 +4315,7 @@ export type User_Organizations_Max_Fields = {
   __typename?: 'user_organizations_max_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
   employee_id?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
   role?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
@@ -3693,6 +4326,7 @@ export type User_Organizations_Max_Fields = {
 export type User_Organizations_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   employee_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -3704,6 +4338,7 @@ export type User_Organizations_Min_Fields = {
   __typename?: 'user_organizations_min_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
   employee_id?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
   role?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
@@ -3714,6 +4349,7 @@ export type User_Organizations_Min_Fields = {
 export type User_Organizations_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   employee_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -3729,6 +4365,13 @@ export type User_Organizations_Mutation_Response = {
   returning: Array<User_Organizations>;
 };
 
+/** input type for inserting object relation for remote table "user_organizations" */
+export type User_Organizations_Obj_Rel_Insert_Input = {
+  data: User_Organizations_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<User_Organizations_On_Conflict>;
+};
+
 /** on_conflict condition type for table "user_organizations" */
 export type User_Organizations_On_Conflict = {
   constraint: User_Organizations_Constraint;
@@ -3740,12 +4383,14 @@ export type User_Organizations_On_Conflict = {
 export type User_Organizations_Order_By = {
   created_at?: InputMaybe<Order_By>;
   employee_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
   organization?: InputMaybe<Organizations_Order_By>;
   organization_id?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
   user_id?: InputMaybe<Order_By>;
+  wallet_transactions_aggregate?: InputMaybe<Wallet_Transactions_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: user_organizations */
@@ -3761,6 +4406,8 @@ export enum User_Organizations_Select_Column {
   /** column name */
   EmployeeId = 'employee_id',
   /** column name */
+  Id = 'id',
+  /** column name */
   OrganizationId = 'organization_id',
   /** column name */
   Role = 'role',
@@ -3774,6 +4421,7 @@ export enum User_Organizations_Select_Column {
 export type User_Organizations_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -3792,6 +4440,7 @@ export type User_Organizations_Stream_Cursor_Input = {
 export type User_Organizations_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -3804,6 +4453,8 @@ export enum User_Organizations_Update_Column {
   CreatedAt = 'created_at',
   /** column name */
   EmployeeId = 'employee_id',
+  /** column name */
+  Id = 'id',
   /** column name */
   OrganizationId = 'organization_id',
   /** column name */
@@ -4166,6 +4817,664 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
 };
 
+/** columns and relationships of "wallet_state" */
+export type Wallet_State = {
+  __typename?: 'wallet_state';
+  comment?: Maybe<Scalars['String']['output']>;
+  value: Scalars['String']['output'];
+  /** An array relationship */
+  wallet_transactions: Array<Wallet_Transactions>;
+  /** An aggregate relationship */
+  wallet_transactions_aggregate: Wallet_Transactions_Aggregate;
+};
+
+
+/** columns and relationships of "wallet_state" */
+export type Wallet_StateWallet_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+
+/** columns and relationships of "wallet_state" */
+export type Wallet_StateWallet_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+/** aggregated selection of "wallet_state" */
+export type Wallet_State_Aggregate = {
+  __typename?: 'wallet_state_aggregate';
+  aggregate?: Maybe<Wallet_State_Aggregate_Fields>;
+  nodes: Array<Wallet_State>;
+};
+
+/** aggregate fields of "wallet_state" */
+export type Wallet_State_Aggregate_Fields = {
+  __typename?: 'wallet_state_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Wallet_State_Max_Fields>;
+  min?: Maybe<Wallet_State_Min_Fields>;
+};
+
+
+/** aggregate fields of "wallet_state" */
+export type Wallet_State_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Wallet_State_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "wallet_state". All fields are combined with a logical 'AND'. */
+export type Wallet_State_Bool_Exp = {
+  _and?: InputMaybe<Array<Wallet_State_Bool_Exp>>;
+  _not?: InputMaybe<Wallet_State_Bool_Exp>;
+  _or?: InputMaybe<Array<Wallet_State_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+  wallet_transactions?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+  wallet_transactions_aggregate?: InputMaybe<Wallet_Transactions_Aggregate_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "wallet_state" */
+export enum Wallet_State_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  WalletStatePkey = 'wallet_state_pkey'
+}
+
+export enum Wallet_State_Enum {
+  /** COMPLETED */
+  Completed = 'COMPLETED',
+  /** PAID */
+  Paid = 'PAID',
+  /** PENDING */
+  Pending = 'PENDING'
+}
+
+/** Boolean expression to compare columns of type "wallet_state_enum". All fields are combined with logical 'AND'. */
+export type Wallet_State_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Wallet_State_Enum>;
+  _in?: InputMaybe<Array<Wallet_State_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Wallet_State_Enum>;
+  _nin?: InputMaybe<Array<Wallet_State_Enum>>;
+};
+
+/** input type for inserting data into table "wallet_state" */
+export type Wallet_State_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+  wallet_transactions?: InputMaybe<Wallet_Transactions_Arr_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Wallet_State_Max_Fields = {
+  __typename?: 'wallet_state_max_fields';
+  comment?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type Wallet_State_Min_Fields = {
+  __typename?: 'wallet_state_min_fields';
+  comment?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "wallet_state" */
+export type Wallet_State_Mutation_Response = {
+  __typename?: 'wallet_state_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Wallet_State>;
+};
+
+/** input type for inserting object relation for remote table "wallet_state" */
+export type Wallet_State_Obj_Rel_Insert_Input = {
+  data: Wallet_State_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Wallet_State_On_Conflict>;
+};
+
+/** on_conflict condition type for table "wallet_state" */
+export type Wallet_State_On_Conflict = {
+  constraint: Wallet_State_Constraint;
+  update_columns?: Array<Wallet_State_Update_Column>;
+  where?: InputMaybe<Wallet_State_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "wallet_state". */
+export type Wallet_State_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+  wallet_transactions_aggregate?: InputMaybe<Wallet_Transactions_Aggregate_Order_By>;
+};
+
+/** primary key columns input for table: wallet_state */
+export type Wallet_State_Pk_Columns_Input = {
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "wallet_state" */
+export enum Wallet_State_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "wallet_state" */
+export type Wallet_State_Set_Input = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "wallet_state" */
+export type Wallet_State_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Wallet_State_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Wallet_State_Stream_Cursor_Value_Input = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "wallet_state" */
+export enum Wallet_State_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+export type Wallet_State_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Wallet_State_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Wallet_State_Bool_Exp;
+};
+
+/** columns and relationships of "wallet_transactions" */
+export type Wallet_Transactions = {
+  __typename?: 'wallet_transactions';
+  amount?: Maybe<Scalars['numeric']['output']>;
+  client_secret?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['timestamp']['output'];
+  currency_id?: Maybe<Scalars['uuid']['output']>;
+  failure_callback_url?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  is_active: Scalars['Boolean']['output'];
+  state: Wallet_State_Enum;
+  success_callback_url?: Maybe<Scalars['String']['output']>;
+  transaction_id?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamp']['output'];
+  /** An object relationship */
+  user_organization: User_Organizations;
+  user_organization_id: Scalars['uuid']['output'];
+  /** An object relationship */
+  wallet: Wallets;
+  wallet_id: Scalars['uuid']['output'];
+  /** An object relationship */
+  wallet_state: Wallet_State;
+};
+
+/** aggregated selection of "wallet_transactions" */
+export type Wallet_Transactions_Aggregate = {
+  __typename?: 'wallet_transactions_aggregate';
+  aggregate?: Maybe<Wallet_Transactions_Aggregate_Fields>;
+  nodes: Array<Wallet_Transactions>;
+};
+
+export type Wallet_Transactions_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Wallet_Transactions_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Wallet_Transactions_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Wallet_Transactions_Aggregate_Bool_Exp_Count>;
+};
+
+export type Wallet_Transactions_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Wallet_Transactions_Select_Column_Wallet_Transactions_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Wallet_Transactions_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Wallet_Transactions_Select_Column_Wallet_Transactions_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Wallet_Transactions_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "wallet_transactions" */
+export type Wallet_Transactions_Aggregate_Fields = {
+  __typename?: 'wallet_transactions_aggregate_fields';
+  avg?: Maybe<Wallet_Transactions_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Wallet_Transactions_Max_Fields>;
+  min?: Maybe<Wallet_Transactions_Min_Fields>;
+  stddev?: Maybe<Wallet_Transactions_Stddev_Fields>;
+  stddev_pop?: Maybe<Wallet_Transactions_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Wallet_Transactions_Stddev_Samp_Fields>;
+  sum?: Maybe<Wallet_Transactions_Sum_Fields>;
+  var_pop?: Maybe<Wallet_Transactions_Var_Pop_Fields>;
+  var_samp?: Maybe<Wallet_Transactions_Var_Samp_Fields>;
+  variance?: Maybe<Wallet_Transactions_Variance_Fields>;
+};
+
+
+/** aggregate fields of "wallet_transactions" */
+export type Wallet_Transactions_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "wallet_transactions" */
+export type Wallet_Transactions_Aggregate_Order_By = {
+  avg?: InputMaybe<Wallet_Transactions_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Wallet_Transactions_Max_Order_By>;
+  min?: InputMaybe<Wallet_Transactions_Min_Order_By>;
+  stddev?: InputMaybe<Wallet_Transactions_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Wallet_Transactions_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Wallet_Transactions_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Wallet_Transactions_Sum_Order_By>;
+  var_pop?: InputMaybe<Wallet_Transactions_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Wallet_Transactions_Var_Samp_Order_By>;
+  variance?: InputMaybe<Wallet_Transactions_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "wallet_transactions" */
+export type Wallet_Transactions_Arr_Rel_Insert_Input = {
+  data: Array<Wallet_Transactions_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Wallet_Transactions_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Wallet_Transactions_Avg_Fields = {
+  __typename?: 'wallet_transactions_avg_fields';
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Avg_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "wallet_transactions". All fields are combined with a logical 'AND'. */
+export type Wallet_Transactions_Bool_Exp = {
+  _and?: InputMaybe<Array<Wallet_Transactions_Bool_Exp>>;
+  _not?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+  _or?: InputMaybe<Array<Wallet_Transactions_Bool_Exp>>;
+  amount?: InputMaybe<Numeric_Comparison_Exp>;
+  client_secret?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  currency_id?: InputMaybe<Uuid_Comparison_Exp>;
+  failure_callback_url?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_active?: InputMaybe<Boolean_Comparison_Exp>;
+  state?: InputMaybe<Wallet_State_Enum_Comparison_Exp>;
+  success_callback_url?: InputMaybe<String_Comparison_Exp>;
+  transaction_id?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  user_organization?: InputMaybe<User_Organizations_Bool_Exp>;
+  user_organization_id?: InputMaybe<Uuid_Comparison_Exp>;
+  wallet?: InputMaybe<Wallets_Bool_Exp>;
+  wallet_id?: InputMaybe<Uuid_Comparison_Exp>;
+  wallet_state?: InputMaybe<Wallet_State_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "wallet_transactions" */
+export enum Wallet_Transactions_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  WalletTransactionsPkey = 'wallet_transactions_pkey'
+}
+
+/** input type for incrementing numeric columns in table "wallet_transactions" */
+export type Wallet_Transactions_Inc_Input = {
+  amount?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** input type for inserting data into table "wallet_transactions" */
+export type Wallet_Transactions_Insert_Input = {
+  amount?: InputMaybe<Scalars['numeric']['input']>;
+  client_secret?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  currency_id?: InputMaybe<Scalars['uuid']['input']>;
+  failure_callback_url?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  state?: InputMaybe<Wallet_State_Enum>;
+  success_callback_url?: InputMaybe<Scalars['String']['input']>;
+  transaction_id?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  user_organization?: InputMaybe<User_Organizations_Obj_Rel_Insert_Input>;
+  user_organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  wallet?: InputMaybe<Wallets_Obj_Rel_Insert_Input>;
+  wallet_id?: InputMaybe<Scalars['uuid']['input']>;
+  wallet_state?: InputMaybe<Wallet_State_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Wallet_Transactions_Max_Fields = {
+  __typename?: 'wallet_transactions_max_fields';
+  amount?: Maybe<Scalars['numeric']['output']>;
+  client_secret?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  currency_id?: Maybe<Scalars['uuid']['output']>;
+  failure_callback_url?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  success_callback_url?: Maybe<Scalars['String']['output']>;
+  transaction_id?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  user_organization_id?: Maybe<Scalars['uuid']['output']>;
+  wallet_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by max() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Max_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  client_secret?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  currency_id?: InputMaybe<Order_By>;
+  failure_callback_url?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  success_callback_url?: InputMaybe<Order_By>;
+  transaction_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_organization_id?: InputMaybe<Order_By>;
+  wallet_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Wallet_Transactions_Min_Fields = {
+  __typename?: 'wallet_transactions_min_fields';
+  amount?: Maybe<Scalars['numeric']['output']>;
+  client_secret?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  currency_id?: Maybe<Scalars['uuid']['output']>;
+  failure_callback_url?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  success_callback_url?: Maybe<Scalars['String']['output']>;
+  transaction_id?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+  user_organization_id?: Maybe<Scalars['uuid']['output']>;
+  wallet_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Min_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  client_secret?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  currency_id?: InputMaybe<Order_By>;
+  failure_callback_url?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  success_callback_url?: InputMaybe<Order_By>;
+  transaction_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_organization_id?: InputMaybe<Order_By>;
+  wallet_id?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "wallet_transactions" */
+export type Wallet_Transactions_Mutation_Response = {
+  __typename?: 'wallet_transactions_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Wallet_Transactions>;
+};
+
+/** on_conflict condition type for table "wallet_transactions" */
+export type Wallet_Transactions_On_Conflict = {
+  constraint: Wallet_Transactions_Constraint;
+  update_columns?: Array<Wallet_Transactions_Update_Column>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "wallet_transactions". */
+export type Wallet_Transactions_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  client_secret?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  currency_id?: InputMaybe<Order_By>;
+  failure_callback_url?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  is_active?: InputMaybe<Order_By>;
+  state?: InputMaybe<Order_By>;
+  success_callback_url?: InputMaybe<Order_By>;
+  transaction_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_organization?: InputMaybe<User_Organizations_Order_By>;
+  user_organization_id?: InputMaybe<Order_By>;
+  wallet?: InputMaybe<Wallets_Order_By>;
+  wallet_id?: InputMaybe<Order_By>;
+  wallet_state?: InputMaybe<Wallet_State_Order_By>;
+};
+
+/** primary key columns input for table: wallet_transactions */
+export type Wallet_Transactions_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "wallet_transactions" */
+export enum Wallet_Transactions_Select_Column {
+  /** column name */
+  Amount = 'amount',
+  /** column name */
+  ClientSecret = 'client_secret',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrencyId = 'currency_id',
+  /** column name */
+  FailureCallbackUrl = 'failure_callback_url',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  State = 'state',
+  /** column name */
+  SuccessCallbackUrl = 'success_callback_url',
+  /** column name */
+  TransactionId = 'transaction_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserOrganizationId = 'user_organization_id',
+  /** column name */
+  WalletId = 'wallet_id'
+}
+
+/** select "wallet_transactions_aggregate_bool_exp_bool_and_arguments_columns" columns of table "wallet_transactions" */
+export enum Wallet_Transactions_Select_Column_Wallet_Transactions_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsActive = 'is_active'
+}
+
+/** select "wallet_transactions_aggregate_bool_exp_bool_or_arguments_columns" columns of table "wallet_transactions" */
+export enum Wallet_Transactions_Select_Column_Wallet_Transactions_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsActive = 'is_active'
+}
+
+/** input type for updating data in table "wallet_transactions" */
+export type Wallet_Transactions_Set_Input = {
+  amount?: InputMaybe<Scalars['numeric']['input']>;
+  client_secret?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  currency_id?: InputMaybe<Scalars['uuid']['input']>;
+  failure_callback_url?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  state?: InputMaybe<Wallet_State_Enum>;
+  success_callback_url?: InputMaybe<Scalars['String']['input']>;
+  transaction_id?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  user_organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  wallet_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Wallet_Transactions_Stddev_Fields = {
+  __typename?: 'wallet_transactions_stddev_fields';
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Stddev_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Wallet_Transactions_Stddev_Pop_Fields = {
+  __typename?: 'wallet_transactions_stddev_pop_fields';
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Stddev_Pop_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Wallet_Transactions_Stddev_Samp_Fields = {
+  __typename?: 'wallet_transactions_stddev_samp_fields';
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Stddev_Samp_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "wallet_transactions" */
+export type Wallet_Transactions_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Wallet_Transactions_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Wallet_Transactions_Stream_Cursor_Value_Input = {
+  amount?: InputMaybe<Scalars['numeric']['input']>;
+  client_secret?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  currency_id?: InputMaybe<Scalars['uuid']['input']>;
+  failure_callback_url?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  state?: InputMaybe<Wallet_State_Enum>;
+  success_callback_url?: InputMaybe<Scalars['String']['input']>;
+  transaction_id?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+  user_organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  wallet_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Wallet_Transactions_Sum_Fields = {
+  __typename?: 'wallet_transactions_sum_fields';
+  amount?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** order by sum() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Sum_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "wallet_transactions" */
+export enum Wallet_Transactions_Update_Column {
+  /** column name */
+  Amount = 'amount',
+  /** column name */
+  ClientSecret = 'client_secret',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrencyId = 'currency_id',
+  /** column name */
+  FailureCallbackUrl = 'failure_callback_url',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
+  /** column name */
+  State = 'state',
+  /** column name */
+  SuccessCallbackUrl = 'success_callback_url',
+  /** column name */
+  TransactionId = 'transaction_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserOrganizationId = 'user_organization_id',
+  /** column name */
+  WalletId = 'wallet_id'
+}
+
+export type Wallet_Transactions_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Wallet_Transactions_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Wallet_Transactions_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Wallet_Transactions_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Wallet_Transactions_Var_Pop_Fields = {
+  __typename?: 'wallet_transactions_var_pop_fields';
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Var_Pop_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Wallet_Transactions_Var_Samp_Fields = {
+  __typename?: 'wallet_transactions_var_samp_fields';
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Var_Samp_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Wallet_Transactions_Variance_Fields = {
+  __typename?: 'wallet_transactions_variance_fields';
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "wallet_transactions" */
+export type Wallet_Transactions_Variance_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "wallets" */
 export type Wallets = {
   __typename?: 'wallets';
@@ -4188,6 +5497,10 @@ export type Wallets = {
   /** An object relationship */
   user?: Maybe<Users>;
   user_id?: Maybe<Scalars['uuid']['output']>;
+  /** An array relationship */
+  wallet_transactions: Array<Wallet_Transactions>;
+  /** An aggregate relationship */
+  wallet_transactions_aggregate: Wallet_Transactions_Aggregate;
   wallet_type: Scalars['String']['output'];
 };
 
@@ -4229,6 +5542,26 @@ export type WalletsTransactions_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Transactions_Order_By>>;
   where?: InputMaybe<Transactions_Bool_Exp>;
+};
+
+
+/** columns and relationships of "wallets" */
+export type WalletsWallet_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+};
+
+
+/** columns and relationships of "wallets" */
+export type WalletsWallet_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Wallet_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Wallet_Transactions_Order_By>>;
+  where?: InputMaybe<Wallet_Transactions_Bool_Exp>;
 };
 
 /** aggregated selection of "wallets" */
@@ -4325,6 +5658,8 @@ export type Wallets_Bool_Exp = {
   updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
+  wallet_transactions?: InputMaybe<Wallet_Transactions_Bool_Exp>;
+  wallet_transactions_aggregate?: InputMaybe<Wallet_Transactions_Aggregate_Bool_Exp>;
   wallet_type?: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -4357,6 +5692,7 @@ export type Wallets_Insert_Input = {
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
+  wallet_transactions?: InputMaybe<Wallet_Transactions_Arr_Rel_Insert_Input>;
   wallet_type?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4446,6 +5782,7 @@ export type Wallets_Order_By = {
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
   user_id?: InputMaybe<Order_By>;
+  wallet_transactions_aggregate?: InputMaybe<Wallet_Transactions_Aggregate_Order_By>;
   wallet_type?: InputMaybe<Order_By>;
 };
 
@@ -4638,10 +5975,26 @@ export type CreateRideMutationVariables = Exact<{
 
 export type CreateRideMutation = { __typename?: 'mutation_root', insert_ride_details_one?: { __typename?: 'ride_details', created_at: any, id: any } | null };
 
+export type UpdateRideEndTimeMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  end_time?: InputMaybe<Scalars['timestamp']['input']>;
+  total_cost?: InputMaybe<Scalars['numeric']['input']>;
+}>;
+
+
+export type UpdateRideEndTimeMutation = { __typename?: 'mutation_root', update_ride_details_by_pk?: { __typename?: 'ride_details', id: any, end_time?: any | null, created_at: any } | null };
+
 export type FetchAllHubsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FetchAllHubsQuery = { __typename?: 'query_root', hubs: Array<{ __typename?: 'hubs', id: any, latitude?: any | null, longitude?: any | null, name?: string | null, organization_id: any, created_at: any }> };
+
+export type FetchCompletedRidesQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type FetchCompletedRidesQuery = { __typename?: 'query_root', ride_details: Array<{ __typename?: 'ride_details', created_at: any, end_time?: any | null, end_hub_id?: any | null, id: any, scooter_id: any, start_hub_id: any, start_time: any, total_cost?: any | null, ride_steps: Array<{ __typename?: 'ride_steps', id: any, steps: Ride_Step_Enum }>, hubByStartHubId: { __typename?: 'hubs', latitude?: any | null, longitude?: any | null, name?: string | null, id: any } }> };
 
 export type FetchScooterByNumberQueryVariables = Exact<{
   regNo?: InputMaybe<Scalars['String']['input']>;
@@ -4651,7 +6004,7 @@ export type FetchScooterByNumberQueryVariables = Exact<{
 export type FetchScooterByNumberQuery = { __typename?: 'query_root', scooters: Array<{ __typename?: 'scooters', id: any, is_active: boolean, latitude?: any | null, longitude?: any | null, registration_number?: string | null, status: string, hub_id: any }> };
 
 export type CreateRideStepMutationVariables = Exact<{
-  steps?: InputMaybe<Scalars['String']['input']>;
+  steps?: InputMaybe<Ride_Step_Enum>;
   ride_details_id?: InputMaybe<Scalars['uuid']['input']>;
 }>;
 
@@ -4678,6 +6031,22 @@ export type CreateWalletMutationVariables = Exact<{
 
 export type CreateWalletMutation = { __typename?: 'mutation_root', insert_wallets_one?: { __typename?: 'wallets', balance: any, created_at: any, id: any } | null };
 
+export type DeductBalanceFromSecurityMutationVariables = Exact<{
+  security_deposit?: InputMaybe<Scalars['numeric']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type DeductBalanceFromSecurityMutation = { __typename?: 'mutation_root', update_wallets_by_pk?: { __typename?: 'wallets', id: any, security_deposit: any, created_at: any } | null };
+
+export type DeductBalanceFromWalletMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  balance?: InputMaybe<Scalars['numeric']['input']>;
+}>;
+
+
+export type DeductBalanceFromWalletMutation = { __typename?: 'mutation_root', update_wallets_by_pk?: { __typename?: 'wallets', created_at: any, id: any, balance: any, org_id?: any | null } | null };
+
 export type FetchUserWalletQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4702,12 +6071,16 @@ export type UpdateWalletSecurityDepositMutation = { __typename?: 'mutation_root'
 
 export const FetchAllOrganisationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllOrganisations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<FetchAllOrganisationsQuery, FetchAllOrganisationsQueryVariables>;
 export const CreateRideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ride_details_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_details_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRideMutation, CreateRideMutationVariables>;
+export const UpdateRideEndTimeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateRideEndTime"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"end_time"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"timestamp"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"total_cost"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"numeric"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_ride_details_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"end_time"},"value":{"kind":"Variable","name":{"kind":"Name","value":"end_time"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"total_cost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"total_cost"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<UpdateRideEndTimeMutation, UpdateRideEndTimeMutationVariables>;
 export const FetchAllHubsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllHubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"organization_id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<FetchAllHubsQuery, FetchAllHubsQueryVariables>;
+export const FetchCompletedRidesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCompletedRides"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ride_details"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"ride_steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"ride_step"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"ride_steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"RIDE_ENDED"}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"end_hub_id"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"scooter_id"}},{"kind":"Field","name":{"kind":"Name","value":"start_hub_id"}},{"kind":"Field","name":{"kind":"Name","value":"start_time"}},{"kind":"Field","name":{"kind":"Name","value":"total_cost"}},{"kind":"Field","name":{"kind":"Name","value":"ride_steps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"steps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"hubByStartHubId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<FetchCompletedRidesQuery, FetchCompletedRidesQueryVariables>;
 export const FetchScooterByNumberDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchScooterByNumber"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"SCOOTER1","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scooters"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"registration_number"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_ilike"},"value":{"kind":"Variable","name":{"kind":"Name","value":"regNo"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"is_active"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"registration_number"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"hub_id"}}]}}]}}]} as unknown as DocumentNode<FetchScooterByNumberQuery, FetchScooterByNumberQueryVariables>;
-export const CreateRideStepDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRideStep"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"steps"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_steps_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"Variable","name":{"kind":"Name","value":"steps"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"ride_details_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<CreateRideStepMutation, CreateRideStepMutationVariables>;
+export const CreateRideStepDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRideStep"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"steps"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ride_step_enum"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_steps_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"Variable","name":{"kind":"Name","value":"steps"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"ride_details_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ride_details_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<CreateRideStepMutation, CreateRideStepMutationVariables>;
 export const FetchCurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"full_name"}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}},{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"phone_number"}}]}}]}}]} as unknown as DocumentNode<FetchCurrentUserQuery, FetchCurrentUserQueryVariables>;
 export const UpdateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"_set"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"users_set_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_users_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"_set"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
 export const CreateWalletDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createWallet"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"wallets_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_wallets_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateWalletMutation, CreateWalletMutationVariables>;
+export const DeductBalanceFromSecurityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deductBalanceFromSecurity"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"security_deposit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"numeric"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_wallets_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_inc"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"security_deposit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"security_deposit"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"security_deposit"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<DeductBalanceFromSecurityMutation, DeductBalanceFromSecurityMutationVariables>;
+export const DeductBalanceFromWalletDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deductBalanceFromWallet"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"balance"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"numeric"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_wallets_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_inc"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"balance"},"value":{"kind":"Variable","name":{"kind":"Name","value":"balance"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"org_id"}}]}}]}}]} as unknown as DocumentNode<DeductBalanceFromWalletMutation, DeductBalanceFromWalletMutationVariables>;
 export const FetchUserWalletDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchUserWallet"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"wallets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"security_deposit"}},{"kind":"Field","name":{"kind":"Name","value":"transactions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ride_id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"ride"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"start_time"}},{"kind":"Field","name":{"kind":"Name","value":"total_cost"}},{"kind":"Field","name":{"kind":"Name","value":"hub"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<FetchUserWalletQuery, FetchUserWalletQueryVariables>;
 export const UpdateWalletBalanceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateWalletBalance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"balance"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"numeric"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_wallets_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_inc"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"balance"},"value":{"kind":"Variable","name":{"kind":"Name","value":"balance"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"balance"}},{"kind":"Field","name":{"kind":"Name","value":"org_id"}}]}}]}}]} as unknown as DocumentNode<UpdateWalletBalanceMutation, UpdateWalletBalanceMutationVariables>;
 export const UpdateWalletSecurityDepositDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateWalletSecurityDeposit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"security_deposit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"numeric"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_wallets_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_inc"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"security_deposit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"security_deposit"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"security_deposit"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<UpdateWalletSecurityDepositMutation, UpdateWalletSecurityDepositMutationVariables>;

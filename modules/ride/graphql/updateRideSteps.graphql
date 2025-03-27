@@ -1,4 +1,4 @@
-mutation createRideStep($steps: String = "", $ride_details_id: uuid = "") {
+mutation createRideStep($steps: ride_step_enum, $ride_details_id: uuid = "") {
   insert_ride_steps_one(
     object: {steps: $steps, ride_details_id: $ride_details_id}
   ) {

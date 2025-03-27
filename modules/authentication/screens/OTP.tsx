@@ -16,7 +16,7 @@ import {useHeaderHeight} from '@react-navigation/elements';
 // components
 import {
   BottomSheetStyledInput,
-  ButtonText,
+  ButtonTextBottomSheet,
   Divider,
   showToast,
 } from '@/components';
@@ -180,12 +180,12 @@ const OTPForm: React.FC = () => {
                 width: 220,
                 alignSelf: 'center',
               }}>
-              <ButtonText
+              <ButtonTextBottomSheet
                 variant="primary"
                 onPress={verifyOTP}
                 loading={authLoaders['otp-verification']}>
                 Continue
-              </ButtonText>
+              </ButtonTextBottomSheet>
             </View>
           </View>
         </BottomSheetView>

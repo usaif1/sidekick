@@ -1,20 +1,15 @@
 import React, {useCallback, memo} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ListRenderItemInfo,
-} from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 import {useThemeStore} from '@/globalStore';
 import TransactionCard from './TransactionCard';
-import {Transaction} from '../constants/mockData';
+import {FetchCompletedRidesQuery} from '@/generated/graphql';
+import {Divider} from '@/components';
 
 interface TransactionListProps {
   /**
    * Array of transactions to display
    */
-  transactions: Transaction[];
+  transactions: FetchCompletedRidesQuery['ride_details'];
   /**
    * Optional test ID for testing
    */
@@ -23,6 +18,11 @@ interface TransactionListProps {
 
 // Memoized transaction card component for performance
 const MemoizedTransactionCard = memo(TransactionCard);
+
+// separator component
+const ItemSeparatorComponent = () => {
+  return <Divider height={10} />;
+};
 
 /**
  * Optimized list of transaction cards
@@ -34,12 +34,18 @@ const TransactionList: React.FC<TransactionListProps> = ({
   const {colors} = useThemeStore(state => state.theme);
 
   // Optimized render function
-  const renderItem = useCallback(({item}: ListRenderItemInfo<Transaction>) => {
-    return <MemoizedTransactionCard transaction={item} />;
-  }, []);
+  const renderItem = useCallback(
+    ({item}: {item: FetchCompletedRidesQuery['ride_details'][0]}) => (
+      <MemoizedTransactionCard transaction={item} />
+    ),
+    [],
+  );
 
   // Optimized key extractor
-  const keyExtractor = useCallback((item: Transaction) => item.id, []);
+  const keyExtractor = useCallback(
+    (item: FetchCompletedRidesQuery['ride_details'][0]) => item.id,
+    [],
+  );
 
   // Empty list component
   const ListEmptyComponent = useCallback(
@@ -53,12 +59,15 @@ const TransactionList: React.FC<TransactionListProps> = ({
     [colors.textPrimary],
   );
 
+  console.log('transactions', transactions);
+
   return (
     <FlatList
-      data={transactions}
+      data={transactions || []}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       ListEmptyComponent={ListEmptyComponent}
+      ItemSeparatorComponent={ItemSeparatorComponent}
       initialNumToRender={8}
       maxToRenderPerBatch={5}
       windowSize={5}
