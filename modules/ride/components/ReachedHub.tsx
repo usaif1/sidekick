@@ -20,7 +20,7 @@ const {
 
 const ReachedHub: React.FC = () => {
   const {setModalComponent, setModalCloseButton} = useGlobalStore();
-  const {interval, setTimerInterval, setIsPaused} = useRideStore();
+  const {interval, setTimerInterval, setIsPaused, setSelectedHub} = useRideStore();
 
   const onSwipeSuccess = () => {
     setIsPaused(true);
@@ -28,7 +28,7 @@ const ReachedHub: React.FC = () => {
       clearInterval(interval);
       setTimerInterval(null);
     }
-
+    setSelectedHub(undefined);
     setModalComponent(RideEnded);
     setModalCloseButton(null);
   };
