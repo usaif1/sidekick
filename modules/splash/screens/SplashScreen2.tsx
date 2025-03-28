@@ -62,14 +62,14 @@ const SplashScreenCarousel: React.FC = () => {
     );
   };
 
-  const handleCompleteOnboarding = () => {
-    const timer = setTimeout(() => {
-      // @ts-ignore
-      navigation.replace('screen3');
-    }, 300);
+  // const handleCompleteOnboarding = () => {
+  //   const timer = setTimeout(() => {
+  //     // @ts-ignore
+  //     navigation.replace('screen3');
+  //   }, 300);
 
-    return () => clearTimeout(timer);
-  };
+  //   return () => clearTimeout(timer);
+  // };
 
   return (
     <View style={[styles.container, {backgroundColor: theme.colors.primary}]}>
@@ -113,7 +113,7 @@ const SplashScreenCarousel: React.FC = () => {
           <Pressable
             onPress={() => {
               // @ts-ignore
-              navigation.replace('screen3');
+              navigation.replace('splash3');
             }}>
             <Text style={{fontWeight: '600', fontSize: 16, marginLeft: 40}}>
               Skip
@@ -121,12 +121,16 @@ const SplashScreenCarousel: React.FC = () => {
           </Pressable>
           <View style={{width: 160}}>
             <ButtonText
+              // onPress={() => {
+              //   if (activeIndex === data.length - 1) {
+              //     handleCompleteOnboarding();
+              //   } else {
+              //     carouselRef.current?.snapToNext();
+              //   }
+              // }}
               onPress={() => {
-                if (activeIndex === data.length - 1) {
-                  handleCompleteOnboarding();
-                } else {
-                  carouselRef.current?.snapToNext();
-                }
+                // @ts-ignore
+                navigation.replace('splash3');
               }}
               variant="secondary">
               Got it

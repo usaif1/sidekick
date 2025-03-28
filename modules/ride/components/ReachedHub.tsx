@@ -24,8 +24,15 @@ const {
 
 const ReachedHub: React.FC = () => {
   const {setModalComponent, setModalCloseButton} = useGlobalStore();
-  const {interval, setTimerInterval, setIsPaused, setSelectedHub, totalCost} =
-    useRideStore();
+  const {
+    interval,
+    setTimerInterval,
+    setIsPaused,
+    setSelectedHub,
+    totalCost,
+    selectedHub,
+    secondsElapsed,
+  } = useRideStore();
 
   const onSwipeSuccess = async () => {
     setIsPaused(true);
@@ -119,6 +126,16 @@ const ReachedHub: React.FC = () => {
     }
   };
 
+  // Convert seconds into mm:ss format
+  const formatTime = (totalSeconds: number) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+      2,
+      '0',
+    )}`;
+  };
+
   return (
     <View style={styles.reachedHubWrapper}>
       <View style={styles.headingContainer}>
@@ -132,10 +149,10 @@ const ReachedHub: React.FC = () => {
       <Divider height={28} />
       <View style={styles.detailsContainer}>
         <View>
-          <H3>Car Parking</H3>
-          <P3 textColor="textSecondary">10:04 Minutes</P3>
+          <H3>{selectedHub?.name}</H3>
+          <P3 textColor="textSecondary">{formatTime(secondsElapsed)}</P3>
         </View>
-        <H3 textColor="highlight">XXX</H3>
+        <H3 textColor="highlight">{totalCost}</H3>
       </View>
       <Divider height={28} />
       <SwipeButton

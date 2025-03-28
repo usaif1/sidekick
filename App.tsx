@@ -9,7 +9,7 @@ import Toast from 'react-native-toast-message';
 
 // navigation
 import ProtectedNavigation from './navigation/ProtectedNavigation';
-import SplashNavigation from '@/modules/splash/navigation/splash.navigation';
+// import SplashNavigation from '@/modules/splash/navigation/splash.navigation';
 import AuthNavigation from '@/modules/authentication/navigation/auth.navigation';
 
 // components
@@ -27,7 +27,7 @@ function App(): React.JSX.Element {
     setGlobalBottomSheetRef,
     GlobalBottomSheetComponent,
     globalBottomSheetSnapPoints,
-    onboarded,
+    // onboarded,
   } = useGlobalStore();
 
   const authBottomSheetRef = useRef<BottomSheet>(null);
@@ -41,19 +41,19 @@ function App(): React.JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!onboarded) {
-    return (
-      <>
-        <StatusBar
-          barStyle={'dark-content'}
-          backgroundColor={'transparent'}
-          translucent
-        />
-        <SplashNavigation />
-        <Toast />
-      </>
-    );
-  }
+  // if (!onboarded) {
+  //   return (
+  //     <>
+  //       <StatusBar
+  //         barStyle={'dark-content'}
+  //         backgroundColor={'transparent'}
+  //         translucent
+  //       />
+  //       <SplashNavigation />
+  //       <Toast />
+  //     </>
+  //   );
+  // }
 
   if (authLoaders['loading-user']) {
     return (

@@ -23,7 +23,7 @@ const SplashScreen1: React.FC = () => {
           <ButtonText
             onPress={() => {
               // @ts-ignore
-              navigation.replace('screen2');
+              navigation.replace('splash2');
             }}
             variant="secondary">
             Get started
