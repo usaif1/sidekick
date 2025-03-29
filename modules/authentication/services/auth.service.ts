@@ -6,6 +6,7 @@ import axios from 'axios';
 import useAuthStore from '../store';
 import {initializeClient} from '@/utils/client';
 import {showToast} from '@/components';
+import {config} from '@/config';
 
 const {
   setConfirmationResult,
@@ -84,14 +85,14 @@ const AuthService = {
     errorCallback: () => void,
   ) {
     const {newUserFormData} = useAuthStore.getState();
-    const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
+    // const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
 
     return new Promise(resolve => {
       setTimeout(async () => {
         try {
           const result = await axios.post(
             // todo: this url is different for different environments and should be moved to a config file
-            endpoint,
+            `${config.prodEndpoint}/set-claims`,
             {
               uid: `${uid}`,
               role: role,
@@ -160,7 +161,6 @@ const AuthService = {
       const response = await axios.get(
         'https://supreme-mustang-86.hasura.app/api/rest/fetchallorganisations',
       );
-      console.log('orgs', response.data);
       setOrganisations(response.data.organizations);
     } catch (error) {
       console.log('error fetching orgs');

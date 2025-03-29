@@ -27,7 +27,6 @@ const getTime = (timestamp: string) => {
 };
 
 const TransactionCard: React.FC<TransactionCardProps> = ({transaction}) => {
-  console.log('transaction', transaction);
   return (
     <View style={{flexDirection: 'row'}}>
       <View style={styles.leftContent}>

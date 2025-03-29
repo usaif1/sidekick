@@ -121,16 +121,13 @@ const SplashScreenCarousel: React.FC = () => {
           </Pressable>
           <View style={{width: 160}}>
             <ButtonText
-              // onPress={() => {
-              //   if (activeIndex === data.length - 1) {
-              //     handleCompleteOnboarding();
-              //   } else {
-              //     carouselRef.current?.snapToNext();
-              //   }
-              // }}
               onPress={() => {
-                // @ts-ignore
-                navigation.replace('splash3');
+                if (activeIndex === data.length - 1) {
+                  // @ts-ignore
+                  navigation.replace('splash3');
+                } else {
+                  carouselRef.current?.snapToNext();
+                }
               }}
               variant="secondary">
               Got it

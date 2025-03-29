@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {ms, ScaledSheet} from 'react-native-size-matters';
-
+import axios from 'axios';
 // @ts-ignore
 import EasebuzzCheckout from 'react-native-easebuzz-kit';
 
@@ -25,8 +25,10 @@ import {B1, B2, Divider, GlobalModal, showToast} from '@/components';
 import ButtonText from '@/components/ButtonText';
 import {WalletService, UserService} from '@/globalService';
 import PaymentSuccess from '../components/PaymentSuccess';
-import axios from 'axios';
 import PaymentFailure from '../components/PaymentFailure';
+
+// config
+import {config} from '@/config';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -60,7 +62,7 @@ const AddFundsScreen = () => {
     // Validate amount
     try {
       const clientSecret = await axios.post(
-        'https://sidekick-backend-279t.onrender.com/initiate-payment',
+        `${config.prodEndpoint}/initiate-payment`,
         {
           amount: parseFloat(rechargeAmount) + securityDeposit,
           email: user?.email || 'default@mail.com',
@@ -75,12 +77,9 @@ const AddFundsScreen = () => {
         pay_mode: 'test',
       };
 
-      console.log('options', options);
-
       EasebuzzCheckout.open(options)
         .then((data: any) => {
           //handle the payment success & failed response here
-          console.log('Payment Response:', data);
           if (securityDeposit) {
             WalletService.updateWalletSecurityDeposit({
               id: userWallet?.id,

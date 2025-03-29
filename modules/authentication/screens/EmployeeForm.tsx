@@ -150,7 +150,6 @@ const EmployeeForm: React.FC = () => {
               searchPlaceholder="Search..."
               value={selectedOrganisation?.id}
               onChange={item => {
-                console.log(item);
                 setSelectedOrganisation({
                   id: item.value,
                   name: item.label,

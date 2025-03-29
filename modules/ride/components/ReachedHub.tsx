@@ -87,12 +87,6 @@ const ReachedHub: React.FC = () => {
           id: userWallet.id,
           balance: -totalCost, // Pass negative value to deduct
         });
-
-        console.log(
-          `Ride cost of ${totalCost} deducted from wallet. New wallet balance: ${
-            availableWalletBalance - totalCost
-          }`,
-        );
       } else {
         // Case 2: Wallet doesn't have enough, use full wallet and take the rest from security
         const remainingCost = totalCost - availableWalletBalance;
@@ -113,10 +107,6 @@ const ReachedHub: React.FC = () => {
           id: userWallet.id,
           security_deposit: -remainingCost, // Pass negative value to deduct
         });
-
-        console.log(
-          `Deducted ${availableWalletBalance} from wallet and ${remainingCost} from security balance.`,
-        );
       }
 
       return {success: true, message: 'Ride cost deducted successfully.'};

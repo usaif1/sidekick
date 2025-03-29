@@ -1,8 +1,9 @@
 // src/components/PrimaryButton.tsx
 import React, {ReactNode} from 'react';
-import {ActivityIndicator, Pressable, Text, ViewStyle} from 'react-native';
+import {Pressable, Text, ViewStyle} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import {TouchableHighlight} from '@gorhom/bottom-sheet';
+import {ActivityIndicator} from 'react-native-paper';
 
 // store
 import {useThemeStore} from '@/theme/store';

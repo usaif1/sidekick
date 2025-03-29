@@ -9,6 +9,7 @@ import {
   EmployeeForm,
   SignupForm,
   OTP,
+  TNC,
 } from '../screens';
 import {
   SplashScreen1,
@@ -28,6 +29,7 @@ export type AuthStackNavigatorParams = {
   splash1: undefined;
   splash2: undefined;
   splash3: undefined;
+  tnc: undefined;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
@@ -74,6 +76,9 @@ const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
         headerShown: false,
         headerLeft: () => null,
       },
+    },
+    tnc: {
+      screen: TNC,
     },
   },
 });

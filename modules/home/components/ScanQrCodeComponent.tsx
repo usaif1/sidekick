@@ -184,7 +184,6 @@ const ScanQrCodeComponent = () => {
     fetchCameraDevices();
 
     return () => {
-      console.log('Cleaning up camera resources');
       isMounted.current = false;
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -197,9 +196,7 @@ const ScanQrCodeComponent = () => {
     setURL(scannedValue);
 
     if (scannedValue && !isProcessing) {
-      console.log('scanned value', scannedValue);
       const registrationNo = getQueryParam(scannedValue, 'regno');
-      console.log('registrationNo', registrationNo);
       try {
         if (registrationNo) {
           setIsProcessing(true);
