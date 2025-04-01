@@ -14,9 +14,10 @@ import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
 import ProfileCard from '@/modules/user/components/ProfileCard';
 import Menu from '@/modules/user/components/Menu';
 import Divider from '@/components/Divider';
-import Profile from '../assets/profile.svg';
-import Notification from '../assets/notification.svg';
-import Help from '../assets/help.svg';
+import Profile from '@/assets/profile.svg';
+import Notification from '@/assets/notification.svg';
+import Help from '@/assets/help.svg';
+import Logout from '@/assets/logout.svg';
 import {ButtonText, GlobalModal, showToast} from '@/components';
 import NeedHelp from '@/modules/user/components/NeedHelp';
 
@@ -68,6 +69,35 @@ const UserDetails: React.FC = () => {
       },
       testID: 'help-button',
     },
+    {
+      icon: Help,
+      label: 'Terms and Conditions',
+      controlType: 'none' as const,
+      onPress: () => {
+        setModalComponent(NeedHelp);
+        openModal();
+      },
+      testID: 'help-button',
+    },
+    {
+      icon: Help,
+      label: 'Privacy Policy',
+      controlType: 'none' as const,
+      onPress: () => {
+        setModalComponent(NeedHelp);
+        openModal();
+      },
+      testID: 'help-button',
+    },
+    {
+      icon: Logout,
+      label: 'Logout',
+      controlType: 'none' as const,
+      onPress: () => {
+        AuthService.signOut();
+      },
+      testID: 'help-button',
+    },
   ];
 
   useFocusEffect(
@@ -102,7 +132,7 @@ const UserDetails: React.FC = () => {
         <Menu items={menuItems} style={styles.menu} testID="user-menu" />
       </View>
 
-      <View style={{width: 200, alignSelf: 'center'}}>
+      {/* <View style={{width: 200, alignSelf: 'center'}}>
         <ButtonText
           variant="error"
           onPress={() => {
@@ -110,7 +140,7 @@ const UserDetails: React.FC = () => {
           }}>
           Logout
         </ButtonText>
-      </View>
+      </View> */}
 
       <GlobalModal />
     </SafeAreaView>
