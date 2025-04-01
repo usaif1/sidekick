@@ -18,7 +18,7 @@ import Profile from '@/assets/profile.svg';
 import Notification from '@/assets/notification.svg';
 import Help from '@/assets/help.svg';
 import Logout from '@/assets/logout.svg';
-import {ButtonText, GlobalModal, showToast} from '@/components';
+import {GlobalModal, showToast} from '@/components';
 import NeedHelp from '@/modules/user/components/NeedHelp';
 
 const {colors} = useThemeStore.getState().theme;
