@@ -19,6 +19,7 @@ import {
 
 // components
 import BackArrowButtonSecondary from '@/components/BackArrowButtonSecondary';
+import {BackArrowButton} from '@/components';
 
 export type AuthStackNavigatorParams = {
   welcome: undefined;
@@ -79,6 +80,16 @@ const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
     },
     tnc: {
       screen: TNC,
+      options: {
+        headerShown: true,
+        title: 'Terms and Conditions',
+        headerShadowVisible: false,
+        headerLeft: () => <BackArrowButton title="Terms & Conditions" />,
+        headerTransparent: false,
+        headerStyle: {
+          backgroundColor: '#ffffff',
+        },
+      },
     },
   },
 });

@@ -3,9 +3,8 @@ import {Pressable} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // screens
-import RentScreen from '../screens/RentScreen';
-import WalletScreen from '../screens/WalletScreen';
-import UserScreen from '@/modules/user/screens/UserDetails';
+import {RentScreen, WalletScreen} from '../screens';
+import {UserDetails} from '@/modules/user/screens';
 
 // assets
 import RentScooterIcon from '../assets/rentScooterIcon.svg';
@@ -67,7 +66,7 @@ const HomeNavigator = createBottomTabNavigator({
       },
     },
     profile: {
-      screen: UserScreen,
+      screen: UserDetails,
       options: {
         tabBarIcon: ({focused}) => <ProfileTabBar focused={focused} />,
         tabBarLabel: 'Profile',

@@ -13,6 +13,7 @@ import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 import {useHeaderHeight} from '@react-navigation/elements';
 import {useNavigation} from '@react-navigation/native';
+import {TouchableHighlight} from '@gorhom/bottom-sheet';
 
 // components
 import {
@@ -103,7 +104,7 @@ const OTPForm: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <View style={{flex: 1}}>
       <View style={{flex: 1}}>
         <ImageBackground
           source={require('../assets/Map.png')} // Path to your background image
@@ -190,7 +191,8 @@ const OTPForm: React.FC = () => {
                 Continue
               </ButtonTextBottomSheet>
               <Divider height={6} />
-              <Pressable
+              <TouchableHighlight
+                underlayColor={'transparent'}
                 onPress={() => {
                   // @ts-ignore
                   navigation.navigate('tnc');
@@ -200,12 +202,12 @@ const OTPForm: React.FC = () => {
                   customStyles={{textAlign: 'center'}}>
                   By continuing, you agree to TnCs
                 </ButtonSmall>
-              </Pressable>
+              </TouchableHighlight>
             </View>
           </View>
         </BottomSheetView>
       </BottomSheet>
-    </>
+    </View>
   );
 };
 

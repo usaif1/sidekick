@@ -27,7 +27,8 @@ const UserDetails: React.FC = () => {
   const {user} = useUserStore();
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const {openModal, setModalComponent, closeBottomSheet} = useGlobalStore();
+  const {openModal, setModalComponent, closeBottomSheet, closeModal} =
+    useGlobalStore();
 
   // User data
   const userData = user;
@@ -74,8 +75,8 @@ const UserDetails: React.FC = () => {
       label: 'Terms and Conditions',
       controlType: 'none' as const,
       onPress: () => {
-        // @ts-ignore
-        navigation.navigate('user', {screen: 'tnc'});
+        setModalComponent(NeedHelp);
+        openModal();
       },
       testID: 'help-button',
     },
@@ -84,8 +85,8 @@ const UserDetails: React.FC = () => {
       label: 'Privacy Policy',
       controlType: 'none' as const,
       onPress: () => {
-        // @ts-ignore
-        navigation.navigate('user', {screen: 'privacy'});
+        setModalComponent(NeedHelp);
+        openModal();
       },
       testID: 'help-button',
     },
@@ -102,6 +103,7 @@ const UserDetails: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
+      closeModal();
       closeBottomSheet();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
@@ -112,38 +114,29 @@ const UserDetails: React.FC = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <ProfileCard
-          fullName={userData?.full_name as string}
-          company={
-            userData?.user_organizations?.length
-              ? userData?.user_organizations[0].organization?.name
-              : ''
-          }
-          totalMinutes={3}
-          totalKilometers={0}
-          // profileImage={profileImage} // Uncomment if you have a profile image
-          style={styles.profileCard}
-        />
+    <>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <ProfileCard
+            fullName={userData?.full_name as string}
+            company={
+              userData?.user_organizations?.length
+                ? userData?.user_organizations[0].organization?.name
+                : ''
+            }
+            totalMinutes={3}
+            totalKilometers={0}
+            // profileImage={profileImage} // Uncomment if you have a profile image
+            style={styles.profileCard}
+          />
 
-        <Divider height={16} />
+          <Divider height={16} />
 
-        <Menu items={menuItems} style={styles.menu} testID="user-menu" />
-      </View>
-
-      {/* <View style={{width: 200, alignSelf: 'center'}}>
-        <ButtonText
-          variant="error"
-          onPress={() => {
-            AuthService.signOut();
-          }}>
-          Logout
-        </ButtonText>
-      </View> */}
-
+          <Menu items={menuItems} style={styles.menu} testID="user-menu" />
+        </View>
+      </SafeAreaView>
       <GlobalModal />
-    </SafeAreaView>
+    </>
   );
 };
 

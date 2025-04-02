@@ -7,7 +7,7 @@ import {DateTime} from 'luxon';
 
 // components
 import TickMarkRounded from '@/assets/tick-mark-rounded.svg';
-import {Divider, H2, H3, P2, P3} from '@/components';
+import {Divider, H2, H3, P2} from '@/components';
 import SwipeBtn from '@/assets/swipe-btn-img.svg';
 import RideEnded from '../components/RideEnded';
 
@@ -30,7 +30,6 @@ const ReachedHub: React.FC = () => {
     setIsPaused,
     setSelectedHub,
     totalCost,
-    selectedHub,
     secondsElapsed,
   } = useRideStore();
 
@@ -130,19 +129,25 @@ const ReachedHub: React.FC = () => {
     <View style={styles.reachedHubWrapper}>
       <View style={styles.headingContainer}>
         <TickMarkRounded />
-        <H2 customStyles={{textAlign: 'center'}}>Reached Hub</H2>
+        <H2 customStyles={{textAlign: 'center'}}>Reached Destination</H2>
       </View>
       <Divider height={6} />
-      <P2 textColor="textSecondary">
-        Please park your scooter and confirm the payment
+      <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
+        A small fee will be levied for parking the scooter away from the hub
       </P2>
       <Divider height={28} />
       <View style={styles.detailsContainer}>
         <View>
-          <H3>{selectedHub?.name}</H3>
-          <P3 textColor="textSecondary">{formatTime(secondsElapsed)}</P3>
+          <H3>{formatTime(secondsElapsed)} Minutes</H3>
         </View>
-        <H3 textColor="highlight">{totalCost}</H3>
+        <H3 textColor="highlight">₹ {totalCost.toFixed(1)}</H3>
+      </View>
+      <Divider height={6} />
+      <View style={styles.detailsContainer}>
+        <View>
+          <H3>Parking Fee</H3>
+        </View>
+        <H3 textColor="error">₹ 10.0</H3>
       </View>
       <Divider height={28} />
       <SwipeButton

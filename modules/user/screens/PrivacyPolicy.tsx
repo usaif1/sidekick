@@ -1,15 +1,9 @@
-// export default TNC;
+import {ActivityIndicator, SafeAreaView, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
-
-// services
-import {ActivityIndicator} from 'react-native-paper';
 import {createClient} from '@supabase/supabase-js';
-import 'react-native-url-polyfill/auto';
 import RenderHtml from 'react-native-render-html';
-import {ScrollView} from 'react-native-gesture-handler';
-import {View} from 'react-native';
 
-const TNC: React.FC = () => {
+const PrivacyPolicy: React.FC = () => {
   const [htmlUrl, setHtmlUrl] = useState<any>(null);
   const SUPABASE_URL = 'https://gjbbbucnydedrqbydwou.supabase.co';
   const SUPABASE_ANON_KEY =
@@ -18,15 +12,17 @@ const TNC: React.FC = () => {
   const bucketName = 'sidekick';
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const getTNC = () => {
-    const tnc = 'legal/T&C_sidekick.html';
-    const {data} = supabase.storage.from(bucketName).getPublicUrl(tnc);
-    console.log('tnc URL', data.publicUrl);
+  const getPrivacyPolicy = () => {
+    const privatePolicy = 'legal/private_policy.html';
+    const {data} = supabase.storage
+      .from(bucketName)
+      .getPublicUrl(privatePolicy);
+    console.log('privatePolicy URL', data.publicUrl);
     return data.publicUrl;
   };
 
   useEffect(() => {
-    setHtmlUrl(getTNC());
+    setHtmlUrl(getPrivacyPolicy());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -35,10 +31,10 @@ const TNC: React.FC = () => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
       <ScrollView
         contentContainerStyle={{paddingHorizontal: 10}}
-        style={{marginTop: 10}}>
+        style={{marginTop: -40}}>
         <RenderHtml
           source={{uri: htmlUrl}}
           baseStyle={{
@@ -47,8 +43,8 @@ const TNC: React.FC = () => {
           }}
         />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
-export default TNC;
+export default PrivacyPolicy;

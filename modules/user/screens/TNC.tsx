@@ -6,8 +6,8 @@ import {ActivityIndicator} from 'react-native-paper';
 import {createClient} from '@supabase/supabase-js';
 import 'react-native-url-polyfill/auto';
 import RenderHtml from 'react-native-render-html';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
-import {View} from 'react-native';
 
 const TNC: React.FC = () => {
   const [htmlUrl, setHtmlUrl] = useState<any>(null);
@@ -35,10 +35,10 @@ const TNC: React.FC = () => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
       <ScrollView
         contentContainerStyle={{paddingHorizontal: 10}}
-        style={{marginTop: 10}}>
+        style={{marginTop: -40}}>
         <RenderHtml
           source={{uri: htmlUrl}}
           baseStyle={{
@@ -47,7 +47,7 @@ const TNC: React.FC = () => {
           }}
         />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
