@@ -108,6 +108,7 @@ const AddFundsScreen = () => {
           stopLoading('add-funds');
         });
     } catch (error) {
+      console.log('error adding funds', error?.message);
       stopLoading('add-funds');
       showToast({
         type: 'error',
