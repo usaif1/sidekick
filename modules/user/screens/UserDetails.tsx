@@ -145,16 +145,6 @@ const UserDetails: React.FC = () => {
         <Menu items={menuItems} style={styles.menu} testID="user-menu" />
       </View>
 
-      {/* <View style={{width: 200, alignSelf: 'center'}}>
-        <ButtonText
-          variant="error"
-          onPress={() => {
-            AuthService.signOut();
-          }}>
-          Logout
-        </ButtonText>
-      </View> */}
-
       <GlobalModal />
     </SafeAreaView>
   );
