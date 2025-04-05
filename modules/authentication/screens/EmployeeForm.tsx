@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   moderateScale,
   scale,
@@ -23,7 +23,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Dropdown} from 'react-native-element-dropdown';
 
 // components
-import {ButtonText, Divider, LabelPrimary} from '@/components';
+import {ButtonText, Divider, LabelPrimary, showToast} from '@/components';
 
 // store
 import {useAuthStore, useThemeStore} from '@/globalStore';
@@ -40,6 +40,8 @@ const EmployeeForm: React.FC = () => {
   const {theme} = useThemeStore();
   const authBottomSheetRef = useRef<BottomSheet>(null);
 
+  const [employeeId, setEmployeeId] = useState<string>('');
+
   const {
     existingUserPhoneNumber,
     setExistingUserPhoneNumber,
@@ -53,9 +55,29 @@ const EmployeeForm: React.FC = () => {
 
   const continueHandler = async () => {
     Keyboard.dismiss();
+
     try {
       startLoading('auth-confirmation');
+
+      // check if employee exists in the org
+      const employeeDetails = await AuthService.checkIfUserExistsInOrg({
+        employeeId: employeeId,
+        phone: `+91${existingUserPhoneNumber}`,
+        orgId: selectedOrganisation?.id,
+      });
+
+      if (!employeeDetails) {
+        stopLoading('auth-confirmation');
+        showToast({
+          type: 'error',
+          text1: 'Employee not found',
+          text2: 'Please enter correct employee info',
+        });
+        return;
+      }
+
       authBottomSheetRef?.current?.snapToPosition('60%');
+
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,
         false,
@@ -66,7 +88,9 @@ const EmployeeForm: React.FC = () => {
       }
     } catch (err) {
       stopLoading('auth-confirmation');
-      console.log('Error sending otp', err);
+      console.log('Error sending otp');
+      // @ts-ignore
+      console.log(err?.message);
     }
   };
 
@@ -165,9 +189,13 @@ const EmployeeForm: React.FC = () => {
             <Divider height={10} />
             {Platform.OS === 'android' ? (
               <BottomSheetTextInput
+                autoCapitalize="characters"
                 placeholder="XXXXXXXXXX"
                 onSubmitEditing={onSubmitEditing}
                 onFocus={onFocus}
+                onChangeText={val => {
+                  setEmployeeId(val);
+                }}
                 placeholderTextColor={theme.colors.textSecondary}
                 style={{
                   borderWidth: 2,
@@ -183,8 +211,12 @@ const EmployeeForm: React.FC = () => {
               />
             ) : (
               <BottomSheetTextInput
+                autoCapitalize="characters"
                 placeholder="XXXXXXXXXX"
                 placeholderTextColor={theme.colors.textSecondary}
+                onChangeText={val => {
+                  setEmployeeId(val);
+                }}
                 style={{
                   borderWidth: 2,
                   width: '100%',

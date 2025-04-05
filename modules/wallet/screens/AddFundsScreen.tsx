@@ -29,6 +29,8 @@ import PaymentFailure from '../components/PaymentFailure';
 
 // config
 import {config} from '@/config';
+import {showCredits} from '@/utils/user';
+import {useNavigation} from '@react-navigation/native';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -36,6 +38,8 @@ const {colors} = useThemeStore.getState().theme;
 const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
 const AddFundsScreen = () => {
+  const navigation = useNavigation();
+
   const {openModal, setModalComponent} = useGlobalStore();
   const {
     userWallet,
@@ -54,6 +58,17 @@ const AddFundsScreen = () => {
   // Handle quick amount selection
   const handleQuickAmountSelect = (value: number) => {
     setRechargeAmount(value.toString());
+  };
+
+  const handleCreditRequest = async () => {
+    showToast({
+      type: 'success',
+      text1: 'Credit request raised',
+    });
+
+    setTimeout(() => {
+      navigation.goBack();
+    }, 300);
   };
 
   // Handle pay button press
@@ -108,6 +123,7 @@ const AddFundsScreen = () => {
           stopLoading('add-funds');
         });
     } catch (error) {
+      // @ts-ignore
       console.log('error adding funds', error?.message);
       stopLoading('add-funds');
       showToast({
@@ -144,7 +160,12 @@ const AddFundsScreen = () => {
             </B2>
             <Divider height={9.6} />
             <View style={styles.amountInput}>
-              <B1 textColor="highlight">₹</B1>
+              {showCredits() ? (
+                <B1 textColor="highlight">C</B1>
+              ) : (
+                <B1 textColor="highlight">₹</B1>
+              )}
+
               <TextInput
                 numberOfLines={1}
                 keyboardType="numeric"
@@ -231,17 +252,33 @@ const AddFundsScreen = () => {
 
       {/* Pay button */}
       {rechargeAmount && rechargeAmount !== '0' ? (
-        <View style={styles.buttonContainer}>
-          <ButtonText
-            variant="primary"
-            onPress={handlePay}
-            loading={walletLoaders['add-funds']}>
-            Pay ₹{' '}
-            {!securityDeposit
-              ? rechargeAmount
-              : parseFloat(rechargeAmount) + securityDeposit}
-          </ButtonText>
-        </View>
+        showCredits() ? (
+          <View
+            style={[styles.buttonContainer, {width: 450, alignSelf: 'center'}]}>
+            <ButtonText
+              variant="primary"
+              onPress={handleCreditRequest}
+              loading={walletLoaders['add-funds']}>
+              Request{' '}
+              {!securityDeposit
+                ? rechargeAmount
+                : parseFloat(rechargeAmount) + securityDeposit}{' '}
+              credits
+            </ButtonText>
+          </View>
+        ) : (
+          <View style={styles.buttonContainer}>
+            <ButtonText
+              variant="primary"
+              onPress={handlePay}
+              loading={walletLoaders['add-funds']}>
+              Pay ₹{' '}
+              {!securityDeposit
+                ? rechargeAmount
+                : parseFloat(rechargeAmount) + securityDeposit}
+            </ButtonText>
+          </View>
+        )
       ) : null}
 
       <GlobalModal />

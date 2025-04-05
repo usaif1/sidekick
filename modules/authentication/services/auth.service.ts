@@ -185,6 +185,36 @@ const AuthService = {
         return error.message;
     }
   },
+
+  checkIfUserExistsInOrg: async (args: {
+    employeeId: string;
+    phone: string;
+    orgId: string;
+  }) => {
+    try {
+      const response = await axios.get(
+        'https://supreme-mustang-86.hasura.app/api/rest/checkuserexists',
+        {
+          params: {
+            _eq: args.employeeId,
+            _eq1: args.phone,
+            _eq2: args.orgId,
+          },
+        },
+      );
+
+      console.log('response', response.data);
+
+      if (response.data?.user_organizations?.length) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      // @ts-ignore
+      console.log('Error checking user exists', err?.message);
+    }
+  },
 };
 
 export default AuthService;

@@ -7,12 +7,25 @@ import {useThemeStore, useWalletStore} from '@/globalStore';
 
 // components
 import {H1, P1, Divider} from '@/components';
+import {showCredits} from '@/utils/user';
 
 interface WalletCardProps {
   testID?: string;
 }
 
 const {colors} = useThemeStore.getState().theme;
+
+type CurrencyProps = {
+  balance: string | number;
+};
+
+const CurrencyComponent: React.FC<CurrencyProps> = ({balance}) => {
+  if (showCredits()) {
+    return <H1>{balance} Credits</H1>;
+  } else {
+    return <H1>₹{balance}</H1>;
+  }
+};
 
 const WalletCard: React.FC<WalletCardProps> = ({testID = 'wallet-card'}) => {
   const {userWallet} = useWalletStore();
@@ -24,8 +37,8 @@ const WalletCard: React.FC<WalletCardProps> = ({testID = 'wallet-card'}) => {
         style={styles.backgroundImage}
       />
       <P1 textColor="textSecondary">Current Balance</P1>
-      <Divider height={4} />
-      <H1>₹{userWallet?.balance.toFixed(1)}</H1>
+      <Divider height={6} />
+      <CurrencyComponent balance={userWallet?.balance.toFixed(1)} />
     </View>
   );
 };
