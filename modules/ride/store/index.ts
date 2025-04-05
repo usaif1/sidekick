@@ -26,6 +26,9 @@ type RideStore = {
   perMinuteRate: number;
   selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
 
+  // ride history
+  completedRides: FetchCompletedRidesQuery['ride_details'];
+
   // camera
   device: CameraDevice | null | undefined;
 
@@ -41,7 +44,10 @@ type RideActions = {
   setSecondsElapsed: (updater: any) => void;
   setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0] | undefined) => void;
 
-  //
+  // ride history
+  setCompletedRides: (rides: FetchCompletedRidesQuery['ride_details']) => void;
+
+  //camera
   setDevice: (camera: CameraDevice | null | undefined) => void;
 
   // ride history
@@ -57,6 +63,9 @@ const rideInitialState: RideStore = {
   secondsElapsed: 0,
   perMinuteRate: 2,
   selectedHub: undefined,
+
+  // ride history
+  completedRides: [],
 
   // camera
   device: null,
@@ -97,6 +106,12 @@ const rideStore = create<RideStore & RideActions>(set => ({
   setSelectedHub: hub =>
     set({
       selectedHub: hub,
+    }),
+
+  // ride history
+  setCompletedRides: rides =>
+    set({
+      completedRides: rides,
     }),
 
   // camera

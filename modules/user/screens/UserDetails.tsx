@@ -5,10 +5,15 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // service
-import {AuthService, UserService} from '@/globalService';
+import {AuthService, RideService, UserService} from '@/globalService';
 
 // store
-import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
+import {
+  useGlobalStore,
+  useRideStore,
+  useThemeStore,
+  useUserStore,
+} from '@/globalStore';
 
 // components
 import ProfileCard from '@/modules/user/components/ProfileCard';
@@ -24,6 +29,7 @@ import NeedHelp from '@/modules/user/components/NeedHelp';
 const {colors} = useThemeStore.getState().theme;
 
 const UserDetails: React.FC = () => {
+  const {completedRides} = useRideStore();
   const {user} = useUserStore();
   const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -102,9 +108,12 @@ const UserDetails: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
+      if (user) {
+        RideService.fetchAllCompletedRides({id: user?.id});
+      }
       closeBottomSheet();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+    }, [user]),
   );
 
   useEffect(() => {
@@ -121,7 +130,11 @@ const UserDetails: React.FC = () => {
               ? userData?.user_organizations[0].organization?.name
               : ''
           }
-          totalMinutes={3}
+          totalMinutes={
+            completedRides?.length
+              ? RideService.getTotalRideDuration(completedRides)?.totalMinutes
+              : 3
+          }
           totalKilometers={0}
           // profileImage={profileImage} // Uncomment if you have a profile image
           style={styles.profileCard}
