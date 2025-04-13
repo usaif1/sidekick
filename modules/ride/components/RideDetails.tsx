@@ -9,7 +9,14 @@ import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
 
 // components
-import {ButtonTextBottomSheet, Divider, H1, H2, H3, P1} from '@/components';
+import {
+  ButtonTextBottomSheet,
+  Divider,
+  H1,
+  // H2,
+  H3,
+  P1,
+} from '@/components';
 
 import {EndRide} from '../components';
 import {calculateHubDistance} from '@/modules/home/utilis/distanceUtils';
@@ -61,7 +68,7 @@ const RideDetails: React.FC = () => {
 
   return (
     <View style={{height: '100%'}}>
-      {selectedHub && (
+      {/* {selectedHub && (
         <View style={styles.targetHubWrapper}>
           <View style={styles.targetHubContainer}>
             <H2 textColor="highlight">
@@ -70,7 +77,7 @@ const RideDetails: React.FC = () => {
             <H2 textColor="highlight">{distance}</H2>
           </View>
         </View>
-      )}
+      )} */}
       <Divider height={9} />
       <View style={styles.rideDetailsContainer}>
         <View style={styles.handle} />

@@ -2,10 +2,10 @@
 import React, {ReactNode} from 'react';
 import {Text, ViewStyle, Pressable} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
+import {ActivityIndicator} from 'react-native-paper';
 
 // store
 import {useThemeStore} from '@/theme/store';
-import {ActivityIndicator} from 'react-native-paper';
 
 type Props = {
   children: ReactNode;

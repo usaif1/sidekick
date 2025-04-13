@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {ms, ScaledSheet} from 'react-native-size-matters';
-
+import axios from 'axios';
 // @ts-ignore
 import EasebuzzCheckout from 'react-native-easebuzz-kit';
 
@@ -25,8 +25,12 @@ import {B1, B2, Divider, GlobalModal, showToast} from '@/components';
 import ButtonText from '@/components/ButtonText';
 import {WalletService, UserService} from '@/globalService';
 import PaymentSuccess from '../components/PaymentSuccess';
-import axios from 'axios';
 import PaymentFailure from '../components/PaymentFailure';
+
+// config
+import {config} from '@/config';
+import {showCredits} from '@/utils/user';
+import {useNavigation} from '@react-navigation/native';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -34,6 +38,8 @@ const {colors} = useThemeStore.getState().theme;
 const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
 const AddFundsScreen = () => {
+  const navigation = useNavigation();
+
   const {openModal, setModalComponent} = useGlobalStore();
   const {
     userWallet,
@@ -54,13 +60,24 @@ const AddFundsScreen = () => {
     setRechargeAmount(value.toString());
   };
 
+  const handleCreditRequest = async () => {
+    showToast({
+      type: 'success',
+      text1: 'Credit request raised',
+    });
+
+    setTimeout(() => {
+      navigation.goBack();
+    }, 300);
+  };
+
   // Handle pay button press
   const handlePay = async () => {
     startLoading('add-funds');
     // Validate amount
     try {
       const clientSecret = await axios.post(
-        'https://sidekick-backend-279t.onrender.com/initiate-payment',
+        `${config.prodEndpoint}/initiate-payment`,
         {
           amount: parseFloat(rechargeAmount) + securityDeposit,
           email: user?.email || 'default@mail.com',
@@ -75,12 +92,9 @@ const AddFundsScreen = () => {
         pay_mode: 'test',
       };
 
-      console.log('options', options);
-
       EasebuzzCheckout.open(options)
         .then((data: any) => {
           //handle the payment success & failed response here
-          console.log('Payment Response:', data);
           if (securityDeposit) {
             WalletService.updateWalletSecurityDeposit({
               id: userWallet?.id,
@@ -109,6 +123,8 @@ const AddFundsScreen = () => {
           stopLoading('add-funds');
         });
     } catch (error) {
+      // @ts-ignore
+      console.log('error adding funds', error?.message);
       stopLoading('add-funds');
       showToast({
         type: 'error',
@@ -144,7 +160,12 @@ const AddFundsScreen = () => {
             </B2>
             <Divider height={9.6} />
             <View style={styles.amountInput}>
-              <B1 textColor="highlight">₹</B1>
+              {showCredits() ? (
+                <B1 textColor="highlight">C</B1>
+              ) : (
+                <B1 textColor="highlight">₹</B1>
+              )}
+
               <TextInput
                 numberOfLines={1}
                 keyboardType="numeric"
@@ -231,17 +252,33 @@ const AddFundsScreen = () => {
 
       {/* Pay button */}
       {rechargeAmount && rechargeAmount !== '0' ? (
-        <View style={styles.buttonContainer}>
-          <ButtonText
-            variant="primary"
-            onPress={handlePay}
-            loading={walletLoaders['add-funds']}>
-            Pay ₹{' '}
-            {!securityDeposit
-              ? rechargeAmount
-              : parseFloat(rechargeAmount) + securityDeposit}
-          </ButtonText>
-        </View>
+        showCredits() ? (
+          <View
+            style={[styles.buttonContainer, {width: 450, alignSelf: 'center'}]}>
+            <ButtonText
+              variant="primary"
+              onPress={handleCreditRequest}
+              loading={walletLoaders['add-funds']}>
+              Request{' '}
+              {!securityDeposit
+                ? rechargeAmount
+                : parseFloat(rechargeAmount) + securityDeposit}{' '}
+              credits
+            </ButtonText>
+          </View>
+        ) : (
+          <View style={styles.buttonContainer}>
+            <ButtonText
+              variant="primary"
+              onPress={handlePay}
+              loading={walletLoaders['add-funds']}>
+              Pay ₹{' '}
+              {!securityDeposit
+                ? rechargeAmount
+                : parseFloat(rechargeAmount) + securityDeposit}
+            </ButtonText>
+          </View>
+        )
       ) : null}
 
       <GlobalModal />

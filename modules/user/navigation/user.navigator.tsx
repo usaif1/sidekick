@@ -3,7 +3,12 @@ import {Platform} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // screens
-import {EditProfile, UserDetails} from '../screens';
+import {
+  EditProfile,
+  TNC as TNCScreen,
+  UserDetails,
+  PrivacyPolicy,
+} from '../screens';
 
 // components
 import {BackArrowButton} from '@/components';
@@ -30,6 +35,22 @@ const UserNavigator = createNativeStackNavigator({
         headerStyle: {
           backgroundColor: '#FFFFFF',
         },
+      },
+    },
+    tnc: {
+      screen: TNCScreen,
+      options: {
+        title: '',
+        headerShadowVisible: false,
+        headerLeft: () => <BackArrowButton title="Terms & Conditions" />,
+      },
+    },
+    privacy: {
+      screen: PrivacyPolicy,
+      options: {
+        title: '',
+        headerShadowVisible: false,
+        headerLeft: () => <BackArrowButton title="Privacy Policy" />,
       },
     },
   },

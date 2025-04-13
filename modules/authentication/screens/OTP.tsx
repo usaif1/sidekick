@@ -12,10 +12,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {ScaledSheet} from 'react-native-size-matters';
 import {useHeaderHeight} from '@react-navigation/elements';
+import {useNavigation} from '@react-navigation/native';
+import {TouchableHighlight} from '@gorhom/bottom-sheet';
 
 // components
 import {
   BottomSheetStyledInput,
+  ButtonSmall,
   ButtonTextBottomSheet,
   Divider,
   showToast,
@@ -30,6 +33,7 @@ import AuthService from '../services/auth.service';
 const {width, height} = Dimensions.get('window'); // Get screen dimensions
 
 const OTPForm: React.FC = () => {
+  const navigation = useNavigation();
   const {theme} = useThemeStore();
   const headerHeight = useHeaderHeight();
   const {
@@ -83,14 +87,14 @@ const OTPForm: React.FC = () => {
 
   const onSubmitEditing = () => {
     Keyboard.dismiss();
-    authBottomSheetRef?.current?.snapToPosition('41%');
+    authBottomSheetRef?.current?.snapToPosition('43%');
   };
 
   const getSnapPoints = () => {
     if (Platform.OS === 'android') {
-      return ['40%', '41%', '70%'];
+      return ['42%', '43%', '70%'];
     } else {
-      return ['40%'];
+      return ['42%'];
     }
   };
 
@@ -100,7 +104,7 @@ const OTPForm: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <View style={{flex: 1}}>
       <View style={{flex: 1}}>
         <ImageBackground
           source={require('../assets/Map.png')} // Path to your background image
@@ -186,11 +190,24 @@ const OTPForm: React.FC = () => {
                 loading={authLoaders['otp-verification']}>
                 Continue
               </ButtonTextBottomSheet>
+              <Divider height={6} />
+              <TouchableHighlight
+                underlayColor={'transparent'}
+                onPress={() => {
+                  // @ts-ignore
+                  navigation.navigate('tnc');
+                }}>
+                <ButtonSmall
+                  textColor="textSecondary"
+                  customStyles={{textAlign: 'center'}}>
+                  By continuing, you agree to TnCs
+                </ButtonSmall>
+              </TouchableHighlight>
             </View>
           </View>
         </BottomSheetView>
       </BottomSheet>
-    </>
+    </View>
   );
 };
 

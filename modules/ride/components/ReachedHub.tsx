@@ -7,7 +7,7 @@ import {DateTime} from 'luxon';
 
 // components
 import TickMarkRounded from '@/assets/tick-mark-rounded.svg';
-import {Divider, H2, H3, P2, P3} from '@/components';
+import {Divider, H2, H3, P2} from '@/components';
 import SwipeBtn from '@/assets/swipe-btn-img.svg';
 import RideEnded from '../components/RideEnded';
 
@@ -24,8 +24,14 @@ const {
 
 const ReachedHub: React.FC = () => {
   const {setModalComponent, setModalCloseButton} = useGlobalStore();
-  const {interval, setTimerInterval, setIsPaused, setSelectedHub, totalCost} =
-    useRideStore();
+  const {
+    interval,
+    setTimerInterval,
+    setIsPaused,
+    setSelectedHub,
+    totalCost,
+    secondsElapsed,
+  } = useRideStore();
 
   const onSwipeSuccess = async () => {
     setIsPaused(true);
@@ -80,12 +86,6 @@ const ReachedHub: React.FC = () => {
           id: userWallet.id,
           balance: -totalCost, // Pass negative value to deduct
         });
-
-        console.log(
-          `Ride cost of ${totalCost} deducted from wallet. New wallet balance: ${
-            availableWalletBalance - totalCost
-          }`,
-        );
       } else {
         // Case 2: Wallet doesn't have enough, use full wallet and take the rest from security
         const remainingCost = totalCost - availableWalletBalance;
@@ -106,10 +106,6 @@ const ReachedHub: React.FC = () => {
           id: userWallet.id,
           security_deposit: -remainingCost, // Pass negative value to deduct
         });
-
-        console.log(
-          `Deducted ${availableWalletBalance} from wallet and ${remainingCost} from security balance.`,
-        );
       }
 
       return {success: true, message: 'Ride cost deducted successfully.'};
@@ -119,23 +115,39 @@ const ReachedHub: React.FC = () => {
     }
   };
 
+  // Convert seconds into mm:ss format
+  const formatTime = (totalSeconds: number) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+      2,
+      '0',
+    )}`;
+  };
+
   return (
     <View style={styles.reachedHubWrapper}>
       <View style={styles.headingContainer}>
         <TickMarkRounded />
-        <H2 customStyles={{textAlign: 'center'}}>Reached Hub</H2>
+        <H2 customStyles={{textAlign: 'center'}}>Reached Destination</H2>
       </View>
       <Divider height={6} />
-      <P2 textColor="textSecondary">
-        Please park your scooter and confirm the payment
+      <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
+        A small fee will be levied for parking the scooter away from the hub
       </P2>
       <Divider height={28} />
       <View style={styles.detailsContainer}>
         <View>
-          <H3>Car Parking</H3>
-          <P3 textColor="textSecondary">10:04 Minutes</P3>
+          <H3>{formatTime(secondsElapsed)} Minutes</H3>
         </View>
-        <H3 textColor="highlight">XXX</H3>
+        <H3 textColor="highlight">₹ {totalCost.toFixed(1)}</H3>
+      </View>
+      <Divider height={6} />
+      <View style={styles.detailsContainer}>
+        <View>
+          <H3>Parking Fee</H3>
+        </View>
+        <H3 textColor="error">₹ 10.0</H3>
       </View>
       <Divider height={28} />
       <SwipeButton

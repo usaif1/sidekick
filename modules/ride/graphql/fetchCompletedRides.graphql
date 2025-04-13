@@ -25,3 +25,26 @@ query fetchCompletedRides($id: uuid = "") {
     }
   }
 }
+
+# query fetchRideDetailsByUser($_eq: uuid = "6383b5a1-a742-42f1-84d4-5c51926b9eac") {
+#   ride_details(where: {user_id: {_eq: $_eq}}) {
+#     cost_type
+#     id
+#     ride_distance
+#     end_time
+#     created_at
+#     start_time
+#     total_cost
+#     user_id
+#     scooter_id
+#     ride_steps {
+#       ride_details_id
+#       id
+#       ride_step {
+#         value
+#         comment
+#       }
+#       created_at
+#     }
+#   }
+# }

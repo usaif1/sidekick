@@ -1,5 +1,6 @@
 // utils
 import {callMutation, callQuery} from '@/utils/client';
+import {DateTime, Duration} from 'luxon';
 
 // store
 import {useRideStore} from '@/globalStore';
@@ -29,7 +30,7 @@ import {
   FetchCompletedRidesDocument,
 } from '@/generated/graphql';
 
-const {setHubs, setRideHistory} = useRideStore.getState();
+const {setHubs, setRideHistory, setCompletedRides} = useRideStore.getState();
 
 const WalletService = {
   fetchAllHubs: async function () {
@@ -102,6 +103,50 @@ const WalletService = {
     });
 
     return response.update_ride_details_by_pk;
+  },
+
+  fetchAllCompletedRides: async function (
+    args: FetchCompletedRidesQueryVariables,
+  ) {
+    const response: FetchCompletedRidesQuery = await callQuery({
+      queryDocument: FetchCompletedRidesDocument,
+      variables: args,
+    });
+
+    setCompletedRides(response?.ride_details);
+
+    return response.ride_details;
+  },
+
+  getTotalRideDuration: (rides: FetchCompletedRidesQuery['ride_details']) => {
+    console.log('rides', rides);
+    let totalDuration = Duration.fromMillis(0);
+
+    // return {
+    //   totalMilliseconds: totalDuration.toMillis(),
+    //   totalSeconds: Math.floor(totalDuration.as('seconds')),
+    //   totalMinutes: 3,
+    //   // formatted: `${total.minutes} min ${Math.floor(total.seconds)} sec`,
+    // };
+
+    rides.forEach(ride => {
+      if (ride?.start_time && ride?.end_time) {
+        const start = DateTime.fromISO(ride.start_time);
+        const end = DateTime.fromISO(ride.end_time);
+
+        const duration = end.diff(start);
+        totalDuration = totalDuration.plus(duration);
+      }
+    });
+
+    // Return formatted duration
+    const total = totalDuration.shiftTo('minutes', 'seconds');
+    return {
+      totalMilliseconds: totalDuration.toMillis(),
+      totalSeconds: Math.floor(totalDuration.as('seconds')),
+      totalMinutes: Math.floor(totalDuration.as('minutes')),
+      formatted: `${total.minutes} min ${Math.floor(total.seconds)} sec`,
+    };
   },
 };
 

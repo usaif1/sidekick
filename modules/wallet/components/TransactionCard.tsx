@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {FetchCompletedRidesQuery} from '@/generated/graphql';
 import {H3, P3} from '@/components';
 import {DateTime} from 'luxon';
+import {showCredits} from '@/utils/user';
 
 interface TransactionCardProps {
   /**
@@ -27,7 +28,6 @@ const getTime = (timestamp: string) => {
 };
 
 const TransactionCard: React.FC<TransactionCardProps> = ({transaction}) => {
-  console.log('transaction', transaction);
   return (
     <View style={{flexDirection: 'row'}}>
       <View style={styles.leftContent}>
@@ -35,8 +35,11 @@ const TransactionCard: React.FC<TransactionCardProps> = ({transaction}) => {
         <P3 textColor="textSecondary">{getDate(transaction.start_time)}</P3>
         <P3 textColor="textSecondary">{getTime(transaction.start_time)}</P3>
       </View>
-
-      <H3 textColor="highlight">₹ {transaction.total_cost || 0}</H3>
+      {showCredits() ? (
+        <H3 textColor="highlight">{transaction.total_cost || 0} Credits</H3>
+      ) : (
+        <H3 textColor="highlight">₹ {transaction.total_cost || 0}</H3>
+      )}
     </View>
   );
 };

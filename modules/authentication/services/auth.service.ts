@@ -6,6 +6,7 @@ import axios from 'axios';
 import useAuthStore from '../store';
 import {initializeClient} from '@/utils/client';
 import {showToast} from '@/components';
+import {config} from '@/config';
 
 const {
   setConfirmationResult,
@@ -84,14 +85,14 @@ const AuthService = {
     errorCallback: () => void,
   ) {
     const {newUserFormData} = useAuthStore.getState();
-    const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
+    // const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
 
     return new Promise(resolve => {
       setTimeout(async () => {
         try {
           const result = await axios.post(
             // todo: this url is different for different environments and should be moved to a config file
-            endpoint,
+            `${config.prodEndpoint}/set-claims`,
             {
               uid: `${uid}`,
               role: role,
@@ -160,7 +161,6 @@ const AuthService = {
       const response = await axios.get(
         'https://supreme-mustang-86.hasura.app/api/rest/fetchallorganisations',
       );
-      console.log('orgs', response.data);
       setOrganisations(response.data.organizations);
     } catch (error) {
       console.log('error fetching orgs');
@@ -183,6 +183,36 @@ const AuthService = {
 
       default:
         return error.message;
+    }
+  },
+
+  checkIfUserExistsInOrg: async (args: {
+    employeeId: string;
+    phone: string;
+    orgId: string;
+  }) => {
+    try {
+      const response = await axios.get(
+        'https://supreme-mustang-86.hasura.app/api/rest/checkuserexists',
+        {
+          params: {
+            _eq: args.employeeId,
+            _eq1: args.phone,
+            _eq2: args.orgId,
+          },
+        },
+      );
+
+      console.log('response', response.data);
+
+      if (response.data?.user_organizations?.length) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      // @ts-ignore
+      console.log('Error checking user exists', err?.message);
     }
   },
 };

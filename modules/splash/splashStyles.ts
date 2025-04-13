@@ -17,7 +17,7 @@ export const splashStyles = ScaledSheet.create({
   bottomButtonContainer: {
     width: '100%',
     position: 'absolute',
-    bottom: '26@vs',
+    bottom: '32@vs',
     left: 0,
     alignItems: 'center',
   },

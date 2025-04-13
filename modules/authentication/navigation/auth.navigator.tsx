@@ -9,10 +9,17 @@ import {
   EmployeeForm,
   SignupForm,
   OTP,
+  TNC,
 } from '../screens';
+import {
+  SplashScreen1,
+  SplashScreen2,
+  SplashScreen3,
+} from '../../splash/screens';
 
 // components
 import BackArrowButtonSecondary from '@/components/BackArrowButtonSecondary';
+import {BackArrowButton} from '@/components';
 
 export type AuthStackNavigatorParams = {
   welcome: undefined;
@@ -20,10 +27,14 @@ export type AuthStackNavigatorParams = {
   employee: undefined;
   new: undefined;
   otp: undefined;
+  splash1: undefined;
+  splash2: undefined;
+  splash3: undefined;
+  tnc: undefined;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
-  initialRouteName: 'welcome',
+  initialRouteName: 'splash1',
   screenOptions: {
     headerShadowVisible: false,
     presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
@@ -46,6 +57,40 @@ const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
     employee: EmployeeForm,
     new: SignupForm,
     otp: OTP,
+    splash1: {
+      screen: SplashScreen1,
+      options: {
+        headerShown: false,
+        headerLeft: () => null,
+      },
+    },
+    splash2: {
+      screen: SplashScreen2,
+      options: {
+        headerShown: false,
+        headerLeft: () => null,
+      },
+    },
+    splash3: {
+      screen: SplashScreen3,
+      options: {
+        headerShown: false,
+        headerLeft: () => null,
+      },
+    },
+    tnc: {
+      screen: TNC,
+      options: {
+        headerShown: true,
+        title: 'Terms and Conditions',
+        headerShadowVisible: false,
+        headerLeft: () => <BackArrowButton title="Terms & Conditions" />,
+        headerTransparent: false,
+        headerStyle: {
+          backgroundColor: '#ffffff',
+        },
+      },
+    },
   },
 });
 

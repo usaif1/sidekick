@@ -59,8 +59,6 @@ const TransactionList: React.FC<TransactionListProps> = ({
     [colors.textPrimary],
   );
 
-  console.log('transactions', transactions);
-
   return (
     <FlatList
       data={transactions || []}
