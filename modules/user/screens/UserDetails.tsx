@@ -23,6 +23,7 @@ import Profile from '@/assets/profile.svg';
 import Notification from '@/assets/notification.svg';
 import Help from '@/assets/help.svg';
 import Logout from '@/assets/logout.svg';
+import Delete from '@/assets/delete.svg';
 import {GlobalModal, showToast} from '@/components';
 import NeedHelp from '@/modules/user/components/NeedHelp';
 
@@ -102,7 +103,14 @@ const UserDetails: React.FC = () => {
       onPress: () => {
         AuthService.signOut();
       },
-      testID: 'help-button',
+      testID: 'logout-button',
+    },
+    {
+      icon: Delete,
+      label: 'Delete Account',
+      controlType: 'none' as const,
+      onPress: () => {},
+      testID: 'delete-account',
     },
   ];
 
@@ -142,7 +150,7 @@ const UserDetails: React.FC = () => {
 
         <Divider height={16} />
 
-        <Menu items={menuItems} style={styles.menu} testID="user-menu" />
+        <Menu items={menuItems} style={styles.menu} />
       </View>
 
       <GlobalModal />
