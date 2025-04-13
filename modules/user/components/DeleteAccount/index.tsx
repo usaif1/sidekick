@@ -37,13 +37,13 @@ const DeleteAccount: React.FC = () => {
       {/* Buttons */}
       <Divider height={24} />
       <View style={styles.buttonWrapper}>
-        <ButtonText variant="error" onPress={handleDelete}>
+        <ButtonText variant="red" onPress={handleDelete}>
           Delete Account
         </ButtonText>
       </View>
       <Divider height={12} />
       <View style={styles.buttonWrapper}>
-        <ButtonText variant="secondary" onPress={handleGoBack}>
+        <ButtonText variant="error" onPress={handleGoBack}>
           Go Back
         </ButtonText>
       </View>
