@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Center the SVG horizontally
   },
   backgroundLogo: {
+    transform: [{scaleX: 1.1}, {scaleY: 1.02}],
   },
   nameLogo: {
     width: 253,
