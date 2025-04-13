@@ -22,9 +22,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Center the SVG horizontally
   },
   backgroundLogo: {
-    // Using absolute positioning and large dimensions from Figma might require adjustments
-    // depending on how the SVG scales and the desired clipping/overflow effect.
-    // Centering with absoluteFillObject is often more robust.
   },
   nameLogo: {
     width: 253,
@@ -44,18 +41,18 @@ const SplashScreen0: React.FC = () => {
 
   return (
     <View style={splashStyles.layoutBackground}>
-      {/* Background Logo Container - Positioned absolutely behind everything */}
+      {/* Background Logo Container */}
       <View style={styles.backgroundLogoContainer} pointerEvents="none">
         <SideKickBackgroundLogo style={styles.backgroundLogo} />
       </View>
 
       {/* Centered Content Area */}
       <View style={styles.contentContainer}>
-        {/* Name Logo - centered by contentContainer */}
+        {/* Name Logo */}
         <SideKickName style={styles.nameLogo} />
       </View>
 
-      {/* Bottom Button Area - Reuse existing style */}
+      {/* Bottom Button Area */}
       <View style={splashStyles.bottomButtonContainer}>
         <View style={{width: 220}}>
           <ButtonText
@@ -72,4 +69,4 @@ const SplashScreen0: React.FC = () => {
   );
 };
 
-export default SplashScreen0; 
+export default SplashScreen0;
