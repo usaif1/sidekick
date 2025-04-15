@@ -1,10 +1,10 @@
 // dependencies
 import React, {useEffect} from 'react';
-import {StatusBar, View} from 'react-native';
+import {StatusBar, View, ActivityIndicator, StyleSheet} from 'react-native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 // assets
-import SideKickLogo from '../assets/sidekick_logo.svg';
+// import SideKickLogo from '../assets/sidekick_logo.svg'; // Removed SideKickLogo import
 
 // styles
 import {splashStyles} from '../splashStyles';
@@ -75,9 +75,30 @@ const SplashScreen1: React.FC = () => {
         backgroundColor={'transparent'}
         translucent
       />
-      <SideKickLogo />
+      {/* <SideKickLogo/> */}
+      <View style={styles.activityIndicatorContainer}>
+        <ActivityIndicator
+          size="large"
+          color="white"
+          style={styles.activityIndicator}
+        />
+      </View>
     </View>
   );
 };
+
+// Styles for the ActivityIndicator
+const styles = StyleSheet.create({
+  activityIndicatorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityIndicator: {
+    transform: [{scale: 1.8}], // Scale up the default large size by 1.8x
+    width: 60,
+    height: 60,
+  },
+});
 
 export default SplashScreen1;

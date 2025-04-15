@@ -10,7 +10,7 @@ import {useThemeStore} from '@/theme/store';
 type Props = {
   children: ReactNode;
   onPress: () => void;
-  variant: 'primary' | 'secondary' | 'highlight' | 'error';
+  variant: 'primary' | 'secondary' | 'highlight' | 'error' | 'red';
   customStyle?: ViewStyle;
   loading?: boolean;
 };
@@ -20,6 +20,7 @@ type ContainerStyles = {
   secondary: ViewStyle;
   highlight: ViewStyle;
   error: ViewStyle;
+  red: ViewStyle;
 };
 
 const {typography, colors} = useThemeStore.getState().theme;
@@ -43,6 +44,9 @@ const ButtonText: React.FC<Props> = ({
     },
     error: {
       backgroundColor: colors.alert,
+    },
+    red: {
+      backgroundColor: colors.error,
     },
   };
 
@@ -71,7 +75,7 @@ const ButtonText: React.FC<Props> = ({
 
 type ChildTextProps = {
   children: ReactNode;
-  variant: 'primary' | 'secondary' | 'highlight' | 'error';
+  variant: 'primary' | 'secondary' | 'highlight' | 'error' | 'red';
 };
 
 const ChildText: React.FC<ChildTextProps> = ({children, variant}) => {
@@ -104,5 +108,8 @@ const styles = ScaledSheet.create({
   },
   error: {
     color: colors.error,
+  },
+  red: {
+    color: colors.white,
   },
 });

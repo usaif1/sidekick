@@ -26,6 +26,7 @@ import Logout from '@/assets/logout.svg';
 import Delete from '@/assets/delete.svg';
 import {GlobalModal, showToast} from '@/components';
 import NeedHelp from '@/modules/user/components/NeedHelp';
+import DeleteAccount from '@/modules/user/components/DeleteAccount';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -109,7 +110,10 @@ const UserDetails: React.FC = () => {
       icon: Delete,
       label: 'Delete Account',
       controlType: 'none' as const,
-      onPress: () => {},
+      onPress: () => {
+        setModalComponent(DeleteAccount);
+        openModal();
+      },
       testID: 'delete-account',
     },
   ];

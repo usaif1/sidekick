@@ -12,6 +12,7 @@ import {
   TNC,
 } from '../screens';
 import {
+  SplashScreen0,
   SplashScreen1,
   SplashScreen2,
   SplashScreen3,
@@ -27,6 +28,7 @@ export type AuthStackNavigatorParams = {
   employee: undefined;
   new: undefined;
   otp: undefined;
+  splash0: undefined;
   splash1: undefined;
   splash2: undefined;
   splash3: undefined;
@@ -34,7 +36,7 @@ export type AuthStackNavigatorParams = {
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
-  initialRouteName: 'splash1',
+  initialRouteName: 'splash0',
   screenOptions: {
     headerShadowVisible: false,
     presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
@@ -57,6 +59,13 @@ const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
     employee: EmployeeForm,
     new: SignupForm,
     otp: OTP,
+    splash0: {
+      screen: SplashScreen0,
+      options: {
+        headerShown: false,
+        headerLeft: () => null,
+      },
+    },
     splash1: {
       screen: SplashScreen1,
       options: {
