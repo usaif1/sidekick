@@ -5,6 +5,8 @@ import axios from 'axios';
 // store
 import useAuthStore from '../store';
 import {initializeClient} from '@/utils/client';
+import {showToast} from '@/components';
+import {config} from '@/config';
 
 const {
   setConfirmationResult,
@@ -13,6 +15,7 @@ const {
   setAuthUser,
   setGraphQLClient,
   setAuthToken,
+  setOrganisations,
 } = useAuthStore.getState();
 
 const AuthService = {
@@ -25,6 +28,11 @@ const AuthService = {
       setConfirmationResult(confirmation);
       return confirmation;
     } catch (error) {
+      const errorMessage = this.handleFirebaseAuthError(error);
+      showToast({
+        type: 'error',
+        text1: errorMessage,
+      });
       console.error('error sending OTP', error);
       throw new Error('Failed to send OTP');
     }
@@ -77,14 +85,14 @@ const AuthService = {
     errorCallback: () => void,
   ) {
     const {newUserFormData} = useAuthStore.getState();
-    const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
+    // const endpoint = 'https://sidekick-backend-279t.onrender.com/set-claims';
 
     return new Promise(resolve => {
       setTimeout(async () => {
         try {
           const result = await axios.post(
             // todo: this url is different for different environments and should be moved to a config file
-            endpoint,
+            `${config.prodEndpoint}/set-claims`,
             {
               uid: `${uid}`,
               role: role,
@@ -146,6 +154,66 @@ const AuthService = {
         }, 1000);
       }
     }, 500);
+  },
+
+  fetchAllOrganistions: async function () {
+    try {
+      const response = await axios.get(
+        'https://supreme-mustang-86.hasura.app/api/rest/fetchallorganisations',
+      );
+      setOrganisations(response.data.organizations);
+    } catch (error) {
+      console.log('error fetching orgs');
+    }
+  },
+
+  handleFirebaseAuthError: function (error: any) {
+    switch (error.code) {
+      case 'auth/invalid-phone-number':
+        return 'Invalid phone number format.';
+
+      case 'auth/too-many-requests':
+        return 'Too many attempts. Try again later.';
+
+      case 'auth/quota-exceeded':
+        return 'SMS quota exceeded. Try again later.';
+
+      case 'auth/captcha-check-failed':
+        return 'reCAPTCHA verification failed. Refresh and try again.';
+
+      default:
+        return error.message;
+    }
+  },
+
+  checkIfUserExistsInOrg: async (args: {
+    employeeId: string;
+    phone: string;
+    orgId: string;
+  }) => {
+    try {
+      const response = await axios.get(
+        'https://supreme-mustang-86.hasura.app/api/rest/checkuserexists',
+        {
+          params: {
+            _eq: args.employeeId,
+            _eq1: args.phone,
+            _eq2: args.orgId,
+          },
+        },
+      );
+
+      console.log('response', response.data);
+
+      if (response.data?.user_organizations?.length) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      // @ts-ignore
+      console.log('Error checking user exists', err?.message);
+    }
   },
 };
 

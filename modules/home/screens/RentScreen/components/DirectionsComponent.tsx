@@ -5,14 +5,11 @@ import MapViewDirections from 'react-native-maps-directions';
 import * as turf from '@turf/turf';
 import {LatLng, MapViewDirectionsResult} from '../../../types/directions';
 import {GOOGLE_MAPS_API_KEY} from '../../../config/mapConfig';
+import {FetchAllHubsQuery} from '@/generated/graphql';
 
 type DirectionsProps = {
   origin: LatLng | null;
-  destination: {
-    id: string;
-    latitude: number;
-    longitude: number;
-  } | null;
+  destination: FetchAllHubsQuery['hubs'][0];
   mapRef: React.RefObject<MapView>;
   onHeadingChange?: (heading: number) => void;
 };
@@ -47,7 +44,6 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
       mode="DRIVING"
       region="IN"
       waypoints={[]}
-      onStart={params => {}}
       onReady={(result: MapViewDirectionsResult) => {
         const coordinates = result.coordinates;
         mapRef.current?.fitToCoordinates(coordinates, {

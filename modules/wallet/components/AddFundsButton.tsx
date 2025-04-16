@@ -1,5 +1,8 @@
+// dependencies
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+
+// components
 import ButtonText from '@/components/ButtonText';
 
 interface AddFundsButtonProps {

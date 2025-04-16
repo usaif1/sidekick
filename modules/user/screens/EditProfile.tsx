@@ -10,6 +10,7 @@ import {useThemeStore, useUserStore} from '@/globalStore';
 import Input from '@/components/Input';
 import ButtonText from '@/components/ButtonText';
 import {UserService} from '@/globalService';
+import {showToast} from '@/components';
 
 interface EditProfileProps {
   route?: {
@@ -22,7 +23,7 @@ interface EditProfileProps {
 }
 
 const EditProfile: React.FC<EditProfileProps> = () => {
-  const {user} = useUserStore();
+  const {user, startLoading, stopLoading, userLoaders} = useUserStore();
   const navigation = useNavigation();
   const {colors} = useThemeStore(state => state.theme);
 
@@ -73,19 +74,52 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     setErrors(newErrors);
 
     if (isValid) {
+      startLoading('update-user');
       // Save changes and navigate back
-
       UserService.updateUserDetails({
         id: user?.id,
         _set: {
           full_name: name,
           email: email,
         },
-      }).then(response => {
-        if (response) {
-          UserService.fetchUserDetails();
-        }
-        navigation.goBack();
+      })
+        .then(response => {
+          if (response) {
+            UserService.fetchUserDetails();
+            showToast({
+              type: 'success',
+              text1: 'Profile Updated',
+              text2: 'Your profile has been successfully updated',
+              position: 'top',
+            });
+            stopLoading('update-user');
+            navigation.goBack();
+          } else {
+            showToast({
+              type: 'error',
+              text1: 'Update Failed',
+              text2: 'Failed to update profile. Please try again.',
+              position: 'top',
+            });
+          }
+        })
+        .catch(error => {
+          stopLoading('update-user');
+          showToast({
+            type: 'error',
+            text1: 'Failed to update profile',
+            text2: 'An error occurred while updating your profile',
+            position: 'top',
+          });
+          console.error('Profile update error:', error);
+        });
+    } else {
+      stopLoading('update-user');
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fix the errors in the form',
+        position: 'top',
       });
     }
   };
@@ -105,6 +139,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           required
           inputType="text"
           testID="name-input"
+          // @ts-ignore
           containerStyle={styles.inputContainer}
         />
 
@@ -119,6 +154,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           required
           inputType="email"
           testID="email-input"
+          // @ts-ignore
           containerStyle={styles.inputContainer}
         />
 
@@ -136,13 +172,17 @@ const EditProfile: React.FC<EditProfileProps> = () => {
           inputType="numeric"
           testID="phone-input"
           editable={false}
+          // @ts-ignore
           containerStyle={styles.inputContainer}
         />
       </View>
 
       {/* Save Changes button */}
       <View style={styles.buttonContainer}>
-        <ButtonText variant="primary" onPress={handleSaveChanges}>
+        <ButtonText
+          variant="primary"
+          onPress={handleSaveChanges}
+          loading={userLoaders['update-user']}>
           Save Changes
         </ButtonText>
       </View>

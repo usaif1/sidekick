@@ -10,6 +10,7 @@ import {useThemeStore} from '@/globalStore';
 //components
 import Switch from '@/components/Switch';
 import {H3} from '@/components';
+import {ScrollView} from 'react-native-gesture-handler';
 
 interface MenuItem {
   /**
@@ -60,15 +61,16 @@ interface MenuProps {
 /**
  * Menu component displays a list of actionable items with icons and optional controls
  */
-const Menu: React.FC<MenuProps> = ({items, style, testID = 'menu'}) => {
+const Menu: React.FC<MenuProps> = ({items, style, testID}) => {
   const {colors, spacing} = useThemeStore(state => state.theme);
 
   return (
-    <View
+    <ScrollView
       style={[
-        styles.container,
+        {flex: 1},
         {
           backgroundColor: colors.white,
+          height: '100%',
         },
         style,
       ]}
@@ -90,7 +92,12 @@ const Menu: React.FC<MenuProps> = ({items, style, testID = 'menu'}) => {
         >
           <View style={styles.leftContent}>
             <item.icon style={styles.icon} />
-            <H3>{item.label}</H3>
+            <H3
+              textColor={
+                item.testID === 'delete-account' ? 'error' : 'textPrimary'
+              }>
+              {item.label}
+            </H3>
           </View>
 
           {item.controlType === 'switch' && (
@@ -104,14 +111,11 @@ const Menu: React.FC<MenuProps> = ({items, style, testID = 'menu'}) => {
           )}
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = ScaledSheet.create({
-  container: {
-    overflow: 'hidden',
-  },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',

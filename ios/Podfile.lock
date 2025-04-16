@@ -3,6 +3,8 @@ PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
+  - EasebuzzKit (1.0.0):
+    - React
   - fast_float (6.1.4)
   - FBLazyVector (0.78.0)
   - Firebase/Auth (11.10.0):
@@ -1415,6 +1417,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-webview (13.13.5):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-NativeModulesApple (0.78.0):
     - glog
     - hermes-engine
@@ -1996,6 +2019,7 @@ DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EasebuzzKit (from `../node_modules/react-native-easebuzz-kit`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -2041,6 +2065,7 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-performancetimeline (from `../node_modules/react-native/ReactCommon/react/performance/timeline`)
@@ -2104,6 +2129,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EasebuzzKit:
+    :path: "../node_modules/react-native-easebuzz-kit"
   fast_float:
     :podspec: "../node_modules/react-native/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
@@ -2187,6 +2214,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-mmkv"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -2270,6 +2299,7 @@ SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
+  EasebuzzKit: b9909fe50ce40f193a8f458463c21f59612c4df2
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 6fe148afcef2e3213e484758e3459609d40d57f5
   Firebase: 1fe1c0a7d9aaea32efe01fbea5f0ebd8d70e53a2
@@ -2322,6 +2352,7 @@ SPEC CHECKSUMS:
   react-native-maps: ee1e65647460c3d41e778071be5eda10e3da6225
   react-native-mmkv: bca4733c90d21ce8b1629860213504cf40ff1dbf
   react-native-safe-area-context: d2bad4bfc00dcefabbdccefa9544933bd36756f8
+  react-native-webview: fd1725921d42933f9f1be20d60e2963f643b725d
   React-NativeModulesApple: b74b4e3004104429461593fe460ad790cc4928c2
   React-perflogger: ab51b7592532a0ea45bf6eed7e6cae14a368b678
   React-performancetimeline: 37192fd1019c3b3b597a877dff12f3af68305c34

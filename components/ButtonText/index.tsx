@@ -2,6 +2,7 @@
 import React, {ReactNode} from 'react';
 import {Text, ViewStyle, Pressable} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
+import {ActivityIndicator} from 'react-native-paper';
 
 // store
 import {useThemeStore} from '@/theme/store';
@@ -9,8 +10,9 @@ import {useThemeStore} from '@/theme/store';
 type Props = {
   children: ReactNode;
   onPress: () => void;
-  variant: 'primary' | 'secondary' | 'highlight' | 'error';
+  variant: 'primary' | 'secondary' | 'highlight' | 'error' | 'red';
   customStyle?: ViewStyle;
+  loading?: boolean;
 };
 
 type ContainerStyles = {
@@ -18,6 +20,7 @@ type ContainerStyles = {
   secondary: ViewStyle;
   highlight: ViewStyle;
   error: ViewStyle;
+  red: ViewStyle;
 };
 
 const {typography, colors} = useThemeStore.getState().theme;
@@ -27,6 +30,7 @@ const ButtonText: React.FC<Props> = ({
   onPress,
   variant,
   customStyle,
+  loading = false,
 }) => {
   const containerStyles: ContainerStyles = {
     primary: {
@@ -41,11 +45,24 @@ const ButtonText: React.FC<Props> = ({
     error: {
       backgroundColor: colors.alert,
     },
+    red: {
+      backgroundColor: colors.error,
+    },
   };
 
-  return (
+  return loading ? (
+    <Pressable
+      style={[
+        styles.pressableContainer,
+        containerStyles[variant],
+        {...customStyle},
+      ]}>
+      <ActivityIndicator color={colors.textPrimary} />
+    </Pressable>
+  ) : (
     <Pressable
       onPress={onPress}
+      disabled={loading}
       style={[
         styles.pressableContainer,
         containerStyles[variant],
@@ -58,7 +75,7 @@ const ButtonText: React.FC<Props> = ({
 
 type ChildTextProps = {
   children: ReactNode;
-  variant: 'primary' | 'secondary' | 'highlight' | 'error';
+  variant: 'primary' | 'secondary' | 'highlight' | 'error' | 'red';
 };
 
 const ChildText: React.FC<ChildTextProps> = ({children, variant}) => {
@@ -91,5 +108,8 @@ const styles = ScaledSheet.create({
   },
   error: {
     color: colors.error,
+  },
+  red: {
+    color: colors.white,
   },
 });

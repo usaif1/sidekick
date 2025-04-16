@@ -1,8 +1,9 @@
 // src/components/PrimaryButton.tsx
 import React, {ReactNode} from 'react';
-import {Text, ViewStyle} from 'react-native';
+import {Pressable, Text, ViewStyle} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import {TouchableHighlight} from '@gorhom/bottom-sheet';
+import {ActivityIndicator} from 'react-native-paper';
 
 // store
 import {useThemeStore} from '@/theme/store';
@@ -12,6 +13,7 @@ type Props = {
   onPress: () => void;
   variant: 'primary' | 'secondary' | 'highlight' | 'error' | 'alert';
   customStyle?: ViewStyle;
+  loading?: boolean;
 };
 
 type ContainerStyles = {
@@ -29,6 +31,7 @@ const ButtonText: React.FC<Props> = ({
   onPress,
   variant,
   customStyle,
+  loading = false,
 }) => {
   const containerStyles: ContainerStyles = {
     primary: {
@@ -48,9 +51,18 @@ const ButtonText: React.FC<Props> = ({
     },
   };
 
-  return (
+  return loading ? (
+    <Pressable
+      style={[
+        styles.pressableContainer,
+        containerStyles[variant],
+        {...customStyle},
+      ]}>
+      <ActivityIndicator color={colors.textPrimary} />
+    </Pressable>
+  ) : (
     <TouchableHighlight
-      underlayColor={colors[variant]}
+      underlayColor={containerStyles[variant].backgroundColor}
       onPress={onPress}
       style={[
         styles.pressableContainer,

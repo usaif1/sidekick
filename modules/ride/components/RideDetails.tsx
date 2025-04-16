@@ -1,24 +1,65 @@
 // dependencies
 import {Dimensions, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useMemo} from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import useLocationStore from '@/modules/home/store/locationStore';
 
 // store
-import {useGlobalStore} from '@/globalStore';
+import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
 
 // components
-import {ButtonTextBottomSheet, Divider, H1, H2, H3, P1} from '@/components';
+import {
+  ButtonTextBottomSheet,
+  Divider,
+  H1,
+  // H2,
+  H3,
+  P1,
+} from '@/components';
+
 import {EndRide} from '../components';
+import {calculateHubDistance} from '@/modules/home/utilis/distanceUtils';
+import {RideService} from '@/globalService';
+import rideStorage from '../storage';
+import {Ride_Step_Enum} from '@/generated/graphql';
 
 const {
   theme: {colors},
 } = useThemeStore.getState();
 
 const RideDetails: React.FC = () => {
-  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const currentRideId = rideStorage.getString('currentRideId');
 
   const {setModalComponent, openModal} = useGlobalStore();
+  const {
+    totalCost,
+    isPaused,
+    setIsPaused,
+    secondsElapsed,
+    perMinuteRate,
+    selectedHub,
+  } = useRideStore();
+
+  const latitude = useLocationStore(state => state.latitude);
+  const longitude = useLocationStore(state => state.longitude);
+
+  // Convert seconds into mm:ss format
+  const formatTime = (totalSeconds: number) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+      2,
+      '0',
+    )}`;
+  };
+
+  const distance = useMemo(() => {
+    if (!selectedHub) {
+      return '0m';
+    }
+    return calculateHubDistance(latitude, longitude, selectedHub);
+  }, [latitude, longitude, selectedHub]);
 
   const endRide = () => {
     setModalComponent(EndRide);
@@ -27,30 +68,34 @@ const RideDetails: React.FC = () => {
 
   return (
     <View style={{height: '100%'}}>
-      <View style={styles.targetHubWrapper}>
-        <View style={styles.targetHubContainer}>
-          <H2 textColor="highlight">Car Parking</H2>
-          <H2 textColor="highlight">250m</H2>
+      {/* {selectedHub && (
+        <View style={styles.targetHubWrapper}>
+          <View style={styles.targetHubContainer}>
+            <H2 textColor="highlight">
+              {selectedHub.name || 'No Hub Selected'}
+            </H2>
+            <H2 textColor="highlight">{distance}</H2>
+          </View>
         </View>
-      </View>
+      )} */}
       <Divider height={9} />
       <View style={styles.rideDetailsContainer}>
         <View style={styles.handle} />
         <Divider height={16} />
         <View style={{alignItems: 'center'}}>
-          <H1>00:35</H1>
-          <P1>250m</P1>
+          <H1>{formatTime(secondsElapsed)}</H1>
+          <P1>{distance}</P1>
         </View>
         <Divider height={16} />
         <View style={{paddingHorizontal: moderateScale(18)}}>
           <View style={styles.ridingMetricsFlexContainer}>
             <H3 textColor="textSecondary">Riding Cost</H3>
-            <H3 textColor="textSecondary">XX/Minute</H3>
+            <H3 textColor="textSecondary">₹ {perMinuteRate}/Minute</H3>
           </View>
           <Divider height={4} />
           <View style={styles.ridingMetricsFlexContainer}>
             <H3 textColor="textSecondary">Total</H3>
-            <H3 textColor="textSecondary">XX</H3>
+            <H3 textColor="textSecondary">₹ {totalCost}</H3>
           </View>
 
           <Divider height={16} />
@@ -70,6 +115,11 @@ const RideDetails: React.FC = () => {
               <ButtonTextBottomSheet
                 variant="primary"
                 onPress={() => {
+                  RideService.createRideStep({
+                    ride_details_id: currentRideId,
+                    // steps: 'RIDE_RESUMED',
+                    steps: Ride_Step_Enum.RideResumed,
+                  });
                   setIsPaused(false);
                 }}
                 customStyle={{width: 170}}>
@@ -79,6 +129,11 @@ const RideDetails: React.FC = () => {
               <ButtonTextBottomSheet
                 variant="primary"
                 onPress={() => {
+                  RideService.createRideStep({
+                    ride_details_id: currentRideId,
+                    // steps: 'RIDE_PAUSED',
+                    steps: Ride_Step_Enum.RidePaused,
+                  });
                   setIsPaused(true);
                 }}
                 customStyle={{width: 170}}>

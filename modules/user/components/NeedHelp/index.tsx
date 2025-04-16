@@ -29,7 +29,7 @@ const NeedHelp: React.FC = () => {
   return (
     <View style={styles.container}>
       {/* Title */}
-      <H2>Sorry for the inconvenience !</H2>
+      <H2>Sorry for the inconvenience!</H2>
 
       {/* Message */}
       <Divider height={5} />

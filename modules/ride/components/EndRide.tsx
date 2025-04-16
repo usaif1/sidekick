@@ -1,6 +1,6 @@
 // dependencies
 import {Dimensions, FlatList, Pressable, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useMemo} from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // components
@@ -8,54 +8,20 @@ import {ReachedHub} from '../components';
 import {ButtonText, Divider, H2, H3, P2} from '@/components';
 
 // store
-import {useGlobalStore} from '@/globalStore';
+import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
+import useLocationStore from '@/modules/home/store/locationStore';
+import {sortHubsByDistance} from '@/modules/home/utilis/distanceUtils';
+import {FetchAllHubsQuery} from '@/generated/graphql';
 
 const {
   theme: {colors},
 } = useThemeStore.getState();
 
-const nearestHubs = [
-  {
-    id: 'car_parking',
-    label: 'Car Parking',
-    distance: '23m',
-  },
-  {
-    id: 'gate2',
-    label: 'Gate 2',
-    distance: '125m',
-  },
-  {
-    id: 'gate3',
-    label: 'Gate 5',
-    distance: '144m',
-  },
-  {
-    id: 'gate4',
-    label: 'Car Parking',
-    distance: '23m',
-  },
-  {
-    id: 'gate5',
-    label: 'Gate 2',
-    distance: '125m',
-  },
-  {
-    id: 'gate6',
-    label: 'Gate 5',
-    distance: '144m',
-  },
-];
-
 type NearestHubCardProps = {
-  hub: {
-    id: string;
-    label: string;
-    distance: string;
-  };
-  selectedHub: string;
-  setSelectedHub: React.Dispatch<React.SetStateAction<string>>;
+  hub: FetchAllHubsQuery['hubs'][0] & {distance: string};
+  selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
+  setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0]) => void;
 };
 
 const NearestHubCard: React.FC<NearestHubCardProps> = ({
@@ -65,34 +31,40 @@ const NearestHubCard: React.FC<NearestHubCardProps> = ({
 }) => {
   return (
     <Pressable
-      onPress={() => {
-        setSelectedHub(hub.id);
-      }}
+      onPress={() => setSelectedHub(hub)}
       style={[
         styles.nearestCardContainer,
         {
-          borderWidth: selectedHub === hub.id ? 2 : 0,
+          borderWidth: selectedHub?.id === hub.id ? 2 : 0,
         },
       ]}>
-      <H3>{hub.label}</H3>
+      <H3>{hub.name}</H3>
       <H3 textColor="highlight">{hub.distance}</H3>
     </Pressable>
   );
 };
 
 const EndRide: React.FC = () => {
-  const [selectedHub, setSelectedHub] = useState<string>('car_parking');
-
+  const {selectedHub, setSelectedHub, hubs} = useRideStore();
+  const {latitude, longitude} = useLocationStore();
   const {closeModal, setModalComponent} = useGlobalStore();
+  const {setIsPaused} = useRideStore();
 
-  const onEndRide = () => {
-    setModalComponent(ReachedHub);
-  };
+  const sortedHubs = useMemo(() => {
+    if (!latitude || !longitude || !hubs.length) {
+      return [];
+    }
+    return sortHubsByDistance(latitude, longitude, hubs);
+  }, [latitude, longitude, hubs]);
+
+  const nearestDistance = sortedHubs[0]?.distance;
 
   return (
     <View style={styles.endRideWrapper}>
       <View>
-        <H2 customStyles={{textAlign: 'center'}}>Nearest Hub is 23m away!</H2>
+        <H2 customStyles={{textAlign: 'center'}}>
+          Nearest Hub is {nearestDistance} away!
+        </H2>
         <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
           Please select the nearest hub to continue.
         </P2>
@@ -100,7 +72,7 @@ const EndRide: React.FC = () => {
       <Divider height={16} />
       <View style={{maxHeight: Dimensions.get('window').height * 0.25}}>
         <FlatList
-          data={nearestHubs}
+          data={sortedHubs}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => (
             <NearestHubCard
@@ -114,10 +86,17 @@ const EndRide: React.FC = () => {
       </View>
       <Divider height={16} />
       <View style={styles.actionButtonContainer}>
-        <ButtonText variant="primary" onPress={closeModal}>
+        <ButtonText
+          variant="primary"
+          onPress={() => {
+            setIsPaused(false);
+            closeModal();
+          }}>
           Resume Ride
         </ButtonText>
-        <ButtonText variant="error" onPress={onEndRide}>
+        <ButtonText
+          variant="error"
+          onPress={() => setModalComponent(ReachedHub)}>
           End Ride
         </ButtonText>
       </View>

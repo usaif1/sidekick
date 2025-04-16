@@ -2,6 +2,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {scale} from 'react-native-size-matters';
+import {useNavigation} from '@react-navigation/native';
 
 // components
 import ButtonText from '@/components/ButtonText';
@@ -18,6 +19,8 @@ const SplashScreen3: React.FC = () => {
   const {setOnboarded} = useGlobalStore();
   const {stopLoading} = useAuthStore();
 
+  const navigation = useNavigation();
+
   return (
     <View style={splashStyles.layoutBackground}>
       <SideKickLogo />
@@ -28,6 +31,8 @@ const SplashScreen3: React.FC = () => {
               stopLoading('loading-user');
               splashStorage.set('onboarded', true);
               setOnboarded(true);
+              // @ts-ignore
+              navigation.replace('welcome');
             }}
             variant="secondary">
             Continue to ride

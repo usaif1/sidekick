@@ -14,16 +14,21 @@ import {ButtonSmall, ButtonWithIcon, Divider} from '@/components';
 type Props = {
   containerStyles: ViewStyle;
   handleOpenModal: () => void;
+  onSelectNearestHub: () => void;
 };
 
 const {
   theme: {colors},
 } = useThemeStore.getState();
 
-const ActionButtons: React.FC<Props> = ({containerStyles, handleOpenModal}) => {
+const ActionButtons: React.FC<Props> = ({
+  containerStyles,
+  handleOpenModal,
+  onSelectNearestHub,
+}) => {
   return (
     <View style={[containerStyles]}>
-      <Pressable onPress={handleOpenModal} style={styles.nearestHubContainer}>
+      <Pressable onPress={onSelectNearestHub} style={styles.nearestHubContainer}>
         <NearestHubIcon />
         <ButtonSmall textColor="highlight">Nearest Hub</ButtonSmall>
       </Pressable>
