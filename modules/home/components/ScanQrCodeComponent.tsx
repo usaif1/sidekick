@@ -28,6 +28,7 @@ import {RideService} from '@/globalService';
 import {getQueryParam} from '../utilis/getQueryParams';
 import {rideStorage} from '@/globalStorage';
 import {Ride_Step_Enum} from '@/generated/graphql';
+import {rideScooterService} from '@/modules/ride/services/ride.scooter.service';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -86,99 +87,99 @@ const ScanQrCodeComponent = () => {
         return;
       }
 
-      try {
-        setIsLoading(true);
+      // try {
+      //   setIsLoading(true);
 
-        // Check if camera permission is already granted first
-        const currentStatus = await Camera.getCameraPermissionStatus();
-        console.log('Current camera permission status:', currentStatus);
+      //   // Check if camera permission is already granted first
+      //   const currentStatus = await Camera.getCameraPermissionStatus();
+      //   console.log('Current camera permission status:', currentStatus);
 
-        let status = currentStatus;
-        // Only request permission if not already granted
-        if (currentStatus !== 'granted') {
-          console.log('Requesting camera permission...');
-          status = await Camera.requestCameraPermission();
-          console.log('New camera permission status:', status);
-        }
+      //   let status = currentStatus;
+      //   // Only request permission if not already granted
+      //   if (currentStatus !== 'granted') {
+      //     console.log('Requesting camera permission...');
+      //     status = await Camera.requestCameraPermission();
+      //     console.log('New camera permission status:', status);
+      //   }
 
-        if (!isMounted.current) {
-          return;
-        }
-        setCameraAvailable(status === 'granted');
+      //   if (!isMounted.current) {
+      //     return;
+      //   }
+      //   setCameraAvailable(status === 'granted');
 
-        if (status === 'granted') {
-          // Increase timeout to give more time for camera initialization
-          const attemptGetDevices = async () => {
-            if (!isMounted.current) {
-              return;
-            }
+      //   if (status === 'granted') {
+      //     // Increase timeout to give more time for camera initialization
+      //     const attemptGetDevices = async () => {
+      //       if (!isMounted.current) {
+      //         return;
+      //       }
 
-            try {
-              console.log(
-                `Getting available camera devices (attempt ${
-                  retryCount + 1
-                })...`,
-              );
-              const devices = await Camera.getAvailableCameraDevices();
-              console.log('Available devices:', devices.length);
+      //       try {
+      //         console.log(
+      //           `Getting available camera devices (attempt ${
+      //             retryCount + 1
+      //           })...`,
+      //         );
+      //         const devices = await Camera.getAvailableCameraDevices();
+      //         console.log('Available devices:', devices.length);
 
-              if (!isMounted.current) {
-                return;
-              }
+      //         if (!isMounted.current) {
+      //           return;
+      //         }
 
-              if (devices.length === 0) {
-                console.log('No camera devices found');
+      //         if (devices.length === 0) {
+      //           console.log('No camera devices found');
 
-                // If we haven't exceeded max retries, try again after a delay
-                if (retryCount < MAX_RETRIES) {
-                  retryCount++;
-                  console.log(
-                    `Retrying in 1 second (attempt ${retryCount}/${MAX_RETRIES})...`,
-                  );
-                  timeoutId = setTimeout(attemptGetDevices, 1000);
-                  return;
-                } else {
-                  console.log('Max retries exceeded, giving up');
-                  setIsLoading(false);
-                  return;
-                }
-              }
+      //           // If we haven't exceeded max retries, try again after a delay
+      //           if (retryCount < MAX_RETRIES) {
+      //             retryCount++;
+      //             console.log(
+      //               `Retrying in 1 second (attempt ${retryCount}/${MAX_RETRIES})...`,
+      //             );
+      //             timeoutId = setTimeout(attemptGetDevices, 1000);
+      //             return;
+      //           } else {
+      //             console.log('Max retries exceeded, giving up');
+      //             setIsLoading(false);
+      //             return;
+      //           }
+      //         }
 
-              const backCamera = devices.find(d => d.position === 'back');
+      //         const backCamera = devices.find(d => d.position === 'back');
 
-              if (backCamera) {
-                console.log('Back camera found:', backCamera.id);
-                setDevice(backCamera);
-              } else {
-                console.log(
-                  'No back camera found, using first available camera',
-                );
-                // Fallback to the first camera if no back camera is found
-                setDevice(devices[0]);
-              }
+      //         if (backCamera) {
+      //           console.log('Back camera found:', backCamera.id);
+      //           setDevice(backCamera);
+      //         } else {
+      //           console.log(
+      //             'No back camera found, using first available camera',
+      //           );
+      //           // Fallback to the first camera if no back camera is found
+      //           setDevice(devices[0]);
+      //         }
 
-              setIsLoading(false);
-            } catch (error) {
-              console.error('Camera device error:', error);
-              if (isMounted.current) {
-                setIsLoading(false);
-              }
-            }
-          };
+      //         setIsLoading(false);
+      //       } catch (error) {
+      //         console.error('Camera device error:', error);
+      //         if (isMounted.current) {
+      //           setIsLoading(false);
+      //         }
+      //       }
+      //     };
 
-          // Start the first attempt after a short delay
-          timeoutId = setTimeout(attemptGetDevices, 500);
-        } else {
-          console.log('Camera permission not granted');
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Camera permission error:', error);
-        if (isMounted.current) {
-          setCameraAvailable(false);
-          setIsLoading(false);
-        }
-      }
+      //     // Start the first attempt after a short delay
+      //     timeoutId = setTimeout(attemptGetDevices, 500);
+      //   } else {
+      //     console.log('Camera permission not granted');
+      //     setIsLoading(false);
+      //   }
+      // } catch (error) {
+      //   console.error('Camera permission error:', error);
+      //   if (isMounted.current) {
+      //     setCameraAvailable(false);
+      //     setIsLoading(false);
+      //   }
+      // }
     };
 
     fetchCameraDevices();
@@ -289,13 +290,23 @@ const ScanQrCodeComponent = () => {
             },
           });
 
+          console.log('scooter no', response);
+
+          const flespiResponse = await rideScooterService.startScooter(
+            response.registration_number as string,
+          );
+
+          if (!flespiResponse?.id) {
+            return console.log('No flespi id');
+          }
+
           rideStorage.set('currentRideId', `${rideDetails?.id}`);
 
-          await RideService.createRideStep({
-            ride_details_id: rideDetails?.id,
-            steps: Ride_Step_Enum.RideStarted,
-          });
-          navigateToRide();
+          // await RideService.createRideStep({
+          //   ride_details_id: rideDetails?.id,
+          //   steps: Ride_Step_Enum.RideStarted,
+          // });
+          // navigateToRide();
         }
       })
 
