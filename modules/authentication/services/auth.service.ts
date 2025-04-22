@@ -92,7 +92,7 @@ const AuthService = {
         try {
           const result = await axios.post(
             // todo: this url is different for different environments and should be moved to a config file
-            `${config.prodEndpoint}/set-claims`,
+            `${config.devEndpoint}/set-claims`,
             {
               uid: `${uid}`,
               role: role,

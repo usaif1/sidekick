@@ -1322,6 +1322,7 @@ export enum Order_By {
 export type Organizations = {
   __typename?: 'organizations';
   created_at: Scalars['timestamp']['output'];
+  email: Scalars['String']['output'];
   /** An array relationship */
   hubs: Array<Hubs>;
   /** An aggregate relationship */
@@ -1429,6 +1430,7 @@ export type Organizations_Bool_Exp = {
   _not?: InputMaybe<Organizations_Bool_Exp>;
   _or?: InputMaybe<Array<Organizations_Bool_Exp>>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
   hubs?: InputMaybe<Hubs_Bool_Exp>;
   hubs_aggregate?: InputMaybe<Hubs_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -1443,6 +1445,8 @@ export type Organizations_Bool_Exp = {
 
 /** unique or primary key constraints on table "organizations" */
 export enum Organizations_Constraint {
+  /** unique or primary key constraint on columns "email" */
+  OrganizationsEmailKey = 'organizations_email_key',
   /** unique or primary key constraint on columns "id" */
   OrganizationsPkey = 'organizations_pkey'
 }
@@ -1450,6 +1454,7 @@ export enum Organizations_Constraint {
 /** input type for inserting data into table "organizations" */
 export type Organizations_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   hubs?: InputMaybe<Hubs_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -1463,6 +1468,7 @@ export type Organizations_Insert_Input = {
 export type Organizations_Max_Fields = {
   __typename?: 'organizations_max_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
@@ -1472,6 +1478,7 @@ export type Organizations_Max_Fields = {
 export type Organizations_Min_Fields = {
   __typename?: 'organizations_min_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
@@ -1503,6 +1510,7 @@ export type Organizations_On_Conflict = {
 /** Ordering options when selecting data from "organizations". */
 export type Organizations_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
   hubs_aggregate?: InputMaybe<Hubs_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -1522,6 +1530,8 @@ export enum Organizations_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Email = 'email',
+  /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
@@ -1532,6 +1542,7 @@ export enum Organizations_Select_Column {
 /** input type for updating data in table "organizations" */
 export type Organizations_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -1548,6 +1559,7 @@ export type Organizations_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Organizations_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -1557,6 +1569,8 @@ export type Organizations_Stream_Cursor_Value_Input = {
 export enum Organizations_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
   /** column name */
   Id = 'id',
   /** column name */
@@ -4187,6 +4201,7 @@ export type User_Organizations = {
   created_at: Scalars['timestamp']['output'];
   employee_id: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
+  is_active: Scalars['Boolean']['output'];
   /** An object relationship */
   organization: Organizations;
   organization_id: Scalars['uuid']['output'];
@@ -4229,7 +4244,23 @@ export type User_Organizations_Aggregate = {
 };
 
 export type User_Organizations_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<User_Organizations_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<User_Organizations_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<User_Organizations_Aggregate_Bool_Exp_Count>;
+};
+
+export type User_Organizations_Aggregate_Bool_Exp_Bool_And = {
+  arguments: User_Organizations_Select_Column_User_Organizations_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<User_Organizations_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type User_Organizations_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: User_Organizations_Select_Column_User_Organizations_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<User_Organizations_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type User_Organizations_Aggregate_Bool_Exp_Count = {
@@ -4276,6 +4307,7 @@ export type User_Organizations_Bool_Exp = {
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
   employee_id?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_active?: InputMaybe<Boolean_Comparison_Exp>;
   organization?: InputMaybe<Organizations_Bool_Exp>;
   organization_id?: InputMaybe<Uuid_Comparison_Exp>;
   role?: InputMaybe<String_Comparison_Exp>;
@@ -4301,6 +4333,7 @@ export type User_Organizations_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
   organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
@@ -4384,6 +4417,7 @@ export type User_Organizations_Order_By = {
   created_at?: InputMaybe<Order_By>;
   employee_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_active?: InputMaybe<Order_By>;
   organization?: InputMaybe<Organizations_Order_By>;
   organization_id?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
@@ -4408,6 +4442,8 @@ export enum User_Organizations_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsActive = 'is_active',
+  /** column name */
   OrganizationId = 'organization_id',
   /** column name */
   Role = 'role',
@@ -4417,11 +4453,24 @@ export enum User_Organizations_Select_Column {
   UserId = 'user_id'
 }
 
+/** select "user_organizations_aggregate_bool_exp_bool_and_arguments_columns" columns of table "user_organizations" */
+export enum User_Organizations_Select_Column_User_Organizations_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsActive = 'is_active'
+}
+
+/** select "user_organizations_aggregate_bool_exp_bool_or_arguments_columns" columns of table "user_organizations" */
+export enum User_Organizations_Select_Column_User_Organizations_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsActive = 'is_active'
+}
+
 /** input type for updating data in table "user_organizations" */
 export type User_Organizations_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -4441,6 +4490,7 @@ export type User_Organizations_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
@@ -4455,6 +4505,8 @@ export enum User_Organizations_Update_Column {
   EmployeeId = 'employee_id',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
   /** column name */
   OrganizationId = 'organization_id',
   /** column name */
@@ -4481,9 +4533,10 @@ export type Users = {
   first_name?: Maybe<Scalars['String']['output']>;
   full_name: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
+  is_active: Scalars['Boolean']['output'];
   last_name?: Maybe<Scalars['String']['output']>;
   middle_name?: Maybe<Scalars['String']['output']>;
-  phone_number: Scalars['String']['output'];
+  phone_number?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   rides: Array<Ride_Details>;
   /** An aggregate relationship */
@@ -4594,6 +4647,7 @@ export type Users_Bool_Exp = {
   first_name?: InputMaybe<String_Comparison_Exp>;
   full_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_active?: InputMaybe<Boolean_Comparison_Exp>;
   last_name?: InputMaybe<String_Comparison_Exp>;
   middle_name?: InputMaybe<String_Comparison_Exp>;
   phone_number?: InputMaybe<String_Comparison_Exp>;
@@ -4627,6 +4681,7 @@ export type Users_Insert_Input = {
   first_name?: InputMaybe<Scalars['String']['input']>;
   full_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
   last_name?: InputMaybe<Scalars['String']['input']>;
   middle_name?: InputMaybe<Scalars['String']['input']>;
   phone_number?: InputMaybe<Scalars['String']['input']>;
@@ -4698,6 +4753,7 @@ export type Users_Order_By = {
   first_name?: InputMaybe<Order_By>;
   full_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_active?: InputMaybe<Order_By>;
   last_name?: InputMaybe<Order_By>;
   middle_name?: InputMaybe<Order_By>;
   phone_number?: InputMaybe<Order_By>;
@@ -4728,6 +4784,8 @@ export enum Users_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsActive = 'is_active',
+  /** column name */
   LastName = 'last_name',
   /** column name */
   MiddleName = 'middle_name',
@@ -4745,6 +4803,7 @@ export type Users_Set_Input = {
   first_name?: InputMaybe<Scalars['String']['input']>;
   full_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
   last_name?: InputMaybe<Scalars['String']['input']>;
   middle_name?: InputMaybe<Scalars['String']['input']>;
   phone_number?: InputMaybe<Scalars['String']['input']>;
@@ -4767,6 +4826,7 @@ export type Users_Stream_Cursor_Value_Input = {
   first_name?: InputMaybe<Scalars['String']['input']>;
   full_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
   last_name?: InputMaybe<Scalars['String']['input']>;
   middle_name?: InputMaybe<Scalars['String']['input']>;
   phone_number?: InputMaybe<Scalars['String']['input']>;
@@ -4787,6 +4847,8 @@ export enum Users_Update_Column {
   FullName = 'full_name',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
   /** column name */
   LastName = 'last_name',
   /** column name */
@@ -5963,15 +6025,6 @@ export type Wallets_Variance_Order_By = {
   security_deposit?: InputMaybe<Order_By>;
 };
 
-export type CheckUserExistsQueryVariables = Exact<{
-  employee_id?: InputMaybe<Scalars['String']['input']>;
-  phone_number?: InputMaybe<Scalars['String']['input']>;
-  organization_id?: InputMaybe<Scalars['uuid']['input']>;
-}>;
-
-
-export type CheckUserExistsQuery = { __typename?: 'query_root', user_organizations: Array<{ __typename?: 'user_organizations', employee_id: string, user_id: any }> };
-
 export type FetchAllOrganisationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -6023,7 +6076,7 @@ export type CreateRideStepMutation = { __typename?: 'mutation_root', insert_ride
 export type FetchCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', email: string, id: any, full_name: string, phone_number: string, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', id: any, name: string } }> }> };
+export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', email: string, id: any, full_name: string, phone_number?: string | null, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', id: any, name: string } }> }> };
 
 export type UpdateUserMutationVariables = Exact<{
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -6078,7 +6131,6 @@ export type UpdateWalletSecurityDepositMutationVariables = Exact<{
 export type UpdateWalletSecurityDepositMutation = { __typename?: 'mutation_root', update_wallets_by_pk?: { __typename?: 'wallets', id: any, security_deposit: any, created_at: any } | null };
 
 
-export const CheckUserExistsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"checkUserExists"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"employee_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone_number"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organization_id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user_organizations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"employee_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"employee_id"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"user"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"phone_number"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone_number"}}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"organization_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organization_id"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employee_id"}},{"kind":"Field","name":{"kind":"Name","value":"user_id"}}]}}]}}]} as unknown as DocumentNode<CheckUserExistsQuery, CheckUserExistsQueryVariables>;
 export const FetchAllOrganisationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllOrganisations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<FetchAllOrganisationsQuery, FetchAllOrganisationsQueryVariables>;
 export const CreateRideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ride_details_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_details_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRideMutation, CreateRideMutationVariables>;
 export const UpdateRideEndTimeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateRideEndTime"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"end_time"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"timestamp"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"total_cost"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"numeric"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_ride_details_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"end_time"},"value":{"kind":"Variable","name":{"kind":"Name","value":"end_time"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"total_cost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"total_cost"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<UpdateRideEndTimeMutation, UpdateRideEndTimeMutationVariables>;

@@ -71,13 +71,14 @@ const OTPForm: React.FC = () => {
 
       return response;
     } catch (err) {
-      stopLoading('otp-verification');
       showToast({
         type: 'error',
         text1: 'Error',
         text2: 'Incorrect OTP. Please try again.',
         position: 'top',
       });
+    } finally {
+      stopLoading('otp-verification');
     }
   };
 
