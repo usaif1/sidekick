@@ -14,7 +14,6 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "query checkUserExists($employee_id: String = \"\", $phone_number: String = \"\", $organization_id: uuid = \"\") {\n  user_organizations(\n    where: {employee_id: {_eq: $employee_id}, user: {phone_number: {_eq: $phone_number}}, organization_id: {_eq: $organization_id}}\n  ) {\n    employee_id\n    user_id\n  }\n}": typeof types.CheckUserExistsDocument,
     "query fetchAllOrganisations {\n  organizations {\n    id\n    name\n  }\n}": typeof types.FetchAllOrganisationsDocument,
     "mutation createRide($object: ride_details_insert_input = {}) {\n  insert_ride_details_one(object: $object) {\n    created_at\n    id\n  }\n}": typeof types.CreateRideDocument,
     "mutation updateRideEndTime($id: uuid = \"\", $end_time: timestamp = \"\", $total_cost: numeric = \"\") {\n  update_ride_details_by_pk(\n    pk_columns: {id: $id}\n    _set: {end_time: $end_time, total_cost: $total_cost}\n  ) {\n    id\n    end_time\n    created_at\n  }\n}": typeof types.UpdateRideEndTimeDocument,
@@ -32,7 +31,6 @@ type Documents = {
     "mutation updateWalletSecurityDeposit($security_deposit: numeric = \"\", $id: uuid = \"\") {\n  update_wallets_by_pk(\n    pk_columns: {id: $id}\n    _inc: {security_deposit: $security_deposit}\n  ) {\n    id\n    security_deposit\n    created_at\n  }\n}": typeof types.UpdateWalletSecurityDepositDocument,
 };
 const documents: Documents = {
-    "query checkUserExists($employee_id: String = \"\", $phone_number: String = \"\", $organization_id: uuid = \"\") {\n  user_organizations(\n    where: {employee_id: {_eq: $employee_id}, user: {phone_number: {_eq: $phone_number}}, organization_id: {_eq: $organization_id}}\n  ) {\n    employee_id\n    user_id\n  }\n}": types.CheckUserExistsDocument,
     "query fetchAllOrganisations {\n  organizations {\n    id\n    name\n  }\n}": types.FetchAllOrganisationsDocument,
     "mutation createRide($object: ride_details_insert_input = {}) {\n  insert_ride_details_one(object: $object) {\n    created_at\n    id\n  }\n}": types.CreateRideDocument,
     "mutation updateRideEndTime($id: uuid = \"\", $end_time: timestamp = \"\", $total_cost: numeric = \"\") {\n  update_ride_details_by_pk(\n    pk_columns: {id: $id}\n    _set: {end_time: $end_time, total_cost: $total_cost}\n  ) {\n    id\n    end_time\n    created_at\n  }\n}": types.UpdateRideEndTimeDocument,
@@ -64,10 +62,6 @@ const documents: Documents = {
  */
 export function graphql(source: string): unknown;
 
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "query checkUserExists($employee_id: String = \"\", $phone_number: String = \"\", $organization_id: uuid = \"\") {\n  user_organizations(\n    where: {employee_id: {_eq: $employee_id}, user: {phone_number: {_eq: $phone_number}}, organization_id: {_eq: $organization_id}}\n  ) {\n    employee_id\n    user_id\n  }\n}"): (typeof documents)["query checkUserExists($employee_id: String = \"\", $phone_number: String = \"\", $organization_id: uuid = \"\") {\n  user_organizations(\n    where: {employee_id: {_eq: $employee_id}, user: {phone_number: {_eq: $phone_number}}, organization_id: {_eq: $organization_id}}\n  ) {\n    employee_id\n    user_id\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

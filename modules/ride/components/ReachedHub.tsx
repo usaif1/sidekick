@@ -17,6 +17,7 @@ import {useThemeStore} from '@/theme/store';
 import {RideService, WalletService} from '@/globalService';
 import rideStorage from '../storage';
 import {Ride_Step_Enum} from '@/generated/graphql';
+import {rideScooterService} from '../services/ride.scooter.service';
 
 const {
   theme: {colors},
@@ -51,7 +52,6 @@ const ReachedHub: React.FC = () => {
     try {
       await RideService.createRideStep({
         ride_details_id: currentRideId,
-        // steps: 'RIDE_ENDED',
         steps: Ride_Step_Enum.RideEnded,
       });
       await RideService.updateRideEndTime({
@@ -63,6 +63,13 @@ const ReachedHub: React.FC = () => {
       await deductMoneyFromWallet();
 
       await WalletService.fetchUserWallet();
+
+      const scooterId = rideStorage.getString('currentScooterId');
+
+      if (scooterId) {
+        rideScooterService.stopScooter(scooterId);
+        rideStorage.delete('currentScooterId');
+      }
 
       rideStorage.delete('currentRideId');
     } catch (error) {
