@@ -145,7 +145,7 @@ const UserDetails: React.FC = () => {
           totalMinutes={
             completedRides?.length
               ? RideService.getTotalRideDuration(completedRides)?.totalMinutes
-              : 3
+              : 0
           }
           totalKilometers={0}
           // profileImage={profileImage} // Uncomment if you have a profile image

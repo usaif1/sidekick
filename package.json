@@ -18,7 +18,8 @@
     "sign-config": "cd android && ./gradlew signingReport && cd ..",
     "postinstall": "patch-package",
     "install-easebuzz": "npm install $(npm pack ./react-native-easebuzz-kit | tail -1) --legacy-peer-deps",
-    "install-modules": "npm install --legacy-peer-deps"
+    "install-modules": "npm install --legacy-peer-deps",
+    "build-release": "npx react-native build-android --mode=release"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.1.1",
