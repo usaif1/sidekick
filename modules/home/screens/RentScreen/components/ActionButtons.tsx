@@ -10,6 +10,7 @@ import {useThemeStore} from '@/globalStore';
 import NearestHubIcon from '../../../assets/nearestHubIcon.svg';
 import ScanIcon from '../../../assets/scanIcon.svg';
 import {ButtonSmall, ButtonWithIcon, Divider} from '@/components';
+import {rideScooterService} from '@/globalService';
 
 type Props = {
   containerStyles: ViewStyle;
@@ -28,9 +29,17 @@ const ActionButtons: React.FC<Props> = ({
 }) => {
   return (
     <View style={[containerStyles]}>
-      <Pressable onPress={onSelectNearestHub} style={styles.nearestHubContainer}>
+      <Pressable
+        onPress={onSelectNearestHub}
+        style={styles.nearestHubContainer}>
         <NearestHubIcon />
-        <ButtonSmall textColor="highlight">Nearest Hub</ButtonSmall>
+        <ButtonSmall
+          onPress={() => {
+            rideScooterService.stopScooter('6310215');
+          }}
+          textColor="highlight">
+          Nearest Hub
+        </ButtonSmall>
       </Pressable>
       <Divider height={3.2} />
       <ButtonWithIcon

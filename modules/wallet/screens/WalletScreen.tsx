@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {View} from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -36,9 +36,11 @@ const WalletScreen: React.FC = () => {
     navigation.navigate('walletNavigator', {screen: 'AddFundsScreen'});
   };
 
-  useEffect(() => {
-    WalletService.fetchUserWallet();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      WalletService.fetchUserWallet();
+    }, []),
+  );
 
   useFocusEffect(
     useCallback(() => {
