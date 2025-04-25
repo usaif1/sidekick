@@ -83,6 +83,36 @@ const ScanQrCodeComponent = () => {
     navigator.navigate('rideNavigator');
   };
 
+  const startScooterRecursive = async (response: any) => {
+    const flespiResponse = await rideScooterService.startScooter(
+      response?.registration_number as string,
+    );
+
+    if (flespiResponse?.response) {
+      const rideDetails = await RideService.startRide({
+        object: {
+          user_id: user?.id,
+          scooter_id: response.id,
+          start_hub_id: response.hub_id,
+          start_time: DateTime.now(),
+        },
+      });
+
+      console.log('scooter no', response);
+      rideStorage.set('currentScooterId', `${response.registration_number}`);
+      rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+      await RideService.createRideStep({
+        ride_details_id: rideDetails?.id,
+        steps: Ride_Step_Enum.RideStarted,
+      });
+      navigateToRide();
+      return true;
+    }
+
+    startScooterRecursive(response?.registration_number as string);
+  };
+
   const handleContinue = () => {
     if (!validateScooterCode()) {
       return null;
@@ -93,34 +123,42 @@ const ScanQrCodeComponent = () => {
     })
       .then(async response => {
         if (!response) {
+          setScooterCodeError('No scooter found with this code');
+
           return console.log('Please check reg no');
         } else {
-          const rideDetails = await RideService.startRide({
-            object: {
-              user_id: user?.id,
-              scooter_id: response.id,
-              start_hub_id: response.hub_id,
-              start_time: DateTime.now(),
-            },
-          });
+          // setScooterCodeError('');
+          // const flespiResponse = await rideScooterService.startScooter(
+          //   response.registration_number as string,
+          // );
 
-          console.log('scooter no', response);
+          // if (!flespiResponse?.error) {
+          //   return console.log('No flespi id');
+          // }
 
-          const flespiResponse = await rideScooterService.startScooter(
-            response.registration_number as string,
-          );
+          await startScooterRecursive(response as any);
 
-          if (!flespiResponse?.id) {
-            return console.log('No flespi id');
-          }
+          // const rideDetails = await RideService.startRide({
+          //   object: {
+          //     user_id: user?.id,
+          //     scooter_id: response.id,
+          //     start_hub_id: response.hub_id,
+          //     start_time: DateTime.now(),
+          //   },
+          // });
 
-          rideStorage.set('currentRideId', `${rideDetails?.id}`);
+          // console.log('scooter no', response);
+          // rideStorage.set(
+          //   'currentScooterId',
+          //   `${response.registration_number}`,
+          // );
+          // rideStorage.set('currentRideId', `${rideDetails?.id}`);
 
-          await RideService.createRideStep({
-            ride_details_id: rideDetails?.id,
-            steps: Ride_Step_Enum.RideStarted,
-          });
-          navigateToRide();
+          // await RideService.createRideStep({
+          //   ride_details_id: rideDetails?.id,
+          //   steps: Ride_Step_Enum.RideStarted,
+          // });
+          // navigateToRide();
         }
       })
 
@@ -149,7 +187,10 @@ const ScanQrCodeComponent = () => {
               </P2>
               <Divider height={12} />
               <View style={styles.cameraContainer}>
-                {/* <CameraComponent /> */}
+                <CameraComponent
+                  scooterCode={scooterCode}
+                  setScooterCode={setScooterCode}
+                />
               </View>
             </View>
 
@@ -174,6 +215,7 @@ const ScanQrCodeComponent = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 ref={inputRef}
+                maxLength={7}
                 onFocus={() => setIsKeyboardFocused(true)}
                 onBlur={() => {
                   // We'll rely on the Keyboard listeners instead
@@ -213,7 +255,13 @@ const ScanQrCodeComponent = () => {
             </View>
           </TouchableWithoutFeedback>
           {scooterCodeError ? (
-            <Text style={styles.errorText}>{scooterCodeError}</Text>
+            <View
+              style={{
+                alignItems: 'flex-start',
+                paddingLeft: 5,
+              }}>
+              <Text style={styles.errorText}>{scooterCodeError}</Text>
+            </View>
           ) : null}
         </View>
       </View>

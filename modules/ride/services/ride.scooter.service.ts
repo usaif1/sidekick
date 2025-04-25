@@ -49,7 +49,7 @@ export const rideScooterService = {
         {
           name: 'custom',
           properties: {
-            text: 'setdigout 1 120',
+            text: 'setdigout 1 900',
           },
           timeout: 60,
         },
@@ -77,7 +77,7 @@ export const rideScooterService = {
           properties: {
             text: 'setdigout 0',
           },
-          timeout: 10,
+          timeout: 60,
         },
       ]),
     };

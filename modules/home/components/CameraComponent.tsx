@@ -8,7 +8,7 @@ import {ScaledSheet} from 'react-native-size-matters';
 import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
 
 // components
-import {ButtonTextSm} from '@/components';
+import {ButtonTextSm, showToast} from '@/components';
 
 // services and storage
 import {rideStorage} from '@/globalStorage';
@@ -16,10 +16,18 @@ import {RideService, rideScooterService} from '@/globalService';
 
 // types and enums
 import {Ride_Step_Enum} from '@/generated/graphql';
+import {useNavigation} from '@react-navigation/native';
 
 const {colors} = useThemeStore.getState().theme;
 
-const CameraComponent = () => {
+interface Props {
+  scooterCode: string;
+  setScooterCode: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
+  const navigator = useNavigation();
+
   const {closeModal} = useGlobalStore();
   const {user} = useUserStore();
 
@@ -38,47 +46,103 @@ const CameraComponent = () => {
 
   const handleCodeScanned = async (codes: any) => {
     const scannedValue = codes[0]?.value;
-    rideStorage.set('currentScooterId', `${scannedValue}`);
-
-    RideService.fetchScooterByRegNo({
-      regNo: scannedValue,
-    })
-      .then(async response => {
-        if (!response) {
-          return console.log('Please check reg no');
-        } else {
-          const rideDetails = await RideService.startRide({
-            object: {
-              user_id: user?.id,
-              scooter_id: response.id,
-              start_hub_id: response.hub_id,
-              start_time: DateTime.now(),
-            },
-          });
-
-          console.log('scooter no', response);
-
-          const flespiResponse = await rideScooterService.startScooter(
-            response.registration_number as string,
-          );
-
-          if (!flespiResponse?.id) {
-            return console.log('No flespi id');
-          }
-
-          rideStorage.set('currentRideId', `${rideDetails?.id}`);
-
-          await RideService.createRideStep({
-            ride_details_id: rideDetails?.id,
-            steps: Ride_Step_Enum.RideStarted,
-          });
-          navigateToRide();
-        }
+    if (!scooterCode) {
+      setScooterCode(scannedValue);
+      rideStorage.set('currentScooterId', `${scannedValue}`);
+      RideService.fetchScooterByRegNo({
+        regNo: scannedValue,
       })
+        .then(async response => {
+          if (!response) {
+            // setScooterCodeError('No scooter found with this code');
 
-      .catch(err => {
-        console.log('Error starting ride', err?.message);
-      });
+            return console.log('Please check reg no');
+          } else {
+            // setScooterCodeError('');
+            const flespiResponse = await rideScooterService.startScooter(
+              response.registration_number as string,
+            );
+
+            if (!flespiResponse?.id) {
+              return console.log('No flespi id');
+            }
+            const rideDetails = await RideService.startRide({
+              object: {
+                user_id: user?.id,
+                scooter_id: response.id,
+                start_hub_id: response.hub_id,
+                start_time: DateTime.now(),
+              },
+            });
+
+            console.log('scooter no', response);
+            rideStorage.set(
+              'currentScooterId',
+              `${response.registration_number}`,
+            );
+            rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+            await RideService.createRideStep({
+              ride_details_id: rideDetails?.id,
+              steps: Ride_Step_Enum.RideStarted,
+            });
+            navigateToRide();
+          }
+        })
+
+        .catch(err => {
+          console.log('Error starting ride', err?.message);
+        });
+    }
+
+    // RideService.fetchScooterByRegNo({
+    //   regNo: scannedValue,
+    // })
+    //   .then(async response => {
+    //     if (!response) {
+    //       showToast({
+    //         text1: 'Error fetching scooter',
+    //         type: 'error',
+    //       });
+    //       return console.log('Please check reg no');
+    //     } else {
+    //       const rideDetails = await RideService.startRide({
+    //         object: {
+    //           user_id: user?.id,
+    //           scooter_id: response.id,
+    //           start_hub_id: response.hub_id,
+    //           start_time: DateTime.now(),
+    //         },
+    //       });
+
+    //       console.log('scooter no', response);
+
+    //       const flespiResponse = await rideScooterService.startScooter(
+    //         response.registration_number as string,
+    //       );
+
+    //       if (!flespiResponse?.id) {
+    //         return console.log('No flespi id');
+    //       }
+
+    //       rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+    //       await RideService.createRideStep({
+    //         ride_details_id: rideDetails?.id,
+    //         steps: Ride_Step_Enum.RideStarted,
+    //       });
+    //       navigateToRide();
+    //     }
+    //   })
+
+    //   .catch(err => {
+    //     showToast({
+    //       text1: 'Error starting ride',
+    //       text2: err?.message,
+    //       type: 'error',
+    //     });
+    //     console.log('Error starting ride', err?.message);
+    //   });
   };
 
   useEffect(() => {

@@ -46,6 +46,16 @@ const ReachedHub: React.FC = () => {
     setModalCloseButton(null);
   };
 
+  const stopScooterRecursive = async (scooterId: string) => {
+    const flespiResponse = await rideScooterService.stopScooter(scooterId);
+
+    if (flespiResponse?.result) {
+      return true;
+    }
+
+    stopScooterRecursive(scooterId);
+  };
+
   const endRide = async () => {
     const currentRideId = rideStorage.getString('currentRideId');
 
@@ -65,11 +75,11 @@ const ReachedHub: React.FC = () => {
       await WalletService.fetchUserWallet();
 
       const scooterId = rideStorage.getString('currentScooterId');
-
+      console.log('scooterId', scooterId);
       if (scooterId) {
-        rideScooterService.stopScooter(scooterId);
-        rideStorage.delete('currentScooterId');
+        stopScooterRecursive(scooterId);
       }
+      rideStorage.delete('currentScooterId');
 
       rideStorage.delete('currentRideId');
     } catch (error) {

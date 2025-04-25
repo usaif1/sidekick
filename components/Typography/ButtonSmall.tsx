@@ -1,5 +1,5 @@
 // dependencies
-import {Text, TextStyle} from 'react-native';
+import {Pressable, Text, TextStyle} from 'react-native';
 import React, {ReactNode} from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
 
@@ -13,6 +13,7 @@ type Props = {
   children: ReactNode;
   textColor?: ColorSelector;
   customStyles?: TextStyle;
+  onPress: () => void;
 };
 
 const {theme} = useThemeStore.getState();
@@ -21,16 +22,19 @@ const ButtonSmall: React.FC<Props> = ({
   children,
   textColor = 'textPrimary',
   customStyles,
+  onPress,
 }) => {
   return (
-    <Text
-      style={[
-        styles.textStyle,
-        {color: theme.colors[textColor]},
-        customStyles,
-      ]}>
-      {children}
-    </Text>
+    <Pressable onPress={onPress}>
+      <Text
+        style={[
+          styles.textStyle,
+          {color: theme.colors[textColor]},
+          customStyles,
+        ]}>
+        {children}
+      </Text>
+    </Pressable>
   );
 };
 
