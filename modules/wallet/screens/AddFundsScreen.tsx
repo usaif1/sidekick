@@ -10,7 +10,8 @@ import {TextInput} from 'react-native-gesture-handler';
 import {ms, ScaledSheet} from 'react-native-size-matters';
 import axios from 'axios';
 // @ts-ignore
-import EasebuzzCheckout from 'react-native-easebuzz-kit';
+// import EasebuzzCheckout from 'react-native-easebuzz-kit';
+import RazorpayCheckout from 'react-native-razorpay';
 
 // store
 import {
@@ -55,6 +56,14 @@ const AddFundsScreen = () => {
 
   const [securityDeposit, setSecurityDeposit] = useState<number>(0);
 
+  function rupeesToPaise(rupees: number) {
+    if (typeof rupees !== 'number') {
+      throw new Error('Input must be a number');
+    }
+
+    return Math.round(rupees * 100);
+  }
+
   // Handle quick amount selection
   const handleQuickAmountSelect = (value: number) => {
     setRechargeAmount(value.toString());
@@ -76,10 +85,10 @@ const AddFundsScreen = () => {
     startLoading('add-funds');
     // Validate amount
     try {
-      const clientSecret = await axios.post(
+      const razorpayData = await axios.post(
         `${config.prodEndpoint}/initiate-payment`,
         {
-          amount: parseFloat(rechargeAmount) + securityDeposit,
+          amount: rupeesToPaise(parseFloat(rechargeAmount) + securityDeposit),
           email: user?.email || 'default@mail.com',
           phone: parseFloat(
             user?.phone_number?.replace(/^(\+91)/, '') || '9999999999',
@@ -87,14 +96,18 @@ const AddFundsScreen = () => {
           firstname: user?.full_name || 'default',
         },
       );
-      const options = {
-        access_key: clientSecret.data?.data,
-        pay_mode: 'test',
-      };
 
-      EasebuzzCheckout.open(options)
-        .then((data: any) => {
-          //handle the payment success & failed response here
+      RazorpayCheckout.open({
+        amount: razorpayData?.data?.amount,
+        currency: ' INR',
+        key: 'rzp_live_zWdsxCG2dlKXBX',
+        description: 'wallet recharge',
+        name: 'SideKick',
+        order_id: razorpayData?.data?.id,
+      })
+        .then(data => {
+          // handle success
+          console.log(`Success: ${data.razorpay_payment_id}`);
           if (securityDeposit) {
             WalletService.updateWalletSecurityDeposit({
               id: userWallet?.id,
@@ -102,26 +115,60 @@ const AddFundsScreen = () => {
             });
           }
 
-          if (data.result === 'payment_successfull') {
+          if (data.razorpay_payment_id) {
             WalletService.updateWalletBalance({
               id: userWallet?.id,
               balance: parseFloat(rechargeAmount),
             }).then(() => {
+              stopLoading('add-funds');
               WalletService.fetchUserWallet();
+              setModalComponent(PaymentSuccess);
               openModal();
             });
           } else {
+            stopLoading('add-funds');
             setModalComponent(PaymentFailure);
             openModal();
           }
         })
-        .catch((error: any) => {
-          //handle sdk failure issue here
-          console.log('SDK Error:', error);
-        })
-        .finally(() => {
+        .catch(error => {
+          // handle failure
           stopLoading('add-funds');
+          console.log(`Error: ${error.code} | ${error.description}`);
+          setModalComponent(PaymentFailure);
+          openModal();
         });
+
+      // EasebuzzCheckout.open(options)
+      //   .then((data: any) => {
+      //     //handle the payment success & failed response here
+      // if (securityDeposit) {
+      //   WalletService.updateWalletSecurityDeposit({
+      //     id: userWallet?.id,
+      //     security_deposit: securityDeposit,
+      //   });
+      // }
+
+      // if (data.result === 'payment_successfull') {
+      //   WalletService.updateWalletBalance({
+      //     id: userWallet?.id,
+      //     balance: parseFloat(rechargeAmount),
+      //   }).then(() => {
+      //     WalletService.fetchUserWallet();
+      //     openModal();
+      //   });
+      // } else {
+      //   setModalComponent(PaymentFailure);
+      //   openModal();
+      // }
+      // })
+      //   .catch((error: any) => {
+      //     //handle sdk failure issue here
+      //     console.log('SDK Error:', error);
+      //   })
+      //   .finally(() => {
+      //     stopLoading('add-funds');
+      //   });
     } catch (error) {
       // @ts-ignore
       console.log('error adding funds', error?.message);

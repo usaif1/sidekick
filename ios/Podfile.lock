@@ -65,6 +65,7 @@ PODS:
   - hermes-engine (0.78.0):
     - hermes-engine/Pre-built (= 0.78.0)
   - hermes-engine/Pre-built (0.78.0)
+  - razorpay-pod (1.4.0)
   - RCT-Folly (2024.11.18.00):
     - boost
     - DoubleConversion
@@ -1351,6 +1352,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-razorpay (2.3.0):
+    - razorpay-pod
+    - React
   - react-native-render-html (6.3.4):
     - React-Core
   - react-native-safe-area-context (5.3.0):
@@ -2066,6 +2070,7 @@ DEPENDENCIES:
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
+  - react-native-razorpay (from `../node_modules/react-native-razorpay`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -2122,6 +2127,7 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUtilities
     - GTMSessionFetcher
+    - razorpay-pod
     - RecaptchaInterop
     - SocketRocket
 
@@ -2215,6 +2221,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
+  react-native-razorpay:
+    :path: "../node_modules/react-native-razorpay"
   react-native-render-html:
     :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
@@ -2321,6 +2329,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   GTMSessionFetcher: 75b671f9e551e4c49153d4c4f8659ef4f559b970
   hermes-engine: b417d2b2aee3b89b58e63e23a51e02be91dc876d
+  razorpay-pod: cb5b5439697bdda9c57d68a92b3e5b0ce1d2f2f3
   RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
   RCTDeprecation: b2eecf2d60216df56bc5e6be5f063826d3c1ee35
   RCTRequired: 78522de7dc73b81f3ed7890d145fa341f5bb32ea
@@ -2356,6 +2365,7 @@ SPEC CHECKSUMS:
   react-native-google-maps: 7cc1184afe41fbd15a3dffd53c924819f6587b69
   react-native-maps: ee1e65647460c3d41e778071be5eda10e3da6225
   react-native-mmkv: bca4733c90d21ce8b1629860213504cf40ff1dbf
+  react-native-razorpay: 0272dd684bc9148828c54a72e05059e3e2e8b813
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: d2bad4bfc00dcefabbdccefa9544933bd36756f8
   react-native-webview: fd1725921d42933f9f1be20d60e2963f643b725d

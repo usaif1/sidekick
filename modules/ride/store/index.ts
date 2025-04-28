@@ -52,6 +52,7 @@ type RideActions = {
 
   // ride history
   setRideHistory: (rides: FetchCompletedRidesQuery['ride_details']) => void;
+  resetRideStore: () => void;
 };
 
 // Separate state from actions
