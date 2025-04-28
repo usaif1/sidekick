@@ -7,6 +7,7 @@ import useAuthStore from '../store';
 import {initializeClient} from '@/utils/client';
 import {showToast} from '@/components';
 import {config} from '@/config';
+import {useRideStore, useUserStore, useWalletStore} from '@/globalStore';
 
 const {
   setConfirmationResult,
@@ -17,6 +18,10 @@ const {
   setAuthToken,
   setOrganisations,
 } = useAuthStore.getState();
+
+const {resetRideStore} = useRideStore.getState();
+const {resetUserStore} = useUserStore.getState();
+const {resetWalletStore} = useWalletStore.getState();
 
 const AuthService = {
   sendOTP: async function (phoneNumber: string, forceResend: boolean) {
@@ -56,6 +61,9 @@ const AuthService = {
     try {
       await auth().signOut();
       resetAuthStore();
+      resetRideStore();
+      resetUserStore();
+      resetWalletStore();
     } catch (error) {
       // Toast.show({
       //   type: 'error',
@@ -92,7 +100,7 @@ const AuthService = {
         try {
           const result = await axios.post(
             // todo: this url is different for different environments and should be moved to a config file
-            `${config.devEndpoint}/set-claims`,
+            `${config.prodEndpoint}/set-claims`,
             {
               uid: `${uid}`,
               role: role,
