@@ -11,6 +11,7 @@ import NearestHubIcon from '../../../assets/nearestHubIcon.svg';
 import ScanIcon from '../../../assets/scanIcon.svg';
 import {ButtonSmall, ButtonWithIcon, Divider} from '@/components';
 import {rideScooterService} from '@/globalService';
+import {ensureBluetoothOnAndScan} from '@/utils/bluetooth';
 
 type Props = {
   containerStyles: ViewStyle;
@@ -27,6 +28,10 @@ const ActionButtons: React.FC<Props> = ({
   handleOpenModal,
   onSelectNearestHub,
 }) => {
+  const scanForDevices = () => {
+    ensureBluetoothOnAndScan();
+  };
+
   return (
     <View style={[containerStyles]}>
       <Pressable
@@ -44,7 +49,7 @@ const ActionButtons: React.FC<Props> = ({
       <Divider height={3.2} />
       <ButtonWithIcon
         variant="primary"
-        onPress={handleOpenModal}
+        onPress={scanForDevices}
         IconComponent={ScanIcon}>
         Unlock
       </ButtonWithIcon>

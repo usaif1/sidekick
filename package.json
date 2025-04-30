@@ -19,7 +19,8 @@
     "postinstall": "patch-package",
     "install-easebuzz": "npm install $(npm pack ./react-native-easebuzz-kit | tail -1) --legacy-peer-deps",
     "install-modules": "npm install --legacy-peer-deps",
-    "build-release": "npx react-native build-android --mode=release"
+    "build-release": "npx react-native build-android --mode=release",
+    "reactotron-android": "adb reverse tcp:9090 tcp:9090"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.1.1",
@@ -43,6 +44,8 @@
     "react": "19.0.0",
     "react-hook-form": "^7.54.2",
     "react-native": "0.78.0",
+    "react-native-ble-plx": "^3.5.0",
+    "react-native-bluetooth-state-manager": "^1.3.5",
     "react-native-camera": "^4.2.1",
     "react-native-device-info": "^14.0.4",
     "react-native-dotenv": "^3.4.11",
@@ -56,7 +59,7 @@
     "react-native-mmkv": "^3.2.0",
     "react-native-modal": "^14.0.0-rc.0",
     "react-native-paper": "^5.13.1",
-    "react-native-permissions": "^5.2.6",
+    "react-native-permissions": "^5.4.0",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-razorpay": "^2.3.0",
     "react-native-reanimated": "^3.17.1",

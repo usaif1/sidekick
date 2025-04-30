@@ -60,17 +60,17 @@ const RentScreen: React.FC = () => {
     );
   };
 
-  useEffect(() => {
-    const initializePermissions = async () => {
-      const {locationGranted} = await requestPermissions();
-      if (locationGranted) {
-        getCurrentLocation();
-      }
-    };
+  // useEffect(() => {
+  //   const initializePermissions = async () => {
+  //     const {locationGranted} = await requestPermissions();
+  //     if (locationGranted) {
+  //       getCurrentLocation();
+  //     }
+  //   };
 
-    initializePermissions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setLocation]);
+  //   initializePermissions();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [setLocation]);
 
   useEffect(() => {
     authUtils.setBottomSheetView('welcome');
