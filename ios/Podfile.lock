@@ -12,7 +12,7 @@ PODS:
     - FirebaseAuth (~> 11.10.0)
   - Firebase/CoreOnly (11.10.0):
     - FirebaseCore (~> 11.10.0)
-  - FirebaseAppCheckInterop (11.11.0)
+  - FirebaseAppCheckInterop (11.12.0)
   - FirebaseAuth (11.10.0):
     - FirebaseAppCheckInterop (~> 11.0)
     - FirebaseAuthInterop (~> 11.0)
@@ -22,7 +22,7 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GTMSessionFetcher/Core (< 5.0, >= 3.4)
     - RecaptchaInterop (~> 101.0)
-  - FirebaseAuthInterop (11.11.0)
+  - FirebaseAuthInterop (11.12.0)
   - FirebaseCore (11.10.0):
     - FirebaseCoreInternal (~> 11.10.0)
     - GoogleUtilities/Environment (~> 8.0)
@@ -1763,7 +1763,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNPermissions (5.3.0):
+  - RNPermissions (5.4.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2316,9 +2316,9 @@ SPEC CHECKSUMS:
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 6fe148afcef2e3213e484758e3459609d40d57f5
   Firebase: 1fe1c0a7d9aaea32efe01fbea5f0ebd8d70e53a2
-  FirebaseAppCheckInterop: f23709c9ce92d810aa53ff4ce12ad3e666a3c7be
+  FirebaseAppCheckInterop: 73b173e5ec45192e2d522ad43f526a82ad10b852
   FirebaseAuth: c4146bdfdc87329f9962babd24dae89373f49a32
-  FirebaseAuthInterop: ac22ed402c2f4e3a8c63ebd3278af9a06073c1be
+  FirebaseAuthInterop: b583210c039a60ed3f1e48865e1f3da44a796595
   FirebaseCore: 8344daef5e2661eb004b177488d6f9f0f24251b7
   FirebaseCoreExtension: 6f357679327f3614e995dc7cf3f2d600bdc774ac
   FirebaseCoreInternal: ef4505d2afb1d0ebbc33162cb3795382904b5679
@@ -2402,7 +2402,7 @@ SPEC CHECKSUMS:
   RNFBApp: 57aef1ee0e7195a8728f8923bfbc2916298ccb3d
   RNFBAuth: fb72a5c5ba815a286ab78297d868815d6a2079f0
   RNGestureHandler: 3ca128bc8b8f15f04ba00dbbd05b90df34404b05
-  RNPermissions: ae995ed019180bf1098894ad99cc4d0c4518a7c0
+  RNPermissions: 72bba9ff00ad8f142aa38923574a6f291a420402
   RNReanimated: cf392636d67c3e65ecda35df3e0632ada6b1691b
   RNScreens: ef58b1f3077f7ee62b58f958536ee5ccb52d96b5
   RNSVG: 05776cf3f0d52d3f8e7ebee34b2189da7b8638ff
