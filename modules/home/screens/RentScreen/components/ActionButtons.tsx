@@ -1,16 +1,14 @@
-// dependencies
+import React, {useState} from 'react';
 import {Pressable, View, ViewStyle} from 'react-native';
-import React from 'react';
 import {ScaledSheet} from 'react-native-size-matters';
+import {BluetoothDevice} from 'react-native-bluetooth-classic';
 
-// stores
 import {useThemeStore} from '@/globalStore';
-
-// components
 import NearestHubIcon from '../../../assets/nearestHubIcon.svg';
 import ScanIcon from '../../../assets/scanIcon.svg';
 import {ButtonSmall, ButtonWithIcon, Divider} from '@/components';
 import {rideScooterService} from '@/globalService';
+import {discoverDevices} from '../../../utilis/bluetoothClassicService';
 
 type Props = {
   containerStyles: ViewStyle;
@@ -27,6 +25,21 @@ const ActionButtons: React.FC<Props> = ({
   handleOpenModal,
   onSelectNearestHub,
 }) => {
+  const [devices, setDevices] = useState<BluetoothDevice[]>([]);
+
+  const handleScanAndConnect = async () => {
+    const bondedDevices = await discoverDevices();
+    // setDevices(bondedDevices);
+
+    // if (bondedDevices.length === 0) {
+    //   console.log('No bonded devices found');
+    //   return;
+    // }
+
+    // const firstDevice = bondedDevices[0]; // Replace with UI selection if needed
+    // await connectToDevice(firstDevice);
+  };
+
   return (
     <View style={[containerStyles]}>
       <Pressable
@@ -44,7 +57,7 @@ const ActionButtons: React.FC<Props> = ({
       <Divider height={3.2} />
       <ButtonWithIcon
         variant="primary"
-        onPress={handleOpenModal}
+        onPress={handleScanAndConnect}
         IconComponent={ScanIcon}>
         Unlock
       </ButtonWithIcon>
