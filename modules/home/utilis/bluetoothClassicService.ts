@@ -147,7 +147,6 @@ export const discoverDevices = async (): Promise<BluetoothDevice[]> => {
       bondedSidekick.connect()?.then(async () => {
         const raw = JSON.stringify(json) + '\r\n';
         const encodedCommand = Buffer.from(raw, 'utf-8');
-        
         const command = JSON.stringify(json);
 
         const hexCommand = '46 4D 42 58 AA AA AA AA 00 2E 00 02 00 01 0E A8';
