@@ -136,23 +136,7 @@ export const discoverDevices = async (): Promise<BluetoothDevice[]> => {
     if (bondedSidekick) {
       console.log('bondedSidekick', bondedSidekick);
 
-      const json = [
-        {
-          name: 'custom',
-          properties: {text: 'setdigout 1 60'},
-          timeout: 10,
-        },
-      ];
-
       bondedSidekick.connect()?.then(async () => {
-        const raw = JSON.stringify(json) + '\r\n';
-        const encodedCommand = Buffer.from(raw, 'utf-8');
-
-        
-        const command = JSON.stringify(json);
-
-        const hexCommand = '46 4D 42 58 AA AA AA AA 00 2E 00 02 00 01 0E A8';
-
         const startCommand = '464D4258AAAAAAAA002E000200010EA8';
         const stopCommand = '464D4258AAAAAAAA002E00020000CE69 ';
 

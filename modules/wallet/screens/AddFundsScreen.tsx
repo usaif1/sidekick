@@ -9,8 +9,6 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import {ms, ScaledSheet} from 'react-native-size-matters';
 import axios from 'axios';
-// @ts-ignore
-// import EasebuzzCheckout from 'react-native-easebuzz-kit';
 import RazorpayCheckout from 'react-native-razorpay';
 
 // store
@@ -33,13 +31,53 @@ import {config} from '@/config';
 import {showCredits} from '@/utils/user';
 import {useNavigation} from '@react-navigation/native';
 
-const {colors} = useThemeStore.getState().theme;
-
-// Quick amount options
+// Constants
+const MIN_AMOUNT = 1;
+const DEFAULT_SECURITY_DEPOSIT = 200;
 const QUICK_AMOUNTS = [100, 200, 500, 1000];
+
+// Types
+interface PaymentResponse {
+  amount: number;
+  id: string;
+  currency: string;
+}
+
+interface RazorpayError {
+  code: string;
+  description: string;
+}
+
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+}
+
+interface CheckoutOptions {
+  amount: number;
+  currency: string;
+  key: string;
+  description: string;
+  name: string;
+  order_id: string;
+  prefill: {
+    email?: string;
+    contact?: string;
+  };
+}
+
+// Validation functions
+const validateAmount = (amount: string): boolean => {
+  const numAmount = parseFloat(amount);
+  return !isNaN(numAmount) && numAmount >= MIN_AMOUNT;
+};
+
+const validateUserDetails = (user: any): boolean => {
+  return Boolean(user?.email && user?.phone_number && user?.full_name);
+};
 
 const AddFundsScreen = () => {
   const navigation = useNavigation();
+  const colors = useThemeStore(state => state.theme.colors);
 
   const {openModal, setModalComponent} = useGlobalStore();
   const {
@@ -52,17 +90,7 @@ const AddFundsScreen = () => {
   } = useWalletStore();
   const {user} = useUserStore();
 
-  // State for amount and payment method
-
   const [securityDeposit, setSecurityDeposit] = useState<number>(0);
-
-  function rupeesToPaise(rupees: number) {
-    if (typeof rupees !== 'number') {
-      throw new Error('Input must be a number');
-    }
-
-    return Math.round(rupees * 100);
-  }
 
   // Handle quick amount selection
   const handleQuickAmountSelect = (value: number) => {
@@ -70,6 +98,15 @@ const AddFundsScreen = () => {
   };
 
   const handleCreditRequest = async () => {
+    if (!validateAmount(rechargeAmount)) {
+      showToast({
+        type: 'error',
+        text1: 'Invalid amount',
+        text2: `Amount must be at least ₹${MIN_AMOUNT}`,
+      });
+      return;
+    }
+
     showToast({
       type: 'success',
       text1: 'Credit request raised',
@@ -82,119 +119,190 @@ const AddFundsScreen = () => {
 
   // Handle pay button press
   const handlePay = async () => {
-    startLoading('add-funds');
-    // Validate amount
     try {
-      const razorpayData = await axios.post(
+      if (!validateAmount(rechargeAmount)) {
+        showToast({
+          type: 'error',
+          text1: 'Invalid amount',
+          text2: `Amount must be at least ₹${MIN_AMOUNT}`,
+        });
+        return;
+      }
+
+      if (!validateUserDetails(user)) {
+        showToast({
+          type: 'error',
+          text1: 'Missing user details',
+          text2: 'Please update your profile with complete information',
+        });
+        return;
+      }
+
+      startLoading('add-funds');
+
+      const paymentData = {
+        amount: parseFloat(rechargeAmount),
+        email: user?.email,
+        phone: user?.phone_number?.replace(/^(\+91)/, ''),
+        firstname: user?.full_name,
+      };
+
+      const razorpayData = await axios.post<PaymentResponse>(
         `${config.prodEndpoint}/initiate-payment`,
-        {
-          amount: rupeesToPaise(parseFloat(rechargeAmount) + securityDeposit),
-          email: user?.email || 'default@mail.com',
-          phone: parseFloat(
-            user?.phone_number?.replace(/^(\+91)/, '') || '9999999999',
-          ),
-          firstname: user?.full_name || 'default',
-        },
+        paymentData,
       );
 
-      RazorpayCheckout.open({
+      const razorpayOptions: CheckoutOptions = {
         amount: razorpayData?.data?.amount,
-        currency: ' INR',
+        currency: 'INR',
         key: 'rzp_live_zWdsxCG2dlKXBX',
         description: 'wallet recharge',
         name: 'SideKick',
         order_id: razorpayData?.data?.id,
-      })
-        .then(data => {
-          // handle success
-          console.log(`Success: ${data.razorpay_payment_id}`);
-          if (securityDeposit) {
-            WalletService.updateWalletSecurityDeposit({
-              id: userWallet?.id,
-              security_deposit: securityDeposit,
-            });
-          }
+        prefill: {
+          email: user?.email,
+          contact: user?.phone_number || undefined,
+        },
+      };
 
-          if (data.razorpay_payment_id) {
-            WalletService.updateWalletBalance({
-              id: userWallet?.id,
-              balance: parseFloat(rechargeAmount),
-            }).then(() => {
-              stopLoading('add-funds');
-              WalletService.fetchUserWallet();
-              setModalComponent(PaymentSuccess);
-              openModal();
-            });
-          } else {
-            stopLoading('add-funds');
-            setModalComponent(PaymentFailure);
-            openModal();
-          }
-        })
-        .catch(error => {
-          // handle failure
-          stopLoading('add-funds');
-          console.log(`Error: ${error.code} | ${error.description}`);
-          setModalComponent(PaymentFailure);
-          openModal();
+      const response = await RazorpayCheckout.open(razorpayOptions);
+
+      if (response?.razorpay_payment_id) {
+        if (securityDeposit) {
+          await WalletService.updateWalletSecurityDeposit({
+            id: userWallet?.id,
+            security_deposit: securityDeposit,
+          });
+        }
+
+        await WalletService.updateWalletBalance({
+          id: userWallet?.id,
+          balance: parseFloat(rechargeAmount),
         });
 
-      // EasebuzzCheckout.open(options)
-      //   .then((data: any) => {
-      //     //handle the payment success & failed response here
-      // if (securityDeposit) {
-      //   WalletService.updateWalletSecurityDeposit({
-      //     id: userWallet?.id,
-      //     security_deposit: securityDeposit,
-      //   });
-      // }
-
-      // if (data.result === 'payment_successfull') {
-      //   WalletService.updateWalletBalance({
-      //     id: userWallet?.id,
-      //     balance: parseFloat(rechargeAmount),
-      //   }).then(() => {
-      //     WalletService.fetchUserWallet();
-      //     openModal();
-      //   });
-      // } else {
-      //   setModalComponent(PaymentFailure);
-      //   openModal();
-      // }
-      // })
-      //   .catch((error: any) => {
-      //     //handle sdk failure issue here
-      //     console.log('SDK Error:', error);
-      //   })
-      //   .finally(() => {
-      //     stopLoading('add-funds');
-      //   });
+        stopLoading('add-funds');
+        await WalletService.fetchUserWallet();
+        setModalComponent(PaymentSuccess);
+        openModal();
+      }
     } catch (error) {
-      // @ts-ignore
-      console.log('error adding funds', error?.message);
       stopLoading('add-funds');
+      console.error('Payment failed:', error);
+      
+      const isRazorpayError = (error as RazorpayError)?.code && (error as RazorpayError)?.description;
       showToast({
         type: 'error',
-        text1: 'Error adding funds to the wallet',
-        text2: 'Please try again',
+        text1: isRazorpayError ? 'Payment Failed' : 'Error adding funds',
+        text2: isRazorpayError ? (error as RazorpayError).description : 'Please try again later',
       });
+      
+      setModalComponent(PaymentFailure);
+      openModal();
     }
   };
 
   useEffect(() => {
-    UserService.fetchUserDetails();
-    setModalComponent(PaymentSuccess);
+    const initializeScreen = async () => {
+      try {
+        await UserService.fetchUserDetails();
+        
+        // Set security deposit only if not already set
+        if (!userWallet?.security_deposit) {
+          setSecurityDeposit(DEFAULT_SECURITY_DEPOSIT);
+        }
+      } catch (error) {
+        console.error('Error initializing screen:', error);
+        showToast({
+          type: 'error',
+          text1: 'Error loading user details',
+          text2: 'Please try again',
+        });
+      }
+    };
 
-    if (!userWallet?.security_deposit) {
-      setSecurityDeposit(200);
-    }
+    initializeScreen();
 
+    // Cleanup function
     return () => {
       setRechargeAmount('0');
       setSecurityDeposit(0);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userWallet?.security_deposit]);
+
+  const styles = ScaledSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#FFFFFF',
+    },
+    content: {
+      flex: 1,
+      padding: 16,
+    },
+    section: {
+      marginBottom: 24,
+    },
+    sectionTitle: {
+      fontWeight: '600',
+      marginBottom: 12,
+    },
+    amountInput: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderWidth: 2,
+      borderColor: colors.textSecondary,
+      padding: '19@ms',
+      borderRadius: 20,
+    },
+    quickAmounts: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -4,
+    },
+    quickAmountButton: {
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      marginHorizontal: 4,
+      borderWidth: 1,
+      borderRadius: 12,
+      width: '22%',
+    },
+    quickAmountText: {
+      fontWeight: '500',
+      textAlign: 'center',
+    },
+    paymentOption: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: 16,
+      marginBottom: 12,
+      borderWidth: 1,
+    },
+    paymentOptionContent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    paymentOptionText: {
+      fontWeight: '500',
+    },
+    summarySection: {
+      padding: 16,
+      marginBottom: 24,
+    },
+    summaryRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 12,
+    },
+    summaryDivider: {
+      height: 1,
+      marginVertical: 8,
+    },
+    buttonContainer: {
+      padding: 16,
+      paddingHorizontal: 96,
+    },
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -332,81 +440,5 @@ const AddFundsScreen = () => {
     </SafeAreaView>
   );
 };
-
-const styles = ScaledSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  amountInput: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderWidth: 2,
-    borderColor: colors.textSecondary,
-    padding: '19@ms',
-    borderRadius: 20,
-  },
-  quickAmounts: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginHorizontal: -4,
-  },
-  quickAmountButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginHorizontal: 4,
-    borderWidth: 1,
-    borderRadius: 12,
-    width: '22%',
-  },
-  quickAmountText: {
-    fontWeight: '500',
-    textAlign: 'center',
-  },
-  paymentOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-  },
-  paymentOptionContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  paymentOptionText: {
-    fontWeight: '500',
-  },
-  summarySection: {
-    padding: 16,
-    marginBottom: 24,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  summaryDivider: {
-    height: 1,
-    marginVertical: 8,
-  },
-  buttonContainer: {
-    padding: 16,
-    paddingHorizontal: 96,
-  },
-});
 
 export default AddFundsScreen;
