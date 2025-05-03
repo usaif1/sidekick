@@ -32,7 +32,7 @@ import {showCredits} from '@/utils/user';
 import {useNavigation} from '@react-navigation/native';
 
 // Constants
-const MIN_AMOUNT = 1;
+const MIN_AMOUNT = 20;
 const DEFAULT_SECURITY_DEPOSIT = 200;
 const QUICK_AMOUNTS = [100, 200, 500, 1000];
 
@@ -141,14 +141,15 @@ const AddFundsScreen = () => {
       startLoading('add-funds');
 
       const paymentData = {
-        amount: parseFloat(rechargeAmount),
+        amount: parseFloat(rechargeAmount) * 100, // Convert to paise
         email: user?.email,
-        phone: user?.phone_number?.replace(/^(\+91)/, ''),
+        phone: user?.phone_number?.replace(/^\(\+91\)/, ''),
         firstname: user?.full_name,
+        user_id: user?.id,
       };
 
       const razorpayData = await axios.post<PaymentResponse>(
-        `${config.prodEndpoint}/initiate-payment`,
+        `${config.devEndpoint}/initiate-payment`,
         paymentData,
       );
 
