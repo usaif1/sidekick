@@ -44,6 +44,13 @@
 		<true />
 		<key>NSCameraUsageDescription</key>
 		<string>We need camera access to scan QR codes for connecting your device via Bluetooth.</string>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>We use Bluetooth to connect to nearby devices</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>This app uses Bluetooth to communicate with devices.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Required to scan for nearby BLE devices</string>
+
 		<key>NSAppTransportSecurity</key>
 		<dict>
 			<key>NSAllowsArbitraryLoads</key>

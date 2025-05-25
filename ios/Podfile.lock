@@ -65,6 +65,7 @@ PODS:
   - hermes-engine (0.78.0):
     - hermes-engine/Pre-built (= 0.78.0)
   - hermes-engine/Pre-built (0.78.0)
+  - MultiplatformBleAdapter (0.2.0)
   - razorpay-pod (1.4.0)
   - RCT-Folly (2024.11.18.00):
     - boost
@@ -1296,6 +1297,28 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
+  - react-native-ble-plx (3.5.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - MultiplatformBleAdapter (= 0.2.0)
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-camera (4.2.1):
     - React-Core
     - react-native-camera/RCT (= 4.2.1)
@@ -1763,7 +1786,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNPermissions (5.4.0):
+  - RNPermissions (5.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2065,6 +2088,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
+  - react-native-ble-plx (from `../node_modules/react-native-ble-plx`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-google-maps (from `../node_modules/react-native-maps`)
@@ -2127,6 +2151,7 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUtilities
     - GTMSessionFetcher
+    - MultiplatformBleAdapter
     - razorpay-pod
     - RecaptchaInterop
     - SocketRocket
@@ -2211,6 +2236,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
+  react-native-ble-plx:
+    :path: "../node_modules/react-native-ble-plx"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
   react-native-geolocation:
@@ -2329,6 +2356,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   GTMSessionFetcher: 75b671f9e551e4c49153d4c4f8659ef4f559b970
   hermes-engine: b417d2b2aee3b89b58e63e23a51e02be91dc876d
+  MultiplatformBleAdapter: b1fddd0d499b96b607e00f0faa8e60648343dc1d
   razorpay-pod: cb5b5439697bdda9c57d68a92b3e5b0ce1d2f2f3
   RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
   RCTDeprecation: b2eecf2d60216df56bc5e6be5f063826d3c1ee35
@@ -2360,6 +2388,7 @@ SPEC CHECKSUMS:
   React-logger: 795cd5055782db394f187f9db0477d4b25b44291
   React-Mapbuffer: 0df2a235bd0182f5cbed6c5f095e66deca12e335
   React-microtasksnativemodule: b31e56a980634f383221bfefd5111d04c14c110b
+  react-native-ble-plx: 9b7b4f6ac393883fd299d98d55b3d63a58a99492
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-geolocation: 457c6cc4462cffdfc4e63a2b52ec95497eab79cc
   react-native-google-maps: 7cc1184afe41fbd15a3dffd53c924819f6587b69
@@ -2402,7 +2431,7 @@ SPEC CHECKSUMS:
   RNFBApp: 57aef1ee0e7195a8728f8923bfbc2916298ccb3d
   RNFBAuth: fb72a5c5ba815a286ab78297d868815d6a2079f0
   RNGestureHandler: 3ca128bc8b8f15f04ba00dbbd05b90df34404b05
-  RNPermissions: 72bba9ff00ad8f142aa38923574a6f291a420402
+  RNPermissions: ae995ed019180bf1098894ad99cc4d0c4518a7c0
   RNReanimated: cf392636d67c3e65ecda35df3e0632ada6b1691b
   RNScreens: ef58b1f3077f7ee62b58f958536ee5ccb52d96b5
   RNSVG: 05776cf3f0d52d3f8e7ebee34b2189da7b8638ff
