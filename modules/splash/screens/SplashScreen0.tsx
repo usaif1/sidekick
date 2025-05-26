@@ -122,7 +122,7 @@ const BLEControlScreen: React.FC = () => {
 
                         sendCustomCommand(
                           requiredChar,
-                          '#conf_set out_cnf dout_1=1 conf_sync conf_save\r\n',
+                          '#conf_set out_cnf dout_1=0 conf_sync conf_save\r\n',
                         );
                         return;
                       }
@@ -131,7 +131,7 @@ const BLEControlScreen: React.FC = () => {
                       if (!decryptedToken) return;
 
                       axios
-                        .get('http://1.6.0.40:3000/', {
+                        .get('http://192.168.0.228:3000/', {
                           params: {token: decryptedToken},
                         })
                         .then(response => {
@@ -148,6 +148,9 @@ const BLEControlScreen: React.FC = () => {
                             .writeWithoutResponse(command)
                             .then(() => {
                               console.log('✅ Command written');
+                              setTimeout(() => {
+                                connectedDevice.cancelConnection();
+                              }, 3000);
                             })
                             .catch(err =>
                               console.error('❌ Write error:', err?.message),
