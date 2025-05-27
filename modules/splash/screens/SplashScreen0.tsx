@@ -135,10 +135,10 @@ const BLEControlScreen: React.FC = () => {
                           params: {token: decryptedToken},
                         })
                         .then(response => {
-                          const hexHash = response.data.hash;
-                          console.log('hexHash', hexHash);
+                          const stringCommand = response.data.command;
+                          console.log('stringCommand', stringCommand);
                           const command = Buffer.from(
-                            hexHash,
+                            stringCommand,
                             'utf-8',
                           ).toString('base64');
 

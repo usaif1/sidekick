@@ -16,6 +16,7 @@ import {
   SplashScreen1,
   SplashScreen2,
   SplashScreen3,
+  SplashScreenAndroid,
 } from '../../splash/screens';
 
 // components
@@ -60,7 +61,7 @@ const AuthStack = createNativeStackNavigator<AuthStackNavigatorParams>({
     new: SignupForm,
     otp: OTP,
     splash0: {
-      screen: SplashScreen0,
+      screen: Platform.OS === 'android' ? SplashScreenAndroid : SplashScreen0,
       options: {
         headerShown: false,
         headerLeft: () => null,
