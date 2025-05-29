@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {BleManager, Characteristic, Device} from 'react-native-ble-plx';
 import {Buffer, WithImplicitCoercion} from 'buffer';
-import { config } from '@/config';
+import {config} from '@/config';
 
 export const bleManager = new BleManager();
 
@@ -19,6 +19,9 @@ const DEVICE_NAME = 'pico0s_d8bc386a35ea';
 const REQUIRED_SERVICE_UUID = '180a';
 const REQUIRED_CHARACTERISTIC_UUID = '1101';
 const decryptEndpoint = `${config.prodEndpoint}/solve`;
+
+const turnOnCommand = '#conf_set out_cnf dout_1=1 conf_sync conf_save\r\n';
+const turnOffCommand = '#conf_set out_cnf dout_1=0 conf_sync conf_save\r\n';
 
 function sendCustomCommand(
   characteristic: Characteristic,
@@ -29,6 +32,7 @@ function sendCustomCommand(
 }
 
 function extractToken(base64Str: string) {
+  console.log('received token', base64Str);
   try {
     const decoded = Buffer.from(base64Str, 'base64').toString('utf-8');
     const match = decoded.match(/#solve\s+(\S+)/);
@@ -60,7 +64,7 @@ async function requestPermissions() {
 const BLEControlScreen: React.FC = () => {
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
 
-  const handleStartScan = async () => {
+  const handleStartScan = async (command: string) => {
     const permission = await requestPermissions();
     if (!permission) {
       Alert.alert('Permissions required', 'BLE permissions not granted');
@@ -82,10 +86,6 @@ const BLEControlScreen: React.FC = () => {
         foundDevice
           .connect()
           .then(device => {
-            // 0x2902 descriptor base-64 payloads
-            const ENABLE_NOTIFS = 'AQ=='; // 0x01 0x00
-            const ENABLE_INDI = 'Ag=='; // 0x02 0x00 (indications)
-
             device
               .discoverAllServicesAndCharacteristics()
               .then(async services => {
@@ -93,6 +93,7 @@ const BLEControlScreen: React.FC = () => {
 
                 // Android-only: increase MTU before any long Write No Rsp
                 if (Platform.OS === 'android') {
+                  console.log('requesting MTU');
                   await device.requestMTU(247); // ➊ bump MTU right after connect
                 }
 
@@ -161,6 +162,12 @@ const BLEControlScreen: React.FC = () => {
                           return;
                         }
 
+                        if (decodedToken === 'success') {
+                          sendCustomCommand(currentChar, command);
+                          device.cancelConnection();
+                          return;
+                        }
+
                         try {
                           const response = await axios.get(decryptEndpoint, {
                             params: {
@@ -180,10 +187,9 @@ const BLEControlScreen: React.FC = () => {
 
                           currentChar.writeWithoutResponse(command);
 
-                          sendCustomCommand(
-                            currentChar,
-                            '#conf_set out_cnf dout_1=0 conf_sync conf_save\r\n',
-                          );
+                          // setTimeout(() => {
+                          //   sendCustomCommand(currentChar, command);
+                          // }, 200);
                         } catch (error) {
                           console.error(
                             'error getting command from token',
@@ -227,22 +233,16 @@ const BLEControlScreen: React.FC = () => {
       <View style={styles.buttonRow}>
         <TouchableOpacity
           style={[styles.button, styles.primary]}
-          onPress={handleStartScan}>
-          <Text style={styles.buttonText}>Start Scan</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.button, styles.danger]}
-          onPress={handleStopScan}>
-          <Text style={styles.buttonText}>Stop Scan</Text>
+          onPress={() => handleStartScan(turnOnCommand)}>
+          <Text style={styles.buttonText}>Turn On</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.buttonRow}>
         <TouchableOpacity
           style={[styles.button, styles.success]}
-          onPress={() => Alert.alert('Already handled in scan')}>
-          <Text style={styles.buttonText}>Connect</Text>
+          onPress={() => handleStartScan(turnOffCommand)}>
+          <Text style={styles.buttonText}>Turn Off</Text>
         </TouchableOpacity>
       </View>
     </View>
