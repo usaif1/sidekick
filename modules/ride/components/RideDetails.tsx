@@ -22,7 +22,6 @@ import {EndRide} from '../components';
 import {calculateHubDistance} from '@/modules/home/utilis/distanceUtils';
 import {RideService} from '@/globalService';
 import rideStorage from '../storage';
-import {Ride_Step_Enum} from '@/generated/graphql';
 
 const {
   theme: {colors},
@@ -118,7 +117,7 @@ const RideDetails: React.FC = () => {
                   RideService.createRideStep({
                     ride_details_id: currentRideId,
                     // steps: 'RIDE_RESUMED',
-                    steps: Ride_Step_Enum.RideResumed,
+                    steps: 'RIDE_RESUMED',
                   });
                   setIsPaused(false);
                 }}
@@ -132,7 +131,7 @@ const RideDetails: React.FC = () => {
                   RideService.createRideStep({
                     ride_details_id: currentRideId,
                     // steps: 'RIDE_PAUSED',
-                    steps: Ride_Step_Enum.RidePaused,
+                    steps: 'RIDE_PAUSED',
                   });
                   setIsPaused(true);
                 }}

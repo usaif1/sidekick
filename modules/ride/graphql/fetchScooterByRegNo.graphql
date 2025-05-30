@@ -7,5 +7,7 @@ query fetchScooterByNumber($regNo: String = "SCOOTER1") {
     registration_number
     status
     hub_id
+    device_name
+    imei
   }
 }

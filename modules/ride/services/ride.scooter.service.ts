@@ -56,17 +56,17 @@ export const rideScooterService = {
       ]),
     };
 
-    try {
-      const response = await jsonRpcCall(
-        ScooterMethods.GW_DEVICES_COMMANDS,
-        [`${deviceId}`, commandData],
-        Date.now(),
-      );
+    // try {
+    //   const response = await jsonRpcCall(
+    //     ScooterMethods.GW_DEVICES_COMMANDS,
+    //     [`${deviceId}`, commandData],
+    //     Date.now(),
+    //   );
 
-      return response;
-    } catch (error) {
-      throw new Error('Error starting scooter');
-    }
+    //   return response;
+    // } catch (error) {
+    //   throw new Error('Error starting scooter');
+    // }
   },
 
   stopScooter: async function (deviceId: string) {
@@ -82,16 +82,16 @@ export const rideScooterService = {
       ]),
     };
 
-    try {
-      const response = await jsonRpcCall(
-        ScooterMethods.GW_DEVICES_COMMANDS,
-        [`${deviceId}`, commandData],
-        Date.now(),
-      );
+    // try {
+    //   const response = await jsonRpcCall(
+    //     ScooterMethods.GW_DEVICES_COMMANDS,
+    //     [`${deviceId}`, commandData],
+    //     Date.now(),
+    //   );
 
-      return response;
-    } catch (error) {
-      throw new Error('Error starting scooter');
-    }
+    //   return response;
+    // } catch (error) {
+    //   throw new Error('Error starting scooter');
+    // }
   },
 };

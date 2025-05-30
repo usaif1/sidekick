@@ -16,12 +16,14 @@ import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
 import {RideService, WalletService} from '@/globalService';
 import rideStorage from '../storage';
-import {Ride_Step_Enum} from '@/generated/graphql';
-import {rideScooterService} from '../services/ride.scooter.service';
+import {BluetoothService} from '@/globalService/bluetoothService';
+import axios from 'axios';
 
 const {
   theme: {colors},
 } = useThemeStore.getState();
+
+const stopScooterEndpoint = 'https://api.ajjas.com/b2b/immobilize';
 
 const ReachedHub: React.FC = () => {
   const {setModalComponent, setModalCloseButton} = useGlobalStore();
@@ -46,14 +48,38 @@ const ReachedHub: React.FC = () => {
     setModalCloseButton(null);
   };
 
-  const stopScooterRecursive = async (scooterId: string) => {
-    const flespiResponse = await rideScooterService.stopScooter(scooterId);
+  const stopScooter = async (scooterId: string) => {
+    const response = await RideService.fetchScooterByRegNo({
+      regNo: scooterId,
+    });
 
-    if (flespiResponse?.result) {
-      return true;
+    if (!response || !response.device_name) {
+      console.log('scooter not found');
+      return;
     }
 
-    stopScooterRecursive(scooterId);
+    await axios.post(
+      stopScooterEndpoint,
+      {
+        imei: response.imei,
+        immobilize: false,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key':
+            '657b4e228d12bfbee306b438df60a87b7c3703a8e6fc6d1bfba3c281dd6f0415',
+        },
+      },
+    );
+
+    BluetoothService.scanDevices(response.device_name, device => {
+      console.log('device', device);
+
+      BluetoothService.stopScooter(device, () => {
+        console.log('scooter stopped');
+      });
+    });
   };
 
   const endRide = async () => {
@@ -62,7 +88,7 @@ const ReachedHub: React.FC = () => {
     try {
       await RideService.createRideStep({
         ride_details_id: currentRideId,
-        steps: Ride_Step_Enum.RideEnded,
+        steps: 'RIDE_ENDED',
       });
       await RideService.updateRideEndTime({
         end_time: DateTime.now().toISO(),
@@ -77,7 +103,7 @@ const ReachedHub: React.FC = () => {
       const scooterId = rideStorage.getString('currentScooterId');
       console.log('scooterId', scooterId);
       if (scooterId) {
-        stopScooterRecursive(scooterId);
+        stopScooter(scooterId);
       }
       rideStorage.delete('currentScooterId');
 

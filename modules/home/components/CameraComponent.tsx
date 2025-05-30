@@ -15,8 +15,8 @@ import {rideStorage} from '@/globalStorage';
 import {RideService, rideScooterService} from '@/globalService';
 
 // types and enums
-import {Ride_Step_Enum} from '@/generated/graphql';
 import {useNavigation} from '@react-navigation/native';
+import {BluetoothService} from '@/globalService/bluetoothService';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -54,18 +54,68 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
       })
         .then(async response => {
           if (!response) {
-            // setScooterCodeError('No scooter found with this code');
+            showToast({
+              type: 'error',
+              text1: 'Error',
+              text2: 'Please check reg no',
+            });
 
             return console.log('Please check reg no');
           } else {
-            // setScooterCodeError('');
-            const flespiResponse = await rideScooterService.startScooter(
-              response.registration_number as string,
-            );
+            console.log('response', response);
+            console.log('device_name', response.device_name);
 
-            if (!flespiResponse?.id) {
-              return console.log('No flespi id');
+            const requiredDeviceName = response.device_name;
+
+            if (!requiredDeviceName) {
+              showToast({
+                type: 'error',
+                text1: 'Error',
+                text2: 'No device found',
+              });
+              return;
             }
+
+            BluetoothService.scanDevices(requiredDeviceName, device => {
+              BluetoothService.startScooter(device, async () => {
+                try {
+                  const rideDetails = await RideService.startRide({
+                    object: {
+                      user_id: user?.id,
+                      scooter_id: response.id,
+                      start_hub_id: response.hub_id,
+                      start_time: DateTime.now(),
+                      ride_distance: 0,
+                    },
+                  });
+                  console.log('scooter no', response);
+                  rideStorage.set(
+                    'currentScooterId',
+                    `${response.registration_number}`,
+                  );
+                  rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+                  await RideService.createRideStep({
+                    ride_details_id: rideDetails?.id,
+                    steps: 'RIDE_STARTED',
+                  });
+                  navigateToRide();
+                } catch (error) {
+                  console.log('Error starting ride', error);
+                }
+              });
+            });
+
+            return;
+
+            // setScooterCodeError('');
+            // const flespiResponse = await rideScooterService.startScooter(
+            //   response.registration_number as string,
+            // );
+
+            // if (!flespiResponse?.id) {
+            //   return console.log('No flespi id');
+            // }
             const rideDetails = await RideService.startRide({
               object: {
                 user_id: user?.id,
@@ -84,7 +134,7 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
 
             await RideService.createRideStep({
               ride_details_id: rideDetails?.id,
-              steps: Ride_Step_Enum.RideStarted,
+              steps: 'RIDE_STARTED',
             });
             navigateToRide();
           }
@@ -94,55 +144,6 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
           console.log('Error starting ride', err?.message);
         });
     }
-
-    // RideService.fetchScooterByRegNo({
-    //   regNo: scannedValue,
-    // })
-    //   .then(async response => {
-    //     if (!response) {
-    //       showToast({
-    //         text1: 'Error fetching scooter',
-    //         type: 'error',
-    //       });
-    //       return console.log('Please check reg no');
-    //     } else {
-    //       const rideDetails = await RideService.startRide({
-    //         object: {
-    //           user_id: user?.id,
-    //           scooter_id: response.id,
-    //           start_hub_id: response.hub_id,
-    //           start_time: DateTime.now(),
-    //         },
-    //       });
-
-    //       console.log('scooter no', response);
-
-    //       const flespiResponse = await rideScooterService.startScooter(
-    //         response.registration_number as string,
-    //       );
-
-    //       if (!flespiResponse?.id) {
-    //         return console.log('No flespi id');
-    //       }
-
-    //       rideStorage.set('currentRideId', `${rideDetails?.id}`);
-
-    //       await RideService.createRideStep({
-    //         ride_details_id: rideDetails?.id,
-    //         steps: Ride_Step_Enum.RideStarted,
-    //       });
-    //       navigateToRide();
-    //     }
-    //   })
-
-    //   .catch(err => {
-    //     showToast({
-    //       text1: 'Error starting ride',
-    //       text2: err?.message,
-    //       type: 'error',
-    //     });
-    //     console.log('Error starting ride', err?.message);
-    //   });
   };
 
   useEffect(() => {

@@ -22,7 +22,6 @@ import LinearGradientSVG from '../assets/linearGradient.svg';
 import {ButtonTextSm} from '@/components';
 import {RideService} from '@/globalService';
 import {rideStorage} from '@/globalStorage';
-import {Ride_Step_Enum} from '@/generated/graphql';
 import {rideScooterService} from '@/modules/ride/services/ride.scooter.service';
 import CameraComponent from './CameraComponent';
 
@@ -83,35 +82,7 @@ const ScanQrCodeComponent = () => {
     navigator.navigate('rideNavigator');
   };
 
-  const startScooterRecursive = async (response: any) => {
-    const flespiResponse = await rideScooterService.startScooter(
-      response?.registration_number as string,
-    );
-
-    if (flespiResponse?.response) {
-      const rideDetails = await RideService.startRide({
-        object: {
-          user_id: user?.id,
-          scooter_id: response.id,
-          start_hub_id: response.hub_id,
-          start_time: DateTime.now(),
-        },
-      });
-
-      console.log('scooter no', response);
-      rideStorage.set('currentScooterId', `${response.registration_number}`);
-      rideStorage.set('currentRideId', `${rideDetails?.id}`);
-
-      await RideService.createRideStep({
-        ride_details_id: rideDetails?.id,
-        steps: Ride_Step_Enum.RideStarted,
-      });
-      navigateToRide();
-      return true;
-    }
-
-    startScooterRecursive(response?.registration_number as string);
-  };
+  const startScooterRecursive = async (response: any) => {};
 
   const handleContinue = () => {
     if (!validateScooterCode()) {
@@ -215,7 +186,6 @@ const ScanQrCodeComponent = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 ref={inputRef}
-                maxLength={7}
                 onFocus={() => setIsKeyboardFocused(true)}
                 onBlur={() => {
                   // We'll rely on the Keyboard listeners instead
