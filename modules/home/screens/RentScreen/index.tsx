@@ -1,6 +1,6 @@
 // dependencies
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
+import {View, StyleSheet, Alert, Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 
@@ -24,6 +24,8 @@ import GlobalModal from '@/components/GlobalModal';
 import DirectionsComponent from './components/DirectionsComponent';
 import {requestPermissions} from '../../utilis/permissionUtils';
 import HubMarkers from '../../components/HubMarkers';
+import {checkAndRequestPermission} from '@/utils/permissionsHelper';
+import {PERMISSIONS} from 'react-native-permissions';
 
 const RentScreen: React.FC = () => {
   const {closeBottomSheet} = useGlobalStore();
@@ -35,7 +37,46 @@ const RentScreen: React.FC = () => {
   const mapRef = useRef<MapView>(null);
   const [heading, setHeading] = useState<number>(0);
 
-  const handleOpenModal = () => {
+  const handleOpenModal = async () => {
+    // 1. Location (used for BLE scanning pre-Android 12)
+    const locationPermission = await checkAndRequestPermission(
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      'Location',
+    );
+    if (!locationPermission) return;
+
+    // 2. Camera
+    const cameraPermission = await checkAndRequestPermission(
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.CAMERA
+        : PERMISSIONS.ANDROID.CAMERA,
+      'Camera',
+    );
+    if (!cameraPermission) return;
+
+    // 3. Bluetooth (only needed for Android 12+ and iOS)
+    if (Platform.OS === 'android' && Platform.Version >= 31) {
+      const bluetoothScanPermission = await checkAndRequestPermission(
+        PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
+        'Bluetooth Scan',
+      );
+      const bluetoothConnectPermission = await checkAndRequestPermission(
+        PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
+        'Bluetooth Connect',
+      );
+      if (!bluetoothScanPermission || !bluetoothConnectPermission) return;
+    }
+
+    if (Platform.OS === 'ios') {
+      const bluetoothPermission = await checkAndRequestPermission(
+        PERMISSIONS.IOS.BLUETOOTH,
+        'Bluetooth',
+      );
+      if (!bluetoothPermission) return;
+    }
+
     setModalComponent(ScanQrCodeComponent);
     openModal();
   };
@@ -94,10 +135,10 @@ const RentScreen: React.FC = () => {
 
     const nearest = findNearestHub(latitude, longitude, hubs);
     if (!nearest) {
-      Alert.alert(
-        'No Hubs Found',
-        'There are no hubs available within 20km of your location.',
-      );
+      // Alert.alert(
+      //   'No Hubs Found',
+      //   'There are no hubs available within 20km of your location.',
+      // );
       return;
     }
 

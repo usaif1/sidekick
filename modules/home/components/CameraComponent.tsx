@@ -107,36 +107,6 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
             });
 
             return;
-
-            // setScooterCodeError('');
-            // const flespiResponse = await rideScooterService.startScooter(
-            //   response.registration_number as string,
-            // );
-
-            // if (!flespiResponse?.id) {
-            //   return console.log('No flespi id');
-            // }
-            const rideDetails = await RideService.startRide({
-              object: {
-                user_id: user?.id,
-                scooter_id: response.id,
-                start_hub_id: response.hub_id,
-                start_time: DateTime.now(),
-              },
-            });
-
-            console.log('scooter no', response);
-            rideStorage.set(
-              'currentScooterId',
-              `${response.registration_number}`,
-            );
-            rideStorage.set('currentRideId', `${rideDetails?.id}`);
-
-            await RideService.createRideStep({
-              ride_details_id: rideDetails?.id,
-              steps: 'RIDE_STARTED',
-            });
-            navigateToRide();
           }
         })
 

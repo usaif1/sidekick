@@ -158,11 +158,11 @@ export const BluetoothService = {
 
           if (!characteristic.value) {
             console.log('no value found in characteristic');
-            showToast({
-              type: 'error',
-              text1: 'Error',
-              text2: 'Error connecting to device',
-            });
+            // showToast({
+            //   type: 'error',
+            //   text1: 'Error',
+            //   text2: 'Error connecting to device',
+            // });
             return;
           }
 

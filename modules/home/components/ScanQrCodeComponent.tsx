@@ -19,11 +19,12 @@ import Divider from '@/components/Divider';
 // store
 import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
 import LinearGradientSVG from '../assets/linearGradient.svg';
-import {ButtonTextSm} from '@/components';
+import {ButtonTextSm, showToast} from '@/components';
 import {RideService} from '@/globalService';
 import {rideStorage} from '@/globalStorage';
 import {rideScooterService} from '@/modules/ride/services/ride.scooter.service';
 import CameraComponent from './CameraComponent';
+import {BluetoothService} from '@/globalService/bluetoothService';
 
 const {colors} = useThemeStore.getState().theme;
 
@@ -82,12 +83,78 @@ const ScanQrCodeComponent = () => {
     navigator.navigate('rideNavigator');
   };
 
-  const startScooterRecursive = async (response: any) => {};
-
   const handleContinue = () => {
-    if (!validateScooterCode()) {
-      return null;
-    }
+    try {
+      if (!validateScooterCode()) {
+        return null;
+      }
+
+      rideStorage.set('currentScooterId', `${scooterCode}`);
+      RideService.fetchScooterByRegNo({
+        regNo: scooterCode,
+      })
+        .then(async response => {
+          if (!response) {
+            showToast({
+              type: 'error',
+              text1: 'Error',
+              text2: 'Please check reg no',
+            });
+
+            return console.log('Please check reg no');
+          } else {
+            console.log('response', response);
+            console.log('device_name', response.device_name);
+
+            const requiredDeviceName = response.device_name;
+
+            if (!requiredDeviceName) {
+              showToast({
+                type: 'error',
+                text1: 'Error',
+                text2: 'No device found',
+              });
+              return;
+            }
+
+            BluetoothService.scanDevices(requiredDeviceName, device => {
+              BluetoothService.startScooter(device, async () => {
+                try {
+                  const rideDetails = await RideService.startRide({
+                    object: {
+                      user_id: user?.id,
+                      scooter_id: response.id,
+                      start_hub_id: response.hub_id,
+                      start_time: DateTime.now(),
+                      ride_distance: 0,
+                    },
+                  });
+                  console.log('scooter no', response);
+                  rideStorage.set(
+                    'currentScooterId',
+                    `${response.registration_number}`,
+                  );
+                  rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+                  await RideService.createRideStep({
+                    ride_details_id: rideDetails?.id,
+                    steps: 'RIDE_STARTED',
+                  });
+                  navigateToRide();
+                } catch (error) {
+                  console.log('Error starting ride', error);
+                }
+              });
+            });
+
+            return;
+          }
+        })
+
+        .catch(err => {
+          console.log('Error starting ride', err?.message);
+        });
+    } catch (error) {}
 
     RideService.fetchScooterByRegNo({
       regNo: scooterCode,
@@ -95,41 +162,7 @@ const ScanQrCodeComponent = () => {
       .then(async response => {
         if (!response) {
           setScooterCodeError('No scooter found with this code');
-
           return console.log('Please check reg no');
-        } else {
-          // setScooterCodeError('');
-          // const flespiResponse = await rideScooterService.startScooter(
-          //   response.registration_number as string,
-          // );
-
-          // if (!flespiResponse?.error) {
-          //   return console.log('No flespi id');
-          // }
-
-          await startScooterRecursive(response as any);
-
-          // const rideDetails = await RideService.startRide({
-          //   object: {
-          //     user_id: user?.id,
-          //     scooter_id: response.id,
-          //     start_hub_id: response.hub_id,
-          //     start_time: DateTime.now(),
-          //   },
-          // });
-
-          // console.log('scooter no', response);
-          // rideStorage.set(
-          //   'currentScooterId',
-          //   `${response.registration_number}`,
-          // );
-          // rideStorage.set('currentRideId', `${rideDetails?.id}`);
-
-          // await RideService.createRideStep({
-          //   ride_details_id: rideDetails?.id,
-          //   steps: Ride_Step_Enum.RideStarted,
-          // });
-          // navigateToRide();
         }
       })
 

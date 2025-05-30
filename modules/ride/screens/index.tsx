@@ -123,10 +123,10 @@ const RideScreen: React.FC = () => {
 
     const nearest = findNearestHub(latitude, longitude, hubs);
     if (!nearest) {
-      Alert.alert(
-        'No Hubs Found',
-        'There are no hubs available within 20km of your location.',
-      );
+      // Alert.alert(
+      //   'No Hubs Found',
+      //   'There are no hubs available within 20km of your location.',
+      // );
       return;
     }
 
