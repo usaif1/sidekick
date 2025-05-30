@@ -283,10 +283,10 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
 
   if (!cameraAvailable) {
     return (
-      <View>
+      <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
         <Text style={styles.cameraStatusText}>Camera permission needed</Text>
         <ButtonTextSm
-          customStyles={{marginTop: 10}}
+          customStyles={{marginTop: 10, paddingHorizontal: 10}}
           onPress={async () => {
             setIsLoading(true);
             const status = await Camera.requestCameraPermission();

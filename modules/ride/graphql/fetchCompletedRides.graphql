@@ -1,7 +1,7 @@
 query fetchCompletedRides($id: uuid = "") {
   ride_details(
     where: {
-      ride_steps: {ride_step: {ride_steps: {steps: {_eq: RIDE_ENDED}}}}
+      ride_steps: {ride_detail: {ride_steps: {steps: {_eq: "RIDE_ENDED"}}}}
       user_id: {_eq: $id}
     }
   ) {

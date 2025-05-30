@@ -1,6 +1,6 @@
 mutation updateRideEndTime(
   $id: uuid = ""
-  $end_time: timestamp = ""
+  $end_time: timestamptz = ""
   $total_cost: numeric = ""
 ) {
   update_ride_details_by_pk(

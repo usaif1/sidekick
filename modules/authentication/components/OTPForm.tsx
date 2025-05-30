@@ -20,7 +20,7 @@ import AuthService from '../services/auth.service';
 
 const OTPForm: React.FC = () => {
   const {theme} = useThemeStore();
-  const {confirmationResult, setAuthUser} = useAuthStore();
+  const {confirmationResult, newUserFormData, setAuthUser} = useAuthStore();
 
   const [otp, setOTP] = useState<string>('');
 
@@ -40,6 +40,8 @@ const OTPForm: React.FC = () => {
       });
       return response;
     } catch (err) {
+      await AuthService.sendOTP(`+91${newUserFormData.phoneNumber}`, false);
+
       showToast({
         type: 'error',
         text1: 'Error',
@@ -50,6 +52,7 @@ const OTPForm: React.FC = () => {
   };
 
   const resendOTP = () => {
+    console.log('resend otp fired');
     // Implement your resend OTP logic here
     showToast({
       type: 'info',

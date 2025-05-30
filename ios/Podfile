@@ -23,6 +23,8 @@ end
 
 target 'sidekickv1' do
   config = use_native_modules!
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
 
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
@@ -31,8 +33,6 @@ target 'sidekickv1' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
   
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'

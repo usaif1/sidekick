@@ -6,15 +6,15 @@ query fetchUserWallet {
     transactions {
       ride_id
       amount
-      ride {
-        end_time
-        start_time
-        total_cost
-        hub {
-          id
-          name
-        }
-      }
+      # ride {
+      #   end_time
+      #   start_time
+      #   total_cost
+      #   hub {
+      #     id
+      #     name
+      #   }
+      # }
     }
   }
 }
