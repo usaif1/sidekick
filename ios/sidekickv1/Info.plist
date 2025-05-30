@@ -42,8 +42,6 @@
 		</array>
 		<key>LSRequiresIPhoneOS</key>
 		<true />
-		<key>NSCameraUsageDescription</key>
-		<string>We need camera access to scan QR codes for connecting your device via Bluetooth.</string>
 		<key>NSAppTransportSecurity</key>
 		<dict>
 			<key>NSAllowsArbitraryLoads</key>
@@ -51,8 +49,18 @@
 			<key>NSAllowsLocalNetworking</key>
 			<true />
 		</dict>
+		<key>NSCameraUsageDescription</key>
+		<string>We need camera access to scan QR codes for connecting your device via Bluetooth.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>$(PRODUCT_NAME) uses photos</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>We need your location to provide ride services while you're using the app.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>We need your location to provide ride services while you're using the app.</string>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>We need Bluetooth access to connect your device via Bluetooth.</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>We need Bluetooth access to connect your device via Bluetooth.</string>
 		<key>UIAppFonts</key>
 		<array>
 			<string>PlusJakartaSans-Bold.ttf</string>
@@ -79,10 +87,7 @@
 		</array>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
 			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		</array>
 		<key>UISupportedInterfaceOrientations~ipad</key>
 		<array>
