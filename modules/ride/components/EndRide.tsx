@@ -50,14 +50,86 @@ const EndRide: React.FC = () => {
   const {closeModal, setModalComponent} = useGlobalStore();
   const {setIsPaused} = useRideStore();
 
+  // Debug logging
+  console.log('🔍 EndRide Debug:', {
+    hubsCount: hubs.length,
+    hasLocation: !!latitude && !!longitude,
+    latitude,
+    longitude
+  });
+
   const sortedHubs = useMemo(() => {
+    console.log('🔄 Sorting hubs:', {
+      hubsLength: hubs.length,
+      hasLatitude: !!latitude,
+      hasLongitude: !!longitude
+    });
+
     if (!latitude || !longitude || !hubs.length) {
+      console.log('❌ Missing requirements for sorting hubs');
       return [];
     }
-    return sortHubsByDistance(latitude, longitude, hubs);
+    
+    const sorted = sortHubsByDistance(latitude, longitude, hubs);
+    console.log('✅ Sorted hubs:', sorted.length);
+    return sorted;
   }, [latitude, longitude, hubs]);
 
   const nearestDistance = sortedHubs[0]?.distance;
+
+  // If no hubs, show message
+  if (hubs.length === 0) {
+    return (
+      <View style={styles.endRideWrapper}>
+        <View>
+          <H2 customStyles={{textAlign: 'center'}}>
+            No Hubs Available
+          </H2>
+          <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
+            Hubs should have been loaded from the home screen. Please try going back and returning.
+          </P2>
+        </View>
+        <Divider height={16} />
+        <View style={styles.actionButtonContainer}>
+          <ButtonText
+            variant="primary"
+            onPress={() => {
+              setIsPaused(false);
+              closeModal();
+            }}>
+            Resume Ride
+          </ButtonText>
+        </View>
+      </View>
+    );
+  }
+
+  // If no location, show message
+  if (!latitude || !longitude) {
+    return (
+      <View style={styles.endRideWrapper}>
+        <View>
+          <H2 customStyles={{textAlign: 'center'}}>
+            Location Required
+          </H2>
+          <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
+            Please enable location services to find nearest hubs.
+          </P2>
+        </View>
+        <Divider height={16} />
+        <View style={styles.actionButtonContainer}>
+          <ButtonText
+            variant="primary"
+            onPress={() => {
+              setIsPaused(false);
+              closeModal();
+            }}>
+            Resume Ride
+          </ButtonText>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.endRideWrapper}>

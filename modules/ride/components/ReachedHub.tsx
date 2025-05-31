@@ -14,10 +14,9 @@ import RideEnded from '../components/RideEnded';
 // store
 import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
-import {RideService, WalletService} from '@/globalService';
+import {rideScooterService, RideService, WalletService} from '@/globalService';
 import rideStorage from '../storage';
 import {BluetoothService} from '@/globalService/bluetoothService';
-import axios from 'axios';
 
 const {
   theme: {colors},
@@ -34,6 +33,10 @@ const ReachedHub: React.FC = () => {
     setSelectedHub,
     totalCost,
     secondsElapsed,
+    activeSecondsElapsed,
+    pausedSecondsElapsed,
+    perMinuteRate,
+    pausedPerMinuteRate,
   } = useRideStore();
 
   const onSwipeSuccess = async () => {
@@ -58,20 +61,15 @@ const ReachedHub: React.FC = () => {
       return;
     }
 
-    await axios.post(
-      stopScooterEndpoint,
-      {
-        imei: response.imei,
-        immobilize: false,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key':
-            '657b4e228d12bfbee306b438df60a87b7c3703a8e6fc6d1bfba3c281dd6f0415',
-        },
-      },
-    );
+    const stopScooterResponse = await rideScooterService.toggleScooterMobility({
+      imei: response.imei,
+      immobilize: false,
+    });
+
+    if (stopScooterResponse.success) {
+      console.log('scooter stopped via API');
+      return;
+    }
 
     BluetoothService.scanDevices(response.device_name, device => {
       console.log('device', device);
@@ -181,7 +179,25 @@ const ReachedHub: React.FC = () => {
       <Divider height={28} />
       <View style={styles.detailsContainer}>
         <View>
-          <H3>{formatTime(secondsElapsed)} Minutes</H3>
+          <H3>Active Riding: {formatTime(activeSecondsElapsed)}</H3>
+        </View>
+        <H3 textColor="highlight">₹ {(Math.ceil(activeSecondsElapsed / 60) * perMinuteRate).toFixed(1)}</H3>
+      </View>
+      {pausedSecondsElapsed > 0 && (
+        <>
+          <Divider height={6} />
+          <View style={styles.detailsContainer}>
+            <View>
+              <H3>Paused Time: {formatTime(pausedSecondsElapsed)}</H3>
+            </View>
+            <H3 textColor="textSecondary">₹ {(Math.ceil(pausedSecondsElapsed / 60) * pausedPerMinuteRate).toFixed(1)}</H3>
+          </View>
+        </>
+      )}
+      <Divider height={6} />
+      <View style={styles.detailsContainer}>
+        <View>
+          <H3>Subtotal</H3>
         </View>
         <H3 textColor="highlight">₹ {totalCost.toFixed(1)}</H3>
       </View>

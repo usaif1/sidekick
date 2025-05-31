@@ -15,7 +15,7 @@ const WalletNavigator = createNativeStackNavigator({
     // this prevent flickering on android
     presentation: Platform.OS === 'android' ? 'transparentModal' : 'card',
     headerStyle: {
-      backgroundColor: 'transparent',
+      backgroundColor: '#FFFFFF',
     },
     headerShadowVisible: false,
   },

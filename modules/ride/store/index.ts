@@ -26,6 +26,12 @@ type RideStore = {
   perMinuteRate: number;
   selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
 
+  // New pause tracking properties
+  pausedSecondsElapsed: number; // Track total paused time
+  pauseStartTime: number | null; // When current pause started
+  activeSecondsElapsed: number; // Track active riding time
+  pausedPerMinuteRate: number; // Half rate for paused time
+
   // ride history
   completedRides: FetchCompletedRidesQuery['ride_details'];
 
@@ -43,6 +49,13 @@ type RideActions = {
   setIsPaused: (pauseState: boolean) => void;
   setSecondsElapsed: (updater: any) => void;
   setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0] | undefined) => void;
+
+  // New pause tracking actions
+  setPausedSecondsElapsed: (seconds: number) => void;
+  setPauseStartTime: (timestamp: number | null) => void;
+  setActiveSecondsElapsed: (seconds: number) => void;
+  incrementActiveTime: () => void;
+  incrementPausedTime: () => void;
 
   // ride history
   setCompletedRides: (rides: FetchCompletedRidesQuery['ride_details']) => void;
@@ -64,6 +77,12 @@ const rideInitialState: RideStore = {
   secondsElapsed: 0,
   perMinuteRate: 2,
   selectedHub: undefined,
+
+  // New pause tracking properties
+  pausedSecondsElapsed: 0, // Track total paused time
+  pauseStartTime: null, // When current pause started
+  activeSecondsElapsed: 0, // Track active riding time
+  pausedPerMinuteRate: 1, // Half rate for paused time
 
   // ride history
   completedRides: [],
@@ -127,7 +146,38 @@ const rideStore = create<RideStore & RideActions>(set => ({
       rideHistory: rides,
     }),
 
-  resetRideStore: () => set(rideInitialState),
+  resetRideStore: () => set((state) => ({
+    ...rideInitialState,
+    hubs: state.hubs, // Preserve hubs data across resets
+  })),
+
+  // New pause tracking actions
+  setPausedSecondsElapsed: (seconds: number) =>
+    set({
+      pausedSecondsElapsed: seconds,
+    }),
+
+  setPauseStartTime: (timestamp: number | null) =>
+    set({
+      pauseStartTime: timestamp,
+    }),
+
+  setActiveSecondsElapsed: (seconds: number) =>
+    set({
+      activeSecondsElapsed: seconds,
+    }),
+
+  incrementActiveTime: () =>
+    set(state => ({
+      secondsElapsed: state.secondsElapsed + 1,
+      activeSecondsElapsed: state.activeSecondsElapsed + 1,
+    })),
+
+  incrementPausedTime: () =>
+    set(state => ({
+      secondsElapsed: state.secondsElapsed + 1,
+      pausedSecondsElapsed: state.pausedSecondsElapsed + 1,
+    })),
 }));
 
 export default createSelectors(rideStore);

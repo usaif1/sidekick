@@ -17,7 +17,7 @@ export interface LocationServiceConfig {
 }
 
 const DEFAULT_CONFIG: LocationServiceConfig = {
-  timeout: 15000,
+  timeout: 60000,
   maximumAge: 10000,
   enableHighAccuracy: true,
 };
@@ -117,14 +117,16 @@ const LocationService = {
       
       console.log('Location updated:', coordinates);
       
-      showToast({
-        type: 'success',
-        text1: 'Location Found',
-        text2: 'Your location has been updated',
-      });
+      // showToast({
+      //   type: 'success',
+      //   text1: 'Location Found',
+      //   text2: 'Your location has been updated',
+      // });
       
       return coordinates;
     } catch (error) {
+      console.log('error', error);
+
       // Clear loading state on error
       const {setLocationLoading} = useLocationStore.getState();
       setLocationLoading(false);

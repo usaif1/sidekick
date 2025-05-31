@@ -5,6 +5,8 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  StatusBar,
+  Platform,
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {ms, ScaledSheet} from 'react-native-size-matters';
@@ -197,139 +199,146 @@ const AddFundsScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.content}>
-        {/* Amount input section */}
-        <View style={styles.section}>
-          <View>
-            <B2 textColor="highlight">
-              Available Balance: {userWallet?.balance.toFixed(1) || 0}
-            </B2>
-            <Divider height={9.6} />
-            <View style={styles.amountInput}>
-              {showCredits() ? (
-                <B1 textColor="highlight">C</B1>
-              ) : (
-                <B1 textColor="highlight">₹</B1>
-              )}
+    <>
+      <StatusBar 
+        barStyle="dark-content" 
+        backgroundColor="#FFFFFF" 
+        translucent={false}
+      />
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.content}>
+          {/* Amount input section */}
+          <View style={styles.section}>
+            <View>
+              <B2 textColor="highlight">
+                Available Balance: {userWallet?.balance.toFixed(1) || 0}
+              </B2>
+              <Divider height={9.6} />
+              <View style={styles.amountInput}>
+                {showCredits() ? (
+                  <B1 textColor="highlight">C</B1>
+                ) : (
+                  <B1 textColor="highlight">₹</B1>
+                )}
 
-              <TextInput
-                numberOfLines={1}
-                keyboardType="numeric"
-                placeholder="00.0"
-                value={rechargeAmount}
-                onChangeText={text => {
-                  setRechargeAmount(text);
-                }}
-                placeholderTextColor={colors.textPrimary}
-                style={{
-                  width: '50%',
-                  fontSize: ms(23),
-                  textAlign: 'right',
-                  fontWeight: '600',
-                }}
-              />
-            </View>
-          </View>
-
-          {/* Quick amount options */}
-          <Divider height={9.6} />
-          <View style={styles.quickAmounts}>
-            {QUICK_AMOUNTS.map(value => (
-              <TouchableOpacity
-                key={value}
-                style={[
-                  styles.quickAmountButton,
-                  {
-                    backgroundColor:
-                      rechargeAmount === value.toString()
-                        ? colors.highlight
-                        : colors.lightGray,
-                    borderColor:
-                      rechargeAmount === value.toString()
-                        ? colors.highlight
-                        : colors.textSecondary,
-                  },
-                ]}
-                onPress={() => handleQuickAmountSelect(value)}>
-                <Text
-                  style={[
-                    styles.quickAmountText,
-                    {
-                      color:
-                        rechargeAmount === value.toString()
-                          ? colors.white
-                          : colors.textPrimary,
-                    },
-                  ]}>
-                  + {value}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <Divider height={16} />
-          <View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <B2>Amount</B2>
-              <B2>₹ {rechargeAmount}</B2>
-            </View>
-            <Divider height={6} />
-            {!userWallet?.security_deposit ? (
-              <>
-                <View
+                <TextInput
+                  numberOfLines={1}
+                  keyboardType="numeric"
+                  placeholder="00.0"
+                  value={rechargeAmount}
+                  onChangeText={text => {
+                    setRechargeAmount(text);
+                  }}
+                  placeholderTextColor={colors.textPrimary}
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <B2>Security Deposit</B2>
-                  <B2>₹ {securityDeposit}</B2>
-                </View>
-                <Divider height={6} />
-              </>
-            ) : null}
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <B2>Total</B2>
-              <B2>₹ {securityDeposit + parseFloat(rechargeAmount)}</B2>
+                    width: '50%',
+                    fontSize: ms(23),
+                    textAlign: 'right',
+                    fontWeight: '600',
+                  }}
+                />
+              </View>
+            </View>
+
+            {/* Quick amount options */}
+            <Divider height={9.6} />
+            <View style={styles.quickAmounts}>
+              {QUICK_AMOUNTS.map(value => (
+                <TouchableOpacity
+                  key={value}
+                  style={[
+                    styles.quickAmountButton,
+                    {
+                      backgroundColor:
+                        rechargeAmount === value.toString()
+                          ? colors.highlight
+                          : colors.lightGray,
+                      borderColor:
+                        rechargeAmount === value.toString()
+                          ? colors.highlight
+                          : colors.textSecondary,
+                    },
+                  ]}
+                  onPress={() => handleQuickAmountSelect(value)}>
+                  <Text
+                    style={[
+                      styles.quickAmountText,
+                      {
+                        color:
+                          rechargeAmount === value.toString()
+                            ? colors.white
+                            : colors.textPrimary,
+                      },
+                    ]}>
+                    + {value}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Divider height={16} />
+            <View>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <B2>Amount</B2>
+                <B2>₹ {rechargeAmount}</B2>
+              </View>
+              <Divider height={6} />
+              {!userWallet?.security_deposit ? (
+                <>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <B2>Security Deposit</B2>
+                    <B2>₹ {securityDeposit}</B2>
+                  </View>
+                  <Divider height={6} />
+                </>
+              ) : null}
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <B2>Total</B2>
+                <B2>₹ {securityDeposit + parseFloat(rechargeAmount)}</B2>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
 
-      {/* Pay button */}
-      {rechargeAmount && rechargeAmount !== '0' ? (
-        showCredits() ? (
-          <View
-            style={[styles.buttonContainer, {width: 450, alignSelf: 'center'}]}>
-            <ButtonText
-              variant="primary"
-              onPress={handleCreditRequest}
-              loading={walletLoaders['add-funds']}>
-              Request{' '}
-              {!securityDeposit
-                ? rechargeAmount
-                : parseFloat(rechargeAmount) + securityDeposit}{' '}
-              credits
-            </ButtonText>
-          </View>
-        ) : (
-          <View style={styles.buttonContainer}>
-            <ButtonText
-              variant="primary"
-              onPress={handlePay}
-              loading={walletLoaders['add-funds']}>
-              Pay ₹{' '}
-              {!securityDeposit
-                ? rechargeAmount
-                : parseFloat(rechargeAmount) + securityDeposit}
-            </ButtonText>
-          </View>
-        )
-      ) : null}
+        {/* Pay button */}
+        {rechargeAmount && rechargeAmount !== '0' ? (
+          showCredits() ? (
+            <View
+              style={[styles.buttonContainer, {width: 450, alignSelf: 'center'}]}>
+              <ButtonText
+                variant="primary"
+                onPress={handleCreditRequest}
+                loading={walletLoaders['add-funds']}>
+                Request{' '}
+                {!securityDeposit
+                  ? rechargeAmount
+                  : parseFloat(rechargeAmount) + securityDeposit}{' '}
+                credits
+              </ButtonText>
+            </View>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <ButtonText
+                variant="primary"
+                onPress={handlePay}
+                loading={walletLoaders['add-funds']}>
+                Pay ₹{' '}
+                {!securityDeposit
+                  ? rechargeAmount
+                  : parseFloat(rechargeAmount) + securityDeposit}
+              </ButtonText>
+            </View>
+          )
+        ) : null}
 
-      <GlobalModal />
-    </SafeAreaView>
+        <GlobalModal />
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -337,6 +346,7 @@ const styles = ScaledSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 0,
   },
 
   content: {

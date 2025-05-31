@@ -107,11 +107,11 @@ export const BluetoothService = {
 
       if (!requiredServiceUUID) {
         console.log('no required service found');
-        showToast({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Error connecting to device',
-        });
+        // showToast({
+        //   type: 'error',
+        //   text1: 'Error',
+        //   text2: 'Error connecting to device',
+        // });
         return;
       }
 
@@ -123,11 +123,11 @@ export const BluetoothService = {
 
       if (!requiredCharacteristic) {
         console.log('no required characteristic found');
-        showToast({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Error connecting to device',
-        });
+        // showToast({
+        //   type: 'error',
+        //   text1: 'Error',
+        //   text2: 'Error connecting to device',
+        // });
         return;
       }
 
@@ -137,22 +137,22 @@ export const BluetoothService = {
         async (error, characteristic) => {
           if (error) {
             console.log('Error in monitoring characteristic', error);
-            showToast({
-              type: 'error',
-              text1: 'Error',
-              text2: 'Error connecting to device',
-            });
+            // showToast({
+            //   type: 'error',
+            //   text1: 'Error',
+            //   text2: 'Error connecting to device',
+            // });
             return;
           }
 
           console.log('characteristic', characteristic);
           if (!characteristic?.value) {
             console.log('no value found in characteristic');
-            showToast({
-              type: 'error',
-              text1: 'Error',
-              text2: 'Error connecting to device',
-            });
+            // showToast({
+            //   type: 'error',
+            //   text1: 'Error',
+            //   text2: 'Error connecting to device',
+            // });
             return;
           }
 

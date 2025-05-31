@@ -29,13 +29,18 @@ const RideScreen: React.FC = () => {
   const {
     setTimerInterval,
     interval,
-
     setTotalCost,
     isPaused,
     perMinuteRate,
+    pausedPerMinuteRate,
     secondsElapsed,
+    activeSecondsElapsed,
+    pausedSecondsElapsed,
     setIsPaused,
     setSecondsElapsed,
+    incrementActiveTime,
+    incrementPausedTime,
+    resetRideStore,
   } = useRideStore();
 
   const getCurrentLocation = () => {
@@ -79,37 +84,44 @@ const RideScreen: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isPaused) {
-      const newInterval = setInterval(() => {
-        setSecondsElapsed((prev: number) => prev + 1); // ✅ correctly using prev value
-      }, 1000);
+    // Timer always runs, but increments different counters based on pause state
+    const newInterval = setInterval(() => {
+      if (isPaused) {
+        incrementPausedTime(); // Increment both total and paused time
+      } else {
+        incrementActiveTime(); // Increment both total and active time
+      }
+    }, 1000);
 
-      setTimerInterval(newInterval);
-    } else if (interval) {
-      clearInterval(interval);
-    }
+    setTimerInterval(newInterval);
 
     return () => {
-      if (interval) {
-        clearInterval(interval);
+      if (newInterval) {
+        clearInterval(newInterval);
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPaused]);
+  }, [isPaused]); // Re-create interval when pause state changes
 
   useEffect(() => {
-    setTotalCost(Math.ceil(secondsElapsed / 60) * perMinuteRate);
+    // Calculate cost using dual pricing: full rate for active time, half rate for paused time
+    const activeCost = Math.ceil(activeSecondsElapsed / 60) * perMinuteRate;
+    const pausedCost = Math.ceil(pausedSecondsElapsed / 60) * pausedPerMinuteRate;
+    setTotalCost(activeCost + pausedCost);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [secondsElapsed]);
+  }, [activeSecondsElapsed, pausedSecondsElapsed]);
 
+  // Cleanup effect when component unmounts
   useEffect(() => {
     return () => {
-      // Small delay to allow the above to register
+      // Clean up on unmount
+      if (interval) {
+        clearInterval(interval);
+      }
+      // Small delay to allow final updates
       setTimeout(() => {
-        setIsPaused(false);
-        setSecondsElapsed(0);
-        setTotalCost(0);
-      }, 100); // 👈 allows re-triggering RideDetails timer
+        resetRideStore();
+      }, 100);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

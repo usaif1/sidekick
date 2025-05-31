@@ -75,8 +75,44 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
               });
               return;
             }
+            // start scooter via api
+            const scooterResponse =
+              await rideScooterService.toggleScooterMobility({
+                imei: response.imei,
+                immobilize: true,
+              });
+
+            if (scooterResponse.success) {
+              try {
+                const rideDetails = await RideService.startRide({
+                  object: {
+                    user_id: user?.id,
+                    scooter_id: response.id,
+                    start_hub_id: response.hub_id,
+                    start_time: DateTime.now(),
+                    ride_distance: 0,
+                  },
+                });
+                console.log('scooter no', response);
+                rideStorage.set(
+                  'currentScooterId',
+                  `${response.registration_number}`,
+                );
+                rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+                await RideService.createRideStep({
+                  ride_details_id: rideDetails?.id,
+                  steps: 'RIDE_STARTED',
+                });
+                navigateToRide();
+              } catch (error) {
+                console.log('Error starting ride', error);
+              }
+              return;
+            }
 
             BluetoothService.scanDevices(requiredDeviceName, device => {
+              setScooterCode('');
               BluetoothService.startScooter(device, async () => {
                 try {
                   const rideDetails = await RideService.startRide({
