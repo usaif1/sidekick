@@ -137,9 +137,9 @@ const EndRide: React.FC = () => {
         <H2 customStyles={{textAlign: 'center'}}>
           Nearest Hub is {nearestDistance} away!
         </H2>
-        <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
+        {/* <P2 customStyles={{textAlign: 'center'}} textColor="textSecondary">
           Please select the nearest hub to continue.
-        </P2>
+        </P2> */}
       </View>
       <Divider height={16} />
       <View style={{maxHeight: Dimensions.get('window').height * 0.25}}>
