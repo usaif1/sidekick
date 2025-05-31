@@ -15,6 +15,11 @@ import {
   FetchScooterByNumberQuery,
   FetchScooterByNumberQueryVariables,
 
+  // fetch current ride
+  FetchCurrentRideDocument,
+  FetchCurrentRideQuery,
+  FetchCurrentRideQueryVariables,
+
   // create ride
   CreateRideDocument,
   CreateRideMutation,
@@ -54,6 +59,17 @@ const WalletService = {
     });
 
     return response.scooters[0];
+  },
+
+  fetchCurrentRide: async function (
+    args: FetchCurrentRideQueryVariables,
+  ) {
+    const response: FetchCurrentRideQuery = await callQuery({
+      queryDocument: FetchCurrentRideDocument,
+      variables: args,
+    });
+
+    return response.ride_details_by_pk;
   },
 
   startRide: async function (args: CreateRideMutationVariables) {

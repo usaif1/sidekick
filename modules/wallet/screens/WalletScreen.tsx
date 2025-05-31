@@ -9,9 +9,10 @@ import WalletCard from '@/modules/wallet/components/WalletCard';
 import SecurityDepositBar from '@/modules/wallet/components/SecurityDepositBar';
 import TransactionList from '@/modules/wallet/components/TransactionList';
 import AddFundsButton from '@/modules/wallet/components/AddFundsButton';
+import WithdrawalConfirmationModal from '@/modules/wallet/components/WithdrawalConfirmationModal';
 
 // store
-import {useRideStore, useThemeStore, useUserStore} from '@/globalStore';
+import {useRideStore, useThemeStore, useUserStore, useGlobalStore} from '@/globalStore';
 import {Divider, H3} from '@/components';
 
 // services
@@ -24,10 +25,13 @@ const WalletScreen: React.FC = () => {
 
   const {rideHistory} = useRideStore();
   const {user} = useUserStore();
+  const {setModalComponent, openModal} = useGlobalStore();
 
   // Handle withdraw button press
   const handleWithdraw = () => {
-    // Implement withdraw logic or navigation
+    // Open withdrawal confirmation modal
+    setModalComponent(WithdrawalConfirmationModal);
+    openModal();
   };
 
   // Handle add funds button press

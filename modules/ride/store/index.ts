@@ -1,6 +1,7 @@
 // dependencies
 import {create} from 'zustand';
 import {CameraDevice} from 'react-native-vision-camera';
+import {DateTime} from 'luxon';
 
 // utils
 import createSelectors from '@/utils/selectors';
@@ -26,6 +27,9 @@ type RideStore = {
   perMinuteRate: number;
   selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
 
+  // Ride timing
+  rideStartTime: string | null; // ISO timestamp from server
+
   // New pause tracking properties
   pausedSecondsElapsed: number; // Track total paused time
   pauseStartTime: number | null; // When current pause started
@@ -49,6 +53,10 @@ type RideActions = {
   setIsPaused: (pauseState: boolean) => void;
   setSecondsElapsed: (updater: any) => void;
   setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0] | undefined) => void;
+
+  // Ride timing
+  setRideStartTime: (startTime: string | null) => void;
+  syncTimerWithServer: (startTime: string, pausedTime: number) => void;
 
   // New pause tracking actions
   setPausedSecondsElapsed: (seconds: number) => void;
@@ -77,6 +85,9 @@ const rideInitialState: RideStore = {
   secondsElapsed: 0,
   perMinuteRate: 2,
   selectedHub: undefined,
+
+  // Ride timing
+  rideStartTime: null, // ISO timestamp from server
 
   // New pause tracking properties
   pausedSecondsElapsed: 0, // Track total paused time
@@ -178,6 +189,34 @@ const rideStore = create<RideStore & RideActions>(set => ({
       secondsElapsed: state.secondsElapsed + 1,
       pausedSecondsElapsed: state.pausedSecondsElapsed + 1,
     })),
+
+  // Ride timing
+  setRideStartTime: startTime =>
+    set({
+      rideStartTime: startTime,
+    }),
+
+  syncTimerWithServer: (startTime, pausedTime) =>
+    set(state => {
+      const now = DateTime.now();
+      const start = DateTime.fromISO(startTime);
+      const totalElapsedSeconds = Math.floor(now.diff(start, 'seconds').seconds);
+      const activeElapsedSeconds = Math.max(0, totalElapsedSeconds - pausedTime);
+
+      console.log('🔄 Timer sync:', {
+        startTime,
+        totalElapsedSeconds,
+        pausedTime,
+        activeElapsedSeconds,
+      });
+
+      return {
+        rideStartTime: startTime,
+        secondsElapsed: totalElapsedSeconds,
+        activeSecondsElapsed: activeElapsedSeconds,
+        pausedSecondsElapsed: pausedTime,
+      };
+    }),
 }));
 
 export default createSelectors(rideStore);

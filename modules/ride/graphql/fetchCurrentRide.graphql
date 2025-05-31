@@ -1,0 +1,16 @@
+query fetchCurrentRide($id: uuid!) {
+  ride_details_by_pk(id: $id) {
+    id
+    start_time
+    created_at
+    user_id
+    scooter_id
+    start_hub_id
+    total_cost
+    ride_steps {
+      id
+      steps
+      created_at
+    }
+  }
+} 

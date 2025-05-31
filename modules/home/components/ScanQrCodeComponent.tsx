@@ -18,6 +18,7 @@ import Divider from '@/components/Divider';
 
 // store
 import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
+import {useRideStore} from '@/globalStore';
 import LinearGradientSVG from '../assets/linearGradient.svg';
 import {ButtonTextSm, showToast} from '@/components';
 import {RideService} from '@/globalService';

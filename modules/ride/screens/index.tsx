@@ -1,6 +1,6 @@
 // dependencies
 import React, {useEffect, useRef, useState, useCallback} from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
+import {View, StyleSheet, AppState} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 
@@ -16,6 +16,8 @@ import UserLocationMarker from '@/modules/home/components/UserLocationMarker';
 import HubMarkers from '@/modules/home/components/HubMarkers';
 import {RideDetails} from '../components';
 import {GlobalModal} from '@/components';
+import {RideService} from '@/globalService';
+import rideStorage from '../storage';
 
 const RideScreen: React.FC = () => {
   const latitude = useLocationStore(state => state.latitude);
@@ -41,7 +43,59 @@ const RideScreen: React.FC = () => {
     incrementActiveTime,
     incrementPausedTime,
     resetRideStore,
+    syncTimerWithServer,
+    rideStartTime,
   } = useRideStore();
+
+  // App state for background/foreground detection
+  const appState = useRef(AppState.currentState);
+
+  // Function to calculate paused time from ride steps
+  const calculatePausedTime = (rideSteps: any[]) => {
+    let pausedSeconds = 0;
+    let pauseStart: string | null = null;
+
+    rideSteps
+      .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+      .forEach(step => {
+        if (step.steps === 'RIDE_PAUSED') {
+          pauseStart = step.created_at;
+        } else if (step.steps === 'RIDE_RESUMED' && pauseStart) {
+          const pauseEnd = step.created_at;
+          const pauseDuration = new Date(pauseEnd).getTime() - new Date(pauseStart).getTime();
+          pausedSeconds += Math.floor(pauseDuration / 1000);
+          pauseStart = null;
+        }
+      });
+
+    // If currently paused, add time since last pause
+    if (pauseStart && isPaused) {
+      const now = new Date().getTime();
+      const currentPauseDuration = now - new Date(pauseStart).getTime();
+      pausedSeconds += Math.floor(currentPauseDuration / 1000);
+    }
+
+    return pausedSeconds;
+  };
+
+  // Function to sync timer with server
+  const syncWithServer = async () => {
+    const currentRideId = rideStorage.getString('currentRideId');
+    if (!currentRideId) return;
+
+    try {
+      console.log('🔄 Syncing timer with server...');
+      const rideData = await RideService.fetchCurrentRide({id: currentRideId});
+      
+      if (rideData?.start_time) {
+        const pausedTime = calculatePausedTime(rideData.ride_steps || []);
+        syncTimerWithServer(rideData.start_time, pausedTime);
+        console.log('✅ Timer synced successfully');
+      }
+    } catch (error) {
+      console.error('❌ Error syncing timer:', error);
+    }
+  };
 
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
@@ -68,6 +122,29 @@ const RideScreen: React.FC = () => {
   useEffect(() => {
     getCurrentLocation();
     requestLocationPermission();
+    
+    // Load initial ride data and sync timer
+    syncWithServer();
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // App state listener for background/foreground detection
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: any) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        // App has come to the foreground - sync timer with server
+        console.log('📱 App came to foreground - syncing timer...');
+        syncWithServer();
+      }
+      appState.current = nextAppState;
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,6 +185,13 @@ const RideScreen: React.FC = () => {
     const activeCost = Math.ceil(activeSecondsElapsed / 60) * perMinuteRate;
     const pausedCost = Math.ceil(pausedSecondsElapsed / 60) * pausedPerMinuteRate;
     setTotalCost(activeCost + pausedCost);
+    console.log('💰 Cost updated:', {
+      activeSecondsElapsed,
+      pausedSecondsElapsed,
+      activeCost,
+      pausedCost,
+      totalCost: activeCost + pausedCost,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSecondsElapsed, pausedSecondsElapsed]);
 

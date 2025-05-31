@@ -6,6 +6,7 @@ import {ScaledSheet} from 'react-native-size-matters';
 
 // store
 import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
+import {useRideStore} from '@/globalStore';
 
 // components
 import {ButtonTextSm, showToast} from '@/components';
@@ -30,6 +31,7 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
 
   const {closeModal} = useGlobalStore();
   const {user} = useUserStore();
+  const {setRideStartTime} = useRideStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -104,6 +106,7 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
                   ride_details_id: rideDetails?.id,
                   steps: 'RIDE_STARTED',
                 });
+                setRideStartTime(DateTime.now().toISO());
                 navigateToRide();
               } catch (error) {
                 console.log('Error starting ride', error);
@@ -135,6 +138,7 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
                     ride_details_id: rideDetails?.id,
                     steps: 'RIDE_STARTED',
                   });
+                  setRideStartTime(DateTime.now().toISO());
                   navigateToRide();
                 } catch (error) {
                   console.log('Error starting ride', error);
