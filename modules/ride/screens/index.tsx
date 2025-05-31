@@ -14,13 +14,13 @@ import {findNearestHub} from '@/modules/home/utilis/distanceUtils';
 import requestLocationPermission from '@/components/LocationPermission';
 import UserLocationMarker from '@/modules/home/components/UserLocationMarker';
 import HubMarkers from '@/modules/home/components/HubMarkers';
-import DirectionsComponent from '@/modules/home/screens/RentScreen/components/DirectionsComponent';
 import {RideDetails} from '../components';
 import {GlobalModal} from '@/components';
 
 const RideScreen: React.FC = () => {
   const latitude = useLocationStore(state => state.latitude);
   const longitude = useLocationStore(state => state.longitude);
+  const hasUserLocation = useLocationStore(state => state.hasUserLocation);
   const setLocation = useLocationStore(state => state.setLocation);
 
   const {selectedHub, setSelectedHub, hubs} = useRideStore();
@@ -117,7 +117,7 @@ const RideScreen: React.FC = () => {
   const [heading, setHeading] = useState<number>(0);
 
   const handleSelectNearestHub = useCallback(() => {
-    if (!latitude || !longitude || hubs.length === 0) {
+    if (!hasUserLocation || !latitude || !longitude || hubs.length === 0) {
       return;
     }
 
@@ -138,13 +138,14 @@ const RideScreen: React.FC = () => {
       longitudeDelta: 0.01,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [latitude, longitude, hubs]);
+  }, [hasUserLocation, latitude, longitude, hubs]);
 
-  useEffect(() => {
-    if (latitude && longitude && hubs.length > 0) {
-      handleSelectNearestHub();
-    }
-  }, [latitude, longitude, hubs, handleSelectNearestHub]);
+  // Removed automatic nearest hub selection - let user manually select hubs if needed
+  // useEffect(() => {
+  //   if (hasUserLocation && latitude && longitude && hubs.length > 0) {
+  //     handleSelectNearestHub();
+  //   }
+  // }, [hasUserLocation, latitude, longitude, hubs, handleSelectNearestHub]);
 
   return (
     <View style={{flex: 1}}>
@@ -161,7 +162,7 @@ const RideScreen: React.FC = () => {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}>
-        {latitude && longitude && (
+        {hasUserLocation && latitude && longitude && (
           <UserLocationMarker
             latitude={latitude}
             longitude={longitude}
@@ -173,18 +174,6 @@ const RideScreen: React.FC = () => {
           selectedHub={selectedHub}
           onHubSelect={setSelectedHub}
         />
-        {selectedHub &&
-          selectedHub.latitude &&
-          selectedHub.longitude &&
-          latitude &&
-          longitude && (
-            <DirectionsComponent
-              origin={{latitude, longitude}}
-              destination={selectedHub}
-              mapRef={mapRef as React.RefObject<MapView>}
-              onHeadingChange={setHeading}
-            />
-          )}
       </MapView>
 
       <GlobalModal />

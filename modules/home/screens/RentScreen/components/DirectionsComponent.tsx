@@ -22,6 +22,18 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
 }) => {
   const {width, height} = Dimensions.get('window');
 
+  // Safety check: Don't render if we don't have valid origin coordinates
+  if (!origin || !origin.latitude || !origin.longitude) {
+    console.warn('DirectionsComponent: Invalid origin coordinates provided');
+    return null;
+  }
+
+  // Safety check: Don't render if we don't have valid destination coordinates
+  if (!destination || !destination.latitude || !destination.longitude) {
+    console.warn('DirectionsComponent: Invalid destination coordinates provided');
+    return null;
+  }
+
   const calculateHeading = (currentPos: LatLng, nextPos: LatLng) => {
     const start = turf.point([currentPos.longitude, currentPos.latitude]);
     const end = turf.point([nextPos.longitude, nextPos.latitude]);
@@ -46,17 +58,32 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
       waypoints={[]}
       onReady={(result: MapViewDirectionsResult) => {
         const coordinates = result.coordinates;
-        mapRef.current?.fitToCoordinates(coordinates, {
-          edgePadding: {
-            right: width / 20,
-            bottom: height / 20,
-            left: width / 20,
-            top: height / 20,
-          },
-          animated: true,
-        });
-        const nextRoutePoint = coordinates[1];
-        onHeadingChange?.(calculateHeading(origin as LatLng, nextRoutePoint));
+        
+        // Safely fit coordinates on map
+        if (coordinates && coordinates.length > 0) {
+          mapRef.current?.fitToCoordinates(coordinates, {
+            edgePadding: {
+              right: width / 20,
+              bottom: height / 20,
+              left: width / 20,
+              top: height / 20,
+            },
+            animated: true,
+          });
+        }
+        
+        // Safely calculate heading - ensure we have both points and origin
+        if (coordinates && coordinates.length >= 2 && origin && onHeadingChange) {
+          const nextRoutePoint = coordinates[1];
+          if (nextRoutePoint && nextRoutePoint.latitude && nextRoutePoint.longitude) {
+            try {
+              const heading = calculateHeading(origin, nextRoutePoint);
+              onHeadingChange(heading);
+            } catch (error) {
+              console.warn('Error calculating heading:', error);
+            }
+          }
+        }
       }}
       onError={errorMessage => {
         console.error('Direction routing error:', errorMessage);

@@ -10,7 +10,7 @@ import {useAuthStore, useGlobalStore} from '@/globalStore';
 import useRideStore from '@/modules/ride/store';
 
 // services
-import {RideService, UserService} from '@/globalService';
+import {RideService, UserService, LocationService} from '@/globalService';
 import {mapStyles} from '../../utilis/mapStyle';
 import {authUtils} from '@/modules/authentication/utils';
 import {findNearestHub} from '../../utilis/distanceUtils';
@@ -18,11 +18,10 @@ import {findNearestHub} from '../../utilis/distanceUtils';
 // components
 import ScanQrCodeComponent from '../../components/ScanQrCodeComponent';
 import UserLocationMarker from '../../components/UserLocationMarker';
+import LocationLoadingModal from '../../components/LocationLoadingModal';
 import ActionButtons from './components';
 import {useFocusEffect} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
-import DirectionsComponent from './components/DirectionsComponent';
-import {requestPermissions} from '../../utilis/permissionUtils';
 import HubMarkers from '../../components/HubMarkers';
 import {checkAndRequestPermission} from '@/utils/permissionsHelper';
 import {PERMISSIONS} from 'react-native-permissions';
@@ -30,7 +29,7 @@ import {PERMISSIONS} from 'react-native-permissions';
 const RentScreen: React.FC = () => {
   const {closeBottomSheet} = useGlobalStore();
 
-  const {latitude, longitude, setLocation} = useLocationStore();
+  const {latitude, longitude, hasUserLocation, isLocationLoading} = useLocationStore();
   const {stopLoading} = useAuthStore();
   const {openModal, setModalComponent} = useGlobalStore();
   const {selectedHub, setSelectedHub, hubs} = useRideStore();
@@ -81,45 +80,60 @@ const RentScreen: React.FC = () => {
     openModal();
   };
 
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        setLocation(lat, lng);
-        if (mapRef.current) {
-          mapRef.current.animateToRegion({
-            latitude: lat,
-            longitude: lng,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          });
-        }
-      },
-      error => console.log('Error getting current location:', error),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
-  };
-
-  useEffect(() => {
-    const initializePermissions = async () => {
-      const {locationGranted} = await requestPermissions();
-      if (locationGranted) {
-        getCurrentLocation();
+  const getCurrentLocation = async () => {
+    try {
+      const coordinates = await LocationService.getCurrentLocationAndUpdateStore();
+      if (coordinates && mapRef.current) {
+        mapRef.current.animateToRegion({
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        });
       }
-    };
-
-    initializePermissions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setLocation]);
+      return coordinates;
+    } catch (error) {
+      console.log('Error getting current location:', error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     authUtils.setBottomSheetView('welcome');
     RideService.fetchAllHubs();
     UserService.fetchUserDetails();
     stopLoading('otp-verification');
+    
+    // Handle location when user reaches home screen after login
+    const handleLocationAfterLogin = async () => {
+      try {
+        // Use the comprehensive location service with map animation
+        const coordinates = await LocationService.handleLocationOnLogin(mapRef);
+        console.log('Location handled after reaching home screen:', coordinates);
+      } catch (error) {
+        console.error('Error handling location after login:', error);
+      }
+    };
+    
+    // Call location handling after a short delay to ensure the screen is mounted
+    setTimeout(() => {
+      handleLocationAfterLogin();
+    }, 500);
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Listen for location changes and animate map to user location
+  useEffect(() => {
+    if (hasUserLocation && latitude && longitude && mapRef.current) {
+      mapRef.current.animateToRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+    }
+  }, [hasUserLocation, latitude, longitude]);
 
   useFocusEffect(
     useCallback(() => {
@@ -129,7 +143,7 @@ const RentScreen: React.FC = () => {
   );
 
   const handleSelectNearestHub = useCallback(() => {
-    if (!latitude || !longitude || hubs.length === 0) {
+    if (!hasUserLocation || !latitude || !longitude || hubs.length === 0) {
       return;
     }
 
@@ -150,7 +164,7 @@ const RentScreen: React.FC = () => {
       longitudeDelta: 0.01,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [latitude, longitude, hubs]);
+  }, [hasUserLocation, latitude, longitude, hubs]);
 
   useEffect(() => {
     // fetchCameraDevices();
@@ -172,7 +186,7 @@ const RentScreen: React.FC = () => {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}>
-        {latitude && longitude && (
+        {hasUserLocation && latitude && longitude && (
           <UserLocationMarker
             latitude={latitude}
             longitude={longitude}
@@ -184,19 +198,6 @@ const RentScreen: React.FC = () => {
           selectedHub={selectedHub}
           onHubSelect={setSelectedHub}
         />
-
-        {selectedHub &&
-          selectedHub.latitude &&
-          selectedHub.longitude &&
-          latitude &&
-          longitude && (
-            <DirectionsComponent
-              origin={{latitude, longitude}}
-              destination={selectedHub}
-              mapRef={mapRef as React.RefObject<MapView>}
-              onHeadingChange={setHeading}
-            />
-          )}
       </MapView>
 
       {/* rent action buttons */}
@@ -207,6 +208,9 @@ const RentScreen: React.FC = () => {
       />
 
       <GlobalModal />
+      
+      {/* Location loading modal */}
+      <LocationLoadingModal visible={isLocationLoading} />
     </View>
   );
 };

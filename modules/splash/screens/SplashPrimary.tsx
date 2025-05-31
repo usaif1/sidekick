@@ -59,6 +59,7 @@ const SplashScreen1: React.FC = () => {
         setGraphQLClient(graphqlClient);
         setAuthToken(token as string);
         setAuthUser(user);
+
         setTimeout(() => {
           stopLoading('loading-user');
         }, 1000);
