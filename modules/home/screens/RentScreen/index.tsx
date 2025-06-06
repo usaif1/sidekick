@@ -66,34 +66,34 @@ const RentScreen: React.FC = () => {
     if (!locationPermission) return;
 
     // 2. Camera
-    const cameraPermission = await checkAndRequestPermission(
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.CAMERA
-        : PERMISSIONS.ANDROID.CAMERA,
-      'Camera',
-    );
-    if (!cameraPermission) return;
+    // const cameraPermission = await checkAndRequestPermission(
+    //   Platform.OS === 'ios'
+    //     ? PERMISSIONS.IOS.CAMERA
+    //     : PERMISSIONS.ANDROID.CAMERA,
+    //   'Camera',
+    // );
+    // if (!cameraPermission) return;
 
     // 3. Bluetooth (only needed for Android 12+ and iOS)
-    if (Platform.OS === 'android' && Platform.Version >= 31) {
-      const bluetoothScanPermission = await checkAndRequestPermission(
-        PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
-        'Bluetooth Scan',
-      );
-      const bluetoothConnectPermission = await checkAndRequestPermission(
-        PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
-        'Bluetooth Connect',
-      );
-      if (!bluetoothScanPermission || !bluetoothConnectPermission) return;
-    }
+    // if (Platform.OS === 'android' && Platform.Version >= 31) {
+    //   const bluetoothScanPermission = await checkAndRequestPermission(
+    //     PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
+    //     'Bluetooth Scan',
+    //   );
+    //   const bluetoothConnectPermission = await checkAndRequestPermission(
+    //     PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
+    //     'Bluetooth Connect',
+    //   );
+    //   if (!bluetoothScanPermission || !bluetoothConnectPermission) return;
+    // }
 
-    if (Platform.OS === 'ios') {
-      const bluetoothPermission = await checkAndRequestPermission(
-        PERMISSIONS.IOS.BLUETOOTH,
-        'Bluetooth',
-      );
-      if (!bluetoothPermission) return;
-    }
+    // if (Platform.OS === 'ios') {
+    //   const bluetoothPermission = await checkAndRequestPermission(
+    //     PERMISSIONS.IOS.BLUETOOTH,
+    //     'Bluetooth',
+    //   );
+    //   if (!bluetoothPermission) return;
+    // }
 
     setModalComponent(ScanQrCodeComponent);
     openModal();

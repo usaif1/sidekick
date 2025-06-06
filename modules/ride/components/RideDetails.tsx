@@ -20,7 +20,7 @@ import {
 
 import {EndRide} from '../components';
 import {calculateHubDistance} from '@/modules/home/utilis/distanceUtils';
-import {RideService} from '@/globalService';
+import {rideScooterService, RideService} from '@/globalService';
 import rideStorage from '../storage';
 import {BluetoothService} from '@/globalService/bluetoothService';
 
@@ -51,19 +51,52 @@ const RideDetails: React.FC = () => {
 
   // Convert seconds into mm:ss format
   const formatTime = (totalSeconds: number) => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
-      2,
-      '0',
-    )}`;
+    try {
+      // Validate input
+      if (
+        typeof totalSeconds !== 'number' ||
+        isNaN(totalSeconds) ||
+        totalSeconds < 0
+      ) {
+        console.warn('⚠️ Invalid time value:', totalSeconds);
+        return '00:00';
+      }
+
+      const seconds = Math.floor(totalSeconds);
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+
+      return `${String(minutes).padStart(2, '0')}:${String(
+        remainingSeconds,
+      ).padStart(2, '0')}`;
+    } catch (error) {
+      console.error('❌ Error formatting time:', error);
+      return '00:00';
+    }
   };
 
   const distance = useMemo(() => {
-    if (!selectedHub) {
+    try {
+      if (!selectedHub || !latitude || !longitude) {
+        return '0m';
+      }
+
+      // Validate coordinates
+      if (
+        typeof latitude !== 'number' ||
+        typeof longitude !== 'number' ||
+        isNaN(latitude) ||
+        isNaN(longitude)
+      ) {
+        console.warn('⚠️ Invalid coordinates:', {latitude, longitude});
+        return '0m';
+      }
+
+      return calculateHubDistance(latitude, longitude, selectedHub);
+    } catch (error) {
+      console.error('❌ Error calculating distance:', error);
       return '0m';
     }
-    return calculateHubDistance(latitude, longitude, selectedHub);
   }, [latitude, longitude, selectedHub]);
 
   const endRide = () => {
@@ -74,7 +107,7 @@ const RideDetails: React.FC = () => {
   // Turn off scooter when pausing
   const turnOffScooter = async () => {
     if (!currentScooterId) return;
-    
+
     try {
       const response = await RideService.fetchScooterByRegNo({
         regNo: currentScooterId,
@@ -85,11 +118,22 @@ const RideDetails: React.FC = () => {
         return;
       }
 
-      BluetoothService.scanDevices(response.device_name, device => {
-        BluetoothService.stopScooter(device, () => {
-          console.log('✅ Scooter turned off due to pause');
+      const stopScooterResponse =
+        await rideScooterService.toggleScooterMobility({
+          imei: parseInt(response.imei),
+          immobilize: false,
         });
-      });
+
+      if (stopScooterResponse.success) {
+        console.log('scooter stopped via API');
+        return;
+      }
+
+      // BluetoothService.scanDevices(response.device_name, device => {
+      //   BluetoothService.stopScooter(device, () => {
+      //     console.log('✅ Scooter turned off due to pause');
+      //   });
+      // });
     } catch (error) {
       console.error('Error turning off scooter:', error);
     }
@@ -98,7 +142,7 @@ const RideDetails: React.FC = () => {
   // Turn on scooter when resuming
   const turnOnScooter = async () => {
     if (!currentScooterId) return;
-    
+
     try {
       const response = await RideService.fetchScooterByRegNo({
         regNo: currentScooterId,
@@ -109,11 +153,22 @@ const RideDetails: React.FC = () => {
         return;
       }
 
-      BluetoothService.scanDevices(response.device_name, device => {
-        BluetoothService.startScooter(device, () => {
-          console.log('✅ Scooter turned on due to resume');
+      const startScooterResponse =
+        await rideScooterService.toggleScooterMobility({
+          imei: parseInt(response.imei),
+          immobilize: true,
         });
-      });
+
+      if (startScooterResponse.success) {
+        console.log('scooter turned on via API');
+        return;
+      }
+
+      // BluetoothService.scanDevices(response.device_name, device => {
+      //   BluetoothService.startScooter(device, () => {
+      //     console.log('✅ Scooter turned on due to resume');
+      //   });
+      // });
     } catch (error) {
       console.error('Error turning on scooter:', error);
     }
@@ -153,7 +208,8 @@ const RideDetails: React.FC = () => {
               <View style={styles.ridingMetricsFlexContainer}>
                 <H3 textColor="textSecondary">Paused Time</H3>
                 <H3 textColor="textSecondary">
-                  {formatTime(pausedSecondsElapsed)} @ ₹{pausedPerMinuteRate}/min
+                  {formatTime(pausedSecondsElapsed)} @ ₹{pausedPerMinuteRate}
+                  /min
                 </H3>
               </View>
               <Divider height={4} />
@@ -180,14 +236,30 @@ const RideDetails: React.FC = () => {
             {isPaused ? (
               <ButtonTextBottomSheet
                 variant="primary"
-                onPress={() => {
-                  RideService.createRideStep({
-                    ride_details_id: currentRideId,
-                    // steps: 'RIDE_RESUMED',
-                    steps: 'RIDE_RESUMED',
-                  });
-                  setIsPaused(false);
-                  turnOnScooter();
+                onPress={async () => {
+                  try {
+                    console.log('🔄 Resuming ride...');
+
+                    // Create ride step first
+                    await RideService.createRideStep({
+                      ride_details_id: currentRideId,
+                      steps: 'RIDE_RESUMED',
+                    });
+                    console.log('✅ Ride step created: RIDE_RESUMED');
+
+                    // Update state
+                    setIsPaused(false);
+                    console.log('✅ Pause state updated to false');
+
+                    // Turn on scooter (async, don't wait)
+                    turnOnScooter().catch(error => {
+                      console.error('❌ Error turning on scooter:', error);
+                    });
+                  } catch (error) {
+                    console.error('❌ Error resuming ride:', error);
+                    // Try to revert state if API call failed
+                    setIsPaused(true);
+                  }
                 }}
                 customStyle={{width: 170}}>
                 Resume Ride
@@ -195,14 +267,30 @@ const RideDetails: React.FC = () => {
             ) : (
               <ButtonTextBottomSheet
                 variant="primary"
-                onPress={() => {
-                  RideService.createRideStep({
-                    ride_details_id: currentRideId,
-                    // steps: 'RIDE_PAUSED',
-                    steps: 'RIDE_PAUSED',
-                  });
-                  setIsPaused(true);
-                  turnOffScooter();
+                onPress={async () => {
+                  try {
+                    console.log('🔄 Pausing ride...');
+
+                    // Create ride step first
+                    await RideService.createRideStep({
+                      ride_details_id: currentRideId,
+                      steps: 'RIDE_PAUSED',
+                    });
+                    console.log('✅ Ride step created: RIDE_PAUSED');
+
+                    // Update state
+                    setIsPaused(true);
+                    console.log('✅ Pause state updated to true');
+
+                    // Turn off scooter (async, don't wait)
+                    turnOffScooter().catch(error => {
+                      console.error('❌ Error turning off scooter:', error);
+                    });
+                  } catch (error) {
+                    console.error('❌ Error pausing ride:', error);
+                    // Try to revert state if API call failed
+                    setIsPaused(false);
+                  }
                 }}
                 customStyle={{width: 170}}>
                 Pause Ride

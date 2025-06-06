@@ -80,7 +80,7 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
             // start scooter via api
             const scooterResponse =
               await rideScooterService.toggleScooterMobility({
-                imei: response.imei,
+                imei: parseInt(response.imei),
                 immobilize: true,
               });
 

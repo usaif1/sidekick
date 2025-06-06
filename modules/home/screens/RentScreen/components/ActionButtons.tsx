@@ -33,13 +33,7 @@ const ActionButtons: React.FC<Props> = ({
         onPress={onSelectNearestHub}
         style={styles.nearestHubContainer}>
         <NearestHubIcon />
-        <ButtonSmall
-          onPress={() => {
-            rideScooterService.stopScooter('6310215');
-          }}
-          textColor="highlight">
-          Nearest Hub
-        </ButtonSmall>
+        <ButtonSmall textColor="highlight">Nearest Hub</ButtonSmall>
       </Pressable>
       <Divider height={3.2} />
       <ButtonWithIcon

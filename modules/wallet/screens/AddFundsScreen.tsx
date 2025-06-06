@@ -200,9 +200,9 @@ const AddFundsScreen = () => {
 
   return (
     <>
-      <StatusBar 
-        barStyle="dark-content" 
-        backgroundColor="#FFFFFF" 
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="#FFFFFF"
         translucent={false}
       />
       <SafeAreaView style={styles.container}>
@@ -309,7 +309,10 @@ const AddFundsScreen = () => {
         {rechargeAmount && rechargeAmount !== '0' ? (
           showCredits() ? (
             <View
-              style={[styles.buttonContainer, {width: 450, alignSelf: 'center'}]}>
+              style={[
+                styles.buttonContainer,
+                {width: 450, alignSelf: 'center'},
+              ]}>
               <ButtonText
                 variant="primary"
                 onPress={handleCreditRequest}

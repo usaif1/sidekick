@@ -62,7 +62,7 @@ const ReachedHub: React.FC = () => {
     }
 
     const stopScooterResponse = await rideScooterService.toggleScooterMobility({
-      imei: response.imei,
+      imei: parseInt(response.imei),
       immobilize: false,
     });
 
@@ -181,7 +181,9 @@ const ReachedHub: React.FC = () => {
         <View>
           <H3>Active Riding: {formatTime(activeSecondsElapsed)}</H3>
         </View>
-        <H3 textColor="highlight">₹ {(Math.ceil(activeSecondsElapsed / 60) * perMinuteRate).toFixed(1)}</H3>
+        <H3 textColor="highlight">
+          ₹ {(Math.ceil(activeSecondsElapsed / 60) * perMinuteRate).toFixed(1)}
+        </H3>
       </View>
       {pausedSecondsElapsed > 0 && (
         <>
@@ -190,7 +192,12 @@ const ReachedHub: React.FC = () => {
             <View>
               <H3>Paused Time: {formatTime(pausedSecondsElapsed)}</H3>
             </View>
-            <H3 textColor="textSecondary">₹ {(Math.ceil(pausedSecondsElapsed / 60) * pausedPerMinuteRate).toFixed(1)}</H3>
+            <H3 textColor="textSecondary">
+              ₹{' '}
+              {(
+                Math.ceil(pausedSecondsElapsed / 60) * pausedPerMinuteRate
+              ).toFixed(1)}
+            </H3>
           </View>
         </>
       )}

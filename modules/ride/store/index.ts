@@ -179,16 +179,36 @@ const rideStore = create<RideStore & RideActions>(set => ({
     }),
 
   incrementActiveTime: () =>
-    set(state => ({
-      secondsElapsed: state.secondsElapsed + 1,
-      activeSecondsElapsed: state.activeSecondsElapsed + 1,
-    })),
+    set(state => {
+      try {
+        const newSecondsElapsed = (state.secondsElapsed || 0) + 1;
+        const newActiveSecondsElapsed = (state.activeSecondsElapsed || 0) + 1;
+        
+        return {
+          secondsElapsed: newSecondsElapsed,
+          activeSecondsElapsed: newActiveSecondsElapsed,
+        };
+      } catch (error) {
+        console.error('❌ Error incrementing active time:', error);
+        return state;
+      }
+    }),
 
   incrementPausedTime: () =>
-    set(state => ({
-      secondsElapsed: state.secondsElapsed + 1,
-      pausedSecondsElapsed: state.pausedSecondsElapsed + 1,
-    })),
+    set(state => {
+      try {
+        const newSecondsElapsed = (state.secondsElapsed || 0) + 1;
+        const newPausedSecondsElapsed = (state.pausedSecondsElapsed || 0) + 1;
+        
+        return {
+          secondsElapsed: newSecondsElapsed,
+          pausedSecondsElapsed: newPausedSecondsElapsed,
+        };
+      } catch (error) {
+        console.error('❌ Error incrementing paused time:', error);
+        return state;
+      }
+    }),
 
   // Ride timing
   setRideStartTime: startTime =>
@@ -198,24 +218,60 @@ const rideStore = create<RideStore & RideActions>(set => ({
 
   syncTimerWithServer: (startTime, pausedTime) =>
     set(state => {
-      const now = DateTime.now();
-      const start = DateTime.fromISO(startTime);
-      const totalElapsedSeconds = Math.floor(now.diff(start, 'seconds').seconds);
-      const activeElapsedSeconds = Math.max(0, totalElapsedSeconds - pausedTime);
+      try {
+        // Validate inputs
+        if (!startTime || typeof pausedTime !== 'number' || pausedTime < 0) {
+          console.error('❌ Invalid sync parameters:', {startTime, pausedTime});
+          return state; // Return current state unchanged
+        }
 
-      console.log('🔄 Timer sync:', {
-        startTime,
-        totalElapsedSeconds,
-        pausedTime,
-        activeElapsedSeconds,
-      });
+        const now = DateTime.now();
+        const start = DateTime.fromISO(startTime);
+        
+        // Check if DateTime parsing was successful
+        if (!start.isValid) {
+          console.error('❌ Invalid start time format:', startTime);
+          return state; // Return current state unchanged
+        }
 
-      return {
-        rideStartTime: startTime,
-        secondsElapsed: totalElapsedSeconds,
-        activeSecondsElapsed: activeElapsedSeconds,
-        pausedSecondsElapsed: pausedTime,
-      };
+        const diff = now.diff(start, 'seconds');
+        
+        // Check if diff calculation was successful
+        if (!diff.isValid) {
+          console.error('❌ Invalid time difference calculation');
+          return state; // Return current state unchanged
+        }
+
+        const totalElapsedSeconds = Math.floor(diff.seconds);
+        const activeElapsedSeconds = Math.max(0, totalElapsedSeconds - pausedTime);
+
+        // Validate calculated values
+        if (isNaN(totalElapsedSeconds) || isNaN(activeElapsedSeconds) || 
+            totalElapsedSeconds < 0 || activeElapsedSeconds < 0) {
+          console.error('❌ Invalid calculated elapsed times:', {
+            totalElapsedSeconds,
+            activeElapsedSeconds
+          });
+          return state; // Return current state unchanged
+        }
+
+        console.log('🔄 Timer sync successful:', {
+          startTime,
+          totalElapsedSeconds,
+          pausedTime,
+          activeElapsedSeconds,
+        });
+
+        return {
+          rideStartTime: startTime,
+          secondsElapsed: totalElapsedSeconds,
+          activeSecondsElapsed: activeElapsedSeconds,
+          pausedSecondsElapsed: pausedTime,
+        };
+      } catch (error) {
+        console.error('❌ Error in syncTimerWithServer:', error);
+        return state; // Return current state unchanged
+      }
     }),
 }));
 

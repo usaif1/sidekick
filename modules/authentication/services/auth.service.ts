@@ -200,14 +200,12 @@ const AuthService = {
     orgId: string;
   }) => {
     try {
-      const response = await axios.get(
-        'https://supreme-mustang-86.hasura.app/api/rest/checkuserexists',
+      const response = await axios.post(
+        'https://supreme-mustang-86.hasura.app/api/rest/fetchemployee',
         {
-          params: {
-            _eq: args.employeeId,
-            _eq1: args.phone,
-            _eq2: args.orgId,
-          },
+          $organization_id: args.orgId,
+          $employee_id: args.employeeId,
+          $phone_number: args.phone,
         },
       );
 

@@ -16,7 +16,7 @@ export const rideScooterService = {
       const response = await axios.post(
         scooterImmobilizeEndpoint,
         {
-          imei: imei,
+          imei: parseInt(imei),
           immobilize: immobilize,
         },
         {
