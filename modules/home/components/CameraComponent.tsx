@@ -1,38 +1,23 @@
 import {ActivityIndicator, Text, View} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {Camera, CameraDevice} from 'react-native-vision-camera';
-import {DateTime} from 'luxon';
 import {ScaledSheet} from 'react-native-size-matters';
 
 // store
-import {useGlobalStore, useThemeStore, useUserStore} from '@/globalStore';
-import {useRideStore} from '@/globalStore';
+import {useThemeStore} from '@/globalStore';
 
 // components
-import {ButtonTextSm, showToast} from '@/components';
-
-// services and storage
-import {rideStorage} from '@/globalStorage';
-import {RideService, rideScooterService} from '@/globalService';
-
-// types and enums
-import {useNavigation} from '@react-navigation/native';
-import {BluetoothService} from '@/globalService/bluetoothService';
+import {ButtonTextSm} from '@/components';
 
 const {colors} = useThemeStore.getState().theme;
 
 interface Props {
   scooterCode: string;
   setScooterCode: React.Dispatch<React.SetStateAction<string>>;
+  onCodeScanned: (code: string) => void;
 }
 
-const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
-  const navigator = useNavigation();
-
-  const {closeModal} = useGlobalStore();
-  const {user} = useUserStore();
-  const {setRideStartTime} = useRideStore();
-
+const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode, onCodeScanned}) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [cameraAvailable, setCameraAvailable] = useState(false);
@@ -40,119 +25,12 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
 
   const isMounted = useRef(true);
 
-  const navigateToRide = () => {
-    closeModal();
-    // @ts-ignore
-    navigator.navigate('rideNavigator');
-  };
 
-  const handleCodeScanned = async (codes: any) => {
+  const handleCodeScanned = (codes: any) => {
     const scannedValue = codes[0]?.value;
-    if (!scooterCode) {
+    if (!scooterCode && scannedValue) {
       setScooterCode(scannedValue);
-      rideStorage.set('currentScooterId', `${scannedValue}`);
-      RideService.fetchScooterByRegNo({
-        regNo: scannedValue,
-      })
-        .then(async response => {
-          if (!response) {
-            showToast({
-              type: 'error',
-              text1: 'Error',
-              text2: 'Please check reg no',
-            });
-
-            return console.log('Please check reg no');
-          } else {
-            console.log('response', response);
-            console.log('device_name', response.device_name);
-
-            const requiredDeviceName = response.device_name;
-
-            if (!requiredDeviceName) {
-              showToast({
-                type: 'error',
-                text1: 'Error',
-                text2: 'No device found',
-              });
-              return;
-            }
-            // start scooter via api
-            const scooterResponse =
-              await rideScooterService.toggleScooterMobility({
-                imei: parseInt(response.imei, 10),
-                immobilize: true,
-              });
-
-            if (scooterResponse.success) {
-              try {
-                const rideDetails = await RideService.startRide({
-                  object: {
-                    user_id: user?.id,
-                    scooter_id: response.id,
-                    start_hub_id: response.hub_id,
-                    start_time: DateTime.now(),
-                    ride_distance: 0,
-                  },
-                });
-                console.log('scooter no', response);
-                rideStorage.set(
-                  'currentScooterId',
-                  `${response.registration_number}`,
-                );
-                rideStorage.set('currentRideId', `${rideDetails?.id}`);
-
-                await RideService.createRideStep({
-                  ride_details_id: rideDetails?.id,
-                  steps: 'RIDE_STARTED',
-                });
-                setRideStartTime(DateTime.now().toISO());
-                navigateToRide();
-              } catch (error) {
-                console.log('Error starting ride', error);
-              }
-              return;
-            }
-
-            BluetoothService.scanDevices(requiredDeviceName, _device => {
-              setScooterCode('');
-              BluetoothService.startScooter(_device, async () => {
-                try {
-                  const rideDetails = await RideService.startRide({
-                    object: {
-                      user_id: user?.id,
-                      scooter_id: response.id,
-                      start_hub_id: response.hub_id,
-                      start_time: DateTime.now(),
-                      ride_distance: 0,
-                    },
-                  });
-                  console.log('scooter no', response);
-                  rideStorage.set(
-                    'currentScooterId',
-                    `${response.registration_number}`,
-                  );
-                  rideStorage.set('currentRideId', `${rideDetails?.id}`);
-
-                  await RideService.createRideStep({
-                    ride_details_id: rideDetails?.id,
-                    steps: 'RIDE_STARTED',
-                  });
-                  setRideStartTime(DateTime.now().toISO());
-                  navigateToRide();
-                } catch (error) {
-                  console.log('Error starting ride', error);
-                }
-              });
-            });
-
-            return;
-          }
-        })
-
-        .catch(err => {
-          console.log('Error starting ride', err?.message);
-        });
+      onCodeScanned(scannedValue);
     }
   };
 
