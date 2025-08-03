@@ -2,7 +2,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, Platform} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
 import {useNavigation} from '@react-navigation/native';
 
 // store
@@ -11,7 +10,12 @@ import {useAuthStore, useGlobalStore, useWalletStore} from '@/globalStore';
 import useRideStore from '@/modules/ride/store';
 
 // services
-import {RideService, UserService, LocationService, WalletService} from '@/globalService';
+import {
+  RideService,
+  UserService,
+  LocationService,
+  WalletService,
+} from '@/globalService';
 import {mapStyles} from '../../utilis/mapStyle';
 import {authUtils} from '@/modules/authentication/utils';
 import {findNearestHub} from '../../utilis/distanceUtils';
@@ -31,7 +35,8 @@ const RentScreen: React.FC = () => {
   const navigation = useNavigation();
   const {closeBottomSheet} = useGlobalStore();
 
-  const {latitude, longitude, hasUserLocation, isLocationLoading} = useLocationStore();
+  const {latitude, longitude, hasUserLocation, isLocationLoading} =
+    useLocationStore();
   const {stopLoading} = useAuthStore();
   const {openModal, setModalComponent} = useGlobalStore();
   const {selectedHub, setSelectedHub, hubs} = useRideStore();
@@ -45,7 +50,7 @@ const RentScreen: React.FC = () => {
   const handleOpenModal = async () => {
     // Check wallet balance first
     console.log('🏦 Checking wallet balance:', userWallet?.balance);
-    
+
     if (!userWallet || userWallet.balance <= 0) {
       console.log('❌ Insufficient balance. Redirecting to add funds.');
       // Direct navigation to add funds screen without alert
@@ -101,32 +106,39 @@ const RentScreen: React.FC = () => {
 
   useEffect(() => {
     authUtils.setBottomSheetView('welcome');
-    
+
     // Fetch hubs with logging
     console.log('🏠 RentScreen: Fetching hubs...');
     RideService.fetchAllHubs()
       .then((fetchedHubs: any) => {
-        console.log('✅ RentScreen: Hubs fetched successfully:', fetchedHubs.length);
+        console.log(
+          '✅ RentScreen: Hubs fetched successfully:',
+          fetchedHubs.length,
+        );
       })
       .catch((error: any) => {
         console.error('❌ RentScreen: Error fetching hubs:', error);
       });
-    
+
     UserService.fetchUserDetails();
     WalletService.fetchUserWallet();
     stopLoading('otp-verification');
-    
+
     // Handle location - only fetch if we don't have user location yet
     const handleLocationAfterLogin = async () => {
       try {
         // Check location store directly to get current state
         const locationState = useLocationStore.getState();
-        
-        if (locationState.hasUserLocation && locationState.latitude && locationState.longitude) {
+
+        if (
+          locationState.hasUserLocation &&
+          locationState.latitude &&
+          locationState.longitude
+        ) {
           // We already have location, just animate to it
           console.log('Using existing location:', {
-            latitude: locationState.latitude, 
-            longitude: locationState.longitude
+            latitude: locationState.latitude,
+            longitude: locationState.longitude,
           });
           if (mapRef.current) {
             mapRef.current.animateToRegion({
@@ -139,19 +151,21 @@ const RentScreen: React.FC = () => {
         } else {
           // No location yet, fetch it for the first time
           console.log('Fetching location for the first time...');
-          const coordinates = await LocationService.handleLocationOnLogin(mapRef);
+          const coordinates = await LocationService.handleLocationOnLogin(
+            mapRef,
+          );
           console.log('Location fetched and handled:', coordinates);
         }
       } catch (error) {
         console.error('Error handling location after login:', error);
       }
     };
-    
+
     // Call location handling after a short delay to ensure the screen is mounted
     setTimeout(() => {
       handleLocationAfterLogin();
     }, 500);
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -172,10 +186,15 @@ const RentScreen: React.FC = () => {
       closeBottomSheet();
       // Refresh wallet data when screen comes into focus
       WalletService.fetchUserWallet();
-      
+
       // If we have existing location, animate to it when returning to screen
       const locationState = useLocationStore.getState();
-      if (locationState.hasUserLocation && locationState.latitude && locationState.longitude && mapRef.current) {
+      if (
+        locationState.hasUserLocation &&
+        locationState.latitude &&
+        locationState.longitude &&
+        mapRef.current
+      ) {
         console.log('Returning to screen - animating to existing location');
         mapRef.current.animateToRegion({
           latitude: locationState.latitude,
@@ -254,7 +273,7 @@ const RentScreen: React.FC = () => {
       />
 
       <GlobalModal />
-      
+
       {/* Location loading modal */}
       <LocationLoadingModal visible={isLocationLoading} />
     </View>

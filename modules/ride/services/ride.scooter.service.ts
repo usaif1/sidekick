@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 
 // ajjas
@@ -9,14 +8,14 @@ export const rideScooterService = {
     imei,
     immobilize,
   }: {
-    imei: string;
+    imei: number;
     immobilize: boolean;
   }) {
     try {
       const response = await axios.post(
         scooterImmobilizeEndpoint,
         {
-          imei: parseInt(imei),
+          imei: imei,
           immobilize: immobilize,
         },
         {

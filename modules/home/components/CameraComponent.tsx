@@ -80,7 +80,7 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
             // start scooter via api
             const scooterResponse =
               await rideScooterService.toggleScooterMobility({
-                imei: parseInt(response.imei),
+                imei: parseInt(response.imei, 10),
                 immobilize: true,
               });
 
@@ -114,9 +114,9 @@ const CameraComponent: React.FC<Props> = ({scooterCode, setScooterCode}) => {
               return;
             }
 
-            BluetoothService.scanDevices(requiredDeviceName, device => {
+            BluetoothService.scanDevices(requiredDeviceName, _device => {
               setScooterCode('');
-              BluetoothService.startScooter(device, async () => {
+              BluetoothService.startScooter(_device, async () => {
                 try {
                   const rideDetails = await RideService.startRide({
                     object: {

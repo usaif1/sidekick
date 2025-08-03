@@ -221,6 +221,33 @@ const AuthService = {
       console.log('Error checking user exists', err?.message);
     }
   },
+
+  checkIfUserExists: async (args: {phone: string}) => {
+    try {
+      const response = await axios.post(
+        `${config.prodEndpoint}/user-exists`,
+        {
+          phone_number: args.phone,
+        },
+        {
+          headers: {
+            accept: 'application/json, text/plain, */*',
+            'content-type': 'application/json',
+          },
+        },
+      );
+
+      return response.data.success;
+    } catch (error) {
+      // @ts-ignore
+      console.log('Error checking user exists',   error?.message);
+      console.log('⛔ name:', error.name);
+      console.log('⛔ message:', error.message);
+      console.log('⛔ isAxiosError:', error.isAxiosError);
+      console.log('⛔ toJSON:', error.toJSON?.()); // shows { message, stack, … }
+      return false;
+    }
+  },
 };
 
 export default AuthService;

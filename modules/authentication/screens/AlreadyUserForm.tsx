@@ -21,7 +21,7 @@ import BottomSheet, {
 import {useHeaderHeight} from '@react-navigation/elements';
 
 // components
-import {ButtonText, Divider, LabelPrimary} from '@/components';
+import {ButtonText, Divider, LabelPrimary, showToast} from '@/components';
 
 // store
 import {useAuthStore, useThemeStore} from '@/globalStore';
@@ -69,6 +69,22 @@ const AlreadyUserForm: React.FC = () => {
     try {
       startLoading('auth-confirmation');
       authBottomSheetRef?.current?.snapToPosition('40%');
+      
+      // Check if user exists before sending OTP
+      const userExists = await AuthService.checkIfUserExists({
+        phone: `+91${existingUserPhoneNumber}`,
+      });
+
+      if (!userExists) {
+        stopLoading('auth-confirmation');
+        showToast({
+          type: 'error',
+          text1: 'User not found',
+          text2: 'Please sign up first to create an account',
+        });
+        return;
+      }
+
       const response = await AuthService.sendOTP(
         `+91${existingUserPhoneNumber}`,
         false,
