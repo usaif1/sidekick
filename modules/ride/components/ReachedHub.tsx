@@ -189,7 +189,7 @@ const ReachedHub: React.FC = () => {
       </View>
       <Divider height={6} />
       <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
-        A small fee will be levied for parking the scooter away from the hub
+        You have reached your destination. Please end your ride.
       </P2>
       <Divider height={28} />
       <View style={styles.detailsContainer}>
@@ -219,16 +219,9 @@ const ReachedHub: React.FC = () => {
       <Divider height={6} />
       <View style={styles.detailsContainer}>
         <View>
-          <H3>Subtotal</H3>
+          <H3>Total Cost</H3>
         </View>
         <H3 textColor="highlight">₹ {totalCost.toFixed(1)}</H3>
-      </View>
-      <Divider height={6} />
-      <View style={styles.detailsContainer}>
-        <View>
-          <H3>Parking Fee</H3>
-        </View>
-        <H3 textColor="error">₹ 10.0</H3>
       </View>
       <Divider height={28} />
       <SwipeButton
