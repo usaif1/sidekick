@@ -127,11 +127,11 @@ export async function checkAndRequestPermission(
   try {
     let result = await check(permission);
 
-    if (result === RESULTS.GRANTED) return true;
+    if (result === RESULTS.GRANTED) {return true;}
 
     if (result === RESULTS.DENIED) {
       result = await request(permission);
-      if (result === RESULTS.GRANTED) return true;
+      if (result === RESULTS.GRANTED) {return true;}
     }
 
     if (result === RESULTS.BLOCKED && showAlert) {

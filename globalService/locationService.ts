@@ -32,7 +32,7 @@ const LocationService = {
           'Fine Location',
           true
         );
-        
+
         const coarseLocationGranted = await checkAndRequestPermission(
           PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
           'Coarse Location',
@@ -46,10 +46,10 @@ const LocationService = {
           'Location When In Use',
           true
         );
-        
+
         return locationWhenInUseGranted;
       }
-      
+
       return false;
     } catch (error) {
       console.error('Error requesting location permissions:', error);
@@ -94,10 +94,10 @@ const LocationService = {
       // Set loading state
       const {setLocationLoading} = useLocationStore.getState();
       setLocationLoading(true);
-      
+
       // First ensure we have location permissions
       const hasPermissions = await LocationService.requestLocationPermissions();
-      
+
       if (!hasPermissions) {
         setLocationLoading(false);
         showToast({
@@ -110,19 +110,19 @@ const LocationService = {
 
       // Get current location
       const coordinates = await LocationService.getCurrentLocation(config);
-      
+
       // Update the location store (this will set hasUserLocation: true and isLocationLoading: false)
       const {setLocation} = useLocationStore.getState();
       setLocation(coordinates.latitude, coordinates.longitude);
-      
+
       console.log('Location updated:', coordinates);
-      
+
       // showToast({
       //   type: 'success',
       //   text1: 'Location Found',
       //   text2: 'Your location has been updated',
       // });
-      
+
       return coordinates;
     } catch (error) {
       console.log('error', error);
@@ -130,9 +130,9 @@ const LocationService = {
       // Clear loading state on error
       const {setLocationLoading} = useLocationStore.getState();
       setLocationLoading(false);
-      
+
       console.error('Error getting location and updating store:', error);
-      
+
       // Handle specific error types
       if ((error as any).code === 1) { // PERMISSION_DENIED
         showToast({
@@ -159,22 +159,22 @@ const LocationService = {
           text2: 'Failed to get your current location',
         });
       }
-      
+
       return null;
     }
   },
 
   // Set map region to user location
   animateMapToUserLocation: (
-    mapRef: React.RefObject<any>, 
+    mapRef: React.RefObject<any>,
     coordinates?: LocationCoordinates,
     latitudeDelta: number = 0.01,
     longitudeDelta: number = 0.01
   ) => {
     const {latitude, longitude} = useLocationStore.getState();
-    
+
     const targetLocation = coordinates || {latitude, longitude};
-    
+
     if (!targetLocation.latitude || !targetLocation.longitude) {
       console.warn('No valid coordinates to animate to');
       return;
@@ -196,18 +196,18 @@ const LocationService = {
     config: LocationServiceConfig = DEFAULT_CONFIG
   ): Promise<LocationCoordinates | null> => {
     console.log('Handling location on login...');
-    
+
     try {
       // Get current location and update store
       const coordinates = await LocationService.getCurrentLocationAndUpdateStore(config);
-      
+
       if (coordinates && mapRef) {
         // Animate map to user location with a slight delay to ensure map is ready
         setTimeout(() => {
           LocationService.animateMapToUserLocation(mapRef, coordinates);
         }, 500);
       }
-      
+
       return coordinates;
     } catch (error) {
       console.error('Error handling location on login:', error);
@@ -246,4 +246,4 @@ const LocationService = {
   },
 };
 
-export default LocationService; 
+export default LocationService;

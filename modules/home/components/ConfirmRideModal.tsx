@@ -42,7 +42,7 @@ const ConfirmRideModal: React.FC<Props> = ({scooterCode, scooterData, onCancel})
   };
 
   const handleStartRide = async () => {
-    if (!scooterData) return;
+    if (!scooterData) {return;}
 
     try {
       // start scooter via api
@@ -63,11 +63,22 @@ const ConfirmRideModal: React.FC<Props> = ({scooterCode, scooterData, onCancel})
             },
           });
           console.log('scooter no', scooterData);
+          // Store in old storage system
           rideStorage.set(
             'currentScooterId',
             `${scooterData.registration_number}`,
           );
           rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+          // Store in new storage system
+          RideService.storeActiveRide({
+            rideId: rideDetails?.id,
+            userId: user?.id,
+            scooterId: scooterData.id,
+            startTime: DateTime.now().toISO(),
+            startHubId: scooterData.hub_id,
+          });
+          console.log('✅ Ride data stored in both storage systems');
 
           await RideService.createRideStep({
             ride_details_id: rideDetails?.id,
@@ -100,11 +111,22 @@ const ConfirmRideModal: React.FC<Props> = ({scooterCode, scooterData, onCancel})
               },
             });
             console.log('scooter no', scooterData);
+            // Store in old storage system
             rideStorage.set(
               'currentScooterId',
               `${scooterData.registration_number}`,
             );
             rideStorage.set('currentRideId', `${rideDetails?.id}`);
+
+            // Store in new storage system
+            RideService.storeActiveRide({
+              rideId: rideDetails?.id,
+              userId: user?.id,
+              scooterId: scooterData.id,
+              startTime: DateTime.now().toISO(),
+              startHubId: scooterData.hub_id,
+            });
+            console.log('✅ Ride data stored in both storage systems (Bluetooth)');
 
             await RideService.createRideStep({
               ride_details_id: rideDetails?.id,
@@ -143,7 +165,7 @@ const ConfirmRideModal: React.FC<Props> = ({scooterCode, scooterData, onCancel})
       <P2 textColor="textSecondary" customStyles={{textAlign: 'center', marginBottom: 20}}>
         Start ride with scooter {scooterCode}?
       </P2>
-      
+
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <ButtonTextSm

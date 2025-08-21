@@ -35,7 +35,7 @@ export const sortHubsByDistance = (
   hubs: FetchAllHubsQuery['hubs']
 ): (FetchAllHubsQuery['hubs'][0] & { distance: string })[] => {
   if (!hubs?.length) {return [];}
-  
+
   const userPoint = point([userLng, userLat]);
 
   return hubs
@@ -44,12 +44,12 @@ export const sortHubsByDistance = (
       const hubPoint = point([hub.longitude, hub.latitude]);
       const distanceInKm = distance(userPoint, hubPoint);
       const distanceInM = distanceInKm * 1000;
-      
+
       return {
         ...hub,
-        distance: distanceInM < 1000 ? 
-          `${Math.round(distanceInM)}m` : 
-          `${distanceInKm.toFixed(1)}km`
+        distance: distanceInM < 1000 ?
+          `${Math.round(distanceInM)}m` :
+          `${distanceInKm.toFixed(1)}km`,
       };
     })
     ?.sort((a, b) => {
@@ -73,7 +73,7 @@ export const calculateHubDistance = (
   const distanceInKm = distance(userPoint, hubPoint);
   const distanceInM = distanceInKm * 1000;
 
-  return distanceInM < 1000 
-    ? `${Math.round(distanceInM)}m` 
+  return distanceInM < 1000
+    ? `${Math.round(distanceInM)}m`
     : `${distanceInKm.toFixed(1)}km`;
 };

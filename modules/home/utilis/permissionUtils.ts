@@ -26,7 +26,7 @@ const requestLocationPermission = async () => {
     ? await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
     : await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
 
-  const granted = Platform.OS === 'android' 
+  const granted = Platform.OS === 'android'
     ? permission === PermissionsAndroid.RESULTS.GRANTED
     : permission === 'granted';
 

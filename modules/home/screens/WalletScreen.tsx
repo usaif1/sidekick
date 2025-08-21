@@ -43,7 +43,7 @@ const WalletScreen: React.FC = () => {
   useEffect(() => {
     WalletService.fetchUserWallet();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   useFocusEffect(

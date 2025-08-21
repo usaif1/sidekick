@@ -55,21 +55,21 @@ const EndRide: React.FC = () => {
     hubsCount: hubs.length,
     hasLocation: !!latitude && !!longitude,
     latitude,
-    longitude
+    longitude,
   });
 
   const sortedHubs = useMemo(() => {
     console.log('🔄 Sorting hubs:', {
       hubsLength: hubs.length,
       hasLatitude: !!latitude,
-      hasLongitude: !!longitude
+      hasLongitude: !!longitude,
     });
 
     if (!latitude || !longitude || !hubs.length) {
       console.log('❌ Missing requirements for sorting hubs');
       return [];
     }
-    
+
     const sorted = sortHubsByDistance(latitude, longitude, hubs);
     console.log('✅ Sorted hubs:', sorted.length);
     return sorted;

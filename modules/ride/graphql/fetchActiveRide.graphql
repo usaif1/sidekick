@@ -1,0 +1,44 @@
+query fetchActiveRide($userId: uuid!) {
+  ride_details(
+    where: {
+      user_id: {_eq: $userId}
+      end_time: {_is_null: true}
+      ride_steps: {
+        steps: {_in: ["RIDE_STARTED", "RIDE_PAUSED", "RIDE_RESUMED"]}
+      }
+      _not: {
+        ride_steps: {
+          steps: {_eq: "RIDE_ENDED"}
+        }
+      }
+    }
+    order_by: {created_at: desc}
+    limit: 1
+  ) {
+    id
+    start_time
+    created_at
+    user_id
+    scooter_id
+    start_hub_id
+    total_cost
+    ride_steps {
+      id
+      steps
+      created_at
+    }
+    scooter {
+      id
+      registration_number
+      status
+      device_name
+      imei
+    }
+    hubByStartHubId {
+      id
+      name
+      latitude
+      longitude
+    }
+  }
+}

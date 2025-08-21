@@ -15,6 +15,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   numeric: { input: any; output: any; }
+  polygon: { input: any; output: any; }
   timestamptz: { input: any; output: any; }
   uuid: { input: any; output: any; }
 };
@@ -90,13 +91,23 @@ export enum Cursor_Ordering {
 export type Hubs = {
   __typename?: 'hubs';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  geometry?: Maybe<Scalars['polygon']['output']>;
   id: Scalars['uuid']['output'];
   latitude?: Maybe<Scalars['numeric']['output']>;
   longitude?: Maybe<Scalars['numeric']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   organization: Organizations;
+  organization_address_line_1?: Maybe<Scalars['String']['output']>;
+  organization_address_line_2?: Maybe<Scalars['String']['output']>;
+  organization_city?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_email?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_name?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_phone?: Maybe<Scalars['String']['output']>;
+  organization_country?: Maybe<Scalars['String']['output']>;
   organization_id: Scalars['uuid']['output'];
+  organization_pincode?: Maybe<Scalars['String']['output']>;
+  organization_state?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   rideDetailsByStartHubId: Array<Ride_Details>;
   /** An aggregate relationship */
@@ -254,12 +265,22 @@ export type Hubs_Bool_Exp = {
   _not?: InputMaybe<Hubs_Bool_Exp>;
   _or?: InputMaybe<Array<Hubs_Bool_Exp>>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  geometry?: InputMaybe<Polygon_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   latitude?: InputMaybe<Numeric_Comparison_Exp>;
   longitude?: InputMaybe<Numeric_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   organization?: InputMaybe<Organizations_Bool_Exp>;
+  organization_address_line_1?: InputMaybe<String_Comparison_Exp>;
+  organization_address_line_2?: InputMaybe<String_Comparison_Exp>;
+  organization_city?: InputMaybe<String_Comparison_Exp>;
+  organization_contact_person_email?: InputMaybe<String_Comparison_Exp>;
+  organization_contact_person_name?: InputMaybe<String_Comparison_Exp>;
+  organization_contact_person_phone?: InputMaybe<String_Comparison_Exp>;
+  organization_country?: InputMaybe<String_Comparison_Exp>;
   organization_id?: InputMaybe<Uuid_Comparison_Exp>;
+  organization_pincode?: InputMaybe<String_Comparison_Exp>;
+  organization_state?: InputMaybe<String_Comparison_Exp>;
   rideDetailsByStartHubId?: InputMaybe<Ride_Details_Bool_Exp>;
   rideDetailsByStartHubId_aggregate?: InputMaybe<Ride_Details_Aggregate_Bool_Exp>;
   ride_details?: InputMaybe<Ride_Details_Bool_Exp>;
@@ -284,12 +305,22 @@ export type Hubs_Inc_Input = {
 /** input type for inserting data into table "hubs" */
 export type Hubs_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  geometry?: InputMaybe<Scalars['polygon']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   latitude?: InputMaybe<Scalars['numeric']['input']>;
   longitude?: InputMaybe<Scalars['numeric']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
+  organization_address_line_1?: InputMaybe<Scalars['String']['input']>;
+  organization_address_line_2?: InputMaybe<Scalars['String']['input']>;
+  organization_city?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_email?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_name?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_phone?: InputMaybe<Scalars['String']['input']>;
+  organization_country?: InputMaybe<Scalars['String']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  organization_pincode?: InputMaybe<Scalars['String']['input']>;
+  organization_state?: InputMaybe<Scalars['String']['input']>;
   rideDetailsByStartHubId?: InputMaybe<Ride_Details_Arr_Rel_Insert_Input>;
   ride_details?: InputMaybe<Ride_Details_Arr_Rel_Insert_Input>;
   scooters?: InputMaybe<Scooters_Arr_Rel_Insert_Input>;
@@ -304,7 +335,16 @@ export type Hubs_Max_Fields = {
   latitude?: Maybe<Scalars['numeric']['output']>;
   longitude?: Maybe<Scalars['numeric']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  organization_address_line_1?: Maybe<Scalars['String']['output']>;
+  organization_address_line_2?: Maybe<Scalars['String']['output']>;
+  organization_city?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_email?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_name?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_phone?: Maybe<Scalars['String']['output']>;
+  organization_country?: Maybe<Scalars['String']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
+  organization_pincode?: Maybe<Scalars['String']['output']>;
+  organization_state?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -315,7 +355,16 @@ export type Hubs_Max_Order_By = {
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  organization_address_line_1?: InputMaybe<Order_By>;
+  organization_address_line_2?: InputMaybe<Order_By>;
+  organization_city?: InputMaybe<Order_By>;
+  organization_contact_person_email?: InputMaybe<Order_By>;
+  organization_contact_person_name?: InputMaybe<Order_By>;
+  organization_contact_person_phone?: InputMaybe<Order_By>;
+  organization_country?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
+  organization_pincode?: InputMaybe<Order_By>;
+  organization_state?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -327,7 +376,16 @@ export type Hubs_Min_Fields = {
   latitude?: Maybe<Scalars['numeric']['output']>;
   longitude?: Maybe<Scalars['numeric']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  organization_address_line_1?: Maybe<Scalars['String']['output']>;
+  organization_address_line_2?: Maybe<Scalars['String']['output']>;
+  organization_city?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_email?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_name?: Maybe<Scalars['String']['output']>;
+  organization_contact_person_phone?: Maybe<Scalars['String']['output']>;
+  organization_country?: Maybe<Scalars['String']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
+  organization_pincode?: Maybe<Scalars['String']['output']>;
+  organization_state?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -338,7 +396,16 @@ export type Hubs_Min_Order_By = {
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  organization_address_line_1?: InputMaybe<Order_By>;
+  organization_address_line_2?: InputMaybe<Order_By>;
+  organization_city?: InputMaybe<Order_By>;
+  organization_contact_person_email?: InputMaybe<Order_By>;
+  organization_contact_person_name?: InputMaybe<Order_By>;
+  organization_contact_person_phone?: InputMaybe<Order_By>;
+  organization_country?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
+  organization_pincode?: InputMaybe<Order_By>;
+  organization_state?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -368,12 +435,22 @@ export type Hubs_On_Conflict = {
 /** Ordering options when selecting data from "hubs". */
 export type Hubs_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  geometry?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   organization?: InputMaybe<Organizations_Order_By>;
+  organization_address_line_1?: InputMaybe<Order_By>;
+  organization_address_line_2?: InputMaybe<Order_By>;
+  organization_city?: InputMaybe<Order_By>;
+  organization_contact_person_email?: InputMaybe<Order_By>;
+  organization_contact_person_name?: InputMaybe<Order_By>;
+  organization_contact_person_phone?: InputMaybe<Order_By>;
+  organization_country?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
+  organization_pincode?: InputMaybe<Order_By>;
+  organization_state?: InputMaybe<Order_By>;
   rideDetailsByStartHubId_aggregate?: InputMaybe<Ride_Details_Aggregate_Order_By>;
   ride_details_aggregate?: InputMaybe<Ride_Details_Aggregate_Order_By>;
   scooters_aggregate?: InputMaybe<Scooters_Aggregate_Order_By>;
@@ -390,6 +467,8 @@ export enum Hubs_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Geometry = 'geometry',
+  /** column name */
   Id = 'id',
   /** column name */
   Latitude = 'latitude',
@@ -398,7 +477,25 @@ export enum Hubs_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  OrganizationAddressLine_1 = 'organization_address_line_1',
+  /** column name */
+  OrganizationAddressLine_2 = 'organization_address_line_2',
+  /** column name */
+  OrganizationCity = 'organization_city',
+  /** column name */
+  OrganizationContactPersonEmail = 'organization_contact_person_email',
+  /** column name */
+  OrganizationContactPersonName = 'organization_contact_person_name',
+  /** column name */
+  OrganizationContactPersonPhone = 'organization_contact_person_phone',
+  /** column name */
+  OrganizationCountry = 'organization_country',
+  /** column name */
   OrganizationId = 'organization_id',
+  /** column name */
+  OrganizationPincode = 'organization_pincode',
+  /** column name */
+  OrganizationState = 'organization_state',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -406,11 +503,21 @@ export enum Hubs_Select_Column {
 /** input type for updating data in table "hubs" */
 export type Hubs_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  geometry?: InputMaybe<Scalars['polygon']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   latitude?: InputMaybe<Scalars['numeric']['input']>;
   longitude?: InputMaybe<Scalars['numeric']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  organization_address_line_1?: InputMaybe<Scalars['String']['input']>;
+  organization_address_line_2?: InputMaybe<Scalars['String']['input']>;
+  organization_city?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_email?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_name?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_phone?: InputMaybe<Scalars['String']['input']>;
+  organization_country?: InputMaybe<Scalars['String']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  organization_pincode?: InputMaybe<Scalars['String']['input']>;
+  organization_state?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -464,11 +571,21 @@ export type Hubs_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Hubs_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  geometry?: InputMaybe<Scalars['polygon']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   latitude?: InputMaybe<Scalars['numeric']['input']>;
   longitude?: InputMaybe<Scalars['numeric']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  organization_address_line_1?: InputMaybe<Scalars['String']['input']>;
+  organization_address_line_2?: InputMaybe<Scalars['String']['input']>;
+  organization_city?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_email?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_name?: InputMaybe<Scalars['String']['input']>;
+  organization_contact_person_phone?: InputMaybe<Scalars['String']['input']>;
+  organization_country?: InputMaybe<Scalars['String']['input']>;
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  organization_pincode?: InputMaybe<Scalars['String']['input']>;
+  organization_state?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -490,6 +607,8 @@ export enum Hubs_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Geometry = 'geometry',
+  /** column name */
   Id = 'id',
   /** column name */
   Latitude = 'latitude',
@@ -498,7 +617,25 @@ export enum Hubs_Update_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  OrganizationAddressLine_1 = 'organization_address_line_1',
+  /** column name */
+  OrganizationAddressLine_2 = 'organization_address_line_2',
+  /** column name */
+  OrganizationCity = 'organization_city',
+  /** column name */
+  OrganizationContactPersonEmail = 'organization_contact_person_email',
+  /** column name */
+  OrganizationContactPersonName = 'organization_contact_person_name',
+  /** column name */
+  OrganizationContactPersonPhone = 'organization_contact_person_phone',
+  /** column name */
+  OrganizationCountry = 'organization_country',
+  /** column name */
   OrganizationId = 'organization_id',
+  /** column name */
+  OrganizationPincode = 'organization_pincode',
+  /** column name */
+  OrganizationState = 'organization_state',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -1261,6 +1398,7 @@ export enum Order_By {
 export type Organizations = {
   __typename?: 'organizations';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   hubs: Array<Hubs>;
   /** An aggregate relationship */
@@ -1390,6 +1528,7 @@ export type Organizations_Bool_Exp = {
   _not?: InputMaybe<Organizations_Bool_Exp>;
   _or?: InputMaybe<Array<Organizations_Bool_Exp>>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
   hubs?: InputMaybe<Hubs_Bool_Exp>;
   hubs_aggregate?: InputMaybe<Hubs_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -1405,6 +1544,8 @@ export type Organizations_Bool_Exp = {
 
 /** unique or primary key constraints on table "organizations" */
 export enum Organizations_Constraint {
+  /** unique or primary key constraint on columns "email" */
+  OrganizationsEmailKey = 'organizations_email_key',
   /** unique or primary key constraint on columns "name" */
   OrganizationsNameKey = 'organizations_name_key',
   /** unique or primary key constraint on columns "id" */
@@ -1414,6 +1555,7 @@ export enum Organizations_Constraint {
 /** input type for inserting data into table "organizations" */
 export type Organizations_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   hubs?: InputMaybe<Hubs_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -1427,6 +1569,7 @@ export type Organizations_Insert_Input = {
 export type Organizations_Max_Fields = {
   __typename?: 'organizations_max_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -1436,6 +1579,7 @@ export type Organizations_Max_Fields = {
 export type Organizations_Min_Fields = {
   __typename?: 'organizations_min_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -1467,6 +1611,7 @@ export type Organizations_On_Conflict = {
 /** Ordering options when selecting data from "organizations". */
 export type Organizations_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
   hubs_aggregate?: InputMaybe<Hubs_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -1486,6 +1631,8 @@ export enum Organizations_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Email = 'email',
+  /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
@@ -1496,6 +1643,7 @@ export enum Organizations_Select_Column {
 /** input type for updating data in table "organizations" */
 export type Organizations_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -1512,6 +1660,7 @@ export type Organizations_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Organizations_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -1521,6 +1670,8 @@ export type Organizations_Stream_Cursor_Value_Input = {
 export enum Organizations_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
   /** column name */
   Id = 'id',
   /** column name */
@@ -1534,6 +1685,19 @@ export type Organizations_Updates = {
   _set?: InputMaybe<Organizations_Set_Input>;
   /** filter the rows which have to be updated */
   where: Organizations_Bool_Exp;
+};
+
+/** Boolean expression to compare columns of type "polygon". All fields are combined with logical 'AND'. */
+export type Polygon_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['polygon']['input']>;
+  _gt?: InputMaybe<Scalars['polygon']['input']>;
+  _gte?: InputMaybe<Scalars['polygon']['input']>;
+  _in?: InputMaybe<Array<Scalars['polygon']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['polygon']['input']>;
+  _lte?: InputMaybe<Scalars['polygon']['input']>;
+  _neq?: InputMaybe<Scalars['polygon']['input']>;
+  _nin?: InputMaybe<Array<Scalars['polygon']['input']>>;
 };
 
 export type Query_Root = {
@@ -3082,7 +3246,7 @@ export type Scooters = {
   hub: Hubs;
   hub_id: Scalars['uuid']['output'];
   id: Scalars['uuid']['output'];
-  imei?: Maybe<Scalars['numeric']['output']>;
+  imei?: Maybe<Scalars['String']['output']>;
   is_active: Scalars['Boolean']['output'];
   latitude?: Maybe<Scalars['numeric']['output']>;
   longitude?: Maybe<Scalars['numeric']['output']>;
@@ -3201,14 +3365,12 @@ export type Scooters_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Scooters_Avg_Fields = {
   __typename?: 'scooters_avg_fields';
-  imei?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "scooters" */
 export type Scooters_Avg_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -3223,7 +3385,7 @@ export type Scooters_Bool_Exp = {
   hub?: InputMaybe<Hubs_Bool_Exp>;
   hub_id?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  imei?: InputMaybe<Numeric_Comparison_Exp>;
+  imei?: InputMaybe<String_Comparison_Exp>;
   is_active?: InputMaybe<Boolean_Comparison_Exp>;
   latitude?: InputMaybe<Numeric_Comparison_Exp>;
   longitude?: InputMaybe<Numeric_Comparison_Exp>;
@@ -3239,6 +3401,8 @@ export type Scooters_Bool_Exp = {
 
 /** unique or primary key constraints on table "scooters" */
 export enum Scooters_Constraint {
+  /** unique or primary key constraint on columns "imei" */
+  ScootersImeiNewKey = 'scooters_imei_new_key',
   /** unique or primary key constraint on columns "id" */
   ScootersPkey = 'scooters_pkey',
   /** unique or primary key constraint on columns "qr_code" */
@@ -3247,7 +3411,6 @@ export enum Scooters_Constraint {
 
 /** input type for incrementing numeric columns in table "scooters" */
 export type Scooters_Inc_Input = {
-  imei?: InputMaybe<Scalars['numeric']['input']>;
   latitude?: InputMaybe<Scalars['numeric']['input']>;
   longitude?: InputMaybe<Scalars['numeric']['input']>;
 };
@@ -3259,7 +3422,7 @@ export type Scooters_Insert_Input = {
   hub?: InputMaybe<Hubs_Obj_Rel_Insert_Input>;
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  imei?: InputMaybe<Scalars['numeric']['input']>;
+  imei?: InputMaybe<Scalars['String']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   latitude?: InputMaybe<Scalars['numeric']['input']>;
   longitude?: InputMaybe<Scalars['numeric']['input']>;
@@ -3279,7 +3442,7 @@ export type Scooters_Max_Fields = {
   device_name?: Maybe<Scalars['String']['output']>;
   hub_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  imei?: Maybe<Scalars['numeric']['output']>;
+  imei?: Maybe<Scalars['String']['output']>;
   latitude?: Maybe<Scalars['numeric']['output']>;
   longitude?: Maybe<Scalars['numeric']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
@@ -3312,7 +3475,7 @@ export type Scooters_Min_Fields = {
   device_name?: Maybe<Scalars['String']['output']>;
   hub_id?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  imei?: Maybe<Scalars['numeric']['output']>;
+  imei?: Maybe<Scalars['String']['output']>;
   latitude?: Maybe<Scalars['numeric']['output']>;
   longitude?: Maybe<Scalars['numeric']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
@@ -3434,7 +3597,7 @@ export type Scooters_Set_Input = {
   device_name?: InputMaybe<Scalars['String']['input']>;
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  imei?: InputMaybe<Scalars['numeric']['input']>;
+  imei?: InputMaybe<Scalars['String']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   latitude?: InputMaybe<Scalars['numeric']['input']>;
   longitude?: InputMaybe<Scalars['numeric']['input']>;
@@ -3448,14 +3611,12 @@ export type Scooters_Set_Input = {
 /** aggregate stddev on columns */
 export type Scooters_Stddev_Fields = {
   __typename?: 'scooters_stddev_fields';
-  imei?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "scooters" */
 export type Scooters_Stddev_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -3463,14 +3624,12 @@ export type Scooters_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Scooters_Stddev_Pop_Fields = {
   __typename?: 'scooters_stddev_pop_fields';
-  imei?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "scooters" */
 export type Scooters_Stddev_Pop_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -3478,14 +3637,12 @@ export type Scooters_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Scooters_Stddev_Samp_Fields = {
   __typename?: 'scooters_stddev_samp_fields';
-  imei?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "scooters" */
 export type Scooters_Stddev_Samp_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -3504,7 +3661,7 @@ export type Scooters_Stream_Cursor_Value_Input = {
   device_name?: InputMaybe<Scalars['String']['input']>;
   hub_id?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  imei?: InputMaybe<Scalars['numeric']['input']>;
+  imei?: InputMaybe<Scalars['String']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   latitude?: InputMaybe<Scalars['numeric']['input']>;
   longitude?: InputMaybe<Scalars['numeric']['input']>;
@@ -3518,14 +3675,12 @@ export type Scooters_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Scooters_Sum_Fields = {
   __typename?: 'scooters_sum_fields';
-  imei?: Maybe<Scalars['numeric']['output']>;
   latitude?: Maybe<Scalars['numeric']['output']>;
   longitude?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** order by sum() on columns of table "scooters" */
 export type Scooters_Sum_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -3572,14 +3727,12 @@ export type Scooters_Updates = {
 /** aggregate var_pop on columns */
 export type Scooters_Var_Pop_Fields = {
   __typename?: 'scooters_var_pop_fields';
-  imei?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "scooters" */
 export type Scooters_Var_Pop_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -3587,14 +3740,12 @@ export type Scooters_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Scooters_Var_Samp_Fields = {
   __typename?: 'scooters_var_samp_fields';
-  imei?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "scooters" */
 export type Scooters_Var_Samp_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -3602,14 +3753,12 @@ export type Scooters_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Scooters_Variance_Fields = {
   __typename?: 'scooters_variance_fields';
-  imei?: Maybe<Scalars['Float']['output']>;
   latitude?: Maybe<Scalars['Float']['output']>;
   longitude?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "scooters" */
 export type Scooters_Variance_Order_By = {
-  imei?: InputMaybe<Order_By>;
   latitude?: InputMaybe<Order_By>;
   longitude?: InputMaybe<Order_By>;
 };
@@ -4496,6 +4645,7 @@ export type Transactions_Variance_Order_By = {
 export type User_Organizations = {
   __typename?: 'user_organizations';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  created_by?: Maybe<Scalars['uuid']['output']>;
   employee_id: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
   is_active: Scalars['Boolean']['output'];
@@ -4602,6 +4752,7 @@ export type User_Organizations_Bool_Exp = {
   _not?: InputMaybe<User_Organizations_Bool_Exp>;
   _or?: InputMaybe<Array<User_Organizations_Bool_Exp>>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by?: InputMaybe<Uuid_Comparison_Exp>;
   employee_id?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   is_active?: InputMaybe<Boolean_Comparison_Exp>;
@@ -4624,6 +4775,7 @@ export enum User_Organizations_Constraint {
 /** input type for inserting data into table "user_organizations" */
 export type User_Organizations_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  created_by?: InputMaybe<Scalars['uuid']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4640,6 +4792,7 @@ export type User_Organizations_Insert_Input = {
 export type User_Organizations_Max_Fields = {
   __typename?: 'user_organizations_max_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  created_by?: Maybe<Scalars['uuid']['output']>;
   employee_id?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
@@ -4651,6 +4804,7 @@ export type User_Organizations_Max_Fields = {
 /** order by max() on columns of table "user_organizations" */
 export type User_Organizations_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  created_by?: InputMaybe<Order_By>;
   employee_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
@@ -4663,6 +4817,7 @@ export type User_Organizations_Max_Order_By = {
 export type User_Organizations_Min_Fields = {
   __typename?: 'user_organizations_min_fields';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  created_by?: Maybe<Scalars['uuid']['output']>;
   employee_id?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   organization_id?: Maybe<Scalars['uuid']['output']>;
@@ -4674,6 +4829,7 @@ export type User_Organizations_Min_Fields = {
 /** order by min() on columns of table "user_organizations" */
 export type User_Organizations_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  created_by?: InputMaybe<Order_By>;
   employee_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organization_id?: InputMaybe<Order_By>;
@@ -4708,6 +4864,7 @@ export type User_Organizations_On_Conflict = {
 /** Ordering options when selecting data from "user_organizations". */
 export type User_Organizations_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  created_by?: InputMaybe<Order_By>;
   employee_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   is_active?: InputMaybe<Order_By>;
@@ -4729,6 +4886,8 @@ export type User_Organizations_Pk_Columns_Input = {
 export enum User_Organizations_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
   /** column name */
   EmployeeId = 'employee_id',
   /** column name */
@@ -4760,6 +4919,7 @@ export enum User_Organizations_Select_Column_User_Organizations_Aggregate_Bool_E
 /** input type for updating data in table "user_organizations" */
 export type User_Organizations_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  created_by?: InputMaybe<Scalars['uuid']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4780,6 +4940,7 @@ export type User_Organizations_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type User_Organizations_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  created_by?: InputMaybe<Scalars['uuid']['input']>;
   employee_id?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4793,6 +4954,8 @@ export type User_Organizations_Stream_Cursor_Value_Input = {
 export enum User_Organizations_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
   /** column name */
   EmployeeId = 'employee_id',
   /** column name */
@@ -4820,7 +4983,7 @@ export type User_Organizations_Updates = {
 export type Users = {
   __typename?: 'users';
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  email: Scalars['String']['output'];
+  email?: Maybe<Scalars['String']['output']>;
   firebase_id: Scalars['String']['output'];
   first_name?: Maybe<Scalars['String']['output']>;
   full_name: Scalars['String']['output'];
@@ -4950,8 +5113,6 @@ export type Users_Bool_Exp = {
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
-  /** unique or primary key constraint on columns "email" */
-  UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint on columns "firebase_id" */
   UsersFirebaseIdKey = 'users_firebase_id_key',
   /** unique or primary key constraint on columns "phone_number" */
@@ -6131,6 +6292,13 @@ export type UpdateRideEndTimeMutationVariables = Exact<{
 
 export type UpdateRideEndTimeMutation = { __typename?: 'mutation_root', update_ride_details_by_pk?: { __typename?: 'ride_details', id: any, end_time?: any | null, created_at?: any | null } | null };
 
+export type FetchActiveRideQueryVariables = Exact<{
+  userId: Scalars['uuid']['input'];
+}>;
+
+
+export type FetchActiveRideQuery = { __typename?: 'query_root', ride_details: Array<{ __typename?: 'ride_details', id: any, start_time: any, created_at?: any | null, user_id: any, scooter_id: any, start_hub_id: any, total_cost?: any | null, ride_steps: Array<{ __typename?: 'ride_steps', id: any, steps: string, created_at?: any | null }>, scooter: { __typename?: 'scooters', id: any, registration_number?: string | null, status: string, device_name?: string | null, imei?: string | null }, hubByStartHubId: { __typename?: 'hubs', id: any, name?: string | null, latitude?: any | null, longitude?: any | null } }> };
+
 export type FetchAllHubsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -6155,7 +6323,7 @@ export type FetchScooterByNumberQueryVariables = Exact<{
 }>;
 
 
-export type FetchScooterByNumberQuery = { __typename?: 'query_root', scooters: Array<{ __typename?: 'scooters', id: any, is_active: boolean, latitude?: any | null, longitude?: any | null, registration_number?: string | null, status: string, hub_id: any, device_name?: string | null, imei?: any | null }> };
+export type FetchScooterByNumberQuery = { __typename?: 'query_root', scooters: Array<{ __typename?: 'scooters', id: any, is_active: boolean, latitude?: any | null, longitude?: any | null, registration_number?: string | null, status: string, hub_id: any, device_name?: string | null, imei?: string | null }> };
 
 export type CreateRideStepMutationVariables = Exact<{
   steps?: InputMaybe<Scalars['String']['input']>;
@@ -6168,7 +6336,7 @@ export type CreateRideStepMutation = { __typename?: 'mutation_root', insert_ride
 export type FetchCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', email: string, id: any, full_name: string, phone_number: string, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', id: any, name: string } }> }> };
+export type FetchCurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', email?: string | null, id: any, full_name: string, phone_number: string, user_organizations: Array<{ __typename?: 'user_organizations', organization: { __typename?: 'organizations', id: any, name: string } }> }> };
 
 export type UpdateUserMutationVariables = Exact<{
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -6226,6 +6394,7 @@ export type UpdateWalletSecurityDepositMutation = { __typename?: 'mutation_root'
 export const FetchAllOrganisationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllOrganisations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organizations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<FetchAllOrganisationsQuery, FetchAllOrganisationsQueryVariables>;
 export const CreateRideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ride_details_insert_input"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_ride_details_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRideMutation, CreateRideMutationVariables>;
 export const UpdateRideEndTimeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateRideEndTime"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"end_time"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"timestamptz"}},"defaultValue":{"kind":"StringValue","value":"","block":false}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"total_cost"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"numeric"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_ride_details_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"end_time"},"value":{"kind":"Variable","name":{"kind":"Name","value":"end_time"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"total_cost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"total_cost"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<UpdateRideEndTimeMutation, UpdateRideEndTimeMutationVariables>;
+export const FetchActiveRideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchActiveRide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ride_details"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"end_time"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_is_null"},"value":{"kind":"BooleanValue","value":true}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"ride_steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_in"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"RIDE_STARTED","block":false},{"kind":"StringValue","value":"RIDE_PAUSED","block":false},{"kind":"StringValue","value":"RIDE_RESUMED","block":false}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"_not"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"ride_steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"RIDE_ENDED","block":false}}]}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"created_at"},"value":{"kind":"EnumValue","value":"desc"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start_time"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"user_id"}},{"kind":"Field","name":{"kind":"Name","value":"scooter_id"}},{"kind":"Field","name":{"kind":"Name","value":"start_hub_id"}},{"kind":"Field","name":{"kind":"Name","value":"total_cost"}},{"kind":"Field","name":{"kind":"Name","value":"ride_steps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"steps"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}},{"kind":"Field","name":{"kind":"Name","value":"scooter"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"registration_number"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"device_name"}},{"kind":"Field","name":{"kind":"Name","value":"imei"}}]}},{"kind":"Field","name":{"kind":"Name","value":"hubByStartHubId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}}]}}]}}]}}]} as unknown as DocumentNode<FetchActiveRideQuery, FetchActiveRideQueryVariables>;
 export const FetchAllHubsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchAllHubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hubs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"organization_id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]} as unknown as DocumentNode<FetchAllHubsQuery, FetchAllHubsQueryVariables>;
 export const FetchCompletedRidesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCompletedRides"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}},"defaultValue":{"kind":"StringValue","value":"","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ride_details"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"ride_steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"ride_detail"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"ride_steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"steps"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"RIDE_ENDED","block":false}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"end_time"}},{"kind":"Field","name":{"kind":"Name","value":"end_hub_id"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"scooter_id"}},{"kind":"Field","name":{"kind":"Name","value":"start_hub_id"}},{"kind":"Field","name":{"kind":"Name","value":"start_time"}},{"kind":"Field","name":{"kind":"Name","value":"total_cost"}},{"kind":"Field","name":{"kind":"Name","value":"ride_steps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"steps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"hubByStartHubId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<FetchCompletedRidesQuery, FetchCompletedRidesQueryVariables>;
 export const FetchCurrentRideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"fetchCurrentRide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ride_details_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start_time"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"user_id"}},{"kind":"Field","name":{"kind":"Name","value":"scooter_id"}},{"kind":"Field","name":{"kind":"Name","value":"start_hub_id"}},{"kind":"Field","name":{"kind":"Name","value":"total_cost"}},{"kind":"Field","name":{"kind":"Name","value":"ride_steps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"steps"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}}]}}]}}]} as unknown as DocumentNode<FetchCurrentRideQuery, FetchCurrentRideQueryVariables>;

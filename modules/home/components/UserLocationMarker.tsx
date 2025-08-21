@@ -10,8 +10,8 @@ type Props = {
 
 const UserLocationMarker: React.FC<Props> = React.memo(({ latitude, longitude, heading }) => {
   return (
-    <Marker 
-      coordinate={{ latitude, longitude }} 
+    <Marker
+      coordinate={{ latitude, longitude }}
       anchor={{ x: 0.5, y: 0.5 }}
       rotation={heading}
     >

@@ -22,7 +22,7 @@ export interface WalletData {
 // Mock wallet data
 export const mockWalletData: WalletData = {
   currentBalance: 436.5,
-  securityDeposit: 200,
+  securityDeposit: 20,
   transactions: [
     {
       id: '1',
@@ -31,7 +31,7 @@ export const mockWalletData: WalletData = {
       time: '14:34',
       amount: 54.0,
       type: 'debit',
-      description: 'Ride fare'
+      description: 'Ride fare',
     },
     {
       id: '2',
@@ -40,7 +40,7 @@ export const mockWalletData: WalletData = {
       time: '12:21',
       amount: 54.0,
       type: 'debit',
-      description: 'Ride fare'
+      description: 'Ride fare',
     },
     {
       id: '3',
@@ -49,7 +49,7 @@ export const mockWalletData: WalletData = {
       time: '10:15',
       amount: 54.0,
       type: 'debit',
-      description: 'Ride fare'
+      description: 'Ride fare',
     },
     {
       id: '4',
@@ -58,7 +58,7 @@ export const mockWalletData: WalletData = {
       time: '16:45',
       amount: 54.0,
       type: 'debit',
-      description: 'Ride fare'
+      description: 'Ride fare',
     },
     {
       id: '5',
@@ -67,7 +67,7 @@ export const mockWalletData: WalletData = {
       time: '09:30',
       amount: 200.0,
       type: 'credit',
-      description: 'Wallet recharge'
+      description: 'Wallet recharge',
     },
     {
       id: '6',
@@ -76,7 +76,7 @@ export const mockWalletData: WalletData = {
       time: '18:22',
       amount: 45.5,
       type: 'credit',
-      description: 'Refund for cancelled ride'
+      description: 'Refund for cancelled ride',
     },
     {
       id: '7',
@@ -85,7 +85,7 @@ export const mockWalletData: WalletData = {
       time: '14:10',
       amount: 62.0,
       type: 'debit',
-      description: 'Ride fare'
+      description: 'Ride fare',
     },
     {
       id: '8',
@@ -94,7 +94,7 @@ export const mockWalletData: WalletData = {
       time: '20:15',
       amount: 500.0,
       type: 'credit',
-      description: 'Wallet recharge'
-    }
-  ]
-}; 
+      description: 'Wallet recharge',
+    },
+  ],
+};

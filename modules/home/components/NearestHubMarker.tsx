@@ -39,17 +39,17 @@ const NearestHubMarker: React.FC<Props> = ({
 
   const openGoogleMaps = () => {
     console.log('🎯 Opening Google Maps for hub:', name);
-    
+
     const destination = `${latitude},${longitude}`;
     const origin = hasUserLocation ? `${userLatitude},${userLongitude}` : '';
-    
+
     // Web-based Google Maps URL as fallback
     const webUrl = `https://www.google.com/maps/dir/${origin ? `${origin}/` : ''}${destination}`;
-    
+
     if (Platform.OS === 'android') {
       // Android: Try geo URL first
       const geoUrl = `geo:${destination}?q=${destination}`;
-      
+
       Linking.openURL(geoUrl)
         .catch(() => {
           // If geo fails, try web
@@ -61,7 +61,7 @@ const NearestHubMarker: React.FC<Props> = ({
     } else {
       // iOS: Try Apple Maps
       const appleMapsUrl = `http://maps.apple.com/?daddr=${destination}${origin ? `&saddr=${origin}` : ''}`;
-      
+
       Linking.openURL(appleMapsUrl)
         .catch(() => {
           // If Apple Maps fails, try web

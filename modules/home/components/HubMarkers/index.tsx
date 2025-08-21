@@ -9,7 +9,7 @@ type HubMarkersProps = {
 };
 
 const HubMarkers: React.FC<HubMarkersProps> = ({ hubs, selectedHub, onHubSelect }) => {
-  const markers = useMemo(() => 
+  const markers = useMemo(() =>
     hubs.map(hub => (
       <NearestHubMarker
         key={hub.id}

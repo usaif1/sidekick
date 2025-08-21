@@ -15,7 +15,7 @@ import RideEnded from '../components/RideEnded';
 import {useGlobalStore, useRideStore} from '@/globalStore';
 import {useThemeStore} from '@/theme/store';
 import {rideScooterService, RideService, WalletService} from '@/globalService';
-import rideStorage from '../storage';
+import rideStorage, {currentRideStorage} from '../storage';
 import {BluetoothService} from '@/globalService/bluetoothService';
 
 const {
@@ -81,7 +81,17 @@ const ReachedHub: React.FC = () => {
   };
 
   const endRide = async () => {
-    const currentRideId = rideStorage.getString('currentRideId');
+    // Get ride ID from multiple sources (priority order)
+    const storageRideData = currentRideStorage.getCurrentRide();
+    const {currentRide} = useRideStore.getState();
+    const currentRideId = storageRideData?.rideId || currentRide?.rideId || rideStorage.getString('currentRideId');
+
+    if (!currentRideId) {
+      console.error('❌ No current ride ID found, cannot end ride');
+      return;
+    }
+
+    console.log('🏁 Ending ride with ID:', currentRideId);
 
     try {
       await RideService.createRideStep({
@@ -103,9 +113,14 @@ const ReachedHub: React.FC = () => {
       if (scooterId) {
         stopScooter(scooterId);
       }
-      rideStorage.delete('currentScooterId');
 
+      // Clear old storage system
+      rideStorage.delete('currentScooterId');
       rideStorage.delete('currentRideId');
+
+      // Clear new storage system and global store
+      RideService.clearActiveRide();
+      console.log('✅ All ride data cleared from both storage systems');
     } catch (error) {
       console.log('Error ending ride');
     }

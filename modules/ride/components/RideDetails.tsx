@@ -21,7 +21,7 @@ import {
 import {EndRide} from '../components';
 import {calculateHubDistance} from '@/modules/home/utilis/distanceUtils';
 import {rideScooterService, RideService} from '@/globalService';
-import rideStorage from '../storage';
+import rideStorage, {currentRideStorage} from '../storage';
 import {BluetoothService} from '@/globalService/bluetoothService';
 
 const {
@@ -29,8 +29,11 @@ const {
 } = useThemeStore.getState();
 
 const RideDetails: React.FC = () => {
-  const currentRideId = rideStorage.getString('currentRideId');
-  const currentScooterId = rideStorage.getString('currentScooterId');
+  // Get ride data from multiple sources (priority order)
+  const storageRideData = currentRideStorage.getCurrentRide();
+  const {currentRide} = useRideStore();
+  const currentRideId = storageRideData?.rideId || currentRide?.rideId || rideStorage.getString('currentRideId');
+  const currentScooterId = storageRideData?.scooterId || currentRide?.scooterId || rideStorage.getString('currentScooterId');
 
   const {setModalComponent, openModal} = useGlobalStore();
   const {
@@ -106,7 +109,7 @@ const RideDetails: React.FC = () => {
 
   // Turn off scooter when pausing
   const turnOffScooter = async () => {
-    if (!currentScooterId) return;
+    if (!currentScooterId) {return;}
 
     try {
       const response = await RideService.fetchScooterByRegNo({
@@ -141,7 +144,7 @@ const RideDetails: React.FC = () => {
 
   // Turn on scooter when resuming
   const turnOnScooter = async () => {
-    if (!currentScooterId) return;
+    if (!currentScooterId) {return;}
 
     try {
       const response = await RideService.fetchScooterByRegNo({

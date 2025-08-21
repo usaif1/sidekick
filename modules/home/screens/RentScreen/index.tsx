@@ -9,6 +9,9 @@ import useLocationStore from '../../store/locationStore';
 import {useAuthStore, useGlobalStore, useWalletStore} from '@/globalStore';
 import useRideStore from '@/modules/ride/store';
 
+// hooks
+import {useActiveRide} from '@/hooks/useActiveRide';
+
 // services
 import {
   RideService,
@@ -39,13 +42,34 @@ const RentScreen: React.FC = () => {
     useLocationStore();
   const {stopLoading} = useAuthStore();
   const {openModal, setModalComponent} = useGlobalStore();
-  const {selectedHub, setSelectedHub, hubs} = useRideStore();
+  const {selectedHub, setSelectedHub, hubs, setCurrentRide} = useRideStore();
   const {userWallet} = useWalletStore();
   const mapRef = useRef<MapView>(null);
   const [heading, setHeading] = useState<number>(0);
 
+  // Check for active rides on app launch
+  const {hasActiveRide, rideData, isLoading: activeRideLoading} = useActiveRide();
+
   // Debug: Log hub count
   console.log('🏠 RentScreen: Current hubs count:', hubs.length);
+
+  // Redirect to ride screen if active ride is found
+  useEffect(() => {
+    if (!activeRideLoading && hasActiveRide && rideData) {
+      console.log('🚲 Active ride detected, redirecting to ride screen:', rideData);
+
+      // Update the ride store with the active ride data
+      setCurrentRide(rideData);
+
+      // @ts-ignore
+      navigation.navigate('rideNavigator', {
+        screen: 'myride',
+        params: {
+          rideData,
+        },
+      });
+    }
+  }, [hasActiveRide, rideData, activeRideLoading, navigation, setCurrentRide]);
 
   const handleOpenModal = async () => {
     // Check wallet balance first
@@ -68,7 +92,7 @@ const RentScreen: React.FC = () => {
         : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       'Location',
     );
-    if (!locationPermission) return;
+    if (!locationPermission) {return;}
 
     // 2. Camera
     // const cameraPermission = await checkAndRequestPermission(
@@ -233,7 +257,7 @@ const RentScreen: React.FC = () => {
 
   useEffect(() => {
     // fetchCameraDevices();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   return (

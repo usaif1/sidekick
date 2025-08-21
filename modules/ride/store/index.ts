@@ -8,6 +8,7 @@ import createSelectors from '@/utils/selectors';
 
 // types
 import {FetchAllHubsQuery, FetchCompletedRidesQuery} from '@/generated/graphql';
+import {CurrentRideData} from '../storage';
 
 // const {height} = Dimensions.get('window');
 
@@ -26,6 +27,10 @@ type RideStore = {
   secondsElapsed: number;
   perMinuteRate: number;
   selectedHub: FetchAllHubsQuery['hubs'][0] | undefined;
+
+  // Current active ride
+  currentRide: CurrentRideData | null;
+  hasActiveRide: boolean;
 
   // Ride timing
   rideStartTime: string | null; // ISO timestamp from server
@@ -53,6 +58,11 @@ type RideActions = {
   setIsPaused: (pauseState: boolean) => void;
   setSecondsElapsed: (updater: any) => void;
   setSelectedHub: (hub: FetchAllHubsQuery['hubs'][0] | undefined) => void;
+
+  // Current active ride actions
+  setCurrentRide: (rideData: CurrentRideData | null) => void;
+  setHasActiveRide: (hasActiveRide: boolean) => void;
+  clearCurrentRide: () => void;
 
   // Ride timing
   setRideStartTime: (startTime: string | null) => void;
@@ -85,6 +95,10 @@ const rideInitialState: RideStore = {
   secondsElapsed: 0,
   perMinuteRate: 2,
   selectedHub: undefined,
+
+  // Current active ride
+  currentRide: null,
+  hasActiveRide: false,
 
   // Ride timing
   rideStartTime: null, // ISO timestamp from server
@@ -139,6 +153,24 @@ const rideStore = create<RideStore & RideActions>(set => ({
       selectedHub: hub,
     }),
 
+  // Current active ride actions
+  setCurrentRide: (rideData: CurrentRideData | null) =>
+    set({
+      currentRide: rideData,
+      hasActiveRide: !!rideData,
+    }),
+
+  setHasActiveRide: (hasActiveRide: boolean) =>
+    set({
+      hasActiveRide,
+    }),
+
+  clearCurrentRide: () =>
+    set({
+      currentRide: null,
+      hasActiveRide: false,
+    }),
+
   // ride history
   setCompletedRides: rides =>
     set({
@@ -183,7 +215,7 @@ const rideStore = create<RideStore & RideActions>(set => ({
       try {
         const newSecondsElapsed = (state.secondsElapsed || 0) + 1;
         const newActiveSecondsElapsed = (state.activeSecondsElapsed || 0) + 1;
-        
+
         return {
           secondsElapsed: newSecondsElapsed,
           activeSecondsElapsed: newActiveSecondsElapsed,
@@ -199,7 +231,7 @@ const rideStore = create<RideStore & RideActions>(set => ({
       try {
         const newSecondsElapsed = (state.secondsElapsed || 0) + 1;
         const newPausedSecondsElapsed = (state.pausedSecondsElapsed || 0) + 1;
-        
+
         return {
           secondsElapsed: newSecondsElapsed,
           pausedSecondsElapsed: newPausedSecondsElapsed,
@@ -227,7 +259,7 @@ const rideStore = create<RideStore & RideActions>(set => ({
 
         const now = DateTime.now();
         const start = DateTime.fromISO(startTime);
-        
+
         // Check if DateTime parsing was successful
         if (!start.isValid) {
           console.error('❌ Invalid start time format:', startTime);
@@ -235,7 +267,7 @@ const rideStore = create<RideStore & RideActions>(set => ({
         }
 
         const diff = now.diff(start, 'seconds');
-        
+
         // Check if diff calculation was successful
         if (!diff.isValid) {
           console.error('❌ Invalid time difference calculation');
@@ -246,11 +278,11 @@ const rideStore = create<RideStore & RideActions>(set => ({
         const activeElapsedSeconds = Math.max(0, totalElapsedSeconds - pausedTime);
 
         // Validate calculated values
-        if (isNaN(totalElapsedSeconds) || isNaN(activeElapsedSeconds) || 
+        if (isNaN(totalElapsedSeconds) || isNaN(activeElapsedSeconds) ||
             totalElapsedSeconds < 0 || activeElapsedSeconds < 0) {
           console.error('❌ Invalid calculated elapsed times:', {
             totalElapsedSeconds,
-            activeElapsedSeconds
+            activeElapsedSeconds,
           });
           return state; // Return current state unchanged
         }

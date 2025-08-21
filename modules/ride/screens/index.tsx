@@ -17,7 +17,7 @@ import HubMarkers from '@/modules/home/components/HubMarkers';
 import {RideDetails} from '../components';
 import {GlobalModal} from '@/components';
 import {RideService} from '@/globalService';
-import rideStorage from '../storage';
+import rideStorage, {currentRideStorage} from '../storage';
 
 const RideScreen: React.FC = () => {
   const latitude = useLocationStore(state => state.latitude);
@@ -106,18 +106,21 @@ const RideScreen: React.FC = () => {
   // Function to sync timer with server
   const syncWithServer = async () => {
     try {
-      const currentRideId = rideStorage.getString('currentRideId');
+      // Get ride ID from multiple sources (priority order)
+      const storageRideData = currentRideStorage.getCurrentRide();
+      const storeRideData = useRideStore.getState().currentRide;
+      const currentRideId = storageRideData?.rideId || storeRideData?.rideId || rideStorage.getString('currentRideId');
       if (!currentRideId) {
-        console.log('⚠️ No current ride ID found');
+        console.log('⚠️ No current ride ID found in either storage system');
         return;
       }
 
       console.log('🔄 Syncing timer with server...');
       const rideData = await RideService.fetchCurrentRide({id: currentRideId});
-      
+
       if (rideData?.start_time) {
         const pausedTime = calculatePausedTime(rideData.ride_steps || []);
-        
+
         // Ensure we have valid data before syncing
         if (typeof pausedTime === 'number' && !isNaN(pausedTime)) {
           syncTimerWithServer(rideData.start_time, pausedTime);
@@ -159,12 +162,12 @@ const RideScreen: React.FC = () => {
   useEffect(() => {
     getCurrentLocation();
     requestLocationPermission();
-    
+
     // Load initial ride data and sync timer with a slight delay
     const timeoutId = setTimeout(() => {
       syncWithServer();
     }, 1000);
-    
+
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -176,20 +179,20 @@ const RideScreen: React.FC = () => {
   // App state listener for background/foreground detection
   useEffect(() => {
     let isComponentMounted = true;
-    
+
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       try {
         console.log('📱 App state change:', {
           previous: appState.current,
           next: nextAppState,
-          isComponentMounted
+          isComponentMounted,
         });
-        
+
         if (!isComponentMounted) {
           console.log('⚠️ Component unmounted, ignoring app state change');
           return;
         }
-        
+
         if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
           // App has come to the foreground - sync timer with server
           console.log('📱 App came to foreground - syncing timer...');
@@ -200,7 +203,7 @@ const RideScreen: React.FC = () => {
             }
           }, 500);
         }
-        
+
         appState.current = nextAppState;
       } catch (error) {
         console.error('❌ Error in app state change handler:', error);
@@ -233,7 +236,7 @@ const RideScreen: React.FC = () => {
   useEffect(() => {
     // Timer always runs, but increments different counters based on pause state
     console.log('🔄 Creating new timer interval, isPaused:', isPaused);
-    
+
     const newInterval = setInterval(() => {
       try {
         if (isPaused) {
@@ -264,7 +267,7 @@ const RideScreen: React.FC = () => {
       const activeCost = Math.ceil(activeSecondsElapsed / 60) * perMinuteRate;
       const pausedCost = Math.ceil(pausedSecondsElapsed / 60) * pausedPerMinuteRate;
       const newTotalCost = activeCost + pausedCost;
-      
+
       // Validate the calculated cost
       if (isNaN(newTotalCost) || !isFinite(newTotalCost)) {
         console.error('❌ Invalid cost calculated, using 0');
@@ -272,7 +275,7 @@ const RideScreen: React.FC = () => {
       } else {
         setTotalCost(newTotalCost);
       }
-      
+
       console.log('💰 Cost updated:', {
         activeSecondsElapsed,
         pausedSecondsElapsed,
@@ -297,7 +300,7 @@ const RideScreen: React.FC = () => {
           clearInterval(interval);
           console.log('✅ Timer interval cleared');
         }
-        
+
         // Use setTimeout to ensure cleanup happens after current execution
         const cleanupTimeout = setTimeout(() => {
           try {
@@ -308,7 +311,7 @@ const RideScreen: React.FC = () => {
             console.error('❌ Error resetting ride store:', error);
           }
         }, 100);
-        
+
         // Also set a fallback cleanup
         setTimeout(() => {
           if (cleanupTimeout) {

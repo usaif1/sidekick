@@ -58,7 +58,7 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
       waypoints={[]}
       onReady={(result: MapViewDirectionsResult) => {
         const coordinates = result.coordinates;
-        
+
         // Safely fit coordinates on map
         if (coordinates && coordinates.length > 0) {
           mapRef.current?.fitToCoordinates(coordinates, {
@@ -71,7 +71,7 @@ const DirectionsComponent: React.FC<DirectionsProps> = ({
             animated: true,
           });
         }
-        
+
         // Safely calculate heading - ensure we have both points and origin
         if (coordinates && coordinates.length >= 2 && origin && onHeadingChange) {
           const nextRoutePoint = coordinates[1];

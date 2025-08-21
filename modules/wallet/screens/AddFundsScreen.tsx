@@ -188,7 +188,7 @@ const AddFundsScreen = () => {
     setModalComponent(PaymentSuccess);
 
     if (!userWallet?.security_deposit) {
-      setSecurityDeposit(200);
+      setSecurityDeposit(20);
     }
 
     return () => {

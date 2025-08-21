@@ -69,7 +69,7 @@ const AlreadyUserForm: React.FC = () => {
     try {
       startLoading('auth-confirmation');
       authBottomSheetRef?.current?.snapToPosition('40%');
-      
+
       // Check if user exists before sending OTP
       const userExists = await AuthService.checkIfUserExists({
         phone: `+91${existingUserPhoneNumber}`,

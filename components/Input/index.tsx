@@ -216,7 +216,7 @@ const Input: React.FC<InputProps> = ({
 
   // Render dropdown modal
   const renderDropdownModal = () => {
-    if (variant !== 'dropdown') return null;
+    if (variant !== 'dropdown') {return null;}
 
     return (
       <Modal
