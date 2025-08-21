@@ -30,7 +30,6 @@ import LocationLoadingModal from '../../components/LocationLoadingModal';
 import ActionButtons from './components';
 import {useFocusEffect} from '@react-navigation/native';
 import GlobalModal from '@/components/GlobalModal';
-import HubMarkers from '../../components/HubMarkers';
 import {checkAndRequestPermission} from '@/utils/permissionsHelper';
 import {PERMISSIONS} from 'react-native-permissions';
 
@@ -282,11 +281,6 @@ const RentScreen: React.FC = () => {
             heading={heading}
           />
         )}
-        <HubMarkers
-          hubs={hubs}
-          selectedHub={selectedHub}
-          onHubSelect={setSelectedHub}
-        />
       </MapView>
 
       {/* rent action buttons */}

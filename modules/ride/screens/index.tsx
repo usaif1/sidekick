@@ -13,7 +13,6 @@ import {mapStyles} from '@/modules/home/utilis/mapStyle';
 import {findNearestHub} from '@/modules/home/utilis/distanceUtils';
 import requestLocationPermission from '@/components/LocationPermission';
 import UserLocationMarker from '@/modules/home/components/UserLocationMarker';
-import HubMarkers from '@/modules/home/components/HubMarkers';
 import {RideDetails} from '../components';
 import {GlobalModal} from '@/components';
 import {RideService} from '@/globalService';
@@ -380,11 +379,6 @@ const RideScreen: React.FC = () => {
             heading={heading}
           />
         )}
-        <HubMarkers
-          hubs={hubs}
-          selectedHub={selectedHub}
-          onHubSelect={setSelectedHub}
-        />
       </MapView>
 
       <GlobalModal />
