@@ -319,7 +319,7 @@ const RideService = {
 
     // Also ensure old storage system is synchronized (in case other parts of app depend on it)
     rideStorage.set('currentRideId', rideData.rideId);
-    rideStorage.set('currentScooterId', rideData.scooterId);
+    // Don't overwrite currentScooterId if it already exists (it should contain registration number)
 
     console.log('✅ Ride data stored in both storage systems');
   },
