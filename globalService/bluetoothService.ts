@@ -46,11 +46,19 @@ export const BluetoothService = {
     deviceName: string,
     callback: (device: Device) => void,
   ) => {
-    bleManager.startDeviceScan(null, null, (error, device) => {
-      setTimeout(() => {
+    let scanTimeout: NodeJS.Timeout;
+    let deviceFound = false;
+
+    scanTimeout = setTimeout(() => {
+      if (!deviceFound) {
+        console.log('Scan timeout - stopping scan');
         bleManager.stopDeviceScan();
-      }, 10000);
+      }
+    }, 10000);
+
+    bleManager.startDeviceScan(null, null, (error, device) => {
       if (error) {
+        clearTimeout(scanTimeout);
         if (error?.message === 'BluetoothLE is powered off') {
           showToast({
             type: 'error',
@@ -66,8 +74,10 @@ export const BluetoothService = {
 
       console.log('device', device);
 
-      if (device?.name === deviceName) {
+      if (device?.name === deviceName && !deviceFound) {
+        deviceFound = true;
         console.log('device found', device);
+        clearTimeout(scanTimeout);
         bleManager.stopDeviceScan();
         callback(device);
         return device;
@@ -78,9 +88,25 @@ export const BluetoothService = {
   },
 
   // connect to device &&  start scooter
-  startScooter: async (foundDevice: Device, successCallback: () => void) => {
+  startScooter: async (args: {
+    foundDevice: Device;
+    successCallback: () => void;
+    scooterRegNo: string;
+  }) => {
+    const {foundDevice, successCallback, scooterRegNo} = args;
     try {
-      const connectedDevice = await foundDevice.connect();
+      // Add connection timeout
+      const connectionPromise = foundDevice.connect();
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('Connection timeout after 15 seconds'));
+        }, 15000);
+      });
+
+      const connectedDevice = (await Promise.race([
+        connectionPromise,
+        timeoutPromise,
+      ])) as Device;
       if (Platform.OS === 'android') {
         await connectedDevice.requestMTU(247);
       }
@@ -131,12 +157,23 @@ export const BluetoothService = {
         return;
       }
 
+      // Add monitoring timeout to prevent hanging
+      const monitorTimeout = setTimeout(async () => {
+        console.log('Monitor timeout - disconnecting');
+        try {
+          await connectedDevice.cancelConnection();
+        } catch (e) {
+          console.log('Error during monitor timeout disconnect:', e);
+        }
+      }, 30000);
+
       connectedDevice.monitorCharacteristicForService(
         requiredServiceUUID,
         requiredCharacteristic.uuid,
         async (error, characteristic) => {
           if (error) {
             console.log('Error in monitoring characteristic', error);
+            clearTimeout(monitorTimeout);
             // showToast({
             //   type: 'error',
             //   text1: 'Error',
@@ -190,7 +227,181 @@ export const BluetoothService = {
           //   }
 
           if (decodedToken === 'success') {
+            clearTimeout(monitorTimeout);
             sendCustomCommand(characteristic, turnOnCommand);
+            await connectedDevice.cancelConnection();
+            // setTimeout(() => {
+            //   sendCustomCommand(characteristic, pingCommand);
+            // }, 1000);
+
+            successCallback();
+            return;
+          }
+
+          const response = await axios.get(decryptEndpoint, {
+            params: {
+              token: decodedToken,
+              scooterRegNo: scooterRegNo,
+            },
+          });
+
+          console.log('response from axios call', response);
+          const stringCommand = response.data.command;
+
+          const command = Buffer.from(stringCommand, 'utf-8').toString(
+            'base64',
+          );
+
+          console.log('command', command);
+
+          characteristic.writeWithoutResponse(command);
+          clearTimeout(monitorTimeout);
+        },
+      );
+
+      return foundDevice;
+    } catch (error) {
+      console.log('Error connecting to device', error);
+    }
+  },
+
+  // stop scooter
+  stopScooter: async (foundDevice: Device, successCallback: () => void) => {
+    try {
+      // Add connection timeout
+      const connectionPromise = foundDevice.connect();
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('Connection timeout after 15 seconds'));
+        }, 15000);
+      });
+
+      const connectedDevice = (await Promise.race([
+        connectionPromise,
+        timeoutPromise,
+      ])) as Device;
+      if (Platform.OS === 'android') {
+        await connectedDevice.requestMTU(247);
+      }
+
+      console.log('connected to device =>', connectedDevice);
+
+      const allServices =
+        await connectedDevice.discoverAllServicesAndCharacteristics();
+      console.log('allServices', allServices);
+
+      if (!allServices?.serviceUUIDs) {
+        console.log('no services found');
+        showToast({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Error connecting to device',
+        });
+        return;
+      }
+
+      const requiredServiceUUID = allServices.serviceUUIDs.find(service => {
+        return service.includes(REQUIRED_SERVICE_UUID);
+      });
+
+      if (!requiredServiceUUID) {
+        console.log('no required service found');
+        showToast({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Error connecting to device',
+        });
+        return;
+      }
+
+      const requiredCharacteristic = (
+        await allServices.characteristicsForService(requiredServiceUUID)
+      ).find(characteristic => {
+        return characteristic.uuid.includes(REQUIRED_CHARACTERISTIC_UUID);
+      });
+
+      if (!requiredCharacteristic) {
+        console.log('no required characteristic found');
+        showToast({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Error connecting to device',
+        });
+        return;
+      }
+
+      // Add monitoring timeout to prevent hanging
+      const monitorTimeout = setTimeout(async () => {
+        console.log('Monitor timeout - disconnecting');
+        try {
+          await connectedDevice.cancelConnection();
+        } catch (e) {
+          console.log('Error during monitor timeout disconnect:', e);
+        }
+      }, 30000);
+
+      connectedDevice.monitorCharacteristicForService(
+        requiredServiceUUID,
+        requiredCharacteristic.uuid,
+        async (error, characteristic) => {
+          if (error) {
+            console.log('Error in monitoring characteristic', error);
+            clearTimeout(monitorTimeout);
+            showToast({
+              type: 'error',
+              text1: 'Error',
+              text2: 'Error connecting to device',
+            });
+            return;
+          }
+
+          console.log('characteristic', characteristic);
+          if (!characteristic?.value) {
+            console.log('no value found in characteristic');
+            showToast({
+              type: 'error',
+              text1: 'Error',
+              text2: 'Error connecting to device',
+            });
+            return;
+          }
+
+          if (!characteristic.value) {
+            console.log('no value found in characteristic');
+            showToast({
+              type: 'error',
+              text1: 'Error',
+              text2: 'Error connecting to device',
+            });
+            return;
+          }
+
+          const decodedToken = extractToken(characteristic.value);
+          console.log('token', decodedToken);
+
+          if (!decodedToken) {
+            console.log('no decoded token found');
+            // showToast({
+            //   type: 'error',
+            //   text1: 'Error',
+            //   text2: 'Error connecting to device',
+            // });
+            return;
+          }
+
+          //   if (decodedToken && decodedToken !== 'success') {
+          //     console.log('auth failed', decodedToken);
+          //     showToast({
+          //       type: 'error',
+          //       text1: 'Error',
+          //       text2: 'Error connecting to device',
+          //     });
+          //     return;
+          //   }
+
+          if (decodedToken === 'success') {
+            clearTimeout(monitorTimeout);
+            sendCustomCommand(characteristic, turnOffCommand);
             await connectedDevice.cancelConnection();
             // setTimeout(() => {
             //   sendCustomCommand(characteristic, pingCommand);
@@ -216,154 +427,7 @@ export const BluetoothService = {
           console.log('command', command);
 
           characteristic.writeWithoutResponse(command);
-        },
-      );
-
-      return foundDevice;
-    } catch (error) {
-      console.log('Error connecting to device', error);
-    }
-  },
-
-  // stop scooter
-  stopScooter: async (foundDevice: Device, successCallback: () => void) => {
-    try {
-      const connectedDevice = await foundDevice.connect();
-      if (Platform.OS === 'android') {
-        await connectedDevice.requestMTU(247);
-      }
-
-      console.log('connected to device =>', connectedDevice);
-
-      const allServices =
-        await connectedDevice.discoverAllServicesAndCharacteristics();
-      console.log('allServices', allServices);
-
-      if (!allServices?.serviceUUIDs) {
-        console.log('no services found');
-        showToast({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Error connecting to device',
-        });
-        return;
-      }
-
-      const requiredServiceUUID = allServices.serviceUUIDs.find(service => {
-        return service.includes(REQUIRED_SERVICE_UUID);
-      });
-
-      if (!requiredServiceUUID) {
-        console.log('no required service found');
-        showToast({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Error connecting to device',
-        });
-        return;
-      }
-
-      const requiredCharacteristic = (
-        await allServices.characteristicsForService(requiredServiceUUID)
-      ).find(characteristic => {
-        return characteristic.uuid.includes(REQUIRED_CHARACTERISTIC_UUID);
-      });
-
-      if (!requiredCharacteristic) {
-        console.log('no required characteristic found');
-        showToast({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Error connecting to device',
-        });
-        return;
-      }
-
-      connectedDevice.monitorCharacteristicForService(
-        requiredServiceUUID,
-        requiredCharacteristic.uuid,
-        async (error, characteristic) => {
-          if (error) {
-            console.log('Error in monitoring characteristic', error);
-            showToast({
-              type: 'error',
-              text1: 'Error',
-              text2: 'Error connecting to device',
-            });
-            return;
-          }
-
-          console.log('characteristic', characteristic);
-          if (!characteristic?.value) {
-            console.log('no value found in characteristic');
-            showToast({
-              type: 'error',
-              text1: 'Error',
-              text2: 'Error connecting to device',
-            });
-            return;
-          }
-
-          if (!characteristic.value) {
-            console.log('no value found in characteristic');
-            showToast({
-              type: 'error',
-              text1: 'Error',
-              text2: 'Error connecting to device',
-            });
-            return;
-          }
-
-          const decodedToken = extractToken(characteristic.value);
-          console.log('token', decodedToken);
-
-          if (!decodedToken) {
-            console.log('no decoded token found');
-            // showToast({
-            //   type: 'error',
-            //   text1: 'Error',
-            //   text2: 'Error connecting to device',
-            // });
-            return;
-          }
-
-          //   if (decodedToken && decodedToken !== 'success') {
-          //     console.log('auth failed', decodedToken);
-          //     showToast({
-          //       type: 'error',
-          //       text1: 'Error',
-          //       text2: 'Error connecting to device',
-          //     });
-          //     return;
-          //   }
-
-          if (decodedToken === 'success') {
-            sendCustomCommand(characteristic, turnOffCommand);
-            connectedDevice.cancelConnection();
-            // setTimeout(() => {
-            //   sendCustomCommand(characteristic, pingCommand);
-            // }, 1000);
-
-            successCallback();
-            return;
-          }
-
-          const response = await axios.get(decryptEndpoint, {
-            params: {
-              token: decodedToken,
-            },
-          });
-
-          console.log('response from axios call', response);
-          const stringCommand = response.data.command;
-
-          const command = Buffer.from(stringCommand, 'utf-8').toString(
-            'base64',
-          );
-
-          console.log('command', command);
-
-          characteristic.writeWithoutResponse(command);
+          clearTimeout(monitorTimeout);
         },
       );
 
