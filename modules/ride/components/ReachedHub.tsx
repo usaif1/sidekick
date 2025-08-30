@@ -74,8 +74,12 @@ const ReachedHub: React.FC = () => {
     BluetoothService.scanDevices(response.device_name, device => {
       console.log('device', device);
 
-      BluetoothService.stopScooter(device, () => {
-        console.log('scooter stopped');
+      BluetoothService.stopScooter({
+        scooterRegNo: response.registration_number || '',
+        foundDevice: device,
+        successCallback: () => {
+          console.log('scooter stopped');
+        },
       });
     });
   };
@@ -84,7 +88,10 @@ const ReachedHub: React.FC = () => {
     // Get ride ID from multiple sources (priority order)
     const storageRideData = currentRideStorage.getCurrentRide();
     const {currentRide} = useRideStore.getState();
-    const currentRideId = storageRideData?.rideId || currentRide?.rideId || rideStorage.getString('currentRideId');
+    const currentRideId =
+      storageRideData?.rideId ||
+      currentRide?.rideId ||
+      rideStorage.getString('currentRideId');
 
     if (!currentRideId) {
       console.error('❌ No current ride ID found, cannot end ride');

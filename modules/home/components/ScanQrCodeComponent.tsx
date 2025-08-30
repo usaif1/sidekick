@@ -12,6 +12,7 @@ import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 // components
 import H2 from '@/components/Typography/H2';
 import P2 from '@/components/Typography/P2';
+import P3 from '@/components/Typography/P3';
 import Divider from '@/components/Divider';
 
 // store
@@ -310,6 +311,16 @@ const ScanQrCodeComponent = () => {
           <P2 textColor="textSecondary" customStyles={{textAlign: 'center'}}>
             Please enter the number you see
           </P2>
+          {Platform.OS === 'android' && (
+            <>
+              <Divider height={8} />
+              <View style={styles.androidMessageContainer}>
+                <P3 textColor="error" customStyles={{textAlign: 'center'}}>
+                  Make sure Nearby Location permission is granted to SideKick
+                </P3>
+              </View>
+            </>
+          )}
           <Divider height={14} />
           <TouchableWithoutFeedback>
             <View style={styles.inputContainer}>
@@ -436,6 +447,10 @@ const styles = ScaledSheet.create({
     fontSize: '12@ms',
     marginTop: '4@vs',
     textAlign: 'center',
+  },
+
+  androidMessageContainer: {
+    paddingHorizontal: '16@ms',
   },
 });
 

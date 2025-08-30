@@ -1,12 +1,14 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
+import Icon from 'react-native-vector-icons/Feather';
 import {DateTime} from 'luxon';
 import {useNavigation} from '@react-navigation/native';
 
 // components
 import H2 from '@/components/Typography/H2';
 import P2 from '@/components/Typography/P2';
+import P3 from '@/components/Typography/P3';
 import {ButtonTextSm, showToast} from '@/components';
 
 // store
@@ -49,19 +51,19 @@ const ConfirmRideModal: React.FC<Props> = ({
 
     try {
       // start scooter via api
-      const scooterResponse = await rideScooterService.toggleScooterMobility({
-        imei: parseInt(scooterData.imei, 10),
-        immobilize: true,
-      });
+      // const scooterResponse = await rideScooterService.toggleScooterMobility({
+      //   imei: parseInt(scooterData.imei, 10),
+      //   immobilize: true,
+      // });
 
-      if (!scooterResponse.success) {
-        showToast({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to start scooter. Please try again.',
-        });
-        return;
-      }
+      // if (!scooterResponse.success) {
+      //   showToast({
+      //     type: 'error',
+      //     text1: 'Error',
+      //     text2: 'Failed to start scooter. Please try again.',
+      //   });
+      //   return;
+      // }
 
       // if (scooterResponse.success) {
       //   try {
@@ -124,7 +126,7 @@ const ConfirmRideModal: React.FC<Props> = ({
       BluetoothService.scanDevices(scooterData.device_name, device => {
         clearTimeout(operationTimeout);
         BluetoothService.startScooter({
-          scooterRegNo: scooterResponse.data.registration_number,
+          scooterRegNo: scooterCode,
           foundDevice: device,
           successCallback: async () => {
             try {
@@ -191,6 +193,32 @@ const ConfirmRideModal: React.FC<Props> = ({
     onCancel();
   };
 
+  const handleCheckScooter = async () => {
+    if (!scooterData) {
+      console.log('No scooter data available');
+      return;
+    }
+
+    try {
+      console.log('Starting scooter check for:', scooterData.device_name);
+
+      BluetoothService.scanDevices(scooterData.device_name, device => {
+        console.log('Device found for check:', device.name);
+
+        BluetoothService.checkScooterActive({
+          scooterRegNo: scooterData.registration_number,
+          foundDevice: device,
+          successCallback: status => {
+            console.log('🔍 Scooter Check Result:', status);
+            console.log('✅ Scooter status check completed');
+          },
+        });
+      });
+    } catch (error) {
+      console.log('❌ Error checking scooter:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <H2 customStyles={{textAlign: 'center', marginBottom: 8}}>
@@ -217,6 +245,23 @@ const ConfirmRideModal: React.FC<Props> = ({
           </ButtonTextSm>
         </View>
       </View>
+
+      <View style={styles.instructionContainer}>
+        <View style={styles.instructionTextContainer}>
+          <P3 textColor="textSecondary">Please press and hold </P3>
+          <Icon name="power" size={14} color="red" style={styles.powerIcon} />
+          <P3 textColor="textSecondary"> button to start the scooter</P3>
+        </View>
+      </View>
+
+      {/* Check Scooter Button */}
+      {/*
+      <View style={styles.checkButtonContainer}>
+        <ButtonTextSm onPress={handleCheckScooter} variant="primary">
+          Check
+        </ButtonTextSm>
+      </View>
+       */}
     </View>
   );
 };
@@ -236,6 +281,27 @@ const styles = ScaledSheet.create({
 
   button: {
     flex: 1,
+  },
+
+  instructionContainer: {
+    marginTop: 16,
+    paddingHorizontal: '8@ms',
+  },
+
+  instructionTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'nowrap',
+  },
+
+  powerIcon: {
+    marginHorizontal: 2,
+  },
+
+  checkButtonContainer: {
+    marginTop: 12,
+    width: '100%',
   },
 });
 
